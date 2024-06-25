@@ -80,7 +80,7 @@ if (navigator.share && navigator.canShare) {
                 {
                     title: "Sudoku-Trainer",
                     text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
-                    url: "https://hubertbertling.github.io/sudokuSolver",
+                    url: "https://hubertbertling.github.io/sudokuTrainer",
                 }
             )
                 .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
