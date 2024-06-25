@@ -27,7 +27,7 @@ if (navigator.share && navigator.canShare) {
     // Web Share API ist Verfügbar!
     shareButton.addEventListener("click", async () => {
         if (sudoApp.mySolver.getGamePhase() == 'define') {
-            sudoApp.mySolverController.myInfoDialog.open("Puzzle teilen", "negativ",
+            sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.");
         } else {
             let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
