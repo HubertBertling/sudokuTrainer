@@ -3,9 +3,11 @@
 title: Sudoku-Trainer
 email: h.bertling@web.de
 description: > # this means to ignore newlines until "baseurl:"
-    Ein Trainer für klassisches Sudoku. Er löst nicht nur jedes Puzzle sondern erklärt auch jeden einzelnen Schritt auf dem Weg zur Lösung. 
-    Ein manueller Lösungsversuch kann jederzeit mit automatischen Schritten fortgesetzt werden. D.h. Sudoku-Puzzles lösen mit garantiertem Erfolg verbunden
-    mit neuen Einsichten, wie man Lösungen finden kann. Viel Spaß dabei. 
+    Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! 
+    Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, 
+    wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung 
+    Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt. 
+    Viel Spaß damit. 
 
 # Build settings
 theme: jekyll-theme-cayman

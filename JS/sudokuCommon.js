@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 2;
+let VERSION = 3;
 
 // ==========================================
 // Basic classes
@@ -1947,12 +1947,12 @@ class SudokuPuzzleDB extends MVC_Model {
         //Check the Browser.
         var isIE = false || !!document.documentMode;
         if (isIE) {
-            window.navigator.msSaveBlob(blob1, 'downloadePuzzleDB.text');
+            window.navigator.msSaveBlob(blob1, 'downloadedPuzzleDB.text');
         } else {
             var url = window.URL || window.webkitURL;
             var link = url.createObjectURL(blob1);
             var a = document.createElement("a");
-            a.download = 'downloadePuzzleDB.text';
+            a.download = 'downloadedPuzzleDB.text';
             a.href = link;
             document.body.appendChild(a);
             a.click();
