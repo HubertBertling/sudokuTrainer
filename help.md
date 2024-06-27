@@ -61,16 +61,14 @@ Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als
 
 1. Öffne auf deinem Android-Gerät den Browser Chrome.
 1. Rufe die Website (https://hubertbertling.github.io/sudokuTrainer/) auf.
-![Installation Chrome](./images/install.png){: style="margin:10px" width="500px"}
-1. Tippe auf Installieren.
-1. Folge der Anleitung auf dem Bildschirm.
+1. Tippe rechts  rechts in der Adressleiste auf „Mehr“ und dann > Zum 
+Start-Bildschirm hinzufügen > Installieren.
 
-Beim Browser Edge sieht es so aus:
+|Installation | Instalation |
+|---------------|------------|
+|![Installation Chrome](./images/install.png){:width="100px"}| ![Installation Chrome](./images/install2.png){:width="100px"}|
 
-{: style="text-align:center"}
-![Installation Edge](./images/installEdge.png){: width="500px"}
-
-Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
+Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
 
 # Einführung in die App
 
