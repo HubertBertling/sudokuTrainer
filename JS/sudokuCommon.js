@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 12;
+let VERSION = 13;
 
 // ==========================================
 // Basic classes
@@ -2351,14 +2351,16 @@ class SudokuPuzzleDBController {
     }
 
     delete() {
-        if (this.myPuzzleDB.getSize() > 0) {
-            let selectedId = this.myPuzzleDB.selectedKey();
+        if (sudoApp.myPuzzleDB.getSize() > 0) {
+            let selectedId = sudoApp.myPuzzleDB.selectedKey();
             let loadedPzUid = sudoApp.mySolver.getLoadedPuzzleUID();
             if (loadedPzUid == selectedId) {
                 sudoApp.mySolver.init();
+                sudoApp.mySolver.notify();
             }
-            this.myPuzzleDB.deleteSelected();
+            sudoApp.myPuzzleDB.deleteSelected();
             this.nextBtnPressed();
+            sudoApp.myPuzzleDB.notify();
         }
     }
 
