@@ -66,7 +66,7 @@ Start-Bildschirm hinzufügen > Installieren.
 
 |Installation | Instalation |
 |---------------|------------|
-|![Installation Chrome](./images/install.png){:width="100px"}| ![Installation Chrome](./images/install2.png){:width="100px"}|
+|![Installation Chrome](./images/install.png){:width="250px"}| ![Installation Chrome](./images/install2.png){:width="250px"}|
 
 Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
 
