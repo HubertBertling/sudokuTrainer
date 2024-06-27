@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 7;
+let VERSION = 8;
 
 // ==========================================
 // Basic classes
@@ -2254,14 +2254,6 @@ class SudokuPuzzleDBController {
         });
 
 
-        /*
-
-        document.getElementById('db-puzzle-btn-upload').addEventListener('click', () => {
-            document.getElementById('asText').click();
-        });
-    */
-
-
         document.getElementById('pz-btn-ok').addEventListener('click', () => {
             this.closeBtnPressed();
         });
@@ -2276,22 +2268,8 @@ class SudokuPuzzleDBController {
     // ===============================================================
 
     importPuzzles() {
-        let input = document.getElementById('asText')
-        input.type = 'file';
-        input.addEventListener('change', function (e) {
-            const file = asText.files[0];
-            const textType = /text.*/;
-            if (file.type.match(textType)) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    let strFilePuzzleMap = reader.result;
-                    sudoApp.myPuzzleDB.upLoadPuzzle(strFilePuzzleMap);
-                }
-                reader.readAsText(file);
-            } else {
-                alert('Dateityp nicht unterstützt!');
-            }
-        });
+        let input = document.getElementById('asText');
+        input.value = "";
         input.click();
     }
     
