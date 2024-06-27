@@ -37,7 +37,7 @@
         <div id="loader">
             <div id="search-level"></div>
         </div>
-      
+
         <div class="app-content noprint">
 
             <div id="mySidenav" class="sidenav">
@@ -156,8 +156,7 @@
 
                     <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img src="images/reset.png"
                             class="btn-image">Reset</button>
-                    <button class="mobile-interface mobile-btn btn-showWrongNumbers"
-                        id="btn-showWrongNumbers">
+                    <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
                         <img src="images/lupe.png" class="btn-image">
                         Prüfen
                     </button>
@@ -176,6 +175,9 @@
 
     <dialog class="puzzle-table-dlg noprint" id="db-puzzle-dialog">
         <div class="db-puzzle-root">
+            <div id="loader-db">
+                <div id="loader-db-info"></div>
+            </div>
             <div id="db-close-btn">&times;</div>
             <div class="db-puzzle-header">
                 Puzzle Datenbank
@@ -214,19 +216,21 @@
                             class="btn-image"></button>
                     <button class="db-puzzle-button noprint" id="pz-btn-delete"><img src="images/times200.png"
                             class="btn-image">Löschen</button>
+                    <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img src="images/times200.png"
+                            class="btn-image">DB initialisieren</button>
                     <button class="db-puzzle-button" id="db-puzzle-btn-print"><img src="images/drucker.png"
                             class="btn-image">Drucken
-                    </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img
-                            src="images/download.png" class="btn-image">
-                        <div>Download Puzzle-DB</div>
                     </button>
                     <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-pz"><img
                             src="images/download.png" class="btn-image">
                         <div>Download Puzzle</div>
                     </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img src="images/import.png"
-                            class="btn-image">
+                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img
+                            src="images/download.png" class="btn-image">
+                        <div>Download Puzzle-DB</div>
+                    </button>
+                    <button class="db-puzzle-button noprint" onclick="sudoApp.myPuzzleDBController.importPuzzles()"
+                        id="db-puzzle-btn-upload"><img src="images/import.png" class="btn-image">
                         <div>Import Puzzle(s)</div>
                     </button>
                     <input type="file" style="display:none" id="asText">

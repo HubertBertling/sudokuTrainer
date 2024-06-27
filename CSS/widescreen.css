@@ -1263,7 +1263,7 @@ label {
 .db-puzzle-btns {
     margin: 1.2rem;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 1rem;
 }
@@ -1297,12 +1297,12 @@ label {
 
 /* ========================================*/
 
-#loader {
+#loader, #loader-db {
     display: none;
     position: absolute;
     top: 21rem; 
     left: 13rem;
-    z-index: 2;
+    z-index: 7;
     width: 200px;
     height: 200px;
     border: 48px solid #fbf9f900;
@@ -1314,7 +1314,7 @@ label {
     animation: spin 2s linear infinite;
 }
 
-#search-level {
+#search-level, #loader-db-info {
     width: 14rem;
     left: 30%;
     top: 20%;

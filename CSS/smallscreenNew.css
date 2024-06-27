@@ -1294,7 +1294,7 @@ label {
 
 /* ========================================*/
 
-#loader {
+#loader, #loader-db {
     display: none;
     position: absolute;
     top: 17rem; 
@@ -1312,7 +1312,7 @@ label {
 }
 
 
-#search-level {
+#search-level, #loader-db-info {
     width: 14rem;
     left: 25%;
     top: 25%;

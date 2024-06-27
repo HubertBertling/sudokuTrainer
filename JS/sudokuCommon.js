@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 6;
+let VERSION = 7;
 
 // ==========================================
 // Basic classes
@@ -375,7 +375,7 @@ class TrackerDialog {
             sudoApp.myClockedSearchStepLoop.stop('cancelled');
             sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
             sudoApp.myClockedSolutionLoop.stop('cancelled');
-   
+
             sudoApp.mySolver.deleteSearch();
             this.reSetNumberOfSolutions();
             this.trackerDlgNode.close();
@@ -1623,13 +1623,6 @@ class NewPuzzleStore {
 class SudokuPuzzleDB extends MVC_Model {
     constructor() {
         super();
-        let str_puzzleMap = localStorage.getItem("localSudokuDB");
-        let puzzleMap = new Map(JSON.parse(str_puzzleMap));
-        if (puzzleMap.size > 0) {
-            this.selectedIndex = puzzleMap.size - 1;
-        } else {
-            this.selectedIndex = -1;
-        }
         // 
         this.sorted = new Map([
             ['name', 'desc'],
@@ -1644,18 +1637,69 @@ class SudokuPuzzleDB extends MVC_Model {
         ]);
     }
 
-    init() {
-        this.upDateVersion_2();
-    }
-
     upDateVersion_2() {
         let str_puzzleMap = localStorage.getItem("localSudokuDB");
         let puzzleMap = new Map(JSON.parse(str_puzzleMap));
         puzzleMap.forEach((puzzleRecord, key) => {
             puzzleRecord.id = key;
         });
+    }
+
+    async init() {
+        this.upDateVersion_2();
+        let str_puzzleMap = localStorage.getItem("localSudokuDB");
+        let puzzleMap = new Map(JSON.parse(str_puzzleMap));
+        if (puzzleMap.size > 0) {
+            this.selectedIndex = puzzleMap.size - 1;
+        } else {
+            await this.initDB();
+            let puzzleMap = new Map(JSON.parse(str_puzzleMap));
+            if (puzzleMap.size > 0) {
+                this.selectedIndex = puzzleMap.size - 1;
+            }
+        }
+    }
+
+    async userInit() {
+        sudoApp.myPuzzleDBView.startLoaderAnimation('DB initialisieren');
+        await this.initDB();
+        sudoApp.myPuzzleDBView.stopLoaderAnimation();
+    }
+
+    async initDB() {
+        // delete the current DB
+        localStorage.removeItem("localSudokuDB");
+        // Create a new empty DB
+        let puzzleMap = new Map();
         let update_str_puzzleMap = JSON.stringify(Array.from(puzzleMap.entries()));
         localStorage.setItem("localSudokuDB", update_str_puzzleMap);
+
+        // Example puzzle with 23 back tracks
+        const back23 = ["0", "3", "0", "0", "1", "0", "0", "0", "9",
+            "0", "0", "6", "0", "0", "0", "5", "0", "0",
+            "1", "0", "0", "0", "0", "0", "0", "4", "0",
+            "4", "0", "0", "0", "0", "3", "2", "0", "0",
+            "0", "9", "0", "0", "7", "0", "0", "0", "8",
+            "0", "0", "5", "6", "0", "0", "0", "0", "0",
+            "8", "0", "0", "0", "0", "2", "0", "0", "3",
+            "0", "0", "0", "0", "9", "0", "0", "7", "0",
+            "0", "0", "0", "4", "0", "0", "1", "0", "0"];
+
+        const back10 = ["1", "4", "0", "0", "0", "6", "8", "0", "0",
+            "0", "0", "0", "0", "5", "0", "0", "0", "2",
+            "0", "0", "0", "0", "9", "4", "0", "6", "0",
+            "0", "0", "4", "0", "0", "0", "0", "0", "0",
+            "0", "0", "0", "0", "0", "8", "0", "3", "6",
+            "7", "5", "0", "0", "0", "1", "9", "0", "0",
+            "0", "0", "0", "3", "0", "0", "0", "1", "0",
+            "0", "9", "0", "0", "0", "0", "0", "0", "5",
+            "8", "0", "0", "0", "0", "0", "7", "0", "0"];
+
+        await this.importBackRunPuzzle(back23, 'Backtrack_23', 'lqwgzcback23g2ak');
+        await this.importBackRunPuzzle(back10, 'Backtrack_10', 'lqgwgzcback9hpfg2ak');
+        sudoApp.mySolver.init();
+        sudoApp.mySolver.notify()
+        this.notify();
     }
 
     getSize() {
@@ -2136,6 +2180,16 @@ class SudokuPuzzleDBView extends MVC_View {
             }
         }
     }
+
+    startLoaderAnimation(info) {
+        // Der sich drehende Loader wird angezeigt
+        let slNode = document.getElementById("loader-db-info");
+        slNode.innerText = info;
+        document.getElementById("loader-db").style.display = "block";
+    }
+    stopLoaderAnimation() {
+        document.getElementById("loader-db").style.display = "none";
+    }
 }
 class SudokuPuzzleDBController {
     constructor(puzzleDb) {
@@ -2185,6 +2239,9 @@ class SudokuPuzzleDBController {
         document.getElementById('pz-btn-delete').addEventListener('click', () => {
             this.deleteBtnPressed();
         });
+        document.getElementById('db-pz-btn-init').addEventListener('click', () => {
+            this.initDBBtnPressed();
+        });
         document.getElementById('db-puzzle-btn-print').addEventListener('click', () => {
             this.puzzleDBPrintBtnPressed();
         });
@@ -2195,9 +2252,15 @@ class SudokuPuzzleDBController {
         document.getElementById('db-puzzle-btn-download-pz').addEventListener('click', () => {
             this.puzzleDownloadBtnPressed();
         });
+
+
+        /*
+
         document.getElementById('db-puzzle-btn-upload').addEventListener('click', () => {
             document.getElementById('asText').click();
         });
+    */
+
 
         document.getElementById('pz-btn-ok').addEventListener('click', () => {
             this.closeBtnPressed();
@@ -2211,6 +2274,28 @@ class SudokuPuzzleDBController {
     // ===============================================================
     // DB-Event handler
     // ===============================================================
+
+    importPuzzles() {
+        let input = document.getElementById('asText')
+        input.type = 'file';
+        input.addEventListener('change', function (e) {
+            const file = asText.files[0];
+            const textType = /text.*/;
+            if (file.type.match(textType)) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    let strFilePuzzleMap = reader.result;
+                    sudoApp.myPuzzleDB.upLoadPuzzle(strFilePuzzleMap);
+                }
+                reader.readAsText(file);
+            } else {
+                alert('Dateityp nicht unterstützt!');
+            }
+        });
+        input.click();
+    }
+    
+
     setSelected(trNode) {
         // this.myPuzzleDB.selectedIndex = this.myPuzzleDB.getIndex(trNode.cells[0].innerText);
         this.myPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
@@ -2280,7 +2365,14 @@ class SudokuPuzzleDBController {
             "Puzzle löschen",
             'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
     }
+    initDBBtnPressed() {
+        sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDB,
+            sudoApp.myPuzzleDB.userInit,
+            "Puzzle DB löschen und initialisieren",
+            'Soll die Puzzle DB endgültig gelöscht und neu initialisiert werden?');
+    }
 
+    /*
     delete() {
         if (this.myPuzzleDB.getSize() > 0) {
             let selectedId = this.myPuzzleDB.selectedKey();
@@ -2293,6 +2385,10 @@ class SudokuPuzzleDBController {
         }
     }
 
+    deleteDatabase() {
+        this.myPuzzleDB.deleteAll();
+    }
+    */
     printSelectedPuzzle() {
         // Button on the solver view
         let myPrintView = new SudokuPrintView();
@@ -7418,7 +7514,7 @@ class SudokuMainApp {
         this.myPuzzleDB = new SudokuPuzzleDB();
         this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
         this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
-
+        this.myPuzzleDB.init();
         // 3. The PuzzleStore, which is filled with three puzzles 
         // for each difficulty level when the app is launched. 
         // When a new puzzle is requested, it is taken from the store 
@@ -7459,7 +7555,7 @@ class SudokuMainApp {
             // appSetting does not exist in localStorage
             appSetting = {
                 evalType: 'lazy-invisible',
-                playMode: 'manual-solving',
+                playMode: 'automated-solving',
                 puzzleIOtechnique: false.toString(),
                 breakpoints: tmpBreakpoints
             }
@@ -7483,8 +7579,6 @@ class SudokuMainApp {
         this.myClockedSearchStepLoop.setBreakpoints(appSetting.breakpoints);
 
         this.myPuzzleDB.init();
-        this.myPuzzleDB.importBackRunPuzzle(back23, 'Backtrack_23', 'lqwgzcback23g2ak');
-        this.myPuzzleDB.importBackRunPuzzle(back10, 'Backtrack_10', 'lqgwgzcback9hpfg2ak');
 
         this.myNewPuzzleStore.init();
         this.myNavBar.init();

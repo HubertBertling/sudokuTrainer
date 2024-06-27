@@ -2,8 +2,8 @@ if (window.File && window.FileReader
     && window.FileList && window.Blob) {
     // Dateiverarbeitung 
     window.onload = function () {
-        const asText = document.getElementById('asText');
-        asText.addEventListener('change', function (e) {
+        const input = document.getElementById('asText');
+        input.addEventListener('change', function (e) {
             const file = asText.files[0];
             const textType = /text.*/;
             if (file.type.match(textType)) {
@@ -93,27 +93,6 @@ if (navigator.share && navigator.canShare) {
     resultPara.textContent = `Web Share API not supported.`;
 }
 
-// Example puzzle with 23 back tracks
-
-const back23 = ["0", "3", "0", "0", "1", "0", "0", "0", "9",
-    "0", "0", "6", "0", "0", "0", "5", "0", "0",
-    "1", "0", "0", "0", "0", "0", "0", "4", "0",
-    "4", "0", "0", "0", "0", "3", "2", "0", "0",
-    "0", "9", "0", "0", "7", "0", "0", "0", "8",
-    "0", "0", "5", "6", "0", "0", "0", "0", "0",
-    "8", "0", "0", "0", "0", "2", "0", "0", "3",
-    "0", "0", "0", "0", "9", "0", "0", "7", "0",
-    "0", "0", "0", "4", "0", "0", "1", "0", "0"];
-
-const back10 = ["1", "4", "0", "0", "0", "6", "8", "0", "0",
-    "0", "0", "0", "0", "5", "0", "0", "0", "2",
-    "0", "0", "0", "0", "9", "4", "0", "6", "0",
-    "0", "0", "4", "0", "0", "0", "0", "0", "0",
-    "0", "0", "0", "0", "0", "8", "0", "3", "6",
-    "7", "5", "0", "0", "0", "1", "9", "0", "0",
-    "0", "0", "0", "3", "0", "0", "0", "1", "0",
-    "0", "9", "0", "0", "0", "0", "0", "0", "5",
-    "8", "0", "0", "0", "0", "0", "7", "0", "0"];
 
 
 // Launch and initialize the app
