@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 11;
+let VERSION = 12;
 
 // ==========================================
 // Basic classes
@@ -2350,7 +2350,6 @@ class SudokuPuzzleDBController {
             'Soll die Puzzle DB endgültig gelöscht und neu initialisiert werden?');
     }
 
-    /*
     delete() {
         if (this.myPuzzleDB.getSize() > 0) {
             let selectedId = this.myPuzzleDB.selectedKey();
@@ -2363,10 +2362,6 @@ class SudokuPuzzleDBController {
         }
     }
 
-    deleteDatabase() {
-        this.myPuzzleDB.deleteAll();
-    }
-    */
     printSelectedPuzzle() {
         // Button on the solver view
         let myPrintView = new SudokuPrintView();
