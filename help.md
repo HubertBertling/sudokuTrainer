@@ -275,7 +275,10 @@ Werkzeugeinstellung:
 
 In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. Sie ist damit besonders lehrreich. Der Spieler beobachtet die Lösungssuche anstatt selber die Lösung zu suchen, indem er automatische Lösungsschritte ausführen lässt. Deshalb an dieser Stelle eine Übersicht über die Arten automatischer Schritte. Die folgenden Darstellungen nehmen Bezug auf das Puzzle "Backtrack_10". Es ist in jeder Puzzle-Datenbank vorhanden. Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".  
 
-Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Suchlauftaste. Vorausgesetzt, alle Haltepunkte sind gesetzt.
+Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel wird vorausgesetzt, dass alle Haltepunkte gesetzt sind.
+
+{: style="text-align:center"}
+![NextStep](./images/naechsterSchritt.png){:width="100px"}
 
 {: style="text-align:center"}
 ![stepSequence](./images/schrittSequenz.png){:width="100px"}
