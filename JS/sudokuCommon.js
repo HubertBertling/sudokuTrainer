@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 13;
+let VERSION = 14;
 
 // ==========================================
 // Basic classes
@@ -2275,7 +2275,6 @@ class SudokuPuzzleDBController {
     
 
     setSelected(trNode) {
-        // this.myPuzzleDB.selectedIndex = this.myPuzzleDB.getIndex(trNode.cells[0].innerText);
         this.myPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
         this.myPuzzleDB.notify();
     }
@@ -6426,6 +6425,7 @@ class SudokuSolverView extends MVC_View {
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
         let appNameHeader = document.getElementById('app-name-header');
+        let initDBButton = document.getElementById('db-pz-btn-init');    
         let downloadDBButton = document.getElementById('db-puzzle-btn-download-db');
         let downloadPzButton = document.getElementById('db-puzzle-btn-download-pz');
         let uploadButton = document.getElementById('db-puzzle-btn-upload');
@@ -6435,14 +6435,16 @@ class SudokuSolverView extends MVC_View {
         if (this.getMyModel().getPuzzleIOtechnique()) {
             pIOcheckbox.checked = true;
             shareBtn.style.display = 'block';
-            appNameHeader.style.gridTemplateColumns = '0.1fr 0.1fr 1.7fr 0.1fr';
+            // appNameHeader.style.gridTemplateColumns = '0.1fr 0.1fr 1.7fr 0.1fr';
+            initDBButton.style.display = 'block';
             downloadDBButton.style.display = 'block';
             downloadPzButton.style.display = 'block';
             uploadButton.style.display = 'block';
         } else {
             pIOcheckbox.checked = false;
             shareBtn.style.display = 'none';
-            appNameHeader.style.gridTemplateColumns = '0.1fr 1.8fr 0.1fr';
+           // appNameHeader.style.gridTemplateColumns = '0.1fr 1.8fr 0.1fr';
+            initDBButton.style.display = 'none';
             downloadDBButton.style.display = 'none';
             downloadPzButton.style.display = 'none';
             uploadButton.style.display = 'none';
