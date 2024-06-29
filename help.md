@@ -222,7 +222,7 @@ Die Tasten des automatischen Solvers haben folgende Bedeutung:
 
 ### Einstellung Haltepunkte
 
-Auf der Einstellungsseite können verschiedene Haltepunkte des automatischen Lösungslaufes gesetzt und abgewählt werden. Wenn man für ein neues Puzzle seinen Schwierigkeitsgrad z.B. 'Mittel' prüfen will, kann man die Haltepunkte 'Single'und 'Hidden Single' setzen. Der Solver dürfte dann ausschließlich bei 'Single'-Schritten anhalten. Es muss mindestens einen geben und es darf keine 'Hidden-Single'-Schritte geben.
+Auf der Einstellungsseite können verschiedene Haltepunkte des automatischen Lösungslaufes gesetzt und abgewählt werden. 
 
 ### Einstellung Technik
 

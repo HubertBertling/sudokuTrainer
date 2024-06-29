@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 15;
+let VERSION = 16;
 
 // ==========================================
 // Basic classes
@@ -6101,8 +6101,8 @@ class SudokuSolver extends MVC_Model {
                         this,
                         this.myGrid);
                 } else {
-                    sudoApp.myConfirmDlg.open(sudoApp.mySolver,
-                        sudoApp.mySolver.reset,
+                    sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
+                        sudoApp.mySolverController.resetConfirmed,
                         "Puzzle zurücksetzen?",
                         "Wenn sehr schwere, extrem schwere oder unlösbare Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
                 }
@@ -6931,7 +6931,12 @@ class SudokuSolverController {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
                 "bei laufendem Solver kann die Puzzle-Lösung nicht zurückgesetzt werden.");
         } else {
-            let puzzle = this.mySolver.myPuzzle;
+            this.resetConfirmed();
+        }
+    }
+
+    resetConfirmed() {
+        let puzzle = this.mySolver.myPuzzle;
             let action = {
                 operation: 'reset',
                 pzSolutions: puzzle.myNumberOfSolutions,
@@ -6939,12 +6944,8 @@ class SudokuSolverController {
                 pzArray: this.mySolver.myGrid.getPuzzleArray()
             }
             this.myUndoActionStack.push(action);
-            this.mySolver.myPuzzle.reset();
-            this.mySolver.myGrid.reset();
+            this.mySolver.reset();
             this.mySolver.notify();
-            // Zoom in the new initiated grid
-            // sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
-        }
     }
 
     undoBtnPressed() {
@@ -6965,7 +6966,6 @@ class SudokuSolverController {
         }
     }
     undo(action) {
-        // this.mySolver.stopBackTrackingSearch();
         switch (action.operation) {
             case 'reset': {
                 sudoApp.mySolver.myPuzzle.set(
@@ -7047,7 +7047,6 @@ class SudokuSolverController {
         // Puzzles generated into the store are in solved state.
         // So the loaded puzzle must be reset.
         sudoApp.mySolver.reset();
-        // Zoom in the loaded puzzle
         sudoApp.mySolver.notify();
         sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
         // After getting a puzzle from store the store needs to be filled up.
