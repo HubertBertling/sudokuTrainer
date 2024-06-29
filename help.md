@@ -65,18 +65,18 @@ Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als
 
 |Installation | Installation |
 |---------------|------------|
-|![Installation Chrome](./images/install.png){:width="250px"}| ![Installation Chrome](./images/install2.png){:width="250px"}|
+|![Installation Chrome](./imagesHelp/install.png){:width="250px"}| ![Installation Chrome](./imagesHelp/install2.png){:width="250px"}|
 
 Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
 
 # Einführung in die App
 
-## Ein Trainer für klassisches Sudoku
+## Trainer für klassisches Sudoku
 
 Diese App ist ein Trainer für klassisches Sudoku. Der [Sudoku-Trainer](https://hubertbertling.github.io/sudokuTrainer/) kann manuell oder automatisch genutzt werden. Seine Besonderheit: man kann ihm bei der automatischen Suche nach der Lösung zuschauen und damit seine eigene Lösungskompetenz trainieren. Bei jeder automatischen Setzung einer Nummer zeigt der Solver den logischen Grund für die Setzung. Der Anwender kann ein Puzzle manuell lösen, oder Schritt für Schritt automatisch oder vollautomatisch. In der Schritt für Schritt automatischen Vorgehensweise zeigt der Solver den Grund für seine Nummernsetzung an. Vollautomatisch löst der Solver jedes Puzzle in wenigen Sekunden oder erkennt es als nicht lösbar (weil es widersprüchlich ist).
   
 {: style="text-align:center"}
-![Architektur](./images/Architektur.png){: width="300px"}
+![Architektur](./imagesHelp/Architektur.png){: width="300px"}
 
 Der Sudoku-Trainer besteht aus drei Komponenten, dem Solver, dem Generator und der Puzzle-Datenbank. Mit Hilfe des Solvers kann man beliebige Sudoku-Puzzles manuell oder automatisch lösen.
 
@@ -88,39 +88,39 @@ Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeich
 
 Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses Trainers entstanden. Sie unterstützen primär das Verständnis dieses Trainers. Dennoch haben wir uns bemüht, Standardbegriffe zu verwenden, wie man sie im Internet findet, beispielsweise in [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku). Eine großartige Seite für Sudoku-Interessierte ist die Seite von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page).
 
-![Anwendungsansicht](./images/AppView.png)
+![Anwendungsansicht](./imagesHelp/AppView.png)
 
 Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Sie werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden. Die Tabelle besitzt Reihen, Spalten und Blöcke. Eine Reihe, eine Spalte oder ein Block wird auch als Gruppe bezeichnet.
 
 Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen [Kandidatennummern](#unzulässige-nummern-und-kandidaten) anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in der [Werkzeugseinstellung](#einstellung-kandidatenauswertung) der  Parameter 'Kandidatenauswertung'auf 'Lazy' gesetzt sein.
 
-![Anwendungsansicht](./images/AppView2.png)
+![Anwendungsansicht](./imagesHelp/AppView2.png)
 
 
 ## Die möglichen Inhalte einer Sudoku-Zelle
 
 |Zelle  |Bedeutung  |
 |---------|---------|
-|![Given](./images/definedCell.png){:width="100px"}|**Eine gegebene Nummer (Given):** In der Definitionsphase gesetzte Nummer.|
-|![Solved](./images/playedCell.png){:width="100px"}|**Eine Lösungsnummer:** In der Lösungsphase gesetzte Nummer. In dieser Zelle wurde in der Lösungsphase manuell oder automatisch die Nummer 1 gesetzt.|
-|![Candiates](./images/optionCell.png){:width="100px"}|**Kandidaten:** Für diese Zelle wurde noch keine Nummer gesetzt. Nur noch eine der Nummern 1, 2, 4 und 5 kann gewählt werden. Das sind die Kandidaten der Zelle. Die nicht aufgeführten Nummern sind unzulässig, weil sie bereits in einer anderen Zelle des Blocks, der Reihe oder Spalte gesetzt sind.|
-|![Necessary](./images/neccessary.png){:width="100px}|**Notwendige Nummer:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind die Nummern 2, 5, 6 und 7. Jedoch hat der Solver ermittelt, dass die Nummer 5 notwendig ist, damit das Sudoku lösbar bleibt. 5 ist eine notwendige Nummer für diese Zelle. Eine Nummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur noch hier gesetzt werden. Hinweis: Im Wikipedia-Artikel [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku) werden notwendige Nummern als "Hidden Singles" bezeichnet. Wir wollen diese Bezeichnung hier nicht übernehmen, weil wir diese Bezeichnung schon anderweitig benutzen: siehe nachfolgende Definition 'Hidden Single'.|
-|![Inadmissible candidates](./images/indirect.png){:width="100px}|**Unzulässige Kandidatnummer:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 [unzulässig](#unzulässige-nummern-und-kandidaten) ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.|
-|![Single](./images/direkterSingle.png){:width="100px"}| **Single:** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.|
-|![Hidden single](./images/indirekterSingle.png){:width="100px"}|**Hidden Single:** im nebenstehenden Beispiel ist die 9 ein Hidden Single. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, unzulässige Kandidaten sind.|
-|![No selectable candidates](./images/nochoice.png){: width="100px"} ![No candidates at all](./images/nochoice2.png){:width="100px"}|**Widerspruch - Überhaupt kein zulässiger Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keine Kandidatennummer mehr, die noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.|
-|![MoreThanOneNecessary](./images/twoNeccessary.png){:width="100px"}|**Widerspruch - Gleichzeitig verschiedene notwendige Nummern:** Für diese Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind 1, 2 und 4. Jedoch hat der Solver zwei verschiedene notwendige Nummern für diese Zelle ermittelt: 1 und 2. Das geht natürlich nicht. Es können in einer Zelle nicht zwei Nummern gleichzeitig gesetzt werden. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.|
-|![NumberConflict](./images/conflct.png){:width="100px"}|**Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.|
-|![Automatische Selektion](./images/autoSelectted.png){:width="100px"}|**Automatisch selektierte Zelle:** mit einem Hidden Single. Etwas hellerer Hintergrund.|
-|![Manuelle Selektion](./images/manualSelected.png){:width="100px"}|**Manuell selektierte Zelle:** mit zwei Kandidaten. Etwas dunklerer Hintergrund.|
+|![Given](./imagesHelp/definedCell.png){:width="100px"}|**Eine gegebene Nummer (Given):** In der Definitionsphase gesetzte Nummer.|
+|![Solved](./imagesHelp/playedCell.png){:width="100px"}|**Eine Lösungsnummer:** In der Lösungsphase gesetzte Nummer. In dieser Zelle wurde in der Lösungsphase manuell oder automatisch die Nummer 1 gesetzt.|
+|![Candiates](./imagesHelp/optionCell.png){:width="100px"}|**Kandidaten:** Für diese Zelle wurde noch keine Nummer gesetzt. Nur noch eine der Nummern 1, 2, 4 und 5 kann gewählt werden. Das sind die Kandidaten der Zelle. Die nicht aufgeführten Nummern sind unzulässig, weil sie bereits in einer anderen Zelle des Blocks, der Reihe oder Spalte gesetzt sind.|
+|![Necessary](./imagesHelp/neccessary.png){:width="100px}|**Notwendige Nummer:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind die Nummern 2, 5, 6 und 7. Jedoch hat der Solver ermittelt, dass die Nummer 5 notwendig ist, damit das Sudoku lösbar bleibt. 5 ist eine notwendige Nummer für diese Zelle. Eine Nummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur noch hier gesetzt werden. Hinweis: Im Wikipedia-Artikel [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku) werden notwendige Nummern als "Hidden Singles" bezeichnet. Wir wollen diese Bezeichnung hier nicht übernehmen, weil wir diese Bezeichnung schon anderweitig benutzen: siehe nachfolgende Definition 'Hidden Single'.|
+|![Inadmissible candidates](./imagesHelp/indirect.png){:width="100px}|**Unzulässige Kandidatnummer:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 [unzulässig](#unzulässige-nummern-und-kandidaten) ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.|
+|![Single](./imagesHelp/direkterSingle.png){:width="100px"}| **Single:** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.|
+|![Hidden single](./imagesHelp/indirekterSingle.png){:width="100px"}|**Hidden Single:** im nebenstehenden Beispiel ist die 9 ein Hidden Single. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, unzulässige Kandidaten sind.|
+|![No selectable candidates](./imagesHelp/nochoice.png){: width="100px"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="100px"}|**Widerspruch - Überhaupt kein zulässiger Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keine Kandidatennummer mehr, die noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.|
+|![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png){:width="100px"}|**Widerspruch - Gleichzeitig verschiedene notwendige Nummern:** Für diese Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind 1, 2 und 4. Jedoch hat der Solver zwei verschiedene notwendige Nummern für diese Zelle ermittelt: 1 und 2. Das geht natürlich nicht. Es können in einer Zelle nicht zwei Nummern gleichzeitig gesetzt werden. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.|
+|![NumberConflict](./imagesHelp/conflct.png){:width="100px"}|**Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.|
+|![Automatische Selektion](./imagesHelp/autoSelectted.png){:width="100px"}|**Automatisch selektierte Zelle:** mit einem Hidden Single. Etwas hellerer Hintergrund.|
+|![Manuelle Selektion](./imagesHelp/manualSelected.png){:width="100px"}|**Manuell selektierte Zelle:** mit zwei Kandidaten. Etwas dunklerer Hintergrund.|
 
 
 ## Zwei Spielphasen
 
 |Phase  |Bedeutung  |
 |---------|---------|
-|![Eingeben](./images/define.png){:width="100px"}|Die Taste **Phase: Definition**. Das Drücken dieser Taste versetzt den Solver in die Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Trainer. Nach der Initialisierung ist diese Taste automatisch gesetzt.|
-|![Lösen](./images/play.png){:width="100px"}|Die Taste **Phase: Lösen**. Das Drücken dieser Taste versetzt den Trainer in die Lösungsphase. Gleichzeitig ermittelt der Trainer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Taste automatisch gesetzt.|
+|![Eingeben](./imagesHelp/define.png){:width="100px"}|Die Taste **Phase: Definition**. Das Drücken dieser Taste versetzt den Solver in die Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Trainer. Nach der Initialisierung ist diese Taste automatisch gesetzt.|
+|![Lösen](./imagesHelp/play.png){:width="100px"}|Die Taste **Phase: Lösen**. Das Drücken dieser Taste versetzt den Trainer in die Lösungsphase. Gleichzeitig ermittelt der Trainer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Taste automatisch gesetzt.|
 
 Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor die Phase-Definition-Taste drücken.
 
@@ -139,7 +139,7 @@ Die Operationen des Sudoku-Trainers werden über die Tasten und die seitliche Na
 
 |Navigationsbar | Tastenfeld |
 |---------------|------------|
-|![Initialisieren](./images/initialsieren.png){:width="150px"}| ![ButtonsManual](./images/TastenauswahlManuell.png){:width="300px"}|
+|![Initialisieren](./imagesHelp/initialsieren.png){:width="150px"}| ![ButtonsManual](./imagesHelp/TastenauswahlManuell.png){:width="300px"}|
 
 ### Initialisieren
 
@@ -183,7 +183,7 @@ Der Generator generiert nur faire Puzzles mit den Schwierigkeitsgraden 'Sehr lei
 ## Trainer-Einstellungen
 
 {: style="text-align:center"}
-![Menue](./images/menuEinstellung.png){: width="150px"}
+![Menue](./imagesHelp/menuEinstellung.png){: width="150px"}
 
 **Menü-Option: Einstellungen.** Aktuell kennt der Sudoku-Trainer 3 Einstellungsparameter
 1. Kandidatenauswertung
@@ -193,36 +193,38 @@ Der Generator generiert nur faire Puzzles mit den Schwierigkeitsgraden 'Sehr lei
 ### Einstellung Kandidatenauswertung
 
 {: style="text-align:center"}
-![KandidatenAuswertung](./images/einstellungKandidatenAuswertung.png){:max-width="75%"}
+![KandidatenAuswertung](./imagesHelp/einstellungKandidatenAuswertung.png){:max-width="75%"}
 
 ### Einstellung Spielmodus
 
 {: style="text-align:center"}
-![Spielmodus](./images/einstellungSpielmodus.png){:max-width="75%"}
+![Spielmodus](./imagesHelp/einstellungSpielmodus.png){:max-width="75%"}
 
 Der Spielmodus "Manuelles Lösen", bewirkt, dass die Taste für den Solver-Start ausgeblendet wird. Der Spielmodus "Automatisches Lösen mit und ohne Haltepunkten" schalten sie wieder zu.
 
 |Tastenauswahl Manuelles Lösen|Tastenauswahl Automatisches Lösen|
 |---------|---------|
-|![ButtonsManual](./images/TastenauswahlManuell.png){:width=auto}|![ButtonsAutomatic](./images/tastenauswahlAutomatik.png){: width=auto}|
+|![ButtonsManual](./imagesHelp/TastenauswahlManuell.png){:width=auto}|![ButtonsAutomatic](./imagesHelp/tastenauswahlAutomatik.png){: width=auto}|
 
 Die Taste "Start Solver" startet den automatischen Solver der App. Der Solver besitzt einen eigenen Tastenblock.
-![Anwendungsansicht](./images/AppView3.png)
+![Anwendungsansicht](./imagesHelp/AppView3.png)
 
 Die Tasten des automatischen Solvers haben folgende Bedeutung:
 
 |Taste  |Bedeutung  |
 |---------|---------|
-|![NextStep](./images/naechsterSchritt.png){:width="100px"}|**Nächster Schritt**. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.|
-|![stepSequence](./images/schrittSequenz.png){:width="100px"}|**Suchlauf mit Haltepunkten.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte anstößt. Wenn der automatische Suchprozess bereits läuft, wird er pausiert. Wenn er pausiert ist, wird er wieder gestartet. Dieser automatische Suchlauf traversiert den gesamten Suchraum bis er schließlich sein Ende erreicht. Er kann aber jederzeit zuvor manuell unterbrochen werden oder durch gesetzte Haltepunkte. Der markanteste Haltepunkt ist wohl "Haltepunkt bei Lösung".|
-|![haltePunkte](./images/haltePunkteTaste.png){:width="100px"}*|**Haltepunkte.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
-|![NextSolution](./images/nextSolution.png){:width="100px"}|**Nächste Lösung**. Beim Drücken dieser Taste führt der Solver im Hintergrund die Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt. |
-|![solutionSequence](./images/solutionSequenceBtn.png){:width="100px"}|**Sequenz von Lösungen.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist die Sequenz der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.|
-|![Close](./images/closeSolver.png){:width="100px"}|**Schließen.**. Der automatische Solver wird geschlossen.|
+|![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}|**Nächster Schritt**. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.|
+|![stepSequence](./imagesHelp/schrittSequenz.png){:width="100px"}|**Suchlauf mit Haltepunkten.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte anstößt. Wenn der automatische Suchprozess bereits läuft, wird er pausiert. Wenn er pausiert ist, wird er wieder gestartet. Dieser automatische Suchlauf traversiert den gesamten Suchraum bis er schließlich sein Ende erreicht. Er kann aber jederzeit zuvor manuell unterbrochen werden oder durch gesetzte Haltepunkte. Der markanteste Haltepunkt ist wohl "Haltepunkt bei Lösung".|
+|![haltePunkte](./imagesHelp/haltePunkteTaste.png){:width="100px"}*|**Haltepunkte.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
+|![NextSolution](./imagesHelp/nextSolution.png){:width="100px"}|**Nächste Lösung**. Beim Drücken dieser Taste führt der Solver im Hintergrund die Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt. |
+|![solutionSequence](./imagesHelp/solutionSequenceBtn.png){:width="100px"}|**Sequenz von Lösungen.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist die Sequenz der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.|
+|![Close](./imagesHelp/closeSolver.png){:width="100px"}|**Schließen.**. Der automatische Solver wird geschlossen.|
 
 ### Einstellung Haltepunkte
 
-Auf der Einstellungsseite können verschiedene Haltepunkte des automatischen Lösungslaufes gesetzt und abgewählt werden. 
+![Haltepunkte](./imagesHelp/einstellungHaltepunkte.png){:max-width="75%"}
+
+Auf der Einstellungsseite können verschiedene Haltepunkte des automatischen Lösungslaufes gesetzt und abgewählt werden.  
 
 ### Einstellung Technik
 
@@ -263,7 +265,7 @@ Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Z
 Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.
 
 {: style="text-align:center"}
-![Prüfen](./images/pruefungfehler.png){: width="150px"}
+![Prüfen](./imagesHelp/pruefungfehler.png){: width="150px"}
 
 ## Automatisches Lösen
 
@@ -278,71 +280,71 @@ In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. S
 Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel wird vorausgesetzt, dass alle Haltepunkte gesetzt sind.
 
 {: style="text-align:center"}
-![NextStep](./images/naechsterSchritt.png){:width="100px"}
+![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}
 
 {: style="text-align:center"}
-![stepSequence](./images/schrittSequenz.png){:width="100px"}
+![stepSequence](./imagesHelp/schrittSequenz.png){:width="100px"}
 
 **Schritt 1: Zelle mit mehreren Optionen.** Schon im ersten Schritt erweist sich dieses Puzzle als sehr schwer, da der Solver keine Zelle mit eindeutiger Nummernbelegung findet und stattdessen eine Zelle mit 2 Optionen selektiert: 1 und 8. Der Solver versucht zuerst die 1.
 
 {: style="text-align:center"}
-![Schritt 1](./images/exampleStep1.png){: max-width="75%"}
+![Schritt 1](./imagesHelp/exampleStep1.png){: max-width="75%"}
 
 **Schritt 2: Zelle mit notwendiger Nummer.** Im zweiten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 1. Sie ist notwendig, weil in dem Block in allen freien Zellen, grün gestrichelte Rahmen, keine 1 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 1.
 
 {: style="text-align:center"}
-![Schritt 2](./images/exampleStep2.png){: max-width="75%"}
+![Schritt 2](./imagesHelp/exampleStep2.png){: max-width="75%"}
 
 **Schritt 30: Zelle mit Widerspruch.** Im Schritt 30 entdeckt der Solver eine widerspruchsvolle Zelle: kein Kandidat mehr. Deshalb wurde der Solver in den Rückwärts-Modus gesetzt (grüner Pfeil links).
 
 {: style="text-align:center"}
-![Schritt 30](./images/exampleStep30.png){: max-width="75%"}
+![Schritt 30](./imagesHelp/exampleStep30.png){: max-width="75%"}
 
 **Schritt 60: Zweiter Besuch in der Zelle.** Im Schritt 60 kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 1 gewählt hatte. Zu sehen an der unterstrichenen 1. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 8.
 
 {: style="text-align:center"}
-![Schritt 60](./images/exampleStep60.png){: max-width="75%"}
+![Schritt 60](./imagesHelp/exampleStep60.png){: max-width="75%"}
 
 **Schritt 65: Zelle mit Single.** Im Schritt 65 selektiert der Solver eine Zelle mit nur einem Kandidaten, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl 1...8 gibt es eine solche Zelle.
 
 {: style="text-align:center"}
-![Schritt 65](./images/exampleStep65.png){: max-width="75%"}
+![Schritt 65](./imagesHelp/exampleStep65.png){: max-width="75%"}
 
 **Schritt 66: Zelle mit Hidden Single.** Im Schritt 66 selektiert der Solver eine Zelle mit einem Hidden Single, die 4. Die 3 und die 6 sind unzulässige Kandidaten wegen dem "Nackten Paar" {3, 6}.
 
 {: style="text-align:center"}
-![Schritt 66](./images/exampleStep66.png){: max-width="75%"}
+![Schritt 66](./imagesHelp/exampleStep66.png){: max-width="75%"}
 
 **Schritt 285: Zelle mit Hidden Single.** Im Schritt 285 selektiert der Solver eine Zelle mit einem Hidden Single, die 7.
 
 {: style="text-align:center"}
-![Schritt 285_1](./images/exampleStep285_1.png){: max-width="75%"}
+![Schritt 285_1](./imagesHelp/exampleStep285_1.png){: max-width="75%"}
 
 Die 5 und die 9 sind unzulässige Kandidaten wegen dem "Nackten Paar" {5, 9}. Durch Kicken auf die Zelle wird das sichtbar. 
 
 {: style="text-align:center"}
-![Schritt 285_2](./images/exampleStep285_2.png){: max-width="75%"}
+![Schritt 285_2](./imagesHelp/exampleStep285_2.png){: max-width="75%"}
 
 Es stellt sich vielleicht die Frage, warum in dem einen Paar die rote 3 und die rote 7 unzulässig sind. Durch Klicken in dieser Zelle wird auch dies deutlich.
 
 {: style="text-align:center"}
-![Schritt 285_3](./images/exampleStep285_3.png){: max-width="75%"}
+![Schritt 285_3](./imagesHelp/exampleStep285_3.png){: max-width="75%"}
 
 Die 3 ist unzulässig wegen Überschneidung mit der Zeile 6. Und nach einem erneuten Klick auf die Zelle erfährt man, dass die 7 unzulässig ist wegen der Überschneidung mit der Zeile 5.
 
 {: style="text-align:center"}
-![Schritt 285_4](./images/exampleStep285_4.png){: max-width="75%"}
+![Schritt 285_4](./imagesHelp/exampleStep285_4.png){: max-width="75%"}
 
 **Schritt 482: Alle Zellen belegt.** Im Schritt 482 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.
 
 {: style="text-align:center"}
-![Schritt 482](./images/exampleStep410.png){: max-width="75%"}
+![Schritt 482](./imagesHelp/exampleStep410.png){: max-width="75%"}
 
 # Die Puzzle-Datenbank
 
 Sudoku-Puzzles und ihre Lösungen können im lokalen Speicher des Browsers gespeichert werden, aber nur mit Einschränkungen auf dem Computer selbst. D.h. Man kann seine gespeicherten Puzzles nur in dem Browser wiederfinden, in dem sie gespeichert wurden.
 
-![PuzzleDB](./images/PuzzleDB.png)
+![PuzzleDB](./imagesHelp/PuzzleDB.png)
 
 Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das aktuelle Datum. Bei Bedarf kann der Name umbenannt werden. Bezüglich der Namen gibt es keine Einschränkungen.
 
@@ -370,7 +372,7 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 |Download Puzzle-DB|**Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.|
 |Download Puzzle|**Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<<  in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.|
 |Import Puzzle(s)|**Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.
-|Puzzle teilen <img src="./images/shareButton.png" width="100px"/>|**Puzzle teilen.** Die Sudoku-Trainer-App ist Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.|
+|Puzzle teilen <img src="./imagesHelp/shareButton.png" width="100px"/>|**Puzzle teilen.** Die Sudoku-Trainer-App ist Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.|
 
 ## Import/Export und Teilen von Puzzles
 
@@ -389,7 +391,7 @@ In der Sudoku-Trainer-App kann die URL der App geteilt werden. Dies ist dann bes
 
 |Teile Taste  |WhatsApp selektieren |
 |---------|---------|
-|![Teilen Taste](./images/teilenURLApp.png){: width="200px"}|![TeilenURL](./images/teilenURLApp2.png){: width="200px"}|
+|![Teilen Taste](./imagesHelp/teilenURLApp.png){: width="200px"}|![TeilenURL](./imagesHelp/teilenURLApp2.png){: width="200px"}|
 
 **Ziel-Smartphone**
 
@@ -415,7 +417,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Die App Soduku-Trainer starten.
 1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
 1. Die Taste Import-Puzzle klicken.
-1. ![Aktion Dateien](./images/aktionDateien.png){:width="auto"}
+1. ![Aktion Dateien](./imagesHelp/aktionDateien.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
 1. Die im Download-Ordner abgelegte Datei >>DemoPuzzle.text<< selektieren.
 
@@ -425,7 +427,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 
 1. Sudoku-Trainer starten
 1. In den Datenbank-Dialog wechseln
-1. ![DownloadDB](./images/downloadDB.png){: width="auto"}
+1. ![DownloadDB](./imagesHelp/downloadDB.png){: width="auto"}
 1. Download-DB-Taste in der Hauptansicht klicken.
 1. WhatsApp starten (oder eine MAIL App).
 1. Datei in den Anhang laden
@@ -438,7 +440,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Die App Soduku-Trainer starten.
 1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
 1. Die Taste Import-Puzzle klicken.
-1. ![Aktion Dateien](./images/aktionDateien.png){:width="auto"}
+1. ![Aktion Dateien](./imagesHelp/aktionDateien.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
 1. Die im Download-Ordner abgelegte Datei >>DemoPuzzle.text<< selektieren.
 
@@ -456,7 +458,7 @@ Sie enthält zwei sehr schwere Puzzles, 'Backtrack_10' und 'Backtrack_23'. Also 
 
 ## Notwendige Nummern
 
-![Lazy notwendig](./images/lazynotwendig.png)
+![Lazy notwendig](./imagesHelp/lazynotwendig.png)
 Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Im Lazy-Auswertungsmodus zeigt der Solver den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn man die Zelle mit der notwendigen Nummer selektiert hat. Die Zellen des Blocks besitzen einen grün gestrichelten Rahmen. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den grün gestrichelten Rahmen keine 1 mehr gesetzt werden kann.
 
 ## Unzulässige Kandidaten
@@ -469,27 +471,27 @@ In fairen Puzzles kann man unzulässige Kandidaten allein durch logisches Schlie
 
 ### Kriterium "Notwendige Nummer"
 
-Eine Kandidatnummer ist unzulässig wegen einer notwendigen Nummer, wenn sie in ihrer Spalte, Reihe oder ihrem Block auch als notwendige Nummer auftritt. Im nachfolgenden Beispiel sind die roten Nummern 1 wegen der grünen 1 unzulässig. Die grüne 1 ist notwendig, weil sie in ihrem Block einzig ist, also in dem Block kein weiteres mal zulässig ist.![Indirekt wegen notwendig](./images/indirektwgnotwendig.png)
+Eine Kandidatnummer ist unzulässig wegen einer notwendigen Nummer, wenn sie in ihrer Spalte, Reihe oder ihrem Block auch als notwendige Nummer auftritt. Im nachfolgenden Beispiel sind die roten Nummern 1 wegen der grünen 1 unzulässig. Die grüne 1 ist notwendig, weil sie in ihrem Block einzig ist, also in dem Block kein weiteres mal zulässig ist.![Indirekt wegen notwendig](./imagesHelp/indirektwgnotwendig.png)
 
 ### Kriterium "Nacktes Paar"
 
-Eine Kandidatnummer ist unzulässig, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 2-8-Paar ein nacktes Paar. Das 2-8-Paar macht in seiner Spalte alle 2 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 2 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 2 oder die 8 oben ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Spalte keine 2 oder 8 mehr vorkommen können. Die 2 und 8 sind hier unzulässig. Diese Spaltendarstellung mit den gestrichelten Kanten zeigt der Solver nur im Lazy-Auswertungsmodus, wenn man eine Zelle mit unzulässigen Nummern selektiert hat.![Indirekt unzulässig](./images/indirektWegenPairing.png)
+Eine Kandidatnummer ist unzulässig, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 2-8-Paar ein nacktes Paar. Das 2-8-Paar macht in seiner Spalte alle 2 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 2 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 2 oder die 8 oben ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Spalte keine 2 oder 8 mehr vorkommen können. Die 2 und 8 sind hier unzulässig. Diese Spaltendarstellung mit den gestrichelten Kanten zeigt der Solver nur im Lazy-Auswertungsmodus, wenn man eine Zelle mit unzulässigen Nummern selektiert hat.![Indirekt unzulässig](./imagesHelp/indirektWegenPairing.png)
 
 ### Kriterium: "Verstecktes Paar"
 
  In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 8, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 8 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
-![Verstecktes Paar](./images/hiddenpair.png)
+![Verstecktes Paar](./imagesHelp/hiddenpair.png)
 
 ### Kriterium: Überschneidung
 
 Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 7. Damit es am Ende in der Reihe überhaupt eine 7 gibt, muss eine 7 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 7 in dem Block jenseits der Reihe gestrichen werden müssen.
-![Überschneidung](./images/ueberschneidung.png)
+![Überschneidung](./imagesHelp/ueberschneidung.png)
 
 ### Kriterium: Pointing Pair, Pointing Triple
 
 Die "Pointing Pairs"-Technik kommt zur Anwendung, wenn ein Paar zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den mittleren oberen Block. Alle Zellen, die die Zahl 2 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 2 in diesem Block mindestens einmal vorkommen sollte, wird eine der hervorgehobenen Zellen sicher die Zahl 2 enthalten. In den übrigen Zellen der Zeile kann daher die 2 gestrichen werden.
 
-![PointingPair](./images/pointingPair.png)
+![PointingPair](./imagesHelp/pointingPair.png)
 
 ### Methoden der Kandidatenauswertung
 
@@ -505,11 +507,11 @@ Unter Kandidatenauswertung verstehen wir die Anwendung der Kriterien, die im vor
 
 Das nachfolgende Bild zeigt ein Puzzle im Strikt-Plus-Auswertungsmodus. Bei genauerer Betrachtung dieses Beispiels fällt auf, dass in allen Zellen nur noch eine Nummer zulässig ist.
 
-![Strict Plus](./images/strictplus.png)
+![Strict Plus](./imagesHelp/strictplus.png)
 
 Das nachfolgende Bild zeigt die vorige Tabelle im Strikt-Minus-Modus. Im Strikt-Minus-Modus ist unmittelbar sichtbar, dass alle Zellen dieses Beispiels nur noch genau eine zulässige Nummer haben. Alle Nummern sind Singles. Mit anderen Worten: wir sehen hier die Lösung des Sudokus. Der Solver präsentiert hier eine Lösung ohne Backtracking. Nur die zuvor erläuterten Kriterien für unzulässige Kandidaten wurden angewandt.
 
-![Strict Minus](./images/striktminus.png)
+![Strict Minus](./imagesHelp/striktminus.png)
 
 ### Vergleich der Auswertungsmodi Lazy und Strikt
 
@@ -538,10 +540,10 @@ Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende So
 
 Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
 
-![No selectable candidates](./images/nochoice.png)
-![No candidates at all](./images/nochoice2.png)
-![MoreThanOneNecessary](./images/twoNeccessary.png)
-![NumberConflict](./images/conflct.png)
+![No selectable candidates](./imagesHelp/nochoice.png)
+![No candidates at all](./imagesHelp/nochoice2.png)
+![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png)
+![NumberConflict](./imagesHelp/conflct.png)
 
 ### Widerspruchsvolle Gruppen
 
