@@ -216,7 +216,7 @@ Die Tasten des automatischen Solvers haben folgende Bedeutung:
 |---------|---------|
 |![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}|**Nächster Schritt**. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.|
 |![stepSequence](./imagesHelp/schrittSequenz.png){:width="100px"}|**Suchlauf mit Haltepunkten.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte anstößt. Wenn der automatische Suchprozess bereits läuft, wird er pausiert. Wenn er pausiert ist, wird er wieder gestartet. Dieser automatische Suchlauf traversiert den gesamten Suchraum bis er schließlich sein Ende erreicht. Er kann aber jederzeit zuvor manuell unterbrochen werden oder durch gesetzte Haltepunkte. Der markanteste Haltepunkt ist wohl "Haltepunkt bei Lösung".|
-|![haltePunkte](./imagesHelp/haltePunkteTaste.png){:width="100px"}*|**Haltepunkte.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
+|![haltePunkte](./imagesHelp/haltePunkteTaste.png){:width="100px"}|**Haltepunkte.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
 |![NextSolution](./imagesHelp/nextSolution.png){:width="100px"}|**Nächste Lösung**. Beim Drücken dieser Taste führt der Solver im Hintergrund die Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt. |
 |![solutionSequence](./imagesHelp/solutionSequenceBtn.png){:width="100px"}|**Sequenz von Lösungen.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist die Sequenz der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.|
 |![Close](./imagesHelp/closeSolver.png){:width="100px"}|**Schließen.**. Der automatische Solver wird geschlossen.|
@@ -267,7 +267,7 @@ Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Z
 Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.
 
 {: style="text-align:center"}
-![Prüfen](./imagesHelp/pruefungfehler.png){: width="150px"}
+![Prüfen](./imagesHelp/pruefungfehler.png){: width="400px"}
 
 ### Automatisches Lösen
 
@@ -275,11 +275,11 @@ Werkzeugeinstellung:
 
 - **Kandidatenauswertung:** Keine Kandidatenanzeige oder Lazy.
 - **Spielmodus:** Automatisches Lösen mit Haltepunkten.
-- **Haltepunkte:** Alle Haltepunkte sind gesetzt.
+- **Haltepunkte:** Haltepunkte nach Bedarf zu- und abschalten.
 
 In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. Sie ist damit besonders lehrreich. Der Spieler beobachtet die Lösungssuche anstatt selber die Lösung zu suchen, indem er automatische Lösungsschritte ausführen lässt. Deshalb an dieser Stelle eine Übersicht über die Arten automatischer Schritte. Die folgenden Darstellungen nehmen Bezug auf das Puzzle "Backtrack_10". Es ist in jeder Puzzle-Datenbank vorhanden. Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".  
 
-Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel wird vorausgesetzt, dass alle Haltepunkte gesetzt sind.
+Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
 
 {: style="text-align:center"}
 ![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}
@@ -287,35 +287,49 @@ Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritt
 {: style="text-align:center"}
 ![stepSequence](./imagesHelp/schrittSequenz.png){:width="100px"}
 
+*==> Schritttaste gedrückt:*
+
 **Schritt 1: Zelle mit mehreren Optionen.** Schon im ersten Schritt erweist sich dieses Puzzle als sehr schwer, da der Solver keine Zelle mit eindeutiger Nummernbelegung findet und stattdessen eine Zelle mit 2 Optionen selektiert: 1 und 8. Der Solver versucht zuerst die 1.
 
 {: style="text-align:center"}
 ![Schritt 1](./imagesHelp/exampleStep1.png){: max-width="75%"}
+
+*==> Schritttaste 2-mal gedrückt:*
 
 **Schritt 2: Zelle mit notwendiger Nummer.** Im zweiten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 1. Sie ist notwendig, weil in dem Block in allen freien Zellen, grün gestrichelte Rahmen, keine 1 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 1.
 
 {: style="text-align:center"}
 ![Schritt 2](./imagesHelp/exampleStep2.png){: max-width="75%"}
 
+*==> Haltepunkt "Bei Widerspruch" gesetzt". Suchlauftaste gedrückt:*
+
 **Schritt 30: Zelle mit Widerspruch.** Im Schritt 30 entdeckt der Solver eine widerspruchsvolle Zelle: kein Kandidat mehr. Deshalb wurde der Solver in den Rückwärts-Modus gesetzt (grüner Pfeil links).
 
 {: style="text-align:center"}
 ![Schritt 30](./imagesHelp/exampleStep30.png){: max-width="75%"}
+
+*==> Haltepunkt "Bei Selektionsoptionen" gesetzt und "Bei Widerspruch" zurückgenommen. Suchlauftaste gedrückt:*
 
 **Schritt 60: Zweiter Besuch in der Zelle.** Im Schritt 60 kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 1 gewählt hatte. Zu sehen an der unterstrichenen 1. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 8.
 
 {: style="text-align:center"}
 ![Schritt 60](./imagesHelp/exampleStep60.png){: max-width="75%"}
 
+*==> Haltepunkt "Bei Single" gesetzt und "Bei Selektionsoptionen" zurückgenommen. Suchlauftaste gedrückt:*
+
 **Schritt 65: Zelle mit Single.** Im Schritt 65 selektiert der Solver eine Zelle mit nur einem Kandidaten, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl 1...8 gibt es eine solche Zelle.
 
 {: style="text-align:center"}
 ![Schritt 65](./imagesHelp/exampleStep65.png){: max-width="75%"}
 
+*==> Schritttaste gedrückt:*
+
 **Schritt 66: Zelle mit Hidden Single.** Im Schritt 66 selektiert der Solver eine Zelle mit einem Hidden Single, die 4. Die 3 und die 6 sind unzulässige Kandidaten wegen dem "Nackten Paar" {3, 6}.
 
 {: style="text-align:center"}
 ![Schritt 66](./imagesHelp/exampleStep66.png){: max-width="75%"}
+
+*==> Haltepunkt "Bei Hidden Single" gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:*
 
 **Schritt 285: Zelle mit Hidden Single.** Im Schritt 285 selektiert der Solver eine Zelle mit einem Hidden Single, die 7.
 
@@ -336,6 +350,8 @@ Die 3 ist unzulässig wegen Überschneidung mit der Zeile 6. Und nach einem erne
 
 {: style="text-align:center"}
 ![Schritt 285_4](./imagesHelp/exampleStep285_4.png){: max-width="75%"}
+
+*==> Haltepunkt "Bei Lösung" gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:*
 
 **Schritt 482: Alle Zellen belegt.** Im Schritt 482 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.
 
