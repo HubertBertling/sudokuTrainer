@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 19;
+let VERSION = 20;
 
 // ==========================================
 // Basic classes
@@ -2268,11 +2268,14 @@ class SudokuPuzzleDBController {
     // ===============================================================
 
     importPuzzles() {
+        // File handling via the DOM <input> Element
+        // Called by button "Import Puzzle(s)"
         let input = document.getElementById('asText');
         input.value = "";
+        // button pressed triggers input change
         input.click();
     }
-    
+
 
     setSelected(trNode) {
         this.myPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
@@ -6425,7 +6428,7 @@ class SudokuSolverView extends MVC_View {
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
         let appNameHeader = document.getElementById('app-name-header');
-        let initDBButton = document.getElementById('db-pz-btn-init');    
+        let initDBButton = document.getElementById('db-pz-btn-init');
         let downloadDBButton = document.getElementById('db-puzzle-btn-download-db');
         let downloadPzButton = document.getElementById('db-puzzle-btn-download-pz');
         let uploadButton = document.getElementById('db-puzzle-btn-upload');
@@ -6443,7 +6446,7 @@ class SudokuSolverView extends MVC_View {
         } else {
             pIOcheckbox.checked = false;
             shareBtn.style.display = 'none';
-           // appNameHeader.style.gridTemplateColumns = '0.1fr 1.8fr 0.1fr';
+            // appNameHeader.style.gridTemplateColumns = '0.1fr 1.8fr 0.1fr';
             initDBButton.style.display = 'none';
             downloadDBButton.style.display = 'none';
             downloadPzButton.style.display = 'none';
@@ -6937,15 +6940,15 @@ class SudokuSolverController {
 
     resetConfirmed() {
         let puzzle = this.mySolver.myPuzzle;
-            let action = {
-                operation: 'reset',
-                pzSolutions: puzzle.myNumberOfSolutions,
-                pzCompleted: puzzle.mySearchIsCompleted,
-                pzArray: this.mySolver.myGrid.getPuzzleArray()
-            }
-            this.myUndoActionStack.push(action);
-            this.mySolver.reset();
-            this.mySolver.notify();
+        let action = {
+            operation: 'reset',
+            pzSolutions: puzzle.myNumberOfSolutions,
+            pzCompleted: puzzle.mySearchIsCompleted,
+            pzArray: this.mySolver.myGrid.getPuzzleArray()
+        }
+        this.myUndoActionStack.push(action);
+        this.mySolver.reset();
+        this.mySolver.notify();
     }
 
     undoBtnPressed() {
