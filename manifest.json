@@ -55,6 +55,7 @@
       "title": "title",
       "files": [
         {
+          "name": "puzzleFiles",
           "accept": ["text/plain", ".text"]
         }
       ]
