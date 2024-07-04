@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 30;
+let VERSION = 31;
 
 // ==========================================
 // Basic classes
@@ -1580,9 +1580,15 @@ class NewPuzzleStore {
                 };
                 break;
             }
+            case 'Backtracking': {
+                // In very rare cases, the generator also generates a non-fair puzzle, 
+                // i.e. a puzzle that cannot be solved with the logical criteria, 
+                // implemented in this solver. It requires backtracking. Since we only 
+                // want to generate fair puzzles, we can simply ignore this case.
+                break;
+            }
             default: {
                 throw new Error('Unexpected difficulty: ' + puzzleRecord.preRunRecord.level);
-                //console.log('Unexpected difficulty: ' + puzzleRecord.preRunRecord.level);
             }
         }
     }
