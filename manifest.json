@@ -32,8 +32,8 @@
 
   "screenshots": [
     {
-      "src": "./images/screenshot-282x562.png",
-      "sizes": "282x562",
+      "src": "./images/screenshotHandy.png",
+      "sizes": "400x845",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "sudoku-trainer"
