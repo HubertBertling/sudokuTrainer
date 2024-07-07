@@ -1,4 +1,22 @@
 // ==========================================================================
+// Service Worker
+// ==========================================================================
+
+if (navigator.serviceWorker) {
+    // declaring scope manually
+    navigator.serviceWorker.register("sw.js", { scope: "/sudokuTrainer/" }).then(
+        (registration) => {
+            console.log("Service worker registration succeeded:", registration);
+        },
+        (error) => {
+            console.error(`Service worker registration failed: ${error}`);
+        },
+    );
+} else {
+    console.error("Service workers are not supported.");
+}
+
+// ==========================================================================
 // File handling via the DOM <input> Element
 // ==========================================================================
 if (window.File && window.FileReader
