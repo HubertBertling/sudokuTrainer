@@ -10,7 +10,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_604';
+var VERSION = 'version_605';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -139,7 +139,10 @@ self.addEventListener('fetch', function (event) {
     })
   )
 })
-
+/*
+// Entwurf, der noch nicht funktionierte.
+// Nur Chrome unterstützt !!!
+// Also nicht sehr interessant
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
@@ -166,7 +169,7 @@ self.addEventListener('fetch', event => {
     })());
   }
 });
-
+*/
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
