@@ -10,7 +10,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_603';
+var VERSION = 'version_604';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -139,11 +139,11 @@ self.addEventListener('fetch', function (event) {
     })
   )
 })
-/*
+
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  if (event.request.method === 'POST' && url.pathname === '/sudokoTrainer/') {
+  if (event.request.method == 'POST' && url.pathname == '/sudokoTrainer/') {
     event.respondWith((async () => {
       const data = await event.request.formData();
 
@@ -151,20 +151,22 @@ self.addEventListener('fetch', event => {
       const file = data.get('puzzleFile');
 
       const reader = new FileReader();
+      console.log('sudokuTrainer as share target recognized step 1.');
       reader.onload = function (e) {
         const textContent = e.target.result;
         // Do something with the textContent here.
         // let strFilePuzzleMap = reader.result;
         let strFilePuzzleMap = textContent;
         sudoApp.myPuzzleDB.upLoadPuzzle(strFilePuzzleMap);
-        console.log('sudokuTrainer as share target recognized.');
+        console.log('sudokuTrainer as share target recognized step 2');
       };
       reader.readAsText(file);
+      console.log('sudokuTrainer as share target recognized step 3.');
       return Response.redirect('/sudokuTrainer/', 303);
     })());
   }
 });
-*/
+
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
