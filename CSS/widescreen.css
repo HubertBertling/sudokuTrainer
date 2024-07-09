@@ -980,7 +980,7 @@ label {
 }
 
 .tracker-dlg-btn {
-    padding: 0.4rem;
+    padding-top: 1.2rem;
     background-color: var(--standard-btn-bg-color);
     text-align: center;
     font-size: var(--font-size-lg);
