@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 606;
+let VERSION = 607;
 
 // ==========================================
 // Basic classes
@@ -6680,6 +6680,7 @@ class SudokuSolverController {
                 appSetting = JSON.parse(str_appSetting);
                 appSetting.evalType = radioNode.getAttribute('data');
                 this.mySolver.setActualEvalType(radioNode.getAttribute('data'));
+                this.mySolver.notify();
                 str_appSetting = JSON.stringify(appSetting);
                 localStorage.setItem("sudokuAppSetting", str_appSetting);
             })
