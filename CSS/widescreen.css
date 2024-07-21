@@ -32,13 +32,13 @@
     --error-cell-color: white;
 
     /* Other definitions */
-    --sudoku-cell-size: 4.8rem;
+    --sudoku-cell-size: 5.2rem;
     --border-radius: 5px;
     --space-y: 20px;
     --font-size-btn: 1.2rem;
     --font-size-sm: 1rem;
     --font-size: 1.2rem;
-    --font-size-lg: 1.4rem;
+    --font-size-lg: 2rem;
     --font-size-xl: 2.4rem;
 
     /* Setting the global font size */
@@ -135,7 +135,7 @@ html {
     height: 85%;
     width: 0;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     /* top: 0;
     left: 0; */
     background-color: #111;
@@ -149,8 +149,8 @@ html {
 .dropdown-btn {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 18px;
-    color: #818181;
+    font-size: var(--font-size-lg);
+    color: white;
     display: block;
 
     border: none;
@@ -509,7 +509,7 @@ html {
 }
 
 .loaded-evaluations {
-    font-size: var(--font-size);
+    font-size: 1.6rem;
     display: flex;
     padding: 3px 3px;
     margin-bottom: 5px;
@@ -529,8 +529,8 @@ html {
 
 .technique,
 .reasonUnsolvability {
-    height: 22px;
-    font-size: var(--font-size);
+    height: 2.6rem;
+    font-size: 1.6rem;
     display: flex;
     padding-top: 5px;
     padding-left: 2px;
@@ -742,44 +742,44 @@ html {
 
 .progress-box {
     /* border-bottom: 3px solid #0d1117; */
-    padding-top: 5px;
-    padding-bottom: 10px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.8rem;
     color: var(--screen-color);
-    font-size: var(--font-size);
+    font-size: 1.4rem;
 }
 
 .progress-block {
-    margin-top: 5px;
-    line-height: 16px;
+    margin-top: 0.4rem;
+    line-height: 1.6rem;
     display: grid;
     grid-template-columns: 1fr 0.2fr 1fr;
-    gap: 2px;
+    gap: 0.2rem;
 }
 
 .checkbox {
-    margin-left: 3px;
+    margin-left: 0.2rem;
     background-color: var(--screen-bg-color);
 }
 
 .step-count-box {
-    line-height: 16px;
-    height: 16px;
+    line-height: 1.6rem;
+    height: 1.6rem;
     display: flex;
-    margin-right: 5px;
+    margin-right: 0.2rem;
     /*  width: 145px; */
     width: 100%;
 }
 
 .forward-backward-image {
-    width: 15px;
-    height: 15px;
+    width: 1.4rem;
+    height: 1.4rem;
 }
 
 .forward,
 .backward {
-    height: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
+    height: 1.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .autoMode-radio-btns {
@@ -797,10 +797,10 @@ html {
 #myProgress {
     position: relative;
     width: 100%;
-    height: 16px;
-    font-size: var(--font-size);
+    height: 1.6rem;
+    font-size: 1.4rem;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 0.2rem;
     background-color: var(--nested-cell-bg-color);
 }
 
@@ -808,8 +808,8 @@ html {
 #myBarPlay {
     position: absolute;
     width: 20%;
-    height: 16px;
-    line-height: 16px;
+    height: 1.6rem;
+    line-height: 1.6rem;
 }
 
 #myBarDef {
@@ -824,11 +824,11 @@ html {
     background-color: var(--played-cell-bg-color);
     color: black;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 0.2rem;
 }
 
 .total-bar-value {
-    line-height: 16px;
+    line-height: 1.6rem;
     vertical-align: center;
 }
 
@@ -913,7 +913,7 @@ label {
     position: absolute;
     margin-top: 5rem;
     margin-bottom: 15rem;
-    margin-left: 52%;
+    margin-left: 54%;
     margin-right: auto;
 }
 
