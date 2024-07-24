@@ -5,7 +5,7 @@
     --screen-color: #0d1117;
     --standard-btn-bg-color: rgba(0, 0, 0, .25);
     --standard-btn-color: black;
-    --standard-btn-height: 20px;
+    --standard-btn-height: 2rem;
     --delete-btn-bg-color: #e91e63;
     --delete-btn-color: white;
 
@@ -32,9 +32,12 @@
     --error-cell-color: white;
 
     /* Other definitions */
-    --sudoku-cell-size: 9.8vw;
-    --border-radius: 5px;
-    --space-y: 20px;
+
+    /* Extra small devices (phones, 600px and down) */
+
+    --sudoku-cell-size: 9.95vw;
+    --border-radius: 0.5rem;
+    --space-y: 2rem;
     --font-size-btn: 1.4rem;
 
     --font-size-xsm: 0.4rem;
@@ -46,7 +49,7 @@
     /* Setting the global font size */
     /* Prozent von der Browser Font-Einstellung */
     font-size: 62.5%;
-    /* Effekt: 1rem = 10px; */
+    /* Effekt: 1rem = 1rem; */
 }
 
 * {
@@ -64,7 +67,7 @@ html {
     height: 95vh;
     width: 100%;
     background-color: var(--screen-bg-color);
-    margin-top: 5px;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
@@ -79,18 +82,18 @@ html {
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
+    border-bottom: 0.1rem dotted black;
 }
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 70px;
+    width: 7rem;
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    top: -30px;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0;
+    top: -3rem;
     left: 50%;
 
     /* Position the tooltip */
@@ -113,12 +116,12 @@ html {
 }
 
 #share-app-btn {
-    padding: 4px;
-    border: 6px solid grey;
+    padding: 0.4rem;
+    border: 0.6rem solid grey;
     background-color: black;
     color: white;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 1.2rem;
     display: grid;
     grid-template-columns: 0.4fr 1.2fr 0.1fr;
     text-align: center;
@@ -144,15 +147,15 @@ html {
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 10px;
+    padding-top: 1rem;
 }
 
 
 .sidenav a,
 .dropdown-btn {
-    padding: 8px 8px 8px 32px;
+    padding: 0.8rem 0.8rem 0.8rem 3.2rem;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 2.5rem;
     color: white;
     display: block;
 
@@ -166,9 +169,9 @@ html {
 
 .closebtn {
     text-align: right;
-    padding: 8px 8px 8px 8px;
+    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
     text-decoration: none;
-    font-size: 48px;
+    font-size: 4.8rem;
     color: white;
     display: block;
     border: none;
@@ -176,7 +179,7 @@ html {
     width: 100%;
     cursor: pointer;
     outline: none;
-    margin-bottom: 40px;
+    margin-bottom: 4rem;
 }
 
 /* Hover not possible on touch devices */
@@ -202,7 +205,7 @@ html {
 .dropdown-container {
     display: none;
     background-color: #262626;
-    padding-left: 18px;
+    padding-left: 1.8rem;
 }
 
 /* Optional: Style the caret down icon */
@@ -210,7 +213,7 @@ html {
 .fa-caret-down,
 .no-caret {
     float: right;
-    padding-right: 8px;
+    padding-right: 0.8rem;
 }
 
 #caret-down-img,
@@ -261,7 +264,7 @@ html {
     align-items: center;
     position: relative;
     height: 3.6rem;
-   
+
     font-size: var(--font-size-xl);
     font-weight: bold;
     /*  text-align: center;
@@ -317,7 +320,7 @@ html {
 
 .menu-icon:active,
 .share-icon:active {
-    transform: translate(2px, 2px);
+    transform: translate(0.2rem, 0.2rem);
 }
 
 
@@ -328,7 +331,7 @@ html {
     position: relative;
     display: flex;
     flex-direction: column;
-    /* gap: 5px; */
+    /* gap: 0.5rem; */
     height: 90vh;
 }
 
@@ -343,7 +346,7 @@ html {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     padding-bottom: 0.5rem;
-    /* border-bottom: 2px solid gray; */
+    /* border-bottom: 0.2rem solid gray; */
 }
 
 .main-sudoku-grid {
@@ -358,7 +361,7 @@ html {
 }
 
 .grid-plus-explainer {
-    border: 1px solid black;
+    border: 0.1rem solid black;
 }
 
 .sudoku-block {
@@ -370,10 +373,12 @@ html {
 
 .sudoku-grid-cell {
     position: relative;
-    height: 9.8vw;
-    width: 9.8vw;
+    height: var(--sudoku-cell-size);
+    width: var(--sudoku-cell-size);
+    /*   height: 9.85vw;
+    width: 9.85vw; */
     display: grid;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
     place-items: center;
     margin: 0.05rem;
 }
@@ -402,13 +407,13 @@ html {
     /*background-color: lightgrey;*/
     /*background-image: url("../images/selectBG2.png");*/
     background-color: #f39795fb;
-    border: 2px solid white;
+    border: 0.2rem solid white;
 }
 
 .sudoku-grid-cell.auto-selected {
     /*  background-image: url("../images/selectBG1.png");*/
     background-color: hsl(0, 67%, 84%);
-    border: 2px solid white;
+    border: 0.2rem solid white;
 }
 
 
@@ -469,23 +474,23 @@ html {
 
 
 .sudoku-grid-cell.hover {
-    border: 2px solid var(--selected-cell-border-color);
+    border: 0.2rem solid var(--selected-cell-border-color);
 }
 
 .sudoku-grid-cell.hover-red {
-    border: 3px dashed Magenta;
+    border: 0.3rem dashed Magenta;
 }
 
 .sudoku-grid-cell.hover-green {
-    border: 3px dashed green;
+    border: 0.3rem dashed green;
 }
 
 .sudoku-grid-cell.hover-white {
-    border: 3px dashed white;
+    border: 0.3rem dashed white;
 }
 
 .sudoku-grid-cell.hover-black {
-    border: 3px dashed black;
+    border: 0.3rem dashed black;
 }
 
 
@@ -496,24 +501,24 @@ html {
 
 .sudoku-grid-cell.row-err,
 .sudoku-grid-cell.col-err {
-    border: 3px solid var(--error-cell-bg-color);
+    border: 0.3rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.col-err {
-    border-top: 2px solid var(--error-cell-bg-color);
-    border-bottom: 2px solid var(--error-cell-bg-color);
+    border-top: 0.2rem solid var(--error-cell-bg-color);
+    border-bottom: 0.2rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.row-err {
-    border-left: 2px solid var(--error-cell-bg-color);
-    border-right: 2px solid var(--error-cell-bg-color);
+    border-left: 0.2rem solid var(--error-cell-bg-color);
+    border-right: 0.2rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.err,
 .sudoku-grid-cell.wrong {
     /* background-color: var(--error-cell-bg-color); 
     color: var(--error-cell-color); */
-    border: 4px solid Crimson;
+    border: 0.4rem solid Crimson;
 }
 
 .sudoku-grid-cell.err.selected {
@@ -523,8 +528,8 @@ html {
 .loaded-evaluations {
     font-size: var(--font-size);
     display: flex;
-    padding: 3px 3px;
-    margin-bottom: 5px;
+    padding: 0.3rem 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .pz-name {
@@ -534,19 +539,19 @@ html {
 
 .pz-level {
     text-align: right;
-    width: 50%;
+    width: 100%;
 }
 
 
 .technique,
 .reasonUnsolvability {
-    height: 18px;
+    height: 1.8rem;
     font-size: var(--font-size);
     display: flex;
-    padding-top: 3px;
-    padding-left: 2px;
-    padding-bottom: 3px;
-    /* border: 1px solid black; */
+    padding-top: 0.3rem;
+    padding-left: 0.2rem;
+    padding-bottom: 0.3rem;
+    /* border: 0.1rem solid black; */
     background-color: lightgrey;
 }
 
@@ -577,10 +582,10 @@ html {
     font-size: var(--font-size-lg);
     border: none;
     display: grid;
-    gap: 5px;
+    gap: 0.5rem;
     grid-template-columns: 1fr;
     place-items: center;
-    padding: 0.6rem;
+    padding: 0.4rem;
 }
 
 .mobile-number {
@@ -607,21 +612,21 @@ html {
 }
 
 .btn-define.pressed {
-    /* transform: translate(2px, 2px); */
-    border: 3px solid darkblue;
+    /* transform: translate(0.2rem, 0.2rem); */
+    border: 0.3rem solid darkblue;
 }
 
 .btn-play.pressed {
-    border: 3px solid darkgreen;
+    border: 0.3rem solid darkgreen;
 }
 
 
 .mobile-btn:active {
-    transform: translate(2px, 2px);
+    transform: translate(0.2rem, 0.2rem);
 }
 
 .btn:active {
-    transform: translate(2px, 2px);
+    transform: translate(0.2rem, 0.2rem);
 }
 
 .btn-delete-cell {
@@ -653,6 +658,7 @@ html {
     width: 2.4rem;
     height: 2.4rem;
 }
+
 /*======================================*/
 /* Evaluation radio buttons             */
 /*======================================*/
@@ -693,15 +699,15 @@ html {
 }
 
 .text-spacing {
-    padding-inline-start: 6px;
-    padding-inline-end: 3px;
+    padding-inline-start: 0.6rem;
+    padding-inline-end: 0.3rem;
 }
 
 /*======================= */
 
 
 .eval-btn-block {
-    margin-top: 10px;
+    margin-top: 1rem;
     font-size: 1.2rem;
 }
 
@@ -745,45 +751,45 @@ html {
 /*======================================*/
 
 .progress-box {
-    /* border-bottom: 3px solid #0d1117; */
-    padding-top: 3px;
-    padding-bottom: 3px;
+    /* border-bottom: 0.3rem solid #0d1117; */
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
     color: var(--screen-color);
     font-size: var(--font-size);
 }
 
 .progress-block {
-    margin-top: 5px;
-    line-height: 16px;
+    margin-top: 0.5rem;
+    line-height: 1.6rem;
     display: grid;
     grid-template-columns: 1.2fr 0.2fr 0.8fr;
-    gap: 2px;
+    gap: 0.2rem;
 }
 
 .checkbox {
-    margin-left: 3px;
+    margin-left: 0.3rem;
     background-color: var(--screen-bg-color);
 }
 
 .step-count-box {
-    line-height: 16px;
-    height: 16px;
+    line-height: 1.6rem;
+    height: 1.6rem;
     display: flex;
-    margin-right: 5px;
-    /*  width: 145px; */
+    margin-right: 0.5rem;
+    /*  width: 14.5rem; */
     width: 100%;
 }
 
 .forward-backward-image {
-    width: 15px;
-    height: 15px;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .forward,
 .backward {
-    height: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
+    height: 1.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .autoMode-radio-btns {
@@ -802,10 +808,10 @@ html {
 #myProgress {
     position: relative;
     width: 100%;
-    height: 16px;
+    height: 1.6rem;
     font-size: var(--font-size);
     text-align: right;
-    padding-right: 5px;
+    padding-right: 0.5rem;
     background-color: var(--nested-cell-bg-color);
 }
 
@@ -813,8 +819,8 @@ html {
 #myBarPlay {
     position: absolute;
     width: 20%;
-    height: 16px;
-    line-height: 16px;
+    height: 1.6rem;
+    line-height: 1.6rem;
 }
 
 #myBarDef {
@@ -829,11 +835,11 @@ html {
     background-color: var(--played-cell-bg-color);
     color: black;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 0.5rem;
 }
 
 .total-bar-value {
-    line-height: 16px;
+    line-height: 1.6rem;
     vertical-align: center;
 }
 
@@ -845,7 +851,7 @@ html {
     font-size: var(--font-size-xl);
     display: inline-block;
     color: black;
-    margin-top: 10px;
+    margin-top: 1rem;
 }
 
 
@@ -869,7 +875,7 @@ html {
 .dlg-header {
     font-size: var(--font-size-lg);
     font-weight: bold;
-    margin: 5px;
+    margin: 0.5rem;
     text-align: center;
 }
 
@@ -902,14 +908,14 @@ label {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     position: absolute;
-    top: 51rem;
+    top: 132vw;
     width: 100%;
-    height: 20rem;
+    height: 18rem;
     background-color: var(--screen-bg-color);
     border: none;
-  
+
     padding-left: 1rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
     padding-right: 1rem;
     margin-left: auto;
     margin-right: auto;
@@ -918,7 +924,7 @@ label {
 .backtrack-options {
     margin-top: 1rem;
     margin-bottom: 1rem;
-  
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -927,7 +933,7 @@ label {
 
 
 .tracker-dlg-btn {
-    padding-top: 1.2rem;
+    padding-top: 1rem;
     background-color: var(--standard-btn-bg-color);
     text-align: center;
     font-size: var(--font-size-lg);
@@ -937,6 +943,7 @@ label {
     flex-grow: 1;
     place-items: center;
 }
+
 /*
 #btn-backtrack-stop {
     grid-column-start: 1;
@@ -946,7 +953,7 @@ label {
 
 .tracker-dialog-area {
     margin-left: 1rem;
-    margin-right: 1rem; 
+    margin-right: 1rem;
     display: grid;
     place-items: center;
 }
@@ -956,9 +963,9 @@ label {
 }
 
 .tracker-dlg-header {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    margin: 1.2rem;
+    margin: 0.2rem;
     text-align: center;
 }
 
@@ -974,26 +981,27 @@ label {
     font-size: 1.8rem;
     padding-right: 1rem;
 }
+
 .number-of-solutions {
     font-weight: bold;
     text-align: center;
     font-size: 3rem;
 }
+
 .tracker-dlg-btn {
-    height: 5.8rem;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
-    padding-top:0.4rem;
+    padding-top: 0.4rem;
     padding-bottom: 0.4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.2rem; 
+    gap: 0.2rem;
 }
 
 .tracker-dlg-btn-image {
-    width: 1.6rem;
-    height: 2.4rem;
+    width: 1.2rem;
+    height: 1.8rem;
 }
 
 #tracker-dlg-btn-step-sequence-image,
@@ -1030,7 +1038,7 @@ label {
 .infoDlgHeader {
     font-size: var(--font-size-lg);
     font-weight: bold;
-    margin: 10px;
+    margin: 1rem;
     text-align: center;
 }
 
@@ -1038,31 +1046,31 @@ label {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .infoDlgBody {
     font-size: var(--font-size-lg);
-    margin-left: 10px;
+    margin-left: 1rem;
 }
 
 .infoIcon {
-    margin-left: 5px;
-    margin-right: 10px;
-    height: 60px;
-    width: 60px;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    height: 6rem;
+    width: 6rem;
     background-color: white;
 }
 
 .infoDlg-OK-Btn {
-    width: 100px;
-    margin-top: 10px;
+    width: 10rem;
+    margin-top: 1rem;
     /* margin-left: auto; */
     float: right;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
 }
 
 /*=======================================*/
@@ -1088,20 +1096,20 @@ label {
 .confirm-dlg-header {
     font-size: var(--font-size-lg);
     font-weight: bold;
-    margin: 10px;
+    margin: 1rem;
     text-align: center;
 }
 
 .confirm-dlg-body {
     font-size: var(--font-size-lg);
-    margin-left: 10px;
+    margin-left: 1rem;
 }
 
 .confirm-icon {
-    margin-left: 5px;
-    margin-right: 10px;
-    height: 60px;
-    width: 60px;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    height: 6rem;
+    width: 6rem;
     background-color: white;
 }
 
@@ -1110,11 +1118,11 @@ label {
     justify-content: center;
     align-items: center;
     grid-template-columns: 1fr 1fr;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    gap: 10px;
-    margin-right: 20px;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    gap: 1rem;
+    margin-right: 2rem;
 }
 
 #btn-confirm-ok,
@@ -1140,7 +1148,7 @@ label {
     margin-left: auto;
     margin-right: auto;
     padding: 1.2rem;
-    
+
 }
 
 
@@ -1198,7 +1206,7 @@ label {
 .tableFixHead {
     overflow-y: auto;
     /* make the table scrollable if height is more than 200 px  */
-    height: 500px;
+    height: 50rem;
     /* gives an initial height of 200px to the table */
 }
 
@@ -1219,8 +1227,8 @@ label {
 .db-puzzle-table th,
 .db-puzzle-table td {
     font-size: 1.2rem;
-    padding: 4px 4px;
-    border: 1px solid #ccc;
+    padding: 0.4rem 0.4rem;
+    border: 0.1rem solid #ccc;
 }
 
 .db-puzzle-table th {
@@ -1282,7 +1290,7 @@ label {
 }
 
 .db-puzzle-button:active {
-    transform: translate(2px, 2px);
+    transform: translate(0.2rem, 0.2rem);
 }
 
 /*======================================*/
@@ -1294,29 +1302,31 @@ label {
 
 /* ========================================*/
 
-#loader, #loader-db {
+#loader,
+#loader-db {
     display: none;
     position: absolute;
-    top: 17rem; 
+    top: 17rem;
     left: 11rem;
     z-index: 2;
-    width: 200px;
-    height: 200px;
-    border: 48px solid #fbf9f900;
+    width: 20rem;
+    height: 20rem;
+    border: 4.8rem solid #fbf9f900;
     border-radius: 50%;
-    border-top: 48px solid var(--defined-cell-bg-color);
-    border-bottom: 48px solid black;
-    border-right: 48px solid var(--played-cell-bg-color);
+    border-top: 4.8rem solid var(--defined-cell-bg-color);
+    border-bottom: 4.8rem solid black;
+    border-right: 4.8rem solid var(--played-cell-bg-color);
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
 
 
-#search-level, #loader-db-info {
+#search-level,
+#loader-db-info {
     width: 14rem;
     left: 25%;
     top: 25%;
-    margin-top: 20px;
+    margin-top: 2rem;
     padding: 1.4rem;
     font-size: var(--font-size-lg);
     color: black;
@@ -1327,7 +1337,7 @@ label {
     position: absolute;
     display: none;
     text-align: center;
-    top: 24rem; 
+    top: 24rem;
     width: 40rem;
     z-index: 2;
     rotate: z -30deg;
@@ -1394,5 +1404,17 @@ label {
 
     100% {
         transform: scale(1);
+    }
+}
+
+
+
+@media screen and (aspect-ratio > 0.5) {
+    :root {
+        font-size: 48%;
+        --sudoku-cell-size: 9.7vw;
+    }
+    .trackerDlg {
+        top: 125vw;
     }
 }
