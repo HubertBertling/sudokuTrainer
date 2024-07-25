@@ -1442,16 +1442,71 @@ label {
         margin-left: 51%;
         margin-right: auto;
     }
+
+    .puzzle-table-dlg {
+        margin: 2auto;
+        width: 80rem;
+        height: 58rem;
+    }
+
+    .db-puzzle-btns {
+        margin: 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+
+    .tableFixHead {
+        overflow-y: auto;
+        /* make the table scrollable if height is more than 200 px  */
+        height: 35rem;
+        /* gives an initial height of 200px to the table */
+    }
+
     .app-empty-footer {
         display: block;
         height: 0.2rem;
         background-color: DimGray;
     }
-    
+
 }
 
 
-@media screen and (max-width: 359px) , (min-width: 360px) and (max-width: 480px) and (min-aspect-ratio: 1/2) {
+
+@media screen and (min-width: 480px) and (min-aspect-ratio: 1/2) {
+    :root {
+        font-size: 42%;
+        --sudoku-cell-size: 4vw;
+    }
+
+    .puzzle-table-dlg {
+        margin: 4rem;
+        width: 70rem;
+        height: 50,rem;
+    }
+
+    .db-puzzle-btns {
+        margin: 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+
+    .tableFixHead {
+        overflow-y: auto;
+        /* make the table scrollable if height is more than 200 px  */
+        height: 25rem;
+        /* gives an initial height of 200px to the table */
+    }
+
+}
+
+@media screen and (max-width: 359px),
+(min-width: 360px) and (max-width: 480px) and (min-aspect-ratio: 1/2) {
     :root {
         font-size: 48%;
         --sudoku-cell-size: 9.7vw;
