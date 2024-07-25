@@ -1408,12 +1408,55 @@ label {
 }
 
 
+@media screen and (min-width: 480px) {
+    :root {
+        --sudoku-cell-size: 4.2rem;
+    }
 
-@media screen and (aspect-ratio > 0.5) {
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        height: fit-content;
+    }
+
+    .mobile-btn-container {
+        width: 40rem;
+        height: fit-content;
+    }
+
+    .btn-with-image {
+        font-size: var(--font-size-lg);
+    }
+
+    .trackerDlg {
+        background-color: var(--screen-bg-color);
+        border: none;
+        top: 10rem;
+        width: 40rem;
+        height: 30rem;
+
+        position: absolute;
+        margin-bottom: 10rem;
+        margin-left: 51%;
+        margin-right: auto;
+    }
+    .app-empty-footer {
+        display: block;
+        height: 0.2rem;
+        background-color: DimGray;
+    }
+    
+}
+
+
+@media screen and (max-width: 359px) {
     :root {
         font-size: 48%;
         --sudoku-cell-size: 9.7vw;
     }
+
     .trackerDlg {
         top: 125vw;
     }
