@@ -1408,7 +1408,7 @@ label {
 }
 
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 481px) {
     :root {
         --sudoku-cell-size: 4.2rem;
     }
@@ -1451,7 +1451,7 @@ label {
 }
 
 
-@media screen and (max-width: 359px) {
+@media screen and (max-width: 359px) , (min-width: 360px) and (max-width: 480px) and (min-aspect-ratio: 1/2) {
     :root {
         font-size: 48%;
         --sudoku-cell-size: 9.7vw;
