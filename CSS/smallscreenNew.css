@@ -1451,10 +1451,9 @@ label {
         margin-right: auto;
     }
 
-    .puzzle-table-dlg {
-        background-color: #500;
-        width: 800px;
-        height: 480px;
+    #db-puzzle-dialog {
+        width: 80rem;
+        height: 70rem;
     }
 
     .db-puzzle-btns {
@@ -1484,11 +1483,24 @@ label {
 
 /*
 @media screen and (min-width: 480px) and (min-aspect-ratio: 1/2) {
-    :root {
+@media screen and (min-width: 360px) and (max-width: 480px) and (min-device-aspect-ratio > 0.5) {
+   
+
+:root {
 }
 */
-@media screen and (max-width: 359px),
-(min-width: 360px) and (max-width: 480px) and (min-aspect-ratio: 1/2) {
+@media screen and (max-width: 480px) and (device-aspect-ratio > 0.5) {
+    :root {
+        font-size: 48%;
+        --sudoku-cell-size: 9.7vw;
+    }
+
+    .trackerDlg {
+        top: 125vw;
+    }
+}
+
+@media screen and (max-width: 359px) {
     :root {
         font-size: 48%;
         --sudoku-cell-size: 9.7vw;
