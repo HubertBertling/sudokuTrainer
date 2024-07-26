@@ -378,7 +378,7 @@ html {
     /*   height: 9.85vw;
     width: 9.85vw; */
     display: grid;
-    font-size: var(--font-size-lg);
+    font-size: 1.6rem;
     place-items: center;
     margin: 0.05rem;
 }
@@ -1451,6 +1451,9 @@ label {
         margin-right: auto;
     }
 
+    #settings-dlg {
+        width: 50rem;;
+    }
     #db-puzzle-dialog {
         width: 80rem;
         height: 70rem;
@@ -1480,15 +1483,6 @@ label {
 
 }
 
-
-/*
-@media screen and (min-width: 480px) and (min-aspect-ratio: 1/2) {
-@media screen and (min-width: 360px) and (max-width: 480px) and (min-device-aspect-ratio > 0.5) {
-   
-
-:root {
-}
-*/
 @media screen and (max-width: 480px) and (device-aspect-ratio > 0.5) {
     :root {
         font-size: 48%;
