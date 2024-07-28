@@ -35,7 +35,8 @@
 
     /* Extra small devices (phones, 600px and down) */
 
-    --sudoku-cell-size: 9.95vw;
+    /* --sudoku-cell-size: calc((100vw - 3.4rem)/9) ; */
+    --sudoku-cell-size: calc((100vw - 3.4rem)/9) ; 
     --border-radius: 0.5rem;
     --space-y: 2rem;
     --font-size-btn: 1.4rem;
@@ -48,8 +49,8 @@
 
     /* Setting the global font size */
     /* Prozent von der Browser Font-Einstellung */
-    font-size: 62.5%;
-    /* Effekt: 1rem = 1rem; */
+    font-size: 62.5%; 
+    /* Effekt: 1rem = 10px */
 }
 
 * {
@@ -397,7 +398,7 @@ html {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     place-items: center;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
 }
@@ -1408,11 +1409,12 @@ label {
 }
 
 
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
     :root {
-        font-size: 68%;
+        font-size: 48%;
         --sudoku-cell-size: 4.5rem;
     }
+
 
     body,
     html {
@@ -1452,8 +1454,10 @@ label {
     }
 
     #settings-dlg {
-        width: 50rem;;
+        width: 50rem;
+        ;
     }
+
     #db-puzzle-dialog {
         width: 80rem;
         height: 70rem;
@@ -1483,24 +1487,9 @@ label {
 
 }
 
-@media screen and (max-width: 480px) and (device-aspect-ratio > 0.5) {
+@media screen and (max-width: 768px) and (min-aspect-ratio: 1.1/2) {
     :root {
-        font-size: 48%;
-        --sudoku-cell-size: 9.7vw;
+        font-size: 45%;
     }
-
-    .trackerDlg {
-        top: 125vw;
-    }
-}
-
-@media screen and (max-width: 359px) {
-    :root {
-        font-size: 48%;
-        --sudoku-cell-size: 9.7vw;
-    }
-
-    .trackerDlg {
-        top: 125vw;
-    }
-}
+  }
+  
