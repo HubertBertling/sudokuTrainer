@@ -36,7 +36,7 @@
     /* Extra small devices (phones, 600px and down) */
 
     /* --sudoku-cell-size: calc((100vw - 3.4rem)/9) ; */
-    --sudoku-cell-size: calc((100vw - 3.4rem)/9) ; 
+    --sudoku-cell-size: calc((100vw - 3.6rem)/9) ; 
     --border-radius: 0.5rem;
     --space-y: 2rem;
     --font-size-btn: 1.4rem;
