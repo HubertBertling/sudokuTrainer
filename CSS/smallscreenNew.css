@@ -32,10 +32,6 @@
     --error-cell-color: white;
 
     /* Other definitions */
-
-    /* Extra small devices (phones, 600px and down) */
-
-    /* --sudoku-cell-size: calc((100vw - 3.4rem)/9) ; */
     --sudoku-cell-size: calc((100vw - 3.8rem)/9) ; 
     --border-radius: 0.5rem;
     --space-y: 2rem;
@@ -1305,7 +1301,7 @@ label {
 
 #loader,
 #loader-db {
-    display: none;
+    display: block;
     position: absolute;
     top: 17rem;
     left: 11rem;
@@ -1424,6 +1420,8 @@ label {
         margin-right: auto;
     }
 
+    
+    
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
