@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 615;
+let VERSION = 616;
 
 // ==========================================
 // Basic classes
@@ -3550,14 +3550,11 @@ class SudokuGridView extends MVC_View {
         // Unlösbarkeit anzeigen.
         if (sudoApp.mySolver.isSearching()
             || sudoApp.mySolver.getGamePhase() == 'define'
-            || (sudoApp.mySolver.isCurrentlyBeingChecked()
-                // && sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level == 'Extrem schwer'
-            )) {
+            ) {
             // Die Unlösbarkeit wird nur angezeigt und geprüft,
             // wenn der Automat läuft oder in der Definitionsphase.
             this.displayUnsolvability();
         }
-        this.displayWrongNumbers();
         this.displaySelection();
         this.displayAutoSelection();
     }
@@ -5772,9 +5769,6 @@ class SudokuSolver extends MVC_Model {
         this.currentEvalType = 'lazy-invisible';
         // There are two play-modes 'manual-solving' and 'automated-solving'.
         this.playType = 'automated-solving';
-        // the user has asked the app to check his current manual solution
-        // the solution is currently being checked
-        this.isCurrentlyBChecked = false;
     }
 
     newPuzzle() {
@@ -5785,7 +5779,6 @@ class SudokuSolver extends MVC_Model {
     init() {
         this.myGrid.init();
         this.newPuzzle();
-        this.isCurrentlyBChecked = false;
     }
 
     async setNewPuzzleRecord() {
@@ -6050,10 +6043,6 @@ class SudokuSolver extends MVC_Model {
 
     notifyAspect(aspect, aspectValue) {
         super.notifyAspect(aspect, aspectValue);
-    }
-
-    isCurrentlyBeingChecked() {
-        return this.isCurrentlyBChecked;
     }
 
     setPuzzleIOtechnique(pt) {
@@ -6907,9 +6896,7 @@ class SudokuSolverController {
             this.playBtnPressed();
         }
         if (sudoApp.mySolver.myGrid.isUnsolvable()) {
-            this.mySolver.isCurrentlyBChecked = true;
-            sudoApp.mySolver.notify();
-            this.mySolver.isCurrentlyBChecked = false;
+            sudoApp.mySolverView.myGridView.displayUnsolvability();
             let level = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level;
             sudoApp.myInfoDialog.open('Start Solver', 'negativ', 'Schwierigkeitsgrad: ' + level +
                 '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.');
@@ -7150,7 +7137,6 @@ class SudokuSolverController {
         // It has the effect that the display of the current puzzle includes 
         // the display of its possible unfulfillability. 
         // Normally, the unfulfillability is not displayed.
-        this.mySolver.isCurrentlyBChecked = true;
         let level = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level;
         if (level == 'Unlösbar') {
             if (sudoApp.mySolver.myGrid.isUnsolvable()) {
@@ -7182,13 +7168,12 @@ class SudokuSolverController {
             }
             sudoApp.mySolver.notify();
             if (wrongCellSet) {
+                sudoApp.mySolverView.myGridView.displayWrongNumbers();
                 sudoApp.myInfoDialog.open("Prüfergebnis", "negativ", "Es gibt falsche Lösungsnummern, siehe rot umrandete Zellen!");
             } else {
                 sudoApp.myInfoDialog.open('Prüfergebnis', 'positiv', 'Bisher sind alle Lösungsnummern korrekt!');
             }
         }
-        // this check operation is finished
-        this.mySolver.isCurrentlyBChecked = false;
     }
 
     trackerDlgStepSequencePressed() {
