@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 616;
+let VERSION = 617;
 
 // ==========================================
 // Basic classes
@@ -2182,7 +2182,7 @@ class SudokuPuzzleDBView extends MVC_View {
                 tbNode.appendChild(tr);
             }
             if (selectedTr !== undefined) {
-                selectedTr.scrollIntoView({ block: "end" });
+                selectedTr.scrollIntoView({ block: "center" });
             }
         }
     }
