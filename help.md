@@ -41,6 +41,7 @@ layout: default
 - [Sudoku-Theorie](#sudoku-theorie)
   - [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
   - [Notwendige Nummern](#notwendige-nummern)
+  - [Singles](#singles)
   - [Unzulässige Kandidaten](#unzulässige-kandidaten)
   - [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten)
     - [Kriterium: "Notwendige Nummer"](#kriterium-notwendige-nummer)
@@ -432,17 +433,17 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 **Ziel-SmartPhone**
 
 1. WhatsApp starten.
-1. Die in der empfangenen Nachricht enthaltene Datei >>DemoPuzzle.text<< downloaden.
+1. Die in der empfangenen Nachricht enthaltene Datei >>sharedPuzzle.text<< downloaden.
 1. Die App Soduku-Trainer starten.
 1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
 1. Die Taste Import-Puzzle klicken.
 1. ![Aktion Dateien](./imagesHelp/aktionDateien.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
-1. Die im Download-Ordner abgelegte Datei >>DemoPuzzle.text<< selektieren.
+1. Die im Download-Ordner abgelegte Datei >>sharedPuzzle.text<< selektieren.
 
 #### Puzzle Datenbank vom PC auf das Smartphone übertragen
 
-**Absender-Smartphone**
+**Absender-PC**
 
 1. Sudoku-Trainer starten
 1. In den Datenbank-Dialog wechseln
@@ -480,13 +481,20 @@ Sie enthält zwei sehr schwere Puzzles, 'Backtrack_10' und 'Backtrack_23'. Also 
 ![Lazy notwendig](./imagesHelp/lazynotwendig.png)
 Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Im Lazy-Auswertungsmodus zeigt der Solver den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn man die Zelle mit der notwendigen Nummer selektiert hat. Die Zellen des Blocks besitzen einen grün gestrichelten Rahmen. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den grün gestrichelten Rahmen keine 1 mehr gesetzt werden kann.
 
-### Unzulässige Kandidaten
+### Singles
+
+![Single](./imagesHelp/single.png)
+Eine Kandidatnummer in einer Zelle heißt Single,wenn es keine weiteren Kandidaten in der Zelle gibt.Im Beispiel ist die 9 ein Single. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sind der jeweiligen Nummer.
+
+### Unzulässige Kandidaten und versteckte Singles
 
 **Unzulässige Nummern** sind Nummern, die in einem Block, in einer Spalte oder Reihe bereits einmal existieren. Unzulässige Nummern können keine Kandidaten sein. Es gibt jedoch auch unzulässige Kandidaten. **Unzulässige Kandidaten** werden in roter Schrift angezeigt. Eine Kandidatennummer ist unzulässig, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll macht.
 
+Warum interessieren wir uns für unzulässige Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (verstecktes Single) unzulässig sind, dann kann die versteckte Single-Nummer in der Zelle gesetzt werden.
+
 In fairen Puzzles kann man unzulässige Kandidaten allein durch logisches Schließen unter Anwendung definierter Kriterien ohne Backtracking erkennen. In der Literatur werden zahlreiche Kriterien genannt. Grundsätzlich ist die rein logische Erkennung der Unzulässigkeit von Kandidaten unvollständig. D.h. es gibt so schwere Puzzles, dass nicht alle unzulässigen Kandidaten mittels der Anwendung von logischen Kriterien erkannt werden können. Solche Sudokus können nur durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Unzulässigkeit von Kandidaten. Falls diese für das Lösen eines konkreten Puzzles nicht ausreichen, löst der Solver das Puzzle durch Backtracking.
 
-#### Kriterien für die Erkennung unzulässiger Kandidaten
+### Kriterien für die Erkennung unzulässiger Kandidaten
 
 #### Kriterium "Notwendige Nummer"
 
@@ -584,8 +592,8 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 1. **Sehr Leicht:** Wie Leicht, jedoch mit höherer Anzahl von Givens.
 1. **Mittel:** Durch die Bestimmung notwendiger Nummern und mindestens eines [Singles](#die-möglichen-inhalte-einer-sudoku-zelle) kann die Lösung des Sudokus erreicht werden.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens die Bestimmung eines [Hidden Single](#die-möglichen-inhalte-einer-sudoku-zelle). Für die Bestimmung des Hidden Singles müssen unzulässige Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
-1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der Lösung unter Umständen zahlreiche Rückwärtsläufe durch.
-1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Sie haben keine eindeutige Lösung. Der Solver beherrscht auch die Lösung von Puzzles, die mehrere Lösungen haben. Nach der Erfolgsmeldung mit der ersten Lösung kann der Anwender nach der nächsten Lösung suchen lassen, solange bis der Solver meldet: "*Keine weitere Lösung gefunden*".
+1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Rückwärtsläufe durch. Die Anzahl der für die Lösung nötigen Rückwärtsläufe '#RL' wird in der Datenbanktabelle angezeigt.
+1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Sie haben keine eindeutige Lösung. Mit der Taste 'Lösungen' kann die Suche nach den Lösungen angestoßen werden. Viele extrem schwere Puzzles haben weniger als 1000 Lösungen. Wenn diese aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Je weniger Givens ein Puzzle hat, um so mehr Lösungen hat das Puzzle. Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den Suchprozess sinnvollerweise abbrechen.  
 
 ### Faire Puzzles
 
