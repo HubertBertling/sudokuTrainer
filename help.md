@@ -42,7 +42,7 @@ layout: default
   - [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
   - [Notwendige Nummern](#notwendige-nummern)
   - [Singles](#singles)
-  - [Unzulässige Kandidaten](#unzulässige-kandidaten)
+  - [Unzulässige Kandidaten und versteckte Singles](#unzulässige-kandidaten-und-versteckte-singles)
   - [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten)
     - [Kriterium: "Notwendige Nummer"](#kriterium-notwendige-nummer)
     - [Kriterium: "Nacktes Paar"](#kriterium-nacktes-paar)
@@ -375,7 +375,7 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 |#Gelöste|Die Zahl der gelösten Zellen des Puzzles.|
 |#Offene|Die Zahl der offenen, ungelösten Zellen des Puzzles.|
 |Level|Der ermittelte Schwierigkeitsgrad des gespeicherten Puzzles.|
-|#Rückwärts|Die Anzahl der Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen.|
+|#RL|Die Anzahl der Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. Hinweis: Diese Information hat nur für sehr schwere Puzzles Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles ist dieser Wert nicht sinnvoll definiert. Rückwärtsläufe für welche der vielen Lösungen?|
 |Datum|Datum, an dem das Puzzle angelegt wurde.|
 
 ### Operationen der Datenbank
@@ -448,9 +448,9 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Sudoku-Trainer starten
 1. In den Datenbank-Dialog wechseln
 1. ![DownloadDB](./imagesHelp/downloadDB.png){: width="auto"}
-1. Download-DB-Taste in der Hauptansicht klicken.
+1. Download-Puzzle-DB-Taste in der Hauptansicht klicken.
 1. WhatsApp starten (oder eine MAIL App).
-1. Datei in den Anhang laden
+1. Datei >>downloadedPuzzleDB.text<< in den Anhang laden.
 1. Kontakt selektieren und senden.
 
 **Ziel-SmartPhone**
@@ -462,7 +462,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Die Taste Import-Puzzle klicken.
 1. ![Aktion Dateien](./imagesHelp/aktionDateien.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
-1. Die im Download-Ordner abgelegte Datei >>DemoPuzzle.text<< selektieren.
+1. Die im Download-Ordner abgelegte Datei >>downloadedPuzzleDB.text<< selektieren.
 
 ### Die initiale Datenbank ist nicht leer
 
@@ -484,11 +484,11 @@ Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block
 ### Singles
 
 ![Single](./imagesHelp/single.png)
-Eine Kandidatnummer in einer Zelle heißt Single,wenn es keine weiteren Kandidaten in der Zelle gibt.Im Beispiel ist die 9 ein Single. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sind der jeweiligen Nummer.
+Eine Kandidatnummer in einer Zelle heißt Single,wenn es keine weiteren Kandidaten in der Zelle gibt.Im Beispiel ist die 9 ein Single. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer.
 
 ### Unzulässige Kandidaten und versteckte Singles
 
-**Unzulässige Nummern** sind Nummern, die in einem Block, in einer Spalte oder Reihe bereits einmal existieren. Unzulässige Nummern können keine Kandidaten sein. Es gibt jedoch auch unzulässige Kandidaten. **Unzulässige Kandidaten** werden in roter Schrift angezeigt. Eine Kandidatennummer ist unzulässig, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll macht.
+**Unzulässige Nummern** sind Nummern, die in einem Block, in einer Spalte oder Reihe bereits einmal existieren. Unzulässige Nummern können keine Kandidaten sein. Es gibt jedoch auch unzulässige Kandidaten. **Unzulässige Kandidaten** werden in roter Schrift angezeigt. Eine Kandidatennummer ist unzulässig, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll macht. In manchen Fällen wird das erst nach einigen weiteren Lösungsschritten offenbar.
 
 Warum interessieren wir uns für unzulässige Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (verstecktes Single) unzulässig sind, dann kann die versteckte Single-Nummer in der Zelle gesetzt werden.
 
