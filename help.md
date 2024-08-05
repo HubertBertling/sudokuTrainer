@@ -587,13 +587,12 @@ Wir sehen, dass gleichzeitig mehrere Bedingungen für einen Gruppenwiderspruch v
 ### Schwierigkeitsgrade (Levels)
 
 Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:
-
-1. **Leicht:** Nur durch die Bestimmung [notwendiger Nummern](#notwendige-nummern) kann die Lösung des Sudokus erreicht werden.
-1. **Sehr Leicht:** Wie Leicht, jedoch mit höherer Anzahl von Givens.
+1. **Sehr Leicht:** Nur durch die Bestimmung [notwendiger Nummern](#notwendige-nummern) kann die Lösung des Sudokus erreicht werden.
+1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.  
 1. **Mittel:** Durch die Bestimmung notwendiger Nummern und mindestens eines [Singles](#die-möglichen-inhalte-einer-sudoku-zelle) kann die Lösung des Sudokus erreicht werden.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens die Bestimmung eines [Hidden Single](#die-möglichen-inhalte-einer-sudoku-zelle). Für die Bestimmung des Hidden Singles müssen unzulässige Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
 1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Rückwärtsläufe durch. Die Anzahl der für die Lösung nötigen Rückwärtsläufe '#RL' wird in der Datenbanktabelle angezeigt.
-1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Sie haben keine eindeutige Lösung. Mit der Taste 'Lösungen' kann die Suche nach den Lösungen angestoßen werden. Viele extrem schwere Puzzles haben weniger als 1000 Lösungen. Wenn diese aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Je weniger Givens ein Puzzle hat, um so mehr Lösungen hat das Puzzle. Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den Suchprozess sinnvollerweise abbrechen.  
+1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Sie haben keine eindeutige Lösung. Mit der Taste 'Lösungen' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Je weniger Givens ein Puzzle hat, um so mehr Lösungen hat das Puzzle. Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den Suchprozess sinnvollerweise abbrechen. Die Anzahl der Lösungen kann sehr groß werden. So gibt es ca. 6,7 Trilliarden verschiedene, vollständig ausgefüllte  9×9-Standard-Sudokus [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku).
 
 ### Faire Puzzles
 

@@ -32,7 +32,7 @@
     --error-cell-color: white;
 
     /* Other definitions */
-    --sudoku-cell-size: calc((100vw - 3.8rem)/9) ; 
+    --sudoku-cell-size: calc((100vw - 3.8rem)/9);
     --border-radius: 0.5rem;
     --space-y: 2rem;
     --font-size-btn: 1.4rem;
@@ -45,7 +45,7 @@
 
     /* Setting the global font size */
     /* Prozent von der Browser Font-Einstellung */
-    font-size: 62.5%; 
+    font-size: 62.5%;
     /* Effekt: 1rem = 10px */
 }
 
@@ -375,8 +375,6 @@ html {
     position: relative;
     height: var(--sudoku-cell-size);
     width: var(--sudoku-cell-size);
-    /*   height: 9.85vw;
-    width: 9.85vw; */
     display: grid;
     font-size: 1.6rem;
     place-items: center;
@@ -1307,7 +1305,7 @@ label {
     display: none;
     position: absolute;
     top: 16rem;
-    left:11rem;
+    left: 11rem;
     z-index: 2;
     width: 20rem;
     height: 20rem;
@@ -1422,10 +1420,10 @@ label {
         margin-left: auto;
         margin-right: auto;
     }
-    
-    
 
-    
+
+
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1476,9 +1474,9 @@ label {
 
     .tableFixHead {
         overflow-y: auto;
-        /* make the table scrollable if height is more than 200 px  */
+        /* make the table scrollable if height is more than 35 rem  */
         height: 35rem;
-        /* gives an initial height of 200px to the table */
+        /* gives an initial height of 35px to the table */
     }
 
     .app-empty-footer {
@@ -1493,5 +1491,4 @@ label {
     :root {
         font-size: 45%;
     }
-  }
-  
+}
