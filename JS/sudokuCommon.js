@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 620;
+let VERSION = 621;
 
 // ==========================================
 // Basic classes
@@ -4827,6 +4827,7 @@ class SudokuCellView extends MVC_View {
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
+            candidateNode.classList.add('single');
             candidateNode.innerHTML = candidate;
             this.getMyNode().appendChild(candidateNode);
             return true;
@@ -4849,6 +4850,7 @@ class SudokuCellView extends MVC_View {
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.innerHTML = candidate;
+            candidateNode.classList.add('single');
             this.getMyNode().appendChild(candidateNode);
 
             let redAdmissibles = myCell.getCandidates().difference(tmpCandidates);

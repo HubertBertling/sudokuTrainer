@@ -34,11 +34,9 @@
     /* Other definitions */
     --sudoku-cell-size: calc((100vw - 3.8rem)/9);
     --border-radius: 0.5rem;
-    --space-y: 2rem;
-    --font-size-btn: 1.4rem;
+   
+    --font-size-cell: 1.6rem;
 
-    --font-size-xsm: 0.4rem;
-    --font-size-sm: 0.8rem;
     --font-size: 1.2rem;
     --font-size-lg: 1.4rem;
     --font-size-xl: 1.8rem;
@@ -234,29 +232,9 @@ html {
 
 /* App-header */
 
-
-/* App-header */
-
 .app-empty-footer {
     display: none;
 }
-
-/*
-.app-name-header {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    display: grid;
-    grid-template-columns: 0.1fr 0.1fr 0.7fr 0.1fr;
-    font-size: var(--font-size-xl);
-    font-weight: bold;
-    /*  text-align: center;
-    place-items: center; 
-    padding: 0.5rem;
-    background-color: DimGray;
-    color: white;
-    border-radius: 0.6rem;
-}
-*/
 
 .app-name-header {
     display: flex;
@@ -402,8 +380,6 @@ html {
 
 
 .sudoku-grid-cell.selected {
-    /*background-color: lightgrey;*/
-    /*background-image: url("../images/selectBG2.png");*/
     background-color: #f39795fb;
     border: 0.2rem solid white;
 }
@@ -414,6 +390,10 @@ html {
     border: 0.2rem solid white;
 }
 
+.nested>div.single {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
 
 .nested>div.neccessary {
     padding-top: 0.1rem;
@@ -461,11 +441,6 @@ html {
     color: Crimson;
 }
 
-/*
-.nested.err>div.inAdmissible {
-    background-color: white;
-}
-*/
 .nested.err>div.neccessary.inAdmissible {
     background-color: #56c7aa;
 }
