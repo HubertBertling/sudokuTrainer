@@ -1386,8 +1386,7 @@ label {
     /* Small screens, laptops: 769px - 1024px */
     :root {
         font-size: 62.5%;
-        /* --sudoku-cell-size: 4.5rem; */
-        --sudoku-cell-size: calc((95vh - 15rem)/9);
+        --sudoku-cell-size: calc((95vh - 18rem)/9);
     }
 
 
@@ -1463,7 +1462,7 @@ label {
 
 }
 
-@media screen and (max-width: 768px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
+@media screen and (min-width: 320px) and (max-width: 768px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
    /* */
     :root {
         font-size: 45%;
@@ -1474,8 +1473,8 @@ label {
 @media screen and (min-width: 320px) and (max-width: 768px) and (orientation: landscape) {
     :root {
    
-        font-size: 40%;
-        --sudoku-cell-size: calc(35vw/9);
+        font-size: 38%;
+        --sudoku-cell-size: calc((95vh - 18rem)/9);
     }
 
     body,
