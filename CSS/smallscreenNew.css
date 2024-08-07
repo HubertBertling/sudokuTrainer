@@ -34,7 +34,7 @@
     /* Other definitions */
     --sudoku-cell-size: calc((100vw - 3.8rem)/9);
     --border-radius: 0.5rem;
-   
+
     --font-size-cell: 1.6rem;
 
     --font-size: 1.2rem;
@@ -1381,17 +1381,16 @@ label {
 }
 
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1081px) and (orientation: landscape) {
     :root {
         font-size: 62.5%;
-        --sudoku-cell-size: 4.5rem;
+        /* --sudoku-cell-size: 4.5rem; */
+        --sudoku-cell-size: calc((95vh - 15rem)/9);
     }
 
 
     body,
     html {
-        width: 80rem;
-        height: 40rem;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1424,7 +1423,7 @@ label {
 
         position: absolute;
         margin-bottom: 10rem;
-        margin-left: 53%;
+        left: calc(95vh - 12rem);
         margin-right: auto;
     }
 
@@ -1462,8 +1461,88 @@ label {
 
 }
 
-@media screen and (max-width: 768px) and (min-aspect-ratio: 1.1/2) {
+@media screen and (max-width: 1080px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
     :root {
         font-size: 45%;
     }
+}
+
+
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+    :root {
+        font-size: 40%;
+        --sudoku-cell-size: calc(35vw/9);
+    }
+
+    body,
+    html {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        height: fit-content;
+    }
+
+    .mobile-btn-container {
+        width: 40rem;
+        height: fit-content;
+    }
+
+    .btn-with-image {
+        font-size: var(--font-size-lg);
+    }
+
+    .trackerDlg {
+        background-color: var(--screen-bg-color);
+        border: none;
+        top: 10rem;
+        width: 40rem;
+        height: 30rem;
+
+        position: absolute;
+        margin-bottom: 10rem;
+        /* left: calc(35vw + 5rem); */
+        left: calc(95vh - 12rem);
+    }
+
+    #settings-dlg {
+        width: 50rem;
+        ;
+    }
+
+    #db-puzzle-dialog {
+        width: 80rem;
+        height: 70rem;
+    }
+
+    .db-puzzle-btns {
+        margin: 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+
+    .tableFixHead {
+        overflow-y: auto;
+        /* make the table scrollable if height is more than 35 rem  */
+        height: 35rem;
+        /* gives an initial height of 35px to the table */
+    }
+
+    .app-empty-footer {
+        display: block;
+        height: 0.2rem;
+        background-color: DimGray;
+    }
+
+
 }
