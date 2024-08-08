@@ -1381,12 +1381,12 @@ label {
 }
 
 
-@media screen and (min-width: 769px) and (min-height: 769px) and (orientation: landscape) {
+@media screen and (min-width: 768px)  and (orientation: landscape) {
     /* Desktops, large screens: 1025px - ... */
     /* Small screens, laptops: 769px - 1024px */
     :root {
         font-size: 62.5%;
-        --sudoku-cell-size: calc(36rem /9);
+        --sudoku-cell-size: calc(40rem /9);
     }
     body,
     html {
@@ -1397,15 +1397,11 @@ label {
         display: flex;
         flex-direction: row;
         gap: 5px;
-
-        min-width:768px;
-        width: auto !important;
-        width: 768px;
         height: fit-content;
     }
 
     .mobile-btn-container {
-        width: 40rem;
+        max-width: 36rem;
         height: fit-content;
     }
 
@@ -1459,7 +1455,7 @@ label {
 
 }
 
-@media screen and (min-width: 320px) and (max-width: 768px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
+@media screen and (min-width: 320px) and (max-width: 767px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
    /* */
     :root {
         font-size: 45%;
