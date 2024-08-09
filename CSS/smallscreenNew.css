@@ -1381,28 +1381,26 @@ label {
 }
 
 
-@media screen and (min-width: 768px)  and (orientation: landscape) {
+@media screen and (min-width: 769px)  and (orientation: landscape) {
     /* Desktops, large screens: 1025px - ... */
     /* Small screens, laptops: 769px - 1024px */
     :root {
         font-size: 62.5%;
-        --sudoku-cell-size: calc(40rem /9);
+        --sudoku-cell-size: 4.6rem;
     }
     body,
     html {
-        margin-left: auto;
-        margin-right: auto;
     }
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
-        gap: 5px;
-        height: fit-content;
+        gap: 10px;
+        height:fit-content;
     }
 
     .mobile-btn-container {
-        max-width: 36rem;
-        height: fit-content;
+        max-width: 40rem;
+        max-height: 30rem;
     }
 
     .btn-with-image {
@@ -1455,7 +1453,7 @@ label {
 
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
+@media screen and (min-width: 320px) and (max-width: 768px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
    /* */
     :root {
         font-size: 45%;
@@ -1474,20 +1472,17 @@ label {
 
     body,
     html {
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
         gap: 5px;
-        height: fit-content;
     }
 
     .mobile-btn-container {
-        width: calc(95vh - 18rem);
-        height: fit-content;
+        max-width: 40rem;
+        max-height: 30rem;
     }
 
     .btn-with-image {
