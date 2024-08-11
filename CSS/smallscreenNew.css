@@ -340,6 +340,7 @@ html {
 
 .grid-plus-explainer {
     border: 0.1rem solid black;
+    height: fit-content;
 }
 
 .sudoku-block {
@@ -1381,16 +1382,27 @@ label {
 }
 
 
-@media screen and (min-width: 768px)  and (orientation: landscape) {
+@media screen and (min-width: 768px) and (orientation: landscape) {
+
     /* Desktops, large screens: 1025px - ... */
     /* Small screens, laptops: 769px - 1024px */
     :root {
         font-size: 62.5%;
         --sudoku-cell-size: 4.6rem;
     }
+
     body,
-    html {
+    html {}
+
+    .app-container {
+        display: block;
+        position: relative;
     }
+
+    .app-content {
+        display: block;
+    }
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1400,6 +1412,18 @@ label {
     .gridArea {
         position: relative;
         display: block;
+    }
+
+    .technique,
+    .reasonUnsolvability {
+        height: 2rem;
+        font-size: var(--font-size);
+        display: flex;
+        padding-top: 0.3rem;
+        padding-left: 0.2rem;
+        padding-bottom: 0.3rem;
+        /* border: 0.1rem solid black; */
+        background-color: lightgrey;
     }
 
     .mobile-btn-container {
@@ -1417,7 +1441,7 @@ label {
         top: 10rem;
         width: 36rem;
         height: 38rem;
-      
+
         position: absolute;
         margin-bottom: 10rem;
         left: 40rem;
@@ -1451,14 +1475,16 @@ label {
 
     .app-empty-footer {
         display: block;
-        height: 0.2rem;
+        height: 0.8rem;
+        margin-bottom: 1rem;
         background-color: DimGray;
     }
 
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
-   /* */
+
+    /* */
     :root {
         font-size: 45%;
     }
@@ -1466,22 +1492,34 @@ label {
 
 
 @media screen and (min-height: 320px) and (max-height: 767px) and (orientation: landscape) {
+
     /* Mobile devices: 320px - 480px */
     /* iPads, tablets: 481px - 768px */
     :root {
-   
+
         font-size: 38%;
         --sudoku-cell-size: calc((95vh - 18rem) /9);
     }
 
     body,
-    html {
-    }
+    html {}
 
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
         gap: 5px;
+    }
+
+    .technique,
+    .reasonUnsolvability {
+        height: 2rem;
+        font-size: var(--font-size);
+        display: flex;
+        padding-top: 0.3rem;
+        padding-left: 0.2rem;
+        padding-bottom: 0.3rem;
+        /* border: 0.1rem solid black; */
+        background-color: lightgrey;
     }
 
     .mobile-btn-container {
@@ -1534,7 +1572,8 @@ label {
 
     .app-empty-footer {
         display: block;
-        height: 0.2rem;
+        height: 0.6rem;
+        margin-bottom: 1rem;
         background-color: DimGray;
     }
 
