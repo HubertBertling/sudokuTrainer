@@ -1395,12 +1395,16 @@ label {
         display: flex;
         flex-direction: row;
         gap: 10px;
-        height:fit-content;
+    }
+
+    .gridArea {
+        position: relative;
+        display: block;
     }
 
     .mobile-btn-container {
         max-width: 40rem;
-        max-height: 30rem;
+        height: fit-content;
     }
 
     .btn-with-image {
@@ -1412,6 +1416,7 @@ label {
         border: none;
         top: 10rem;
         width: 36rem;
+        height: 38rem;
       
         position: absolute;
         margin-bottom: 10rem;
@@ -1421,7 +1426,6 @@ label {
 
     #settings-dlg {
         width: 50rem;
-        ;
     }
 
     #db-puzzle-dialog {
