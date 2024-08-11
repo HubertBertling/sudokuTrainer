@@ -59,7 +59,7 @@ body,
 
 html {
     font-family: 'Open Sans', sans-serif;
-    height: 95vh;
+    height: fit-content;
     width: 100%;
     background-color: var(--screen-bg-color);
     margin-top: 0.5rem;
@@ -101,7 +101,7 @@ html {
 }
 
 .navbar-element {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-left: 1.2rem;
     color: white;
 }
@@ -133,7 +133,7 @@ html {
 
 
 .sidenav {
-    height: 100%;
+    height: fit-content;
     width: 0;
     position: fixed;
     z-index: 3;
@@ -148,9 +148,9 @@ html {
 
 .sidenav a,
 .dropdown-btn {
-    padding: 0.8rem 0.8rem 0.8rem 3.2rem;
+    padding: 0.4rem 0.4rem 0.4rem 1.6rem;
     text-decoration: none;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     color: white;
     display: block;
 
@@ -174,7 +174,7 @@ html {
     width: 100%;
     cursor: pointer;
     outline: none;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 /* Hover not possible on touch devices */
@@ -220,13 +220,8 @@ html {
 
 
 /*=======================================================*/
-.app-container {
-    position: relative;
-}
-
 .app-content {
-    display: flex;
-    flex-direction: column;
+    display: block;
     gap: 0.5rem;
 }
 
@@ -307,10 +302,8 @@ html {
 
 .sudoku-solver-container {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: block;
     /* gap: 0.5rem; */
-    height: 90vh;
 }
 
 /*======================================*/
@@ -318,9 +311,10 @@ html {
 /*======================================*/
 
 .gridArea {
-    /* position: relative;*/
-    display: grid;
-    grid-template-columns: repeat(1, auto);
+    position: relative;
+    /* display: grid;
+    grid-template-columns: repeat(1, auto);*/
+    display: block;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     padding-bottom: 0.5rem;
@@ -1472,14 +1466,20 @@ label {
         height: 35rem;
         /* gives an initial height of 35px to the table */
     }
-
     .app-empty-footer {
-        display: block;
-        height: 0.8rem;
-        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
         background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: var(--font-size-xl);
     }
 
+    .app-empty-footer>span {
+        padding: 0.3rem;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
@@ -1571,11 +1571,19 @@ label {
     }
 
     .app-empty-footer {
-        display: block;
-        height: 0.6rem;
-        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
         background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: var(--font-size-xl);
     }
 
+    .app-empty-footer>span {
+        padding: 0.3rem;
+
+    }
 
 }
