@@ -1397,7 +1397,7 @@ label {
 }
 
 
-/*
+/* Notwendig?
 @media screen and (aspect-ratio < 0.55) and (width >= 768px) {
     :root {
         font-size: 65%;
@@ -1415,6 +1415,7 @@ label {
 }
 */
 
+/* Notwendig?
 @media screen and (aspect-ratio >= 0.55) and (aspect-ratio < 1.2) and (width < 768px) {
     :root {
         font-size: 45.2%;
@@ -1429,11 +1430,10 @@ label {
         top: 106vw;
     }
 }
+*/
 
 
-
-    /* @media screen and (aspect-ratio >= 0.55) and (aspect-ratio < 1.2) and (width >= 768px) { */
-    @media screen and (aspect-ratio < 1.2) and (width >= 768px) and (height >= 614px) {
+@media screen and (aspect-ratio < 1.2) and (width >= 768px) and (height >= 614px) {
     /* Fall 2: Portrait und width >= 768px */
     /* Surface Pro 7, portrait 912 x 1368, ratio = 0.67 */
     /* iPad mini, portrait 768 x 1024, ratio = 0.75 */
@@ -1452,103 +1452,6 @@ label {
         top: 106vw;
     }
 }
-
-/*
-@media screen and (aspect-ratio >= 1.2) and (aspect-ratio < 1.7) and (width < 768px) {
-
-    :root {
-        font-size: 40.2%;
-        --sudoku-cell-size: calc((45vw - 3rem)/9);
-        margin-left: auto;
-        margin-right: auto;
-
-    }
-
-    .sudoku-solver-container {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .gridArea {
-        position: relative;
-        display: block;
-    }
-
-    .technique,
-    .reasonUnsolvability {
-        height: 2rem;
-        font-size: var(--font-size);
-        display: flex;
-        padding-top: 0.3rem;
-        padding-left: 0.2rem;
-        padding-bottom: 0.3rem;
-        background-color: lightgrey;
-    }
-
-    .mobile-btn-container {
-        max-width: 40rem;
-        height: fit-content;
-    }
-
-    .btn-with-image {
-        font-size: var(--font-size-lg);
-    }
-
-    .trackerDlg {
-        background-color: var(--screen-bg-color);
-        border: none;
-        top: 10rem;
-        width: 36rem;
-        height: 38rem;
-
-        position: absolute;
-        margin-bottom: 10rem;
-        left: 40rem;
-        margin-right: auto;
-    }
-
-    #settings-dlg {
-        width: 50rem;
-    }
-
-    #db-puzzle-dialog {
-        width: 80rem;
-        height: 70rem;
-    }
-
-    .db-puzzle-btns {
-        margin: 1.2rem;
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-
-    .tableFixHead {
-        overflow-y: auto;
-        height: 35rem;
-    }
-
-    .app-empty-footer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        background-color: DimGray;
-        color: white;
-        border-radius: 0.6rem;
-        font-size: var(--font-size-xl);
-    }
-
-    .app-empty-footer>span {
-        padding: 0.3rem;
-    }
-}
-*/
-
-/* @media screen and (aspect-ratio >= 1.2) and (aspect-ratio < 1.7) and (width >= 768px) { */ 
 
 @media screen and (aspect-ratio >= 1.2) and (height >= 768px) and (width >= 768px) {
     /* Surface pro 7, landscape, 1368 x 912, ratio = 1.5 */
@@ -1603,7 +1506,8 @@ label {
 }
 
 
-@media screen and (aspect-ratio > 1.7) and (width < 768px) {
+@media screen and (aspect-ratio >= 1.2) and (height >= 341px) and (width < 768px) {
+/* height = 768px/720 * 320 = 341px. 320px is the smallest possible height */ 
 /* Samsung S10, landscape, 720 x 360, ratio = 2 */
     :root {
         font-size: 37%;
@@ -1686,16 +1590,16 @@ label {
     }
 }
 
-/* @media screen and (aspect-ratio > 1.7) and (width >= 768px) { */
+
 @media screen and (aspect-ratio >= 1.2) and (height < 614px) and (width >= 768px) {
+    /* Height = 614px = 768px * (2 - 1.2) */ 
+    /* Each ratio between 2 and 1.2 will be handled as landscape orientation.
     /* Samsung S22, landscape, 1067 x 480, ratio = 2.22 */
 
     :root {
         font-size: 52%;
         --sudoku-cell-size: calc(((768px /2) - 8rem)/9);
     }
-
- 
 
     .sudoku-solver-container {
         display: flex;
