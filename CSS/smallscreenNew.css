@@ -1369,12 +1369,14 @@ label {
 }
 
 
-@media screen and (aspect-ratio < 0.55) and (width < 768px) {
+    /* @media screen and (aspect-ratio < 0.55) and (width < 768px) { */
+    @media screen and (aspect-ratio < 1.2) and (height >= 537px) and (width < 768px) {
     /* Fall 1: Portrait und width < 768px */
+    /* 768px * 0.77 = 538px */ 
     /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
     :root {
         font-size: 60%;
-        --sudoku-cell-size: calc((100vw - 3.6rem)/9);
+        --sudoku-cell-size: calc((100vw - 4rem)/9);
     }
     
     .app-container {
@@ -1415,8 +1417,9 @@ label {
 }
 */
 
-/* Notwendig?
 @media screen and (aspect-ratio >= 0.55) and (aspect-ratio < 1.2) and (width < 768px) {
+    /* iPhone 5/SE, portrait, 320 x 568, ratio = 0.56 */
+    /* iPhone 5/SE, landscape, 568 x 320, ratio = 1.78 */
     :root {
         font-size: 45.2%;
         --sudoku-cell-size: calc((100vw - 3.4rem)/9);
@@ -1430,7 +1433,6 @@ label {
         top: 106vw;
     }
 }
-*/
 
 
 @media screen and (aspect-ratio < 1.2) and (width >= 768px) and (height >= 614px) {
@@ -1610,6 +1612,87 @@ label {
     .mobile-btn-container {
         max-width: calc(40vw - 10rem);
         max-height: calc(40vw - 20rem);
+    }
+
+
+    .technique,
+    .reasonUnsolvability {
+        height: 2rem;
+        font-size: 1.4rem;
+        display: flex;
+ }
+
+   
+    .btn-with-image {
+        font-size: 1.2rem;
+    }
+
+    .trackerDlg {
+        top: 10rem;
+        width: 30rem;
+        height: 20rem;
+
+        position: absolute;
+        margin-bottom: 1rem;
+        left: calc(95vh - 9rem);
+    }
+
+    #settings-dlg {
+        width: 50rem;
+    }
+
+    #db-puzzle-dialog {
+        width: 80rem;
+        height: 70rem;
+    }
+
+    .db-puzzle-btns {
+        margin: 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+
+    .tableFixHead {
+        overflow-y: auto;
+        height: 35rem;
+    }
+
+    .app-empty-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: var(--font-size-xl);
+    }
+
+    .app-empty-footer>span {
+        padding: 0.3rem;
+    }
+}
+
+@media screen and (aspect-ratio >= 1.7) and (height < 400px) and (width <= 600px) {
+    /* iPhone 5/SE, landscape, 568 x 320, ratio = 1.78 */
+
+    :root {
+        font-size: 42%;
+        --sudoku-cell-size: calc(((100vw - 20rem) /2) /9);
+    }
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .mobile-btn-container {
+        max-width: calc(40vw );
+        max-height: calc(40vw );
     }
 
 
