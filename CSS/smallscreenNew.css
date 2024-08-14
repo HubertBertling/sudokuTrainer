@@ -167,7 +167,7 @@ html {
     text-align: right;
     padding: 0.4rem 0.4rem 0.4rem 0.4rem;
     text-decoration: none;
-    font-size: 4.6rem;
+    font-size: 3rem;
     color: white;
     display: block;
     border: none;
@@ -221,6 +221,7 @@ html {
 
 
 /*=======================================================*/
+
 .app-content {
     display: block;
     gap: 0.5rem;
@@ -533,14 +534,13 @@ html {
 /*======================================*/
 
 .mobile-btn-container {
-    margin-left: 0.6rem;
-    margin-right: 0.6rem;
     padding: 1rem;
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 0.4rem;
+    height: fit-content;
 }
 
 
@@ -559,11 +559,6 @@ html {
 
 .mobile-number {
     font-size: var(--font-size-xl);
-}
-
-.btn {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
 }
 
 .btn-undo-off>img,
@@ -878,7 +873,6 @@ label {
     box-sizing: border-box;
     position: absolute;
     top: 132vw;
-    width: 100%;
     height: 18rem;
     background-color: var(--screen-bg-color);
     border: none;
@@ -895,7 +889,7 @@ label {
     margin-bottom: 1rem;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 8rem 10rem 8rem;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
 }
@@ -905,11 +899,9 @@ label {
     padding-top: 1rem;
     background-color: var(--standard-btn-bg-color);
     text-align: center;
-    font-size: var(--font-size-lg);
     border-radius: 0.3rem;
     border: none;
     display: flex;
-    flex-grow: 1;
     place-items: center;
 }
 
@@ -1377,25 +1369,99 @@ label {
 }
 
 
-@media screen and (min-width: 768px) and (orientation: landscape) {
-
-    /* Desktops, large screens: 1025px - ... */
-    /* Small screens, laptops: 769px - 1024px */
+@media screen and (aspect-ratio < 0.55) and (width < 768px) {
+    /* Fall 1: Portrait und width < 768px */
+    /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
     :root {
-        font-size: 62.5%;
-        --sudoku-cell-size: 4.6rem;
+        font-size: 60%;
+        --sudoku-cell-size: calc((100vw - 3.6rem)/9);
+    }
+    
+    .app-container {
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 
-    body,
-    html {}
+    .trackerDlg {
+        top: 128vw;
+    }
+    
+    .mobile-btn-container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .mobile-btn {
+        font-size: 1.2rem;
+    }
+}
+
+
+/*
+@media screen and (aspect-ratio < 0.55) and (width >= 768px) {
+    :root {
+        font-size: 65%;
+        --sudoku-cell-size: calc((100vw - 3.8rem)/9);
+    }
+
+    .mobile-btn-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn {
+        font-size: 4rem;
+    }
+}
+*/
+
+@media screen and (aspect-ratio >= 0.55) and (aspect-ratio < 1.2) and (width < 768px) {
+    :root {
+        font-size: 45.2%;
+        --sudoku-cell-size: calc((100vw - 3.4rem)/9);
+    }
+    .app-container {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .trackerDlg {
+        top: 106vw;
+    }
+}
+
+
+
+    /* @media screen and (aspect-ratio >= 0.55) and (aspect-ratio < 1.2) and (width >= 768px) { */
+    @media screen and (aspect-ratio < 1.2) and (width >= 768px) and (height >= 614px) {
+    /* Fall 2: Portrait und width >= 768px */
+    /* Surface Pro 7, portrait 912 x 1368, ratio = 0.67 */
+    /* iPad mini, portrait 768 x 1024, ratio = 0.75 */
+    
+    :root {
+        font-size: 65.2%;
+        --sudoku-cell-size: calc(((768px - 14rem) )/9);
+    }
 
     .app-container {
-        display: block;
-        position: relative;
+        margin-left: 18rem;
+        margin-right: 18rem;
     }
 
-    .app-content {
-        display: block;
+    .trackerDlg {
+        top: 106vw;
+    }
+}
+
+/*
+@media screen and (aspect-ratio >= 1.2) and (aspect-ratio < 1.7) and (width < 768px) {
+
+    :root {
+        font-size: 40.2%;
+        --sudoku-cell-size: calc((45vw - 3rem)/9);
+        margin-left: auto;
+        margin-right: auto;
+
     }
 
     .sudoku-solver-container {
@@ -1417,7 +1483,6 @@ label {
         padding-top: 0.3rem;
         padding-left: 0.2rem;
         padding-bottom: 0.3rem;
-        /* border: 0.1rem solid black; */
         background-color: lightgrey;
     }
 
@@ -1463,10 +1528,64 @@ label {
 
     .tableFixHead {
         overflow-y: auto;
-        /* make the table scrollable if height is more than 35 rem  */
         height: 35rem;
-        /* gives an initial height of 35px to the table */
     }
+
+    .app-empty-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: var(--font-size-xl);
+    }
+
+    .app-empty-footer>span {
+        padding: 0.3rem;
+    }
+}
+*/
+
+/* @media screen and (aspect-ratio >= 1.2) and (aspect-ratio < 1.7) and (width >= 768px) { */ 
+
+@media screen and (aspect-ratio >= 1.2) and (height >= 768px) and (width >= 768px) {
+    /* Surface pro 7, landscape, 1368 x 912, ratio = 1.5 */
+    /* iPad mini, landscape, 1024 x 768, ratio = 1.33 */
+      :root {
+        font-size: 65.2%;
+        --sudoku-cell-size: calc(100vw / 2 / 9);
+    }
+
+    .app-container {
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+
+    .mobile-btn {
+        font-size: 2rem;
+    }
+
+    .trackerDlg {
+        top: 25vh;
+        left: 55vw;
+        max-width: 40rem;
+
+    }
+
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    #db-puzzle-dialog {
+        width: 80rem;
+        height: 70rem;
+    }
+
     .app-empty-footer {
         display: flex;
         align-items: center;
@@ -1483,71 +1602,53 @@ label {
     }
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) and (min-aspect-ratio: 1.1/2) and (orientation: portrait) {
 
-    /* */
+@media screen and (aspect-ratio > 1.7) and (width < 768px) {
+/* Samsung S10, landscape, 720 x 360, ratio = 2 */
     :root {
-        font-size: 45%;
+        font-size: 37%;
+        --sudoku-cell-size: calc((100vh - 20rem)/9);
     }
-}
-
-
-@media screen and (min-height: 320px) and (max-height: 767px) and (orientation: landscape) {
-
-    /* Mobile devices: 320px - 480px */
-    /* iPads, tablets: 481px - 768px */
-    :root {
-
-        font-size: 38%;
-        --sudoku-cell-size: calc((95vh - 18rem) /9);
+  
+    .mobile-btn {
+        font-size: 1.2rem;
     }
 
-    body,
-    html {}
+    .mobile-btn-container {
+        max-width: calc(40vw - 10rem);
+        max-height: calc(40vw - 20rem);
+    }
+
+
+    .tracker-dlg-btn {
+        font-size: 1.2rem;
+    }
+
+    .trackerDlg {
+        top: 10rem;
+        left: calc(95vh - 9rem);
+        width: 40rem;
+        height: 25rem;
+        position: absolute;
+        margin-bottom: 5rem;
+    }
 
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
-        gap: 5px;
+        gap: 2px;
     }
 
     .technique,
     .reasonUnsolvability {
         height: 2rem;
-        font-size: var(--font-size);
+        font-size: 1rem;
         display: flex;
-        padding-top: 0.3rem;
-        padding-left: 0.2rem;
-        padding-bottom: 0.3rem;
-        /* border: 0.1rem solid black; */
-        background-color: lightgrey;
     }
 
-    .mobile-btn-container {
-        max-width: 40rem;
-        max-height: 30rem;
-    }
-
-    .btn-with-image {
-        font-size: var(--font-size-lg);
-    }
-
-    .trackerDlg {
-        background-color: var(--screen-bg-color);
-        border: none;
-        top: 10rem;
-        width: 40rem;
-        height: 30rem;
-
-        position: absolute;
-        margin-bottom: 10rem;
-        /* left: calc(35vw + 5rem); */
-        left: calc(95vh - 9rem);
-    }
-
+    
     #settings-dlg {
         width: 50rem;
-        ;
     }
 
     #db-puzzle-dialog {
@@ -1566,9 +1667,7 @@ label {
 
     .tableFixHead {
         overflow-y: auto;
-        /* make the table scrollable if height is more than 35 rem  */
         height: 35rem;
-        /* gives an initial height of 35px to the table */
     }
 
     .app-empty-footer {
@@ -1584,7 +1683,89 @@ label {
 
     .app-empty-footer>span {
         padding: 0.3rem;
+    }
+}
 
+/* @media screen and (aspect-ratio > 1.7) and (width >= 768px) { */
+@media screen and (aspect-ratio >= 1.2) and (height < 614px) and (width >= 768px) {
+    /* Samsung S22, landscape, 1067 x 480, ratio = 2.22 */
+
+    :root {
+        font-size: 52%;
+        --sudoku-cell-size: calc(((768px /2) - 8rem)/9);
     }
 
+ 
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .mobile-btn-container {
+        max-width: calc(40vw - 10rem);
+        max-height: calc(40vw - 20rem);
+    }
+
+
+    .technique,
+    .reasonUnsolvability {
+        height: 2rem;
+        font-size: 1.4rem;
+        display: flex;
+ }
+
+   
+    .btn-with-image {
+        font-size: 1.2rem;
+    }
+
+    .trackerDlg {
+        top: 10rem;
+        width: 30rem;
+        height: 20rem;
+
+        position: absolute;
+        margin-bottom: 1rem;
+        left: calc(95vh - 9rem);
+    }
+
+    #settings-dlg {
+        width: 50rem;
+    }
+
+    #db-puzzle-dialog {
+        width: 80rem;
+        height: 70rem;
+    }
+
+    .db-puzzle-btns {
+        margin: 1.2rem;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+
+    .tableFixHead {
+        overflow-y: auto;
+        height: 35rem;
+    }
+
+    .app-empty-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: var(--font-size-xl);
+    }
+
+    .app-empty-footer>span {
+        padding: 0.3rem;
+    }
 }
