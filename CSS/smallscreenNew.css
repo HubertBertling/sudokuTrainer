@@ -223,7 +223,6 @@ html {
 /*=======================================================*/
 
 .app-container {
-    max-width: 1024rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -231,7 +230,6 @@ html {
 
 .app-content {
     display: block;
-    gap: 0.5rem;
 }
 
 /* App-header */
@@ -310,7 +308,6 @@ html {
 
 
 .sudoku-solver-container {
-    position: relative;
     display: block;
     /* gap: 0.5rem; */
 }
@@ -320,7 +317,6 @@ html {
 /*======================================*/
 
 .gridArea {
-    position: relative;
     /* display: grid;
     grid-template-columns: repeat(1, auto);*/
     display: block;
@@ -539,10 +535,12 @@ html {
 /*======================================*/
 /* Button container                  */
 /*======================================*/
+.orientation {
+    position: relative;
+}
 
 .mobile-btn-container {
     padding: 1rem;
-    flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -879,23 +877,26 @@ label {
 
 .trackerDlg {
     position: absolute;
+    top: 0;
+    z-index: 1;
+    margin-top: 1rem;
     background-color: var(--screen-bg-color);
-    border: 0.6rem solid grey;
+    border: none; 
     padding: 1rem;
 }
 
 
 .tracker-dialog-area {
-    border: 0.2rem solid grey;
+    /*  border: 0.2rem solid grey; */
     display: grid;
     place-items: center;
 }
 
 
 .backtrack-options {
-    margin-top: 0.8rem;
+    margin-top: 0.4rem;
     display: grid;
-    grid-template-columns: 8rem 10rem 8rem;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
 }
@@ -1366,7 +1367,6 @@ label {
     }
 
     .trackerDlg {
-       top: 128vw; 
        margin-left: auto;
        margin-right: auto;
     }
@@ -1411,10 +1411,11 @@ label {
         margin-left: 10rem;
         margin-right: 10rem;
     }
-
     .trackerDlg {
-       /* top: 100vw;*/
-    }
+        margin-left: auto;
+        margin-right: auto;
+     }
+
 }
 
 
@@ -1425,14 +1426,12 @@ label {
     
     :root {
         font-size: 65.2%;
-        --sudoku-cell-size: calc(((768px - 14rem) )/9);
+        --sudoku-cell-size: calc(((768px - 16rem) )/9);
     }
 
   
        /* top: 106vw; */
        .trackerDlg {
-        position: absolute;
-        top: 1vw * (100 + 6vw) ; 
         margin-left: auto;
         margin-right: auto;
      }
@@ -1457,14 +1456,6 @@ label {
     .mobile-btn {
         font-size: 2rem;
     }
-
-    .trackerDlg {
-        /*
-        top: 25vh;
-        left: 55vw;
-        */
-      }
-
 
     .sudoku-solver-container {
         display: flex;
@@ -1509,13 +1500,6 @@ label {
     .mobile-btn-container {
         max-width: calc(40vw - 10rem);
         max-height: calc(40vw - 20rem);
-    }
-
-
-    .trackerDlg {
-        top: 10rem;
-        position: absolute;
-        left: calc(95vh + 12rem);
     }
 
     .sudoku-solver-container {
@@ -1613,15 +1597,6 @@ label {
     .btn-with-image {
         font-size: 1.2rem;
     }
-
-    .trackerDlg {
-        
-        top: 10rem;
-        position: absolute;
-        left: calc(95vh + 12rem);
-        
-    }
-
     #settings-dlg {
         width: 50rem;
     }
@@ -1691,18 +1666,6 @@ label {
    
     .btn-with-image {
         font-size: 1.2rem;
-    }
-
-    .trackerDlg {
-        /*
-        top: 10rem;
-        width: 30rem;
-        height: 20rem;
-
-        position: absolute;
-        margin-bottom: 1rem;
-        left: calc(95vh - 9rem);
-        */
     }
 
     #settings-dlg {
