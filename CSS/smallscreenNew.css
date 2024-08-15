@@ -222,6 +222,13 @@ html {
 
 /*=======================================================*/
 
+.app-container {
+    max-width: 1024rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 .app-content {
     display: block;
     gap: 0.5rem;
@@ -867,57 +874,32 @@ label {
 /*=======================================*/
 /* Tracker-Dialog 
 /*=======================================*/
-.trackerDlg {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    position: absolute;
-    top: 132vw;
-    height: 18rem;
-    background-color: var(--screen-bg-color);
-    border: none;
 
-    padding-left: 1rem;
-    padding-top: 1rem;
-    padding-right: 1rem;
-    margin-left: auto;
-    margin-right: auto;
+
+
+.trackerDlg {
+    position: absolute;
+    background-color: var(--screen-bg-color);
+    border: 0.6rem solid grey;
+    padding: 1rem;
 }
 
-.backtrack-options {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
 
+.tracker-dialog-area {
+    border: 0.2rem solid grey;
+    display: grid;
+    place-items: center;
+}
+
+
+.backtrack-options {
+    margin-top: 0.8rem;
     display: grid;
     grid-template-columns: 8rem 10rem 8rem;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
 }
 
-
-.tracker-dlg-btn {
-    padding-top: 1rem;
-    background-color: var(--standard-btn-bg-color);
-    text-align: center;
-    border-radius: 0.3rem;
-    border: none;
-    display: flex;
-    place-items: center;
-}
-
-/*
-#btn-backtrack-stop {
-    grid-column-start: 1;
-    grid-column-end: 4;
-}
-*/
-
-.tracker-dialog-area {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    display: grid;
-    place-items: center;
-}
 
 .trackerDlg::backdrop {
     background: hsl(201 50% 40% /.1);
@@ -935,8 +917,6 @@ label {
     flex-direction: row;
     place-items: center;
 }
-
-
 .label-solution {
     font-weight: bold;
     font-size: 1.8rem;
@@ -950,10 +930,11 @@ label {
 }
 
 .tracker-dlg-btn {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
+    background-color: var(--standard-btn-bg-color);
+    border-radius: 0.3rem;
+    border: none;
+    font-size: 1.2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -963,11 +944,12 @@ label {
 .tracker-dlg-btn-image {
     width: 1.2rem;
     height: 1.8rem;
+    margin:0.2rem;
 }
 
 #tracker-dlg-btn-step-sequence-image,
 #tracker-dlg-btn-solution-sequence-image {
-    width: 4rem;
+    width: 3rem;
 }
 
 
@@ -1369,7 +1351,6 @@ label {
 }
 
 
-    /* @media screen and (aspect-ratio < 0.55) and (width < 768px) { */
     @media screen and (aspect-ratio < 1.2) and (height >= 537px) and (width < 768px) {
     /* Fall 1: Portrait und width < 768px */
     /* 768px * 0.77 = 538px */ 
@@ -1385,7 +1366,9 @@ label {
     }
 
     .trackerDlg {
-        top: 128vw;
+       top: 128vw; 
+       margin-left: auto;
+       margin-right: auto;
     }
     
     .mobile-btn-container {
@@ -1430,7 +1413,7 @@ label {
     }
 
     .trackerDlg {
-        top: 106vw;
+       /* top: 100vw;*/
     }
 }
 
@@ -1445,14 +1428,15 @@ label {
         --sudoku-cell-size: calc(((768px - 14rem) )/9);
     }
 
-    .app-container {
-        margin-left: 18rem;
-        margin-right: 18rem;
-    }
-
-    .trackerDlg {
-        top: 106vw;
-    }
+  
+       /* top: 106vw; */
+       .trackerDlg {
+        position: absolute;
+        top: 1vw * (100 + 6vw) ; 
+        margin-left: auto;
+        margin-right: auto;
+     }
+    
 }
 
 @media screen and (aspect-ratio >= 1.2) and (height >= 768px) and (width >= 768px) {
@@ -1464,6 +1448,8 @@ label {
     }
 
     .app-container {
+        max-width: 1024rem;
+        max-height: 1024rem;
         margin-left: 4rem;
         margin-right: 4rem;
     }
@@ -1473,11 +1459,11 @@ label {
     }
 
     .trackerDlg {
+        /*
         top: 25vh;
         left: 55vw;
-        max-width: 40rem;
-
-    }
+        */
+      }
 
 
     .sudoku-solver-container {
@@ -1526,17 +1512,10 @@ label {
     }
 
 
-    .tracker-dlg-btn {
-        font-size: 1.2rem;
-    }
-
     .trackerDlg {
         top: 10rem;
-        left: calc(95vh - 9rem);
-        width: 40rem;
-        height: 25rem;
         position: absolute;
-        margin-bottom: 5rem;
+        left: calc(95vh + 12rem);
     }
 
     .sudoku-solver-container {
@@ -1603,6 +1582,14 @@ label {
         --sudoku-cell-size: calc(((768px /2) - 8rem)/9);
     }
 
+    .app-container {
+        max-width: 1024rem;
+        max-height: 1024rem;
+        margin-left: 18rem;
+        margin-right: 18rem;
+    }
+
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1628,13 +1615,11 @@ label {
     }
 
     .trackerDlg {
+        
         top: 10rem;
-        width: 30rem;
-        height: 20rem;
-
         position: absolute;
-        margin-bottom: 1rem;
-        left: calc(95vh - 9rem);
+        left: calc(95vh + 12rem);
+        
     }
 
     #settings-dlg {
@@ -1691,8 +1676,8 @@ label {
     }
 
     .mobile-btn-container {
-        max-width: calc(40vw );
-        max-height: calc(40vw );
+        max-width: 40vw ;
+        max-height: 40vw;
     }
 
 
@@ -1709,6 +1694,7 @@ label {
     }
 
     .trackerDlg {
+        /*
         top: 10rem;
         width: 30rem;
         height: 20rem;
@@ -1716,6 +1702,7 @@ label {
         position: absolute;
         margin-bottom: 1rem;
         left: calc(95vh - 9rem);
+        */
     }
 
     #settings-dlg {
