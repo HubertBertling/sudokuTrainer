@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     -->
-   <link rel="canonical" href="https://hubertbertling.github.io/sudokuTrainer/" />
+    <link rel="canonical" href="https://hubertbertling.github.io/sudokuTrainer/" />
     <!--<link rel="canonical" href="http://localhost:8080/sudokuTrainer/" /> -->
     <link rel="manifest" href="manifest.json">
 
@@ -23,13 +23,6 @@
 
 <body>
     <div class="app-container">
-        <div id="puzzle-info">
-
-        </div>
-        <div id="loader">
-            <div id="search-level"></div>
-        </div>
-
         <div class="app-content noprint">
 
             <div id="mySidenav" class="sidenav">
@@ -75,7 +68,6 @@
                 <button class="help-button btn" id="help-button"> ? </button>
             </div>
             <div class="sudoku-solver-container">
-
                 <div class="gridArea" id="gridArea">
                     <div class="loaded-evaluations" id="loaded-evaluations">
                     </div>
@@ -119,50 +111,99 @@
                         </div>
                     </div>
                 </div>
-                <div class="mobile-btn-container dropdown" id="mobile-btn-container">
-                    <button class="mobile-interface mobile-btn btn-with-image btn-save" id="btn-save-mobile"><img
-                            src="images/save.png" class="btn-image">Speichern
-                    </button>
-                    <button class="mobile-interface mobile-btn btn-delete-cell">X</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="7">7</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="8">8</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="9">9</button>
+                <div class="orientation">
+                    <div class="mobile-btn-container dropdown" id="mobile-btn-container">
+                        <button class="mobile-interface mobile-btn btn-with-image btn-save" id="btn-save-mobile"><img
+                                src="images/save.png" class="btn-image">Speichern
+                        </button>
+                        <button class="mobile-interface mobile-btn btn-delete-cell">X</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="7">7</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="8">8</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="9">9</button>
 
-                    <button class="mobile-interface mobile-btn btn-define">Phase: Definition</button>
-                    <button class="mobile-interface mobile-btn btn-undo" id="btn-undo">
-                        <img src="images/undo.png" class="btn-image">
-                        Undo
-                    </button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="4">4</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="5">5</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="6">6</button>
+                        <button class="mobile-interface mobile-btn btn-define">Phase: Definition</button>
+                        <button class="mobile-interface mobile-btn btn-undo" id="btn-undo">
+                            <img src="images/undo.png" class="btn-image">
+                            Undo
+                        </button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="4">4</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="5">5</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="6">6</button>
 
-                    <button class="mobile-interface mobile-btn btn-play">Phase: Lösen</button>
-                    <button class="mobile-interface mobile-btn btn-redo" id="btn-redo">
-                        <img src="images/redo.png" class="btn-image">
-                        Redo
-                    </button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="1">1</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="2">2</button>
-                    <button class="mobile-interface mobile-btn mobile-number" value="3">3</button>
+                        <button class="mobile-interface mobile-btn btn-play">Phase: Lösen</button>
+                        <button class="mobile-interface mobile-btn btn-redo" id="btn-redo">
+                            <img src="images/redo.png" class="btn-image">
+                            Redo
+                        </button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="1">1</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="2">2</button>
+                        <button class="mobile-interface mobile-btn mobile-number" value="3">3</button>
 
-                    <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img src="images/reset.png"
-                            class="btn-image">Reset</button>
-                    <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                        <img src="images/lupe.png" class="btn-image">
-                        Prüfen
-                    </button>
-                    <button class="mobile-interface mobile-btn btn-with-image btn-run" id="btn-run">
-                        <img src="images/play-96.png" class="btn-image">
-                        Start Solver
-                    </button>
+                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img src="images/reset.png"
+                                class="btn-image">Reset</button>
+                        <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                            <img src="images/lupe.png" class="btn-image">
+                            Prüfen
+                        </button>
+                        <button class="mobile-interface mobile-btn btn-with-image btn-run" id="btn-run">
+                            <img src="images/play-96.png" class="btn-image">
+                            Start Solver
+                        </button>
+                    </div>
+                    <dialog class="trackerDlg noprint" id="trackerDlg">
+                        <div class="tracker-dialog-area">
+                            <div class="tracker-dlg-header">Mit dem Solver Lösungen suchen</div>
+                            <div class="tracker-dlg-solution" id="tracker-dlg-solution">
+                                <div class="label-solution">Lösungen gefunden: </div>
+                                <div class="number-of-solutions" id="number-of-solutions">0</div>
+                            </div>
+                            <div class="tracker-body">
+                                <div class="backtrack-options" id="backtrack-options">
+                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-step">
+                                        <img src="images/step.png" class="tracker-dlg-btn-image" id="image-autostep">
+                                        Nächster Schritt
+                                    </button>
+                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-continue">
+                                        <img src="images/stepsequence.png" class="tracker-dlg-btn-image"
+                                            id="tracker-dlg-btn-step-sequence-image">
+                                        Suchlauf mit Haltepunkten
+                                    </button>
+                                    <button class="tracker-dlg-btn btn" id="btn-breakpoint-settings">
+                                        <img src="images/zahnrad.png" class="tracker-dlg-btn-image">
+                                        Haltepunkte
+                                    </button>
+                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast-step">
+                                        <img src="images/solution.png" class="tracker-dlg-btn-image">
+                                        Nächste Lösung
+                                    </button>
+                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast">
+                                        <img src="images/solutionsequence.png" class="tracker-dlg-btn-image"
+                                            id="tracker-dlg-btn-solution-sequence-image">
+                                        Lösungen ...
+                                    </button>
+                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-stop">
+                                        <img src="images/stop-96.png" class="tracker-dlg-btn-image">
+                                        Schließen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </dialog>
                 </div>
             </div>
-            <div class="app-empty-footer pc-element">
-
-            </div>
+        </div>
+        <div class="app-empty-footer pc-element">
+            <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
         </div>
     </div>
+
+    <!--Ausblendbare Elemente -->
+    <div id="puzzle-info">
+    </div>
+    <div id="loader">
+        <div id="search-level"></div>
+    </div>
+
     <!--Dialoge -->
 
     <dialog class="puzzle-table-dlg noprint" id="db-puzzle-dialog">
@@ -207,9 +248,12 @@
                     <button class="db-puzzle-button noprint" id="pz-btn-next"><img src="images/pfeilvorwaerts.png"
                             class="btn-image"></button>
                     <button class="db-puzzle-button noprint" id="pz-btn-delete"><img src="images/times200.png"
-                            class="btn-image"><div>Puzzle löschen</div></button>
+                            class="btn-image">
+                        <div>Puzzle löschen</div>
+                    </button>
                     <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img src="images/times200.png"
-                            class="btn-image"><div>DB löschen</div>
+                            class="btn-image">
+                        <div>DB löschen</div>
                     </button>
                     <button class="db-puzzle-button" id="db-puzzle-btn-print"><img src="images/drucker.png"
                             class="btn-image">Drucken
@@ -293,45 +337,6 @@
         <button class="infoDlg-OK-Btn" id="infoDlg-OK-Btn">OK</button>
     </dialog>
 
-    <dialog class="trackerDlg noprint" id="trackerDlg">
-        <div class="tracker-dialog-area">
-            <div class="tracker-dlg-header">Mit dem Solver Lösungen suchen</div>
-            <div class="tracker-dlg-solution" id="tracker-dlg-solution">
-                <div class="label-solution">Lösungen gefunden: </div>
-                <div class="number-of-solutions" id="number-of-solutions">0</div>
-            </div>
-            <div class="tracker-body">
-                <div class="backtrack-options" id="backtrack-options">
-                    <button class="tracker-dlg-btn btn" id="btn-backtrack-step">
-                        <img src="images/step.png" class="tracker-dlg-btn-image" id="image-autostep">
-                        Nächster Schritt
-                    </button>
-                    <button class="tracker-dlg-btn btn" id="btn-backtrack-continue">
-                        <img src="images/stepsequence.png" class="tracker-dlg-btn-image"
-                            id="tracker-dlg-btn-step-sequence-image">
-                        Suchlauf mit Haltepunkten
-                    </button>
-                    <button class="tracker-dlg-btn btn" id="btn-breakpoint-settings">
-                        <img src="images/zahnrad.png" class="tracker-dlg-btn-image">
-                        Haltepunkte
-                    </button>
-                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast-step">
-                        <img src="images/solution.png" class="tracker-dlg-btn-image">
-                        Nächste Lösung
-                    </button>
-                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast">
-                        <img src="images/solutionsequence.png" class="tracker-dlg-btn-image"
-                            id="tracker-dlg-btn-solution-sequence-image">
-                        Lösungen ...
-                    </button>
-                    <button class="tracker-dlg-btn btn" id="btn-backtrack-stop">
-                        <img src="images/stop-96.png" class="tracker-dlg-btn-image">
-                        Schließen
-                    </button>
-                </div>
-            </div>
-        </div>
-    </dialog>
     <dialog class="settings-dlg noprint" id="settings-dlg">
         <div class="settings-dlg-area">
             <div class="dlg-header">
@@ -409,7 +414,8 @@
                     <label class="label-container first-label-container">
                         <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Single</div>
-                        <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit Single auftritt, 
+                        <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit Single
+                            auftritt,
                             hat das Puzzle mindestens den Schwierigkeitsgrad 'Mittel'.
                         </div>
                     </label>
@@ -424,7 +430,8 @@
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Selektionsoptionen</div>
-                        <div class="label-text text-spacing">Haltepunkt für Schritte ohne eindeutigen nächsten Kandidaten. Schon erprobte Kandidaten werden mit Unterstrich
+                        <div class="label-text text-spacing">Haltepunkt für Schritte ohne eindeutigen nächsten
+                            Kandidaten. Schon erprobte Kandidaten werden mit Unterstrich
                             angezeigt.
                         </div>
                     </label>
