@@ -1383,7 +1383,7 @@ label {
     /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
     :root {
         font-size: 65%;
-        --sudoku-cell-size: calc((min(100vw, (100vh/2.5 + 1rem)))/9);
+        --sudoku-cell-size: calc((min(100vw, (100vh * 0.42)))/9);
     }
 
     .app-empty-container {
@@ -1399,7 +1399,7 @@ label {
     }
 
     .mobile-btn-container {
-        width: calc(min(100vw, (100vh/2.5)));
+        width: calc(min(100vw, (100vh *0.42)));
         margin-left: auto;
         margin-right: auto;
     }
@@ -1421,7 +1421,7 @@ label {
     /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
     :root {
         font-size: 65%;
-        --sudoku-cell-size: calc((min(100vw, (100vh/2.5)))/9);
+        --sudoku-cell-size: calc((min(100vw, (100vh * 0.42)))/9);
     }
 
     .app-empty-container {
@@ -1437,7 +1437,7 @@ label {
 
     :root {
         font-size: 65%;
-        --sudoku-cell-size: calc((min(100vw, (100vh/2.5 + 10rem)))/9);
+        --sudoku-cell-size: calc((min(95vw, (100vh * 0.42)))/9);
     }
 
     .app-empty-container {
@@ -1453,7 +1453,7 @@ label {
     }
 
     .mobile-btn-container {
-        width: calc(min(100vw, (100vh/2.5 + 10rem)));
+        width: calc(min(95vw, (100vh * 0.42)));
         margin-left: auto;
         margin-right: auto;
     }
