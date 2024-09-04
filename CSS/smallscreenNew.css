@@ -1134,7 +1134,7 @@ label {
 .db-puzzle-header {
     font-size: 1.8rem;
     font-weight: bold;
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     color: white;
     background-color: #500;
@@ -1443,7 +1443,11 @@ label {
 
     .mobile-btn {
         font-size: 1.2rem;
-    }   
+    } 
+    .tableFixHead {
+        /* make the table scrollable if height is more than 200 px  */
+        height: 15rem;
+    }  
 }
 
 
@@ -1487,7 +1491,7 @@ label {
     }
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
-        height: 20rem;
+        height: 15rem;
     }
     
 }
@@ -1530,6 +1534,11 @@ label {
 
     .mobile-btn {
         font-size: 1.2rem;
+    }
+
+    .tableFixHead {
+        /* make the table scrollable if height is more than 200 px  */
+        height: 15rem;
     }
 }
 
