@@ -242,9 +242,9 @@ html {
     flex-direction: row;
     align-items: center;
     position: relative;
-    height: 3.6rem;
+    height: 4.6rem;
 
-    font-size: var(--font-size-xl);
+    font-size: 1.8rem;
     font-weight: bold;
     /*  text-align: center;
     place-items: center; */
@@ -1132,7 +1132,7 @@ label {
 }
 
 .db-puzzle-header {
-    font-size: var(--font-size-xl);
+    font-size: 1.8rem;
     font-weight: bold;
     padding: 2rem;
     text-align: center;
@@ -1170,7 +1170,7 @@ label {
 
 .db-puzzle-table th,
 .db-puzzle-table td {
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 0.4rem 0.4rem;
     border: 0.1rem solid #ccc;
 }
@@ -1223,7 +1223,7 @@ label {
 .db-puzzle-button {
     background-color: #ddd;
     text-align: center;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
     display: grid;
     grid-template-columns: 1fr;
     place-items: center;
@@ -1359,7 +1359,7 @@ label {
     background-color: DimGray;
     color: white;
     border-radius: 0.6rem;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
 }
 
 .app-empty-footer>span {
@@ -1376,14 +1376,16 @@ label {
     font-size: 4rem;
 }
 
-@media screen and (width < 768px) and (height > 500px) {
-
-    /* Fall 1: Portrait und width < 768px */
-    /* 768px * 0.77 = 538px */
-    /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
+@media screen and (320px <= width < 375px) and (aspect-ratio <= 0.5) {
+    /* Medium mobiles */
+    /* Portrait */ 
+    /* Galaxy S10: 360px * 760px */
+    /* Galaxy S20 Ultra: 412px x 915px*/
+    /* iPhone 14: 380 x 844 */
     :root {
-        font-size: 65%;
-        --sudoku-cell-size: calc((min(100vw, (100vh * 0.42)))/9);
+        font-size: 65.3%;
+       --sudoku-cell-size: calc(87vw/9); 
+       
     }
 
     .app-empty-container {
@@ -1399,7 +1401,7 @@ label {
     }
 
     .mobile-btn-container {
-        width: calc(min(100vw, (100vh *0.42)));
+        width: 98vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1408,36 +1410,17 @@ label {
         font-size: 1.2rem;
     }
 
-    #db-puzzle-dialog {
-        width: 100%;
-        height: 100%;
-    }
+   
 }
 
-@media screen and (width < 768px) and (height <= 500px) {
-
-    /* Fall 1: Portrait und width < 768px */
-    /* 768px * 0.77 = 538px */
-    /* Samsung S10, portrait 360 x 720 , ratio = 0.5 */
+@media screen and (320px <= width < 375px) and (0.5 < aspect-ratio <= 1) {
+    /* Medium mobiles */
+    /* Portrait */ 
+    /* iPhone SE (2022): 375 x 667 */
     :root {
-        font-size: 65%;
-        --sudoku-cell-size: calc((min(100vw, (100vh * 0.42)))/9);
-    }
-
-    .app-empty-container {
-        display: block;
-    }
-    .app-container {
-        display: none;
-    }
-
-}
-
-@media screen and (width >= 768px) and (height >= 500px) and (aspect-ratio < 1) {
-
-    :root {
-        font-size: 65%;
-        --sudoku-cell-size: calc((min(95vw, (100vh * 0.42)))/9);
+        font-size: 45%;
+       --sudoku-cell-size: calc(85rem/9); 
+       
     }
 
     .app-empty-container {
@@ -1453,7 +1436,48 @@ label {
     }
 
     .mobile-btn-container {
-        width: calc(min(95vw, (100vh * 0.42)));
+        width: 85rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn {
+        font-size: 1.2rem;
+    }   
+}
+
+
+@media screen and (375px < width < 768px) and (aspect-ratio >= 2) {
+    /* Medium mobiles */
+    /* Landscape */ 
+    /* Galaxy S10: 360px * 760px */
+    :root {
+        font-size: 40%; 
+         /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
+       --sudoku-cell-size: calc(60vw / 2 / 9);
+    }
+
+    .app-empty-container {
+        display: none;
+    }
+    .app-container {
+        display: block;
+    }
+
+    
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .trackerDlg {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn-container {
+        width: 30vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1461,20 +1485,59 @@ label {
     .mobile-btn {
         font-size: 1.2rem;
     }
-    #db-puzzle-dialog {
-    width: 100%;
-    height: 100%;
-}
 }
 
-
-@media screen and (width >= 768px) and (height >= 500px) and (aspect-ratio > 1) {
-
-    /* Surface pro 7, landscape, 1368 x 912, ratio = 1.5 */
-    /* iPad mini, landscape, 1024 x 768, ratio = 1.33 */
+@media screen and (375px < width < 768px) and (1 <= aspect-ratio < 2) and (height < 500px) {
+    /* Medium mobiles */
+    /* Landscape */ 
+    /* Galaxy S10: 360px * 760px */
+    /* iPhone SE (2022): 375 x 667 */
     :root {
-        font-size: 65.2%;
-        --sudoku-cell-size: calc((min(800px, 100vw) - 60px) / 2 / 9);
+        font-size: 50%; 
+         /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
+       --sudoku-cell-size: calc(65vw / 2 / 9);
+    }
+
+    .app-empty-container {
+        display: none;
+    }
+    .app-container {
+        display: block;
+    }
+
+    
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .trackerDlg {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn-container {
+        width: 40vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn {
+        font-size: 1.2rem;
+    }
+}
+
+
+@media screen and (width >= 768px) and (2 <= aspect-ratio) and (height <= 500px) {
+    /* Medium mobiles */
+    /* Landscape */ 
+    /* Galaxy S20 Ultra: 412px * 915px */
+    /* iPhone 14: 380 x 844 */
+
+    :root {
+        font-size: 48%;
+        --sudoku-cell-size: calc(60vw / 2 / 9);
     }
     
     .app-empty-container {
@@ -1495,14 +1558,14 @@ label {
     }
 
     .mobile-btn-container {
-        width: calc(min(100vw, (100vh/2.5) + 10rem));
+        width: calc(60vw / 2 );
         margin-left: auto;
         margin-right: auto;
     }
 
     #db-puzzle-dialog {
-        width: 100dvw;
-        height: 100dvh;
+        width: 100vw;
+        height: 100vh;
     }
 
     .app-empty-footer {
@@ -1521,21 +1584,92 @@ label {
     }
 }
 
-@media screen and (width >= 768px) and (height <= 500px) {
+@media screen and (width >= 768px) and (0.5 < aspect-ratio < 1) and (height > 500px) {
+
+    :root {
+        font-size: 65%;
+        --sudoku-cell-size: calc(80vw/9);
+    }
+
+    .app-empty-container {
+        display: none;
+    }
+    .app-container {
+        display: block;
+    }
+
+    .trackerDlg {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn-container {
+        width: 80vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mobile-btn {
+        font-size: 1.2rem;
+    }
+    #db-puzzle-dialog {
+    width: 100%;
+    height: 100%;
+}
+}
+
+@media screen and (width >= 768px) and (1 <= aspect-ratio) and (height > 500px) {
 
     /* Surface pro 7, landscape, 1368 x 912, ratio = 1.5 */
     /* iPad mini, landscape, 1024 x 768, ratio = 1.33 */
     :root {
-        font-size: 65.2%;
-        --sudoku-cell-size: calc((min(800px, 100vw) - 120px) / 2 / 9);
+        font-size: 70%;
+        --sudoku-cell-size: calc(800px / 2 / 9);
     }
     
     .app-empty-container {
-        display: block;
-    }
-    .app-container {
         display: none;
     }
+    .app-container {
+        display: block;
+    }
+
+    .mobile-btn {
+        font-size: 1.2rem;
+    }
+
+    .sudoku-solver-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .mobile-btn-container {
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #db-puzzle-dialog {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .app-empty-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: DimGray;
+        color: white;
+        border-radius: 0.6rem;
+        font-size: 1.2rem;
+    }
+
+    .app-empty-footer>span {
+        padding: 0.3rem;
+    }
 }
+
 /****************************************************************
 
