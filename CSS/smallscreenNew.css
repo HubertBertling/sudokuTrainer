@@ -1170,7 +1170,7 @@ label {
 
 .db-puzzle-table th,
 .db-puzzle-table td {
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 0.4rem 0.4rem;
     border: 0.1rem solid #ccc;
 }
@@ -1485,6 +1485,11 @@ label {
     .mobile-btn {
         font-size: 1.2rem;
     }
+    .tableFixHead {
+        /* make the table scrollable if height is more than 200 px  */
+        height: 20rem;
+    }
+    
 }
 
 @media screen and (375px < width < 768px) and (1 <= aspect-ratio < 2) and (height < 500px) {
