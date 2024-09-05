@@ -1416,12 +1416,12 @@ label {
     }   
 }
 
-/*
+
 @media screen and (320px <= width < 480px) and (0.5 < aspect-ratio <= 1) {
     /* case 2 */
   
     /* Portrait */ 
-    /* iPhone SE (2022): 375 x 667 
+    /* iPhone SE (2022): 375 x 667 */ 
     :root {
         font-size: 45%;
        --sudoku-cell-size: calc(85vw/9); 
@@ -1451,8 +1451,6 @@ label {
     } 
  
 }
-
-*/
 
 @media screen and (480px <= width) and (0.5 < aspect-ratio <= 1) {
     /* case 3*/
