@@ -1381,7 +1381,7 @@ label {
 /* width 300 - 480, Portrait */  
 /* ============================================================= */
 
-@media screen and (300px <= width < 480px) and (aspect-ratio <= 0.5) {
+@media screen and (300px <= width < 480px) and (aspect-ratio <= 1) {
     /* case 1 */
     /* Portrait */ 
     /* Galaxy S10: 360px * 760px */
@@ -1416,11 +1416,12 @@ label {
     }   
 }
 
+/*
 @media screen and (320px <= width < 480px) and (0.5 < aspect-ratio <= 1) {
     /* case 2 */
   
     /* Portrait */ 
-    /* iPhone SE (2022): 375 x 667 */
+    /* iPhone SE (2022): 375 x 667 
     :root {
         font-size: 45%;
        --sudoku-cell-size: calc(85vw/9); 
@@ -1450,6 +1451,8 @@ label {
     } 
  
 }
+
+*/
 
 @media screen and (480px <= width) and (0.5 < aspect-ratio <= 1) {
     /* case 3*/
@@ -1543,7 +1546,7 @@ label {
 
     :root {
         font-size: 75%;
-        --sudoku-cell-size: calc(90vw / 2 / 9);
+        --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
     
     .app-empty-container {
@@ -1564,7 +1567,7 @@ label {
     }
 
     .mobile-btn-container {
-        width: 40vw;
+        width: calc(min(90vw, 800px) /2);
         margin-left: auto;
         margin-right: auto;
     }
