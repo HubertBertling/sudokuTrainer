@@ -1381,7 +1381,7 @@ label {
 /* width 300 - 480, Portrait */  
 /* ============================================================= */
 
-@media screen and (300px <= width < 480px) and (aspect-ratio <= 1) {
+@media screen and (300px <= width < 480px) and (aspect-ratio <= 0.5) {
     /* case 1 */
     /* Portrait */ 
     /* Galaxy S10: 360px * 760px */
@@ -1417,7 +1417,7 @@ label {
 }
 
 
-@media screen and (320px <= width < 480px) and (0.5 < aspect-ratio <= 1) {
+@media screen and (320px <= width < 480px) and (0.5 < aspect-ratio <= 1)  {
     /* case 2 */
   
     /* Portrait */ 
