@@ -1489,7 +1489,9 @@ label {
     
 }
 
-@media screen  and (orientation: landscape ) and (width >= 480px) and (height < 500px) {
+/* @media screen  and (orientation: landscape ) and (width >= 480px) and (height < 500px) { */
+
+    @media screen and (width >= 480px) and (height < 500px) {
 
     /* Case 4 */
     /* Landscape */ 
@@ -1536,7 +1538,7 @@ label {
     }
 }
 
-@media screen and (orientation: landscape ) and (width >= 768px) {
+@media screen and (orientation: landscape ) and (width >= 768px) and (height > 500px) {
     /* case 5 */
     /* Landscape */ 
     /* Galaxy S20 Ultra: 412px * 915px */
