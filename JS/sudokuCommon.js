@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 658;
+let VERSION = 659;
 
 // ==========================================
 // Basic classes
@@ -6798,7 +6798,7 @@ class SudokuSolverController {
                 this.myUndoActionStack.push(action);
                 this.mySolver.notify();
                 if (this.mySolver.succeeds()) {
-                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Das Puzzle ist gelöst.");
+                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!");
                 }
                 this.mySolver.myGrid.unsetStepLazy();
             }
