@@ -1532,6 +1532,10 @@ label {
         font-size: 1.8rem;
     }
 
+    .tracker-dlg-btn {
+        font-size: 1.8rem;
+    }
+
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
         height: 30rem;
