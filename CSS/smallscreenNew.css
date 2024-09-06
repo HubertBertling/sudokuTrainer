@@ -1381,7 +1381,7 @@ label {
 /* width 300 - 480, Portrait */  
 /* ============================================================= */
 
-@media screen and (width < 480px) and (aspect-ratio <= 0.5) {
+@media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <= 0.5) {
     /* case 1 */
     /* Portrait */ 
     /* Galaxy S10: 360px * 760px */
@@ -1416,8 +1416,7 @@ label {
     }   
 }
 
-
-@media screen and (width < 480px) and (aspect-ratio > 0.5) and (aspect-ratio <= 1) {
+@media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio > 0.5) {
     /* case 2 */
   
     /* Portrait */ 
@@ -1452,7 +1451,7 @@ label {
  
 }
 
-@media screen and (width >= 480px) and (aspect-ratio > 0.5) and (aspect-ratio <= 1) {
+@media screen and (orientation: portrait) and (width >= 480px) and (aspect-ratio > 0.5) {
     /* case 3*/
     /* portrait */ 
     :root {
@@ -1489,7 +1488,7 @@ label {
     
 }
 
-@media screen and (width >= 480px) and (aspect-ratio > 1) and (height < 500px) {
+@media screen  and (orientation: landscape ) and (width >= 480px) and (height < 500px) {
 
     /* Case 4 */
     /* Landscape */ 
@@ -1536,7 +1535,7 @@ label {
     }
 }
 
-@media screen and (width >= 768px) and (aspect-ratio > 1) and (height >= 500px) {
+@media screen and (orientation: landscape ) and (width >= 768px) {
     /* case 5 */
     /* Landscape */ 
     /* Galaxy S20 Ultra: 412px * 915px */
