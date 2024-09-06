@@ -1441,13 +1441,13 @@ label {
     }
 
     .mobile-btn-container {
-        width: 85vw;
+        width: 95vw;
         margin-left: auto;
         margin-right: auto;
     }
 
     .mobile-btn {
-        font-size: 1.2rem;
+        font-size: 1.6rem;
     } 
  
 }
@@ -1500,7 +1500,7 @@ label {
     :root {
         font-size: 38%; 
          /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
-       --sudoku-cell-size: calc(62vw / 2 / 9);
+       --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
     .app-empty-container {
@@ -1523,13 +1523,13 @@ label {
     }
 
     .mobile-btn-container {
-        width: 30vw;
+        width: 35vw;
         margin-left: auto;
         margin-right: auto;
     }
 
     .mobile-btn {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
     }
 
     .tableFixHead {
@@ -1570,26 +1570,6 @@ label {
         width: calc(min(90vw, 800px) /2);
         margin-left: auto;
         margin-right: auto;
-    }
-
-    #db-puzzle-dialog {
-        width: 100vw;
-        height: 100vh;
-    }
-
-    .app-empty-footer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        background-color: DimGray;
-        color: white;
-        border-radius: 0.6rem;
-        font-size: 1.2rem;
-    }
-
-    .app-empty-footer>span {
-        padding: 0.3rem;
     }
 }
 
