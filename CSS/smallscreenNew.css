@@ -950,8 +950,8 @@ label {
 }
 
 .tracker-dlg-btn-image {
-    width: 0.8rem;
-    height: 1.2rem;
+    width: 0.6rem;
+    height: 0.9rem;
     margin: 0.2rem;
 }
 
@@ -1403,12 +1403,13 @@ label {
     }
 
     .trackerDlg {
+        width: 95vw;
         margin-left: auto;
         margin-right: auto;
     }
 
-    .mobile-btn-container {
-        width: 98vw;
+      .mobile-btn-container {
+        width: 95vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1416,6 +1417,11 @@ label {
     .mobile-btn {
         font-size: 1.2rem;
     }
+    
+    .tracker-dlg-btn {
+        font-size: 1.2rem;
+    }
+
 }
 
 
@@ -1439,6 +1445,7 @@ label {
     }
 
     .trackerDlg {
+        width: 95vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1450,6 +1457,10 @@ label {
     }
 
     .mobile-btn {
+        font-size: 1.6rem;
+    }
+
+    .tracker-dlg-btn {
         font-size: 1.6rem;
     }
 
@@ -1474,6 +1485,7 @@ label {
     }
 
     .trackerDlg {
+        width: 70vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1488,9 +1500,14 @@ label {
         font-size: 1.2rem;
     }
 
+    .tracker-dlg-btn {
+        font-size: 1.2rem;
+    }
+
+
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
-        height: 30rem;
+        height: 40rem;
     }
 
 }
@@ -1527,7 +1544,7 @@ label {
     #loader,
     #loader-db {
         top: 16rem;
-        left: 12rem;
+        left: 15%;
     }
 
     #puzzle-info {
@@ -1535,6 +1552,7 @@ label {
     }
 
     .trackerDlg {
+        width: 35vw;
         margin-left: auto;
         margin-right: auto;
     }
@@ -1582,6 +1600,10 @@ label {
         font-size: 1.2rem;
     }
 
+    .tracker-dlg-btn {
+        font-size: 1.2rem;
+    }
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1591,11 +1613,17 @@ label {
     #loader,
     #loader-db {
         top: 16rem;
-        left: 11rem;
+        left: calc(max(5vw, (50vw - 420px))); 
     }
 
     #puzzle-info {
         left: calc(max(5vw, (50vw - 420px)));
+    }
+
+    .trackerDlg {
+        width: calc(min(90vw, 800px) /2);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .mobile-btn-container {
@@ -1603,5 +1631,4 @@ label {
         margin-left: auto;
         margin-right: auto;
     }
-
 }
