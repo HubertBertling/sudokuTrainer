@@ -1531,8 +1531,7 @@ label {
     }
 
     #puzzle-info {
-        top: 24rem;
-        left: 5rem;
+        left: 25%;
     }
 
     .trackerDlg {
@@ -1596,8 +1595,7 @@ label {
     }
 
     #puzzle-info {
-        top: 24rem;
-        left: 5rem;
+        left: calc(min(25%, (50% - 400px)));
     }
 
     .mobile-btn-container {
