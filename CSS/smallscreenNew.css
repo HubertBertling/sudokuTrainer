@@ -233,11 +233,11 @@ html {
 
 /* App-header */
 
-.app-empty-foote    r {
+.app-empty-foote r {
     display: none;
 }
 
-.app-name-header, 
+.app-name-header,
 .db-puzzle-header {
     display: flex;
     flex-direction: row;
@@ -256,8 +256,7 @@ html {
 }
 
 .app-name-header>span,
-.db-puzzle-header>span
- {
+.db-puzzle-header>span {
     padding: 0.3rem;
 }
 
@@ -287,10 +286,10 @@ html {
     position: absolute;
     left: 16%
 }
-#db-close-btn{
+
+#db-close-btn {
     position: absolute;
     right: 1%
-
 }
 
 .menu-icon {
@@ -1377,25 +1376,28 @@ label {
     padding: 10rem;
     font-size: 4rem;
 }
+
 /* ============================================================= */
-/* width 300 - 480, Portrait */  
+/* width 300 - 480, Portrait */
 /* ============================================================= */
 
-@media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <= 0.5) {
+@media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <=0.5) {
+
     /* case 1 */
-    /* Portrait */ 
+    /* Portrait */
     /* Galaxy S10: 360px * 760px */
     /* Galaxy S20 Ultra: 412px x 915px*/
     /* iPhone 14: 380 x 844 */
     :root {
         font-size: 65.3%;
-       --sudoku-cell-size: calc(87vw/9); 
-       
+        --sudoku-cell-size: calc(87vw/9);
+
     }
 
     .app-empty-container {
         display: none;
     }
+
     .app-container {
         display: block;
     }
@@ -1413,24 +1415,25 @@ label {
 
     .mobile-btn {
         font-size: 1.2rem;
-    }   
+    }
 }
 
 
-@media screen and (orientation: portrait) and (width < 480px) and (height <= 700px) {
+@media screen and (orientation: portrait) and (width < 480px) and (height <=700px) {
     /* case 2 */
-  
-    /* Portrait */ 
-    /* iPhone SE (2022): 375 x 667*/  
+
+    /* Portrait */
+    /* iPhone SE (2022): 375 x 667*/
     :root {
         font-size: 45%;
-       --sudoku-cell-size: calc(85vw/9); 
-       
+        --sudoku-cell-size: calc(85vw/9);
+
     }
 
     .app-empty-container {
         display: none;
     }
+
     .app-container {
         display: block;
     }
@@ -1448,22 +1451,24 @@ label {
 
     .mobile-btn {
         font-size: 1.6rem;
-    } 
- 
+    }
+
 }
 
-@media screen and (orientation: portrait) and (width >= 480px) and (aspect-ratio > 0.5) {
+@media screen and (orientation: portrait) and (width >=480px) and (aspect-ratio > 0.5) {
+
     /* case 3*/
-    /* portrait */ 
+    /* portrait */
     :root {
-        font-size: 65%; 
-         /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
-       --sudoku-cell-size: calc(70vw / 9);
+        font-size: 65%;
+        /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
+        --sudoku-cell-size: calc(70vw / 9);
     }
 
     .app-empty-container {
         display: none;
     }
+
     .app-container {
         display: block;
     }
@@ -1482,39 +1487,52 @@ label {
     .mobile-btn {
         font-size: 1.2rem;
     }
+
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
         height: 30rem;
     }
-    
+
 }
 
 /* @media screen  and (orientation: landscape ) and (width >= 480px) and (height < 500px) { */
 
-    @media screen and (width >= 480px) and (height < 500px) {
+@media screen and (width >=480px) and (height < 500px) {
 
     /* Case 4 */
-    /* Landscape */ 
+    /* Landscape */
     /* Galaxy S10: 360px * 760px */
     /* iPhone SE (2022): 375 x 667 */
     :root {
-        font-size: 38%; 
-         /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
-       --sudoku-cell-size: calc(70vw / 2 / 9);
+        font-size: 38%;
+        /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
+        --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
     .app-empty-container {
         display: none;
     }
+
     .app-container {
         display: block;
     }
 
-    
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
         gap: 10px;
+    }
+
+    #loader,
+    #loader-db {
+        top: 16rem;
+        left: 12rem;
+    }
+
+    #puzzle-info {
+        top: 24rem;
+        left: 5rem;
     }
 
     .trackerDlg {
@@ -1533,18 +1551,18 @@ label {
     }
 
     .tracker-dlg-btn {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
-        height: 30rem;
+        height: 40rem;
     }
 }
 
-@media screen and (orientation: landscape ) and (width >= 768px) and (height > 500px) {
+@media screen and (orientation: landscape) and (width >=768px) and (height > 500px) {
     /* case 5 */
-    /* Landscape */ 
+    /* Landscape */
     /* Galaxy S20 Ultra: 412px * 915px */
     /* iPhone 14: 380 x 844 */
 
@@ -1552,10 +1570,11 @@ label {
         font-size: 75%;
         --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
-    
+
     .app-empty-container {
         display: none;
     }
+
     .app-container {
         display: block;
     }
@@ -1570,12 +1589,21 @@ label {
         gap: 10px;
     }
 
+    #loader,
+    #loader-db {
+        top: 16rem;
+        left: 11rem;
+    }
+
+    #puzzle-info {
+        top: 24rem;
+        left: 5rem;
+    }
+
     .mobile-btn-container {
         width: calc(min(90vw, 800px) /2);
         margin-left: auto;
         margin-right: auto;
     }
+
 }
-
-
-
