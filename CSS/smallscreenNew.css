@@ -1595,7 +1595,7 @@ label {
     }
 
     #puzzle-info {
-        left: calc(max(15vw, (50vw - 420px)));
+        left: calc(max(5vw, (50vw - 420px)));
     }
 
     .mobile-btn-container {
