@@ -1382,7 +1382,12 @@ label {
         --sudoku-cell-size: calc(87vw/9);
 
     }
-
+    #appVersion {
+        font-size: 3rem;
+        font-weight: bold;
+        color: red;
+    }
+   
     #loader,
     #loader-db {
         top: 20%;
@@ -1429,7 +1434,12 @@ label {
         --sudoku-cell-size: calc(85vw/9);
 
     }
-
+    #appVersion {
+        font-size: 3rem;
+        font-weight: bold;
+        color: blueviolet;
+    }
+   
     #loader,
     #loader-db {
         top: 25%;
@@ -1470,6 +1480,12 @@ label {
         --sudoku-cell-size: calc(70vw / 9);
     }
 
+    #appVersion {
+        font-size: 3rem;
+        font-weight: bold;
+        color: blue;
+    }
+   
     #loader,
     #loader-db {
         top: 35%;
@@ -1523,6 +1539,12 @@ label {
         --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
+    #appVersion {
+        font-size: 3rem;
+        font-weight: bold;
+        color: green;
+    }
+   
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1579,6 +1601,11 @@ label {
         --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
 
+    #appVersion {
+        font-size: 3rem;
+        color: yellow;
+    }
+    
     .mobile-btn {
         font-size: 1.2rem;
     }
