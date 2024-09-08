@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 665;
+let VERSION = 666;
 
 // ==========================================
 // Basic classes
@@ -6185,7 +6185,6 @@ class SudokuSolverView extends MVC_View {
         this.displaySearchCompleted();
     }
 
-    // ???
     displaySearchCompleted() {
         let puzzle = this.getMyModel().myPuzzle;
         if (puzzle.getSearchIsCompleted()) {

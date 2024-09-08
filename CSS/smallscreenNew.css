@@ -950,7 +950,7 @@ label {
 }
 
 .tracker-dlg-btn-image {
-    width: 0.8rem;
+    width: 1.2rem;
     height: 1.2rem;
     margin: 0.2rem;
 }
@@ -1282,11 +1282,8 @@ label {
     position: absolute;
     display: none;
     text-align: center;
-    top: 24rem;
-    width: 40rem;
     z-index: 2;
     rotate: z -30deg;
-    font-size: 6rem;
     color: red;
 }
 
@@ -1367,20 +1364,6 @@ label {
     padding: 0.3rem;
 }
 
-.app-empty-container {
-    display: none;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    color: white;
-    padding: 10rem;
-    font-size: 4rem;
-}
-
-/* ============================================================= */
-/* width 300 - 480, Portrait */
-/* ============================================================= */
-
 @media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <=0.5) {
 
     /* case 1 */
@@ -1394,13 +1377,18 @@ label {
 
     }
 
-    .app-empty-container {
-        display: none;
+    #loader,
+    #loader-db {
+        top: 20%;
+        left: 25%;
     }
 
-    .app-container {
-        display: block;
+    #puzzle-info {
+        font-size: 4rem;
+        top: 25%;
+        left: 12%;
     }
+
 
     .trackerDlg {
         width: 95vw;
@@ -1408,7 +1396,7 @@ label {
         margin-right: auto;
     }
 
-      .mobile-btn-container {
+    .mobile-btn-container {
         width: 95vw;
         margin-left: auto;
         margin-right: auto;
@@ -1417,7 +1405,7 @@ label {
     .mobile-btn {
         font-size: 1.2rem;
     }
-    
+
     .tracker-dlg-btn {
         font-size: 1.2rem;
     }
@@ -1436,13 +1424,12 @@ label {
 
     }
 
-    .app-empty-container {
-        display: none;
+    #loader,
+    #loader-db {
+        top: 25%;
+        left: 25%;
     }
 
-    .app-container {
-        display: block;
-    }
 
     .trackerDlg {
         width: 95vw;
@@ -1476,13 +1463,18 @@ label {
         --sudoku-cell-size: calc(70vw / 9);
     }
 
-    .app-empty-container {
-        display: none;
+    #loader,
+    #loader-db {
+        top: 35%;
+        left: 35%;
     }
 
-    .app-container {
-        display: block;
+    #puzzle-info {
+        font-size: 7rem;
+        top: 30%;
+        left: 15%;
     }
+
 
     .trackerDlg {
         width: 70vw;
@@ -1497,11 +1489,11 @@ label {
     }
 
     .mobile-btn {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
     }
 
     .tracker-dlg-btn {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
     }
 
 
@@ -1511,8 +1503,6 @@ label {
     }
 
 }
-
-/* @media screen  and (orientation: landscape ) and (width >= 480px) and (height < 500px) { */
 
 @media screen and (width >=480px) and (height < 500px) {
 
@@ -1526,15 +1516,6 @@ label {
         --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
-    .app-empty-container {
-        display: none;
-    }
-
-    .app-container {
-        display: block;
-    }
-
-
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1543,12 +1524,15 @@ label {
 
     #loader,
     #loader-db {
-        top: 16rem;
-        left: 15%;
+        top: 30%;
+        left: 25%;
     }
 
     #puzzle-info {
-        left: 15%;
+        font-size: 6rem;
+        top: 40%;
+        left: 18%;
+
     }
 
     .trackerDlg {
@@ -1588,14 +1572,6 @@ label {
         --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
 
-    .app-empty-container {
-        display: none;
-    }
-
-    .app-container {
-        display: block;
-    }
-
     .mobile-btn {
         font-size: 1.2rem;
     }
@@ -1613,10 +1589,12 @@ label {
     #loader,
     #loader-db {
         top: 16rem;
-        left: calc(max(5vw, (50vw - 420px))); 
+        left: calc(max(32vw, (50vw - 420px)));
     }
 
     #puzzle-info {
+        font-size: 5rem;
+        top: 30%;
         left: calc(max(5vw, (50vw - 420px)));
     }
 

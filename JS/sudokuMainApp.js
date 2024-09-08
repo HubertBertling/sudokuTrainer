@@ -138,3 +138,4 @@ if (navigator.share && navigator.canShare) {
 
 // Launch and initialize the app
 startMainApp();
+// sudoApp.mySolverView.showPuzzleSolutionInfo('Test Lösungen');
