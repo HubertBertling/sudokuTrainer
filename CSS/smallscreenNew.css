@@ -1377,12 +1377,14 @@ label {
 
     }
 
+    /*
     #appVersion {
         font-size: 3rem;
         font-weight: bold;
         color: red;
     }
-
+    */
+    
     #loader,
     #loader-db {
         top: 20%;
@@ -1430,11 +1432,13 @@ label {
 
     }
 
+    /*
     #appVersion {
         font-size: 3rem;
         font-weight: bold;
         color: blueviolet;
     }
+    */
 
     #loader,
     #loader-db {
@@ -1442,6 +1446,11 @@ label {
         left: 25%;
     }
 
+    #puzzle-info {
+        font-size: 5rem;
+        top: 30%;
+        left: 15%;
+    }
 
     .trackerDlg {
         width: 95vw;
@@ -1476,12 +1485,13 @@ label {
         --sudoku-cell-size: calc(70vw / 9);
     }
 
+    /*
     #appVersion {
         font-size: 3rem;
         font-weight: bold;
         color: blue;
     }
-
+    */
     #loader,
     #loader-db {
         top: 35%;
@@ -1491,7 +1501,7 @@ label {
     #puzzle-info {
         font-size: 7rem;
         top: 30%;
-        left: 15%;
+        left: 18%;
     }
 
 
@@ -1535,12 +1545,13 @@ label {
         --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
+    /*
     #appVersion {
         font-size: 3rem;
         font-weight: bold;
         color: green;
     }
-
+    */
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1554,7 +1565,7 @@ label {
     }
 
     #puzzle-info {
-        font-size: 6rem;
+        font-size: 5rem;
         top: 40%;
         left: 18%;
 
@@ -1597,11 +1608,12 @@ label {
         --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
 
+    /*
     #appVersion {
         font-size: 3rem;
         color: yellow;
     }
-
+    */
     .mobile-btn {
         font-size: 1.2rem;
     }
@@ -1624,8 +1636,8 @@ label {
 
     #puzzle-info {
         font-size: 5rem;
-        top: 30%;
-        left: calc(max(5vw, (50vw - 420px)));
+        top: 32%;
+        left: calc(max(10vw, (50vw - 420px)));
     }
 
     .trackerDlg {
