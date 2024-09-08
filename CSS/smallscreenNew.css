@@ -1251,8 +1251,8 @@ label {
 #loader-db {
     display: none;
     position: absolute;
-    top: 16rem;
-    left: 11rem;
+    top: 25vh;
+    right: 25vw;
     z-index: 2;
     width: 20rem;
     height: 20rem;
@@ -1269,9 +1269,6 @@ label {
 #search-level,
 #loader-db-info {
     width: 14rem;
-    left: 25%;
-    top: 25%;
-    margin-top: 2rem;
     padding: 1.4rem;
     font-size: var(--font-size-lg);
     color: black;
@@ -1388,12 +1385,12 @@ label {
     #loader,
     #loader-db {
         top: 20%;
-        left: 25%;
+        right: 25%;
     }
 
     #puzzle-info {
         font-size: 4rem;
-        top: 25%;
+        top: 30%;
         left: 15%;
     }
 
@@ -1442,14 +1439,14 @@ label {
 
     #loader,
     #loader-db {
-        top: 25%;
-        left: 25%;
+        top: 20%;
+        right: 25%;
     }
 
     #puzzle-info {
         font-size: 5rem;
         top: 30%;
-        left: 15%;
+        left: 20%;
     }
 
     .trackerDlg {
@@ -1494,14 +1491,14 @@ label {
     */
     #loader,
     #loader-db {
-        top: 35%;
-        left: 35%;
+        top: 30%;
+        right: 40vw; 
     }
 
     #puzzle-info {
         font-size: 7rem;
         top: 30%;
-        left: 18%;
+        left: 30vw;
     }
 
 
@@ -1561,14 +1558,13 @@ label {
     #loader,
     #loader-db {
         top: 30%;
-        left: 25%;
+        right: calc(44vw + 20rem);
     }
 
     #puzzle-info {
         font-size: 5rem;
-        top: 40%;
-        left: 18%;
-
+        top: 40vh;
+        right: calc(50vw + 10rem);
     }
 
     .trackerDlg {
@@ -1631,13 +1627,13 @@ label {
     #loader,
     #loader-db {
         top: 16rem;
-        left: calc(max(32vw, (50vw - 420px)));
+        right: calc(50vw + 5rem);
     }
 
     #puzzle-info {
         font-size: 5rem;
-        top: 32%;
-        left: calc(max(10vw, (50vw - 420px)));
+        top: 30vh;
+        right: calc(50vw + 1rem);
     }
 
     .trackerDlg {
