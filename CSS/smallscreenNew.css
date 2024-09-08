@@ -233,7 +233,7 @@ html {
 
 /* App-header */
 
-.app-empty-foote r {
+.app-empty-footer {
     display: none;
 }
 
@@ -1364,7 +1364,13 @@ label {
     padding: 0.3rem;
 }
 
-@media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <=0.5) {
+/* @media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <=0.5) {*/
+    @media screen and (orientation: portrait) and (width < 480px) {
+        #puzzle-info {
+        font-size: 4rem;
+        top: 25%;
+        left: 12%;
+    }
 
     /* case 1 */
     /* Portrait */
@@ -1453,7 +1459,8 @@ label {
 
 }
 
-@media screen and (orientation: portrait) and (width >=480px) and (aspect-ratio > 0.5) {
+/* @media screen and (orientation: portrait) and (width >=480px) and (aspect-ratio > 0.5) { */
+    @media screen and (orientation: portrait) and (width >=480px) {
 
     /* case 3*/
     /* portrait */
