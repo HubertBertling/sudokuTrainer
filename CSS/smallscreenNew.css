@@ -1252,8 +1252,8 @@ label {
 #loader-db {
     display: none;
     position: absolute;
-    top: 25vh;
-    right: 25vw;
+    top: 24%;
+    left: 25%;
     z-index: 2;
     width: 20rem;
     height: 20rem;
@@ -1386,12 +1386,6 @@ label {
     }
     */
     
-    #loader,
-    #loader-db {
-        top: 20%;
-        right: 25%;
-    }
-
     #puzzle-info {
         font-size: 4rem;
     }
@@ -1445,12 +1439,6 @@ label {
     }
     */
 
-    #loader,
-    #loader-db {
-        top: 20%;
-        right: 25%;
-    }
-
     #puzzle-info {
         font-size: 5rem;
     }
@@ -1495,12 +1483,7 @@ label {
         color: blue;
     }
     */
-    #loader,
-    #loader-db {
-        top: 30%;
-        right: 40vw; 
-    }
-
+    
     #puzzle-info {
         font-size: 7rem;
     }
@@ -1557,12 +1540,6 @@ label {
         display: flex;
         flex-direction: row;
         gap: 10px;
-    }
-
-    #loader,
-    #loader-db {
-        top: 30%;
-        right: calc(44vw + 20rem);
     }
 
     #puzzle-info {
@@ -1624,12 +1601,6 @@ label {
         display: flex;
         flex-direction: row;
         gap: 10px;
-    }
-
-    #loader,
-    #loader-db {
-        top: 16rem;
-        right: calc(50vw + 5rem);
     }
 
     #puzzle-info {
