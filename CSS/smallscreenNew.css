@@ -344,6 +344,7 @@ html {
 }
 
 .grid-plus-explainer {
+    position: relative;
     border: 0.1rem solid black;
     height: fit-content;
 }
@@ -1277,10 +1278,13 @@ label {
 
 #puzzle-info {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: none;
     text-align: center;
     z-index: 2;
-    rotate: z -30deg;
+    /*rotate: z -33deg;*/
     color: red;
 }
 
@@ -1390,8 +1394,6 @@ label {
 
     #puzzle-info {
         font-size: 4rem;
-        top: 30%;
-        left: 15%;
     }
 
 
@@ -1451,8 +1453,6 @@ label {
 
     #puzzle-info {
         font-size: 5rem;
-        top: 30%;
-        left: 20%;
     }
 
     .trackerDlg {
@@ -1503,8 +1503,6 @@ label {
 
     #puzzle-info {
         font-size: 7rem;
-        top: 30%;
-        left: 30vw;
     }
 
 
@@ -1569,8 +1567,6 @@ label {
 
     #puzzle-info {
         font-size: 5rem;
-        top: 40vh;
-        right: calc(50vw + 10rem);
     }
 
     .trackerDlg {
@@ -1638,8 +1634,6 @@ label {
 
     #puzzle-info {
         font-size: 5rem;
-        top: 30vh;
-        right: calc(50vw + 1rem);
     }
 
     .trackerDlg {
