@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 675;
+let VERSION = 676;
 
 // ==========================================
 // Basic classes
@@ -2346,10 +2346,12 @@ class SudokuPuzzleDBController {
     deleteBtnPressed() {
         let pz = this.myPuzzleDB.getSelectedPuzzle();
         let pzName = pz.name;
-        sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDBController,
+        /* sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDBController,
             sudoApp.myPuzzleDBController.delete,
             "Puzzle löschen",
             'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
+            */
+            sudoApp.myPuzzleDBController.delete();
     }
     initDBBtnPressed() {
         sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDB,
