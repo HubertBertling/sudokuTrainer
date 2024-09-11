@@ -1173,7 +1173,10 @@ label {
 .db-puzzle-table th,
 .db-puzzle-table td {
     font-size: 1.2rem;
-    padding: 0.4rem 0.4rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
     border: 0.1rem solid #ccc;
 }
 
