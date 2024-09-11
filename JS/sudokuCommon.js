@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 679;
+let VERSION = 680;
 
 // ==========================================
 // Basic classes
@@ -754,9 +754,11 @@ class Search {
         } else if (searchStepResult == 'searchCompleted') {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
-            sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.countSolutions =
-                this.getNumberOfSolutions();
-            this.publishSearchIsCompleted(this.getNumberOfSolutions());
+            if (sudoApp instanceof SudokuMainApp) {
+                sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.countSolutions =
+                    this.getNumberOfSolutions();
+                this.publishSearchIsCompleted(this.getNumberOfSolutions());
+            }
         }
     }
 
@@ -2087,6 +2089,8 @@ class SudokuPuzzleDB extends MVC_Model {
         // und speichere sie.
         let update_str_puzzleMap = JSON.stringify(Array.from(puzzleMap.entries()));
         localStorage.setItem("localSudokuDB", update_str_puzzleMap);
+        
+        this.upDateVersion_2();
 
         if (upLoadedKeys.length == 1) {
             this.selectedIndex = this.getIndex(upLoadedKeys.pop());
@@ -2387,7 +2391,7 @@ class SudokuPuzzleDBController {
             "Puzzle löschen",
             'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
             */
-            sudoApp.myPuzzleDBController.delete();
+        sudoApp.myPuzzleDBController.delete();
     }
     initDBBtnPressed() {
         sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDB,
