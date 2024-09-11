@@ -1185,9 +1185,11 @@ label {
 
 #col-status-given,
 #col-status-solved,
-#col-status-open {
+#col-status-open,
+#col-backTracks,
+#col-countSolutions {
     writing-mode: vertical-rl;
-    padding: 0.8rem;
+    padding: 0.6rem;
 }
 
 #col-status-given {
