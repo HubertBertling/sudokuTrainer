@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 680;
+let VERSION = 682;
 
 // ==========================================
 // Basic classes
@@ -758,6 +758,9 @@ class Search {
                 sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.countSolutions =
                     this.getNumberOfSolutions();
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
+            } else if (sudoApp instanceof SudokuFastSolverApp) {
+                sudoApp.myFastSolver.myPuzzle.myRecord.preRunRecord.countSolutions =
+                    this.getNumberOfSolutions();
             }
         }
     }
@@ -1659,9 +1662,9 @@ class SudokuPuzzleDB extends MVC_Model {
                     || puzzleRecord.preRunRecord.level == 'Mittel'
                     || puzzleRecord.preRunRecord.level == 'Schwer'
                     || puzzleRecord.preRunRecord.level == 'Sehr schwer') {
-                    puzzleRecord.preRunRecord.countSolutions = '1';
+                    puzzleRecord.preRunRecord.countSolutions = 1;
                 } else {
-                    puzzleRecord.preRunRecord.countSolutions = '-1';
+                    puzzleRecord.preRunRecord.countSolutions = -1;
                 }
             }
         });
@@ -7382,6 +7385,16 @@ class SudokuGenerator extends SudokuSolver {
         puzzleRecord.preRunRecord.level = this.maxSelectionDifficulty();
         puzzleRecord.preRunRecord.backTracks = this.countBackwards();
 
+        if (puzzleRecord.preRunRecord.level == 'Sehr leicht'
+            || puzzleRecord.preRunRecord.level == 'Leicht'
+            || puzzleRecord.preRunRecord.level == 'Mittel'
+            || puzzleRecord.preRunRecord.level == 'Schwer'
+            || puzzleRecord.preRunRecord.level == 'Sehr schwer') {
+            puzzleRecord.preRunRecord.countSolutions = 1;
+        } else {
+            puzzleRecord.preRunRecord.countSolutions = -1;
+        }
+
         // The solved puzzle is reset
         this.reset();
         // The reset puzzle is transferred to the puzzle data structure.
@@ -7437,7 +7450,7 @@ class SudokuFastSolver extends SudokuSolver {
             let preRunRecord = this.grid2preRunRecord();
             switch (preRunRecord.level) {
                 case 'Leicht': {
-                    preRunRecord.countSolutions = '1';
+                    preRunRecord.countSolutions = 1;
                     // check if 'Very easy';
                     // For an easy puzzle in the strict sense, there is no longer a given cell 
                     // that could be cancelled, so that the cancelled cell would retain a unique solution.
@@ -7452,11 +7465,11 @@ class SudokuFastSolver extends SudokuSolver {
                     break;
                 }
                 case 'Mittel': {
-                    preRunRecord.countSolutions = '1';
+                    preRunRecord.countSolutions = 1;
                     break;
                 }
                 case 'Schwer': {
-                    preRunRecord.countSolutions = '1';
+                    preRunRecord.countSolutions = 1;
                     break;
                 }
                 case 'Backtracking': {
@@ -7470,12 +7483,12 @@ class SudokuFastSolver extends SudokuSolver {
                     if (stoppingBreakpoint == 'solutionDiscovered') {
                         // There is a second solution. Therefore ...
                         preRunRecord.level = 'Extrem schwer';
-                        preRunRecord.countSolutions = '-1';
+                        preRunRecord.countSolutions = -1;
                     } else {
                         // stoppingBreakpoint == 'searchCompleted'
                         // i.e. puzzle with only one solution
                         preRunRecord.level = 'Sehr schwer';
-                        preRunRecord.countSolutions = '1';
+                        preRunRecord.countSolutions = 1;
                     };
                     break;
                 }
@@ -7487,7 +7500,7 @@ class SudokuFastSolver extends SudokuSolver {
         } else if (stoppingBreakpoint == 'searchCompleted') {
             let preRunRecord = PreRunRecord.nullPreRunRecord();
             preRunRecord.level = 'Unlösbar';
-            preRunRecord.countSolutions = '-1';
+            preRunRecord.countSolutions = -1;
             return preRunRecord;
         }
     }
@@ -7510,9 +7523,6 @@ class SudokuFastSolver extends SudokuSolver {
     }
     countBackwards() {
         return this.mySearch.myStepper.countBackwards;
-    }
-    countSolutions() {
-        return this.mySearch.myStepper.countSolutions;
     }
 
     loadPuzzleArrayGivens(puzzleArray) {
