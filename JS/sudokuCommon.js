@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 676;
+let VERSION = 675;
 
 // ==========================================
 // Basic classes
@@ -754,6 +754,8 @@ class Search {
         } else if (searchStepResult == 'searchCompleted') {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
+            sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.countSolutions =
+                this.getNumberOfSolutions();
             this.publishSearchIsCompleted(this.getNumberOfSolutions());
         }
     }
@@ -1639,6 +1641,7 @@ class SudokuPuzzleDB extends MVC_Model {
             ['steps-strict', 'desc'],
             ['level', 'desc'],
             ['backTracks', 'desc'],
+            ['countSolutions', 'desc'],
             ['date', 'desc']
         ]);
     }
@@ -1648,7 +1651,22 @@ class SudokuPuzzleDB extends MVC_Model {
         let puzzleMap = new Map(JSON.parse(str_puzzleMap));
         puzzleMap.forEach((puzzleRecord, key) => {
             puzzleRecord.id = key;
+            if (puzzleRecord.preRunRecord.countSolutions == undefined) {
+                if (puzzleRecord.preRunRecord.level == 'Sehr leicht'
+                    || puzzleRecord.preRunRecord.level == 'Leicht'
+                    || puzzleRecord.preRunRecord.level == 'Mittel'
+                    || puzzleRecord.preRunRecord.level == 'Schwer'
+                    || puzzleRecord.preRunRecord.level == 'Sehr schwer') {
+                    puzzleRecord.preRunRecord.countSolutions = '1';
+                } else {
+                    puzzleRecord.preRunRecord.countSolutions = '-1';
+                }
+            }
         });
+        // Kreiere die JSON-Version des Speicherobjektes
+        // und speichere sie.
+        let update_str_puzzleMap = JSON.stringify(Array.from(puzzleMap.entries()));
+        localStorage.setItem("localSudokuDB", update_str_puzzleMap);
     }
 
     async init() {
@@ -1819,6 +1837,17 @@ class SudokuPuzzleDB extends MVC_Model {
                 } else {
                     this.sorted.set('backTracks', 'desc');
                     puzzleMap = new Map([...puzzleMap].sort((a, b) => b[1].preRunRecord.backTracks - a[1].preRunRecord.backTracks));
+                }
+                break;
+            }
+            case 'countSolutions': {
+                let countSolutionsSorted = this.sorted.get('countSolutions');
+                if (countSolutionsSorted == '' || countSolutionsSorted == 'desc') {
+                    this.sorted.set('countSolutions', 'asc');
+                    puzzleMap = new Map([...puzzleMap].sort((a, b) => a[1].preRunRecord.countSolutions - b[1].preRunRecord.countSolutions));
+                } else {
+                    this.sorted.set('countSolutions', 'desc');
+                    puzzleMap = new Map([...puzzleMap].sort((a, b) => b[1].preRunRecord.countSolutions - a[1].preRunRecord.countSolutions));
                 }
                 break;
             }
@@ -2175,6 +2204,10 @@ class SudokuPuzzleDBView extends MVC_View {
                 td_backTracks.innerText = pzRecord.preRunRecord.backTracks;
                 tr.appendChild(td_backTracks);
 
+                let td_countSolutions = document.createElement('td');
+                td_countSolutions.innerText = pzRecord.preRunRecord.countSolutions;
+                tr.appendChild(td_countSolutions);
+
                 let td_date = document.createElement('td');
                 td_date.innerText = (new Date(pzRecord.date)).toLocaleDateString();
                 tr.appendChild(td_date);
@@ -2222,6 +2255,9 @@ class SudokuPuzzleDBController {
         });
         document.getElementById('col-backTracks').addEventListener('click', () => {
             this.myPuzzleDB.sort('backTracks');
+        });
+        document.getElementById('col-countSolutions').addEventListener('click', () => {
+            this.myPuzzleDB.sort('countSolutions');
         });
         document.getElementById('col-date').addEventListener('click', () => {
             this.myPuzzleDB.sort('date');
@@ -2482,6 +2518,7 @@ class PreRunRecord {
         return {
             level: 'Keine Angabe',
             backTracks: 0,
+            countSolutions: 0,
             solvedPuzzle: []
         }
     }
@@ -3552,7 +3589,7 @@ class SudokuGridView extends MVC_View {
         // Unlösbarkeit anzeigen.
         if (sudoApp.mySolver.isSearching()
             || sudoApp.mySolver.getGamePhase() == 'define'
-            ) {
+        ) {
             // Die Unlösbarkeit wird nur angezeigt und geprüft,
             // wenn der Automat läuft oder in der Definitionsphase.
             this.displayUnsolvability();
@@ -7396,6 +7433,7 @@ class SudokuFastSolver extends SudokuSolver {
             let preRunRecord = this.grid2preRunRecord();
             switch (preRunRecord.level) {
                 case 'Leicht': {
+                    preRunRecord.countSolutions = '1';
                     // check if 'Very easy';
                     // For an easy puzzle in the strict sense, there is no longer a given cell 
                     // that could be cancelled, so that the cancelled cell would retain a unique solution.
@@ -7409,8 +7447,14 @@ class SudokuFastSolver extends SudokuSolver {
                     }
                     break;
                 }
-                case 'Mittel': break;
-                case 'Schwer': break;
+                case 'Mittel': {
+                    preRunRecord.countSolutions = '1';
+                    break;
+                }
+                case 'Schwer': {
+                    preRunRecord.countSolutions = '1';
+                    break;
+                }
                 case 'Backtracking': {
                     // If the calculated level of difficulty is "Backtracking", 
                     // check whether there are other solutions. In this case the
@@ -7422,10 +7466,12 @@ class SudokuFastSolver extends SudokuSolver {
                     if (stoppingBreakpoint == 'solutionDiscovered') {
                         // There is a second solution. Therefore ...
                         preRunRecord.level = 'Extrem schwer';
+                        preRunRecord.countSolutions = '-1';
                     } else {
                         // stoppingBreakpoint == 'searchCompleted'
                         // i.e. puzzle with only one solution
                         preRunRecord.level = 'Sehr schwer';
+                        preRunRecord.countSolutions = '1';
                     };
                     break;
                 }
@@ -7437,6 +7483,7 @@ class SudokuFastSolver extends SudokuSolver {
         } else if (stoppingBreakpoint == 'searchCompleted') {
             let preRunRecord = PreRunRecord.nullPreRunRecord();
             preRunRecord.level = 'Unlösbar';
+            preRunRecord.countSolutions = '-1';
             return preRunRecord;
         }
     }
@@ -7459,6 +7506,9 @@ class SudokuFastSolver extends SudokuSolver {
     }
     countBackwards() {
         return this.mySearch.myStepper.countBackwards;
+    }
+    countSolutions() {
+        return this.mySearch.myStepper.countSolutions;
     }
 
     loadPuzzleArrayGivens(puzzleArray) {
