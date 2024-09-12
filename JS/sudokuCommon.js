@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 684;
+let VERSION = 685;
 
 // ==========================================
 // Basic classes
@@ -6553,7 +6553,7 @@ class SudokuSolverView extends MVC_View {
             evalNode.innerHTML = '';
         } else {
             evalNode.innerHTML =
-                '&nbsp <b>Rückwärts:</b> &nbsp' + countBackwards;
+                '&nbsp <b>Zurück:</b> &nbsp' + countBackwards;
         }
     }
 

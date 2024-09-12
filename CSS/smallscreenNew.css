@@ -1551,7 +1551,7 @@ label {
 
     :root {
         font-size: 75%;
-        --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
+        --sudoku-cell-size: calc(min(90vw, 880px) / 2 / 9);
     }
 
     .mobile-btn {
