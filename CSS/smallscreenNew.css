@@ -150,7 +150,7 @@ html {
 .dropdown-btn {
     padding: 0.8rem 0.8rem 0.8rem 2.4rem;
     text-decoration: none;
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     color: white;
     display: block;
 
@@ -164,9 +164,9 @@ html {
 
 .closebtn {
     text-align: right;
-    padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+    padding: 0.8rem;
     text-decoration: none;
-    font-size: 3rem;
+    font-size: 4rem;
     color: white;
     display: block;
     border: none;
@@ -1370,7 +1370,6 @@ label {
     padding: 0.3rem;
 }
 
-/* @media screen and (orientation: portrait) and (width < 480px) and (aspect-ratio <=0.5) {*/
 @media screen and (orientation: portrait) and (width < 480px) {
     /* case 1 */
     /* Portrait */
@@ -1382,26 +1381,20 @@ label {
         --sudoku-cell-size: calc(87vw/9);
 
     }
-
-    /*
-    #appVersion {
-        font-size: 3rem;
-        font-weight: bold;
-        color: red;
+    .sidenav a,
+    .dropdown-btn {
+        padding: 0.8rem 0.8rem 0.8rem 2.4rem;
+        font-size: 2.6rem;
     }
-    */
     
     #puzzle-info {
         font-size: 4rem;
     }
-
-
     .trackerDlg {
         width: 95vw;
         margin-left: auto;
         margin-right: auto;
     }
-
     .mobile-btn-container {
         width: 95vw;
         margin-left: auto;
@@ -1420,30 +1413,22 @@ label {
         /* make the table scrollable if height is more than 200 px  */
         height: 40rem;
     }
-
-
 }
-
 
 @media screen and (orientation: portrait) and (width < 480px) and (height <=700px) {
     /* case 2 */
-
     /* Portrait */
     /* iPhone SE (2022): 375 x 667*/
     :root {
         font-size: 45%;
         --sudoku-cell-size: calc(85vw/9);
-
     }
 
-    /*
-    #appVersion {
-        font-size: 3rem;
-        font-weight: bold;
-        color: blueviolet;
+    .sidenav a,
+    .dropdown-btn {
+        padding: 0.8rem 0.8rem 0.8rem 2.4rem;
+        font-size: 2.6rem;
     }
-    */
-
     #puzzle-info {
         font-size: 5rem;
     }
@@ -1470,25 +1455,14 @@ label {
 
 }
 
-/* @media screen and (orientation: portrait) and (width >=480px) and (aspect-ratio > 0.5) { */
 @media screen and (orientation: portrait) and (width >=480px) {
-
     /* case 3*/
     /* portrait */
     :root {
         font-size: 65%;
-        /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
         --sudoku-cell-size: calc(70vw / 9);
     }
 
-    /*
-    #appVersion {
-        font-size: 3rem;
-        font-weight: bold;
-        color: blue;
-    }
-    */
-    
     #puzzle-info {
         font-size: 7rem;
     }
@@ -1530,17 +1504,9 @@ label {
     /* iPhone SE (2022): 375 x 667 */
     :root {
         font-size: 38%;
-        /* --sudoku-cell-size: calc((min(100vw, (100vh / 2)))/9); */
         --sudoku-cell-size: calc(70vw / 2 / 9);
     }
 
-    /*
-    #appVersion {
-        font-size: 3rem;
-        font-weight: bold;
-        color: green;
-    }
-    */
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1588,12 +1554,6 @@ label {
         --sudoku-cell-size: calc(min(90vw, 800px) / 2 / 9);
     }
 
-    /*
-    #appVersion {
-        font-size: 3rem;
-        color: yellow;
-    }
-    */
     .mobile-btn {
         font-size: 1.4rem;
     }
