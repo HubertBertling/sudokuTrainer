@@ -1585,7 +1585,7 @@ label {
     }
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
-        height: 40rem;
+        height: 30rem;
     }
 
 }
