@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 686;
+let VERSION = 687;
 
 // ==========================================
 // Basic classes
@@ -6905,9 +6905,10 @@ class SudokuSolverController {
         this.myRedoActionStack = [];
     }
 
-    defineBtnPressed() {
-        // ??? Without a defined set of givens, there is no puzzle.
+    async defineBtnPressed() {
         this.mySolver.newPuzzle();
+        this.mySolver.myGrid.setSolvedToGiven();
+        await this.mySolver.setNewPuzzleRecord();
         this.initUndoActionStack();
         this.mySolver.notify();
     }
