@@ -1549,6 +1549,7 @@ class NewPuzzleStore {
             let verySimplePuzzleRecord
                 = sudoApp.mySolver.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
             this.verySimplePuzzles.push(verySimplePuzzleRecord);
+            console.log('');
             console.log('-------> push: Sehr leicht: #' + this.verySimplePuzzles.length);
             this.logPuzzleStore();
             this.fillVerySimple();
@@ -1561,13 +1562,12 @@ class NewPuzzleStore {
             || this.veryHeavyPuzzles.length < 2
             || this.extremeHeavyPuzzles.length < 2;
     }
-    
+
     logPuzzleStore() {
-        console.log('PuzzleStore');
-        console.log('-----------');
+        console.log('');
         console.log('verySimplePuzzles__: ' + this.verySimplePuzzles.length);
         console.log('simplePuzzles______: ' + this.simplePuzzles.length);
-        console.log('mediumPuzzles______: ' + this.mediumPuzzles.length );
+        console.log('mediumPuzzles______: ' + this.mediumPuzzles.length);
         console.log('heavyPuzzles_______: ' + this.heavyPuzzles.length);
         console.log('veryHeavyPuzzles___: ' + this.veryHeavyPuzzles.length);
         console.log('extremeHeavyPuzzles: ' + this.extremeHeavyPuzzles.length);
@@ -1621,7 +1621,7 @@ class NewPuzzleStore {
                     console.log('-------> push: Extrem schwer: #' + this.extremeHeavyPuzzles.length)
                     this.logPuzzleStore();
                 } else {
-                    console.log('push: Extrm schwer: verfallen');
+                    console.log('push: Extrem schwer: verfallen');
                 };
                 break;
             }
@@ -2581,7 +2581,7 @@ class PuzzleRecord {
             statusOpen: 0,
             date: '',
             puzzle: [],
-            preRunRecord: PreRunRecord.nullPreRunRecord()
+            preRunRecord: undefined
         }
     }
 }
@@ -5968,37 +5968,46 @@ class SudokuSolver extends MVC_Model {
     basicPreRunRecord() {
         this.deleteSearch();
         this.createSearch();
+        let preRunRecord = PreRunRecord.nullPreRunRecord();
+        //
         sudoApp.mySynchronousSearchStepLoop.start();
         let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
-            // Nachdem eine Lösung efunden wurde, führe den nächsten Suchschritt aus.
+            // Erfasse das gelöste Puzzle
+            this.grid2solvedPuzzle(preRunRecord);
+            preRunRecord.level = this.maxSelectionDifficulty();
+            // Nachdem eine Lösung gefunden wurde, führe den nächsten Suchschritt aus.
             // Die ergibt ergibt eine weitere Lösung oder#
             // das Ende der Suche ist erreicht.
+
             sudoApp.mySynchronousSearchStepLoop.start();
-        } 
-        let preRunRecord = this.grid2preRunRecord();
-        if (preRunRecord.level == 'Backtracking') {
-            if (preRunRecord.countSolutions > 1) {
-                preRunRecord.level = 'Extrem schwer';
-            } else if (preRunRecord.countSolutions < 2) {
-                preRunRecord.level = 'Sehr schwer';
+            preRunRecord.countSolutions = this.mySearch.getNumberOfSolutions();
+            preRunRecord.backTracks = this.countBackwards();
+
+            if (preRunRecord.level == 'Backtracking') {
+                if (preRunRecord.countSolutions > 1) {
+                    preRunRecord.level = 'Extrem schwer';
+                } else if (preRunRecord.countSolutions < 2) {
+                    preRunRecord.level = 'Sehr schwer';
+                }
             }
         }
         return preRunRecord;
     }
 
-    grid2preRunRecord() {
-        let preRunRecord = PreRunRecord.nullPreRunRecord();
+    grid2solvedPuzzle(preRunRecord) {
         for (let i = 0; i < 81; i++) {
             preRunRecord.solvedPuzzle.push({
                 cellValue: this.myGrid.sudoCells[i].getValue(),
                 cellPhase: this.myGrid.sudoCells[i].getPhase()
             });
         };
+    }
+
+    grid2preRunRecord(preRunRecord) {
         preRunRecord.level = this.maxSelectionDifficulty();
         preRunRecord.countSolutions = this.mySearch.getNumberOfSolutions();
         preRunRecord.backTracks = this.countBackwards();
-        return preRunRecord;
     }
 
     async setNewPuzzleRecord() {
@@ -7675,7 +7684,7 @@ class SudokuFastSolver extends SudokuSolver {
     computePuzzlePreRunData(puzzleArray) {
         this.loadPuzzleArrayGivens(puzzleArray);
         return super.basicPreRunRecord();
-     }
+    }
 
     maxSelectionDifficulty() {
         return this.mySearch.myStepper.maxSelectionDifficulty;
@@ -7685,8 +7694,8 @@ class SudokuFastSolver extends SudokuSolver {
     }
 
     loadPuzzleArrayGivens(puzzleArray) {
-        this.myGrid.loadPuzzleArrayGivens(puzzleArray);
-        this.myGrid.evaluateMatrix();
+        super.myGrid.loadPuzzleArrayGivens(puzzleArray);
+        super.myGrid.evaluateMatrix();
     }
 }
 // ==========================================
