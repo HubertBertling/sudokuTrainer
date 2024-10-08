@@ -827,7 +827,7 @@ class StepperOnGrid {
         this.mySolver = parent;
         this.lastNumberSet = '0';
         this.indexSelected = -1;
-        this.myResult = undefined;
+        // this.myResult = undefined;
         this.numberOfSolutions = 0;
         this.myGrid = suGrid;
         this.myBackTracker;
@@ -840,7 +840,7 @@ class StepperOnGrid {
 
     init() {
         this.lastNumberSet = '0';
-        this.myResult = undefined;
+        // this.myResult = undefined;
         // this.numberOfSolutions = 0;
         // this.goneSteps = 0;
         this.countBackwards = 0;
@@ -1611,6 +1611,9 @@ class NewPuzzleStore {
 
     pushPuzzle(puzzleRecord) {
         switch (puzzleRecord.preRunRecord.level) {
+            case 'Unlösbar': {
+                break;
+            }
             case 'Leicht': {
                 if (this.simplePuzzles.length < 2) {
                     this.simplePuzzles.push(puzzleRecord);
@@ -4075,16 +4078,13 @@ class SudokuGrid extends MVC_Model {
                     if (this.isUnsolvable()) {
                         // Deleting the cell is ok because the alternative option
                         // is contradictory. 
-                        console.log(i + ': Alternative ' + alternativeOption + ' ist unlösbar')
-                        // console.log(i + ': @k:'+ k + ' takeBack ' + tmpNr + ' wegen alternatveOption ' + alternativeOption + 'widerspruchsvoll');
-                        // this.logGrid(i + ': grid after takeBACK cell');
+                        // delete the alternative option
+                        this.select(k);
+                        this.deleteSelected('define');
                     } else {
                         // undo the alternative option
-                        // console.log(i + ': Alternatve ' + alternativeOption + ' ist lösbar')
                         this.select(k);
                         this.sudoCells[k].manualSetValue(tmpNr, 'define');
-                        // console.log(i + ': Zelle k: ' + k + ' zurückgesetzt: ' + this.sudoCells[k].getValue());
-                        // this.logGrid(i + ': grid after takeBACK cell');
                     }
                 } else {
                     // The deleted cell does not have a unique candidate to be selected
