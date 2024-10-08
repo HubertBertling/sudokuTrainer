@@ -719,9 +719,10 @@ class Search {
         this.myFirstSolution = [];
         this.myFirstSolutionBackTracks = 0;
         this.myNumberOfSolutions = 0;
+        this.searchStepResult = undefined;
     }
     isCompleted() {
-        return this.myStepper.myResult.processResult == 'searchCompleted';
+        return this.searchStepResult == 'searchCompleted';
     }
     getNumberOfSteps() {
         return this.myStepper.goneSteps;
@@ -749,7 +750,11 @@ class Search {
                 throw new Error('Unexpected myNumberOfSolutions: ' + this.myNumberOfSolutions);
             }
         }
-        return maxDifficulty;
+        if (this.isCompleted() && this.getNumberOfSolutions() == 0) {
+            return 'Unlösbar';
+        } else {
+            return maxDifficulty;
+        }
     }
 
     performStep() {
@@ -760,9 +765,8 @@ class Search {
             this.myGrid.select(this.myStepper.indexSelected);
         }
         // perform the next automated step
-        let searchStepResult = undefined;
-        searchStepResult = this.myStepper.autoStep().processResult;
-        if (searchStepResult == 'solutionDiscovered') {
+        this.searchStepResult = this.myStepper.autoStep().processResult;
+        if (this.searchStepResult == 'solutionDiscovered') {
             this.incrementNumberOfSolutions();
             if (this.getNumberOfSolutions() == 1) {
                 // Fair puuzles have exact one solution.
@@ -778,7 +782,7 @@ class Search {
             // Prepare the search for further solutions in the next steps
             // by changing the stepper direction to 'backward'.
             this.myStepper.setAutoDirection('backward');
-        } else if (searchStepResult == 'searchCompleted') {
+        } else if (this.searchStepResult == 'searchCompleted') {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
 
@@ -1567,12 +1571,12 @@ class NewPuzzleStore {
             this.pushPuzzle(puzzleRecord);
         }
     }
-    
+
     // ???????????????????????????
     // Fehler: Generator liefert Sehr leicht puzzles.
     // Ursache: neues getPreRunRecord
     // ???????????????????????????
-    
+
     async fillVerySimple() {
         while (this.verySimplePuzzles.length < 2) {
             let simplePuzzleRecord = await sudoApp.myNewPuzzleStore.popPuzzle('Leicht');
@@ -1586,7 +1590,7 @@ class NewPuzzleStore {
             this.logPuzzleStore();
         }
     }
-        
+
     isNotFilled() {
         return this.simplePuzzles.length < 2
             || this.mediumPuzzles.length < 2
@@ -4071,7 +4075,7 @@ class SudokuGrid extends MVC_Model {
                     if (this.isUnsolvable()) {
                         // Deleting the cell is ok because the alternative option
                         // is contradictory. 
-                        // console.log(i + ': Alternatve ' + alternativeOption + ' ist unlösbar')
+                        console.log(i + ': Alternative ' + alternativeOption + ' ist unlösbar')
                         // console.log(i + ': @k:'+ k + ' takeBack ' + tmpNr + ' wegen alternatveOption ' + alternativeOption + 'widerspruchsvoll');
                         // this.logGrid(i + ': grid after takeBACK cell');
                     } else {
@@ -4092,6 +4096,7 @@ class SudokuGrid extends MVC_Model {
                 }
             }
         }
+        // this.evaluateGridStrict();
     }
 
     canTakeBackGivenCells() {
@@ -4126,7 +4131,8 @@ class SudokuGrid extends MVC_Model {
                     this.sudoCells[k].manualSetValue(tmpNr, 'define');
                 }
             }
-        } 
+        }
+        // this.evaluateGridStrict();
         return false;
     }
 
@@ -6022,8 +6028,8 @@ class SudokuSolver extends MVC_Model {
             stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
         }
         if (stoppingBreakpoint == 'solutionDiscovered') {
-               // Eine zweite Lösung wurde festgestellt
-                preRunRecord.level = 'Extrem schwer';
+            // Eine zweite Lösung wurde festgestellt
+            preRunRecord.level = 'Extrem schwer';
         } else if (stoppingBreakpoint == 'searchCompleted') {
             preRunRecord.solvedPuzzle = this.mySearch.getFirstSolution();
             preRunRecord.backTracks = this.mySearch.getFirstSolutionBackTracks();
@@ -6259,8 +6265,8 @@ class SudokuSolver extends MVC_Model {
     takeBackGivenCells() {
         this.myGrid.takeBackGivenCells();
     }
-    
-    canTakeBackGivenCells(){
+
+    canTakeBackGivenCells() {
         return this.myGrid.canTakeBackGivenCells();
     }
 
@@ -6280,9 +6286,9 @@ class SudokuSolver extends MVC_Model {
         };
         puzzleRecord.statusOpen = 81
             - puzzleRecord.statusGiven
-            - puzzleRecord.statusSolved; 
+            - puzzleRecord.statusSolved;
     }
-    
+
     setSolvedToGiven() {
         this.myGrid.setSolvedToGiven();
     }
@@ -7680,11 +7686,11 @@ class SudokuGenerator extends SudokuSolver {
     takeBackGivenCells() {
         super.takeBackGivenCells();
     }
-    
+
     getPreRunRecord() {
         return super.getBasicPreRunRecord();
     }
-   
+
     setSolvedToGiven() {
         super.setSolvedToGiven();
     }
@@ -7692,16 +7698,8 @@ class SudokuGenerator extends SudokuSolver {
     grid2puzzleRecord(puzzleRecord) {
         super.grid2puzzleRecord(puzzleRecord);
     }
-
-    /*
-    maxSelectionDifficulty() {
-        return super.maxSelectionDifficulty();
-    }
-    countBackwards() {
-        return super.countBackwards();
-    }
-*/
 }
+
 class SudokuFastSolver extends SudokuSolver {
     // The FastSolver only extends the StepByStepSolver
     // by one method, the computePuzzlePreRunData method.
@@ -7721,15 +7719,15 @@ class SudokuFastSolver extends SudokuSolver {
         this.loadPuzzleArrayGivens(puzzleArray);
         let preRunRecord = this.getPreRunRecord();
         return preRunRecord;
-    }    
-    
+    }
+
     loadPuzzleArrayGivens(puzzleArray) {
         super.loadPuzzleArrayGivens(puzzleArray);
     }
-    
+
     getPreRunRecord() {
         let preRunRecord = super.getBasicPreRunRecord();
-        if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()){
+        if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
             preRunRecord.level = 'Sehr leicht';
         }
         return preRunRecord;
@@ -7748,7 +7746,7 @@ class SudokuFastSolver extends SudokuSolver {
         return this.mySearch.myStepper.countBackwards;
     }
     */
-   
+
 }
 // ==========================================
 // Apps 
