@@ -10,7 +10,7 @@ self.addEventListener("message", (event) => {
             // of the puzzle, given in the request
             let preRunRecord = sudoApp.myFastSolver.computePuzzlePreRunData(request.value);
             // obtained through a preliminary run
-            // Notice: the preRunRecord contains the solved puzzle
+            // Notice: the solutionRecord contains the solved puzzle
             let response = {
                 name: 'preRun',
                 value: preRunRecord
