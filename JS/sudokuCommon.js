@@ -6033,7 +6033,7 @@ class SudokuSolver extends MVC_Model {
         } else if (stoppingBreakpoint == 'searchCompleted') {
             preRunRecord.solvedPuzzle = this.mySearch.getFirstSolution();
             preRunRecord.backTracks = this.mySearch.getFirstSolutionBackTracks();
-            preRunRecord.countSolutions = 1;
+            preRunRecord.countSolutions = this.mySearch.getNumberOfSolutions();
             preRunRecord.level = this.mySearch.getDifficulty();
         }
         return preRunRecord;
