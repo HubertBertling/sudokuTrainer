@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 691;
+let VERSION = 700;
 
 // ==========================================
 // Basic classes
@@ -1581,69 +1581,56 @@ class NewPuzzleStore {
             let k = randomCellOrder[i];
             if (puzzleRecord.puzzle[k].cellValue !== '0') {
                 puzzleRecord.puzzle[k].cellValue = '0';
-                puzzleRecord.preRunRecord = await this.calculatedPreRunRecord(puzzleRecord.puzzle);
-                if (puzzleRecord.preRunRecord.level == 'Extrem schwer') {
-                    return puzzleRecord;
+                let preRec = await sudoApp.mySolver.calculatedPreRunRecord(puzzleRecord.puzzle);
+                // puzzleRecord.preRunRecord = await this.calculatedPreRunRecord(puzzleRecord.puzzle);
+                if (preRec.level == 'Extrem schwer') {
+                    puzzleRecord.preRunRecord.level = 'Extrem schwer';
+                    return;
                 }
             }
         }
-    }
-
-    async generateVerySimplePuzzle() {
-        let simplePuzzleRecord = await this.popPuzzle('Leicht');
-        // A simple puzzle can be made into a very simple puzzle 
-        // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-        return this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
-    }
-
-    async generateExtremeHeavyPuzzle() {
-        let simplePuzzleRecord = await this.popPuzzle('Leicht');
-        // A simple puzzle can be made to extremeVeryHeavy by deleting one given
-        return await this.deleteOnePuzzleCell(simplePuzzleRecord);
     }
 
     async fillNewPuzzleStore() {
         this.isLoading = true;
+        let puzzleLoaded = false;
         while (this.isLoading) {
+            puzzleLoaded = false;
             if (this.simplePuzzles.length < 2
                 || this.mediumPuzzles.length < 2
                 || this.heavyPuzzles.length < 2
                 || this.veryHeavyPuzzles.length < 2) {
-                this.pushPuzzle(await sudoApp.mySolver.generateNewPuzzle());
-            } else {
-                if (this.verySimplePuzzles.length < 2) {
-                    this.verySimplePuzzles.push(await this.generateVerySimplePuzzle());
-                    console.log('');
-                    console.log('-------> push: Sehr leicht: #' + this.verySimplePuzzles.length);
-                    this.logPuzzleStore();
-
-                } else {
-                    if (this.extremeHeavyPuzzles.length < 2) {
-                        this.extremeHeavyPuzzles.push(await this.generateExtremeHeavyPuzzle());
-                        console.log('');
-                        console.log('-------> push: Extrem schwer: #' + this.extremeHeavyPuzzles.length);
-                        this.logPuzzleStore();
-                    } else {
-                        this.isLoading = false;
-                    }
-                }
+                let puzzleRecord = await sudoApp.mySolver.generateNewPuzzle();
+                this.pushPuzzle(puzzleRecord);
+                puzzleLoaded = true;
             }
+            if (this.verySimplePuzzles.length < 2 && this.simplePuzzles.length > 0) {
+                let simplePuzzleRecord = await this.popPuzzle('Leicht');
+                // A simple puzzle can be made into a very simple puzzle 
+                // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
+                this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
+                this.verySimplePuzzles.push(simplePuzzleRecord);
+                puzzleLoaded = true;
+                console.log('');
+                console.log('-------> push: Sehr leicht: #' + this.verySimplePuzzles.length);
+                this.logPuzzleStore();
+            }
+            if (this.extremeHeavyPuzzles.length < 2 && this.simplePuzzles.length > 0) {
+                let simplePuzzleRecord = await this.popPuzzle('Leicht');
+                // A simple puzzle can be made to extremeVeryHeavy by deleting one given
+                await this.deleteOnePuzzleCell(simplePuzzleRecord);
+                this.extremeHeavyPuzzles.push(simplePuzzleRecord);
+                puzzleLoaded = true;
+                console.log('');
+                console.log('-------> push: Extrem schwer: #' + this.extremeHeavyPuzzles.length);
+                this.logPuzzleStore();
+            }
+            // 
+            this.isLoading = puzzleLoaded;
         }
     }
 
-    /*
-    isNotFilled() {
-        return this.verySimplePuzzles.length < 2
-            || this.simplePuzzles.length < 2
-            || this.mediumPuzzles.length < 2
-            || this.heavyPuzzles.length < 2
-            || this.veryHeavyPuzzles.length < 2
-            || this.extremeHeavyPuzzles.length < 2;
-    }
-*/
-
     logPuzzleStore() {
-        console.log('');
         console.log('verySimplePuzzles__: ' + this.verySimplePuzzles.length);
         console.log('simplePuzzles______: ' + this.simplePuzzles.length);
         console.log('mediumPuzzles______: ' + this.mediumPuzzles.length);
@@ -1657,11 +1644,12 @@ class NewPuzzleStore {
             case 'Unlösbar':
             case 'Keine Angabe':
             case 'Extrem schwer': {
-                console.log('Unbrauchbare generierte Puuzles: ' + puzzleRecord.preRunRecord.level);                break;
+                console.log('Unbrauchbare generierte Puuzles: ' + puzzleRecord.preRunRecord.level); break;
             }
             case 'Leicht': {
                 if (this.simplePuzzles.length < 2) {
                     this.simplePuzzles.push(puzzleRecord);
+                    console.log('');
                     console.log('-------> push: Leicht: #' + this.simplePuzzles.length);
                     this.logPuzzleStore();
                 } else {
@@ -1672,6 +1660,7 @@ class NewPuzzleStore {
             case 'Mittel': {
                 if (this.mediumPuzzles.length < 2) {
                     this.mediumPuzzles.push(puzzleRecord);
+                    console.log('');
                     console.log('-------> push: Mittel: #' + this.mediumPuzzles.length);
                     this.logPuzzleStore();
                 } else {
@@ -1682,6 +1671,7 @@ class NewPuzzleStore {
             case 'Schwer': {
                 if (this.heavyPuzzles.length < 2) {
                     this.heavyPuzzles.push(puzzleRecord);
+                    console.log('');
                     console.log('-------> push: Schwer: #' + this.heavyPuzzles.length)
                     this.logPuzzleStore();
                 } else {
@@ -1692,6 +1682,7 @@ class NewPuzzleStore {
             case 'Sehr schwer': {
                 if (this.veryHeavyPuzzles.length < 2) {
                     this.veryHeavyPuzzles.push(puzzleRecord);
+                    console.log('');
                     console.log('-------> push: Sehr schwer: #' + this.veryHeavyPuzzles.length)
                     this.logPuzzleStore();
                 } else {
@@ -1737,7 +1728,9 @@ class NewPuzzleStore {
                 throw new Error('Unexpected difficulty: ' + difficulty);
             }
         }
-        this.fillNewPuzzleStore();
+        if (!this.isLoading) {
+            this.fillNewPuzzleStore();
+        }
         return pz;
     }
 }
@@ -4099,14 +4092,14 @@ class SudokuGrid extends MVC_Model {
                     options.delete(tmpNr);
                     // const [alternativeOption] = options;
 
-                    if (this.unsolvableAll(options, k)) {
+                    if (options.size > 0 && this.unsolvableAll(options, k)) {
                         // Deleting the cell is ok because all alternative option
                         // are contradictory. 
                     } else {
                         // undo the alternative options
                         this.select(k);
                         this.sudoCells[k].manualSetValue(tmpNr, 'define');
-                
+
                     }
                 } else {
                     // The deleted cell does not have a unique candidate to be selected
@@ -4130,6 +4123,8 @@ class SudokuGrid extends MVC_Model {
 
                 // Die aktuelle Option ist unlösbar
                 // Nothing to do
+                this.select(k);
+                this.deleteSelected('define');
             } else {
                 // Die aktuelle Option ist lösbar. Das bedeutet, 
                 // dass in der Optionenmenge keine eindeutige
@@ -7586,7 +7581,7 @@ class SudokuGenerator extends SudokuSolver {
         this.setPlayType('automated-solving');
     }
 
-    async generatePuzzle() {
+    generatePuzzle() {
         this.init();
         // Set a random number in a random cell
         let randomCellIndex = Randomizer.getRandomIntInclusive(0, 80);
@@ -7601,20 +7596,28 @@ class SudokuGenerator extends SudokuSolver {
         sudoApp.mySynchronousSearchStepLoop.start();
         // Turn the dissolved cells into Givens
         this.setSolvedToGiven();
-        this.logGrid('grid after solvedToGiven');
+        // this.logGrid('grid after solvedToGiven');
         // Set the puzzle to define mode
         this.setGamePhase('define')
         // Delete numbers in the solution
         // as long as the remaining puzzle remains backtrack-free.
         // this.logGrid(i + ': grid before takeBACK');  
         this.takeBackGivenCells();
-        this.logGrid('grid after takeBACK');
-        return await this.setNewPuzzleRecord();
+        // this.logGrid('grid after takeBACK');
+
+        let puzzleArray = this.myGrid.getPuzzleArray();
+        let preRec = super.getBasicPreRunRecord();
+
+        let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
+        puzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        puzzleRecord.date = (new Date()).toJSON();
+        // Once and for all compute the preRunRecord
+        puzzleRecord.puzzle = puzzleArray;
+        puzzleRecord.statusGiven = this.myGrid.numberOfGivens();
+        puzzleRecord.preRunRecord = preRec;
+        return puzzleRecord;
     }
 
-    async setNewPuzzleRecord() {
-        return await super.setNewPuzzleRecord();
-    }
 
     logGrid(comment) {
         let k = 0;
