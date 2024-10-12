@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 700;
+let VERSION = 701;
 
 // ==========================================
 // Basic classes
@@ -763,7 +763,7 @@ class Search {
                 // Fair puuzles have exact one solution.
                 // This is the first solution in the search.
                 this.myFirstSolution = this.mySolver.getSolutionFromGrid();
-                this.myFirstSolutionBackTracks = this.mySolver.countBackwards;
+                this.myFirstSolutionBackTracks = this.myStepper.countBackwards;
                 this.myFirstSolutionDifficulty = this.myStepper.maxSelectionDifficulty;
             }
             if (sudoApp instanceof SudokuMainApp) {
@@ -1572,6 +1572,7 @@ class NewPuzzleStore {
         }
         puzzleRecord.statusGiven = puzzleRecord.statusGiven + nr;
         puzzleRecord.preRunRecord.level = 'Sehr leicht';
+        puzzleRecord.preRunRecord.backTracks = 0;
         return puzzleRecord;
     }
 
@@ -1585,6 +1586,7 @@ class NewPuzzleStore {
                 // puzzleRecord.preRunRecord = await this.calculatedPreRunRecord(puzzleRecord.puzzle);
                 if (preRec.level == 'Extrem schwer') {
                     puzzleRecord.preRunRecord.level = 'Extrem schwer';
+                    puzzleRecord.preRunRecord.backTracks = '-';
                     return;
                 }
             }
