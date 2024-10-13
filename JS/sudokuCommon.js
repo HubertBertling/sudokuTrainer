@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 702;
+let VERSION = 703;
 
 // ==========================================
 // Basic classes
@@ -1650,7 +1650,7 @@ class NewPuzzleStore {
             case 'Keine Angabe':
             case 'Sehr leicht':
             case 'Extrem schwer': {
-                console.log('Unbrauchbare generierte Puuzles: ' + puzzleRecord.preRunRecord.level); break;
+                console.log('Unbrauchbare generierte Puzzles: ' + puzzleRecord.preRunRecord.level); break;
             }
             case 'Leicht': {
                 if (this.simplePuzzles.length < 2) {
