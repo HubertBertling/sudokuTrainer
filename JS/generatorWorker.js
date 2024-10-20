@@ -9,7 +9,7 @@ self.addEventListener("message", (event) => {
         try {
             // If the message is "generate", the Web Worker generates a new puzzle
             sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
-            let puzzleRecord = sudoApp.mySolver.generatePuzzle();
+            let puzzleRecord = sudoApp.mySolver.generatePuzzle(request.value);
             let response = {
                 name: 'generated',
                 value: puzzleRecord
