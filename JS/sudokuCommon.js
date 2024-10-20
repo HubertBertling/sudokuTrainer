@@ -233,21 +233,21 @@ class NavigationBar {
 class PuzzleDBDialog {
     constructor() {
         this.myOpen = false;
-        this.myPuzzleDBDialogNode = document.getElementById("db-puzzle-dialog")
+        this.myCurrentPuzzleDBDialogNode = document.getElementById("db-puzzle-dialog")
     }
 
     open() {
         this.myOpen = true;
-        this.myPuzzleDBDialogNode.showModal();
-        this.myPuzzleDBView = new SudokuPuzzleDBView(sudoApp.myPuzzleDB);
-        sudoApp.myPuzzleDB.attach(this.myPuzzleDBView);
+        this.myCurrentPuzzleDBDialogNode.showModal();
+        this.myCurrentPuzzleDBView = new SudokuPuzzleDBView(sudoApp.myCurrentPuzzleDB);
+        sudoApp.myCurrentPuzzleDB.attach(this.myCurrentPuzzleDBView);
     }
 
     close() {
         if (this.myOpen) {
-            this.myPuzzleDBDialogNode.close();
+            this.myCurrentPuzzleDBDialogNode.close();
             this.myOpen = false;
-            sudoApp.myPuzzleDB.detach(this.myPuzzleDBView);
+            sudoApp.myCurrentPuzzleDB.detach(this.myCurrentPuzzleDBView);
         }
     }
 }
@@ -295,7 +295,7 @@ class PuzzleSaveRenameDialog {
         this.cancelHandler = undefined,
             this.myOpen = false;
         this.myContentSaveDlgNode = document.getElementById("contentSaveDlg")
-        this.myPuzzleNameNode = document.getElementById("puzzle-name");
+        this.myCurrentPuzzleNameNode = document.getElementById("puzzle-name");
         this.okNode = document.getElementById("btn-saveStorageOK");
         this.cancelNode = document.getElementById("btn-saveStorageCancel");
     }
@@ -304,7 +304,7 @@ class PuzzleSaveRenameDialog {
         this.okNode.addEventListener('click', ok);
         this.cancelHandler = cancel;
         this.cancelNode.addEventListener('click', cancel);
-        this.myPuzzleNameNode.value = currentRecord.name;
+        this.myCurrentPuzzleNameNode.value = currentRecord.name;
         this.myId = currentRecord.id;
         this.myOpen = true;
         this.myContentSaveDlgNode.showModal();
@@ -320,7 +320,7 @@ class PuzzleSaveRenameDialog {
     }
 
     getPuzzleName() {
-        return this.myPuzzleNameNode.value;
+        return this.myCurrentPuzzleNameNode.value;
     }
 }
 class TrackerDialog {
@@ -376,7 +376,7 @@ class TrackerDialog {
             sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
             sudoApp.myClockedSolutionLoop.stop('cancelled');
 
-            sudoApp.mySolver.deleteSearch();
+            sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
             this.reSetNumberOfSolutions();
             this.trackerDlgNode.close();
             this.btnContainer.style.visibility = "visible";
@@ -644,16 +644,10 @@ class SynchronousSearchStepLoop extends SynchronousRunner {
         super();
     }
     start() {
-        if (sudoApp instanceof SudokuMainApp) {
-            super.start(sudoApp.mySolver.mySearch,
-                sudoApp.mySolver.mySearch.performStep);
-        } else if (sudoApp instanceof SudokuGeneratorApp) {
-            super.start(sudoApp.myGenerator,
-                sudoApp.myGenerator.performSearchStep);
-        } else if (sudoApp instanceof SudokuFastSolverApp) {
-            super.start(sudoApp.myFastSolver,
-                sudoApp.myFastSolver.performSearchStep);
-        }
+        super.start(sudoApp.mySolver.myCurrentSearch,
+            sudoApp.mySolver.myCurrentSearch.performStep);
+        // super.start(sudoApp.mySolver,
+        //    sudoApp.mySolver.performSearchStep);
     }
 }
 
@@ -707,8 +701,7 @@ class Search {
     // On the way through the tree there occur steps which discover a solution
     // of the given puzzle. Finally the end of the tree will be reached. The search
     // is completed.
-    constructor(puzzle, solver, grid) {
-        this.myPuzzle = puzzle;
+    constructor(solver, grid) {
         this.mySolver = solver;
         this.myGrid = grid;
         this.myStepper = new StepperOnGrid(this, this.myGrid);
@@ -717,14 +710,24 @@ class Search {
         this.myStepper.init();
         // 
         this.myFirstSolution = [];
-        // this.myFirstSolutionBackTracks = 0;
-        this.myFirstSolutionDifficulty = undefined;
         this.myNumberOfSolutions = 0;
-        this.searchStepResult = undefined;
+        this.isCompletedNow = false;
+        this.isCancelledNow = false;
     }
     isCompleted() {
-        return this.searchStepResult == 'searchCompleted';
+        return this.isCompletedNow;
     }
+    setCompleted() {
+        this.isCompletedNow = true;
+    }
+
+    isCancelled() {
+        return this.isCancelledNow;
+    }
+    setCancelled() {
+        this.isCancelledNow = true;
+    }
+
     getNumberOfSteps() {
         return this.myStepper.goneSteps;
     }
@@ -734,23 +737,23 @@ class Search {
     getNumberOfSolutions() {
         return this.myNumberOfSolutions;
     }
-    getFirstSolution() {
+    getSolution() {
         return this.myFirstSolution;
     }
     getBackTracks() {
         return this.myStepper.countBackwards;
     }
-    getDifficulty() {
+    getLevel() {
         if (this.isCompleted() && this.getNumberOfSolutions() == 0) {
             return 'Unlösbar';
         } else {
-            return this.myFirstSolutionDifficulty;
+            return this.myStepper.maxSelectionDifficulty;
         }
     }
 
     performStep() {
-        // The last step result is undefined or 'inProgress'
-        // make the grid selection equal to the stepper selection
+        // The previous step result is undefined or 'inProgress'
+        // Make the grid selection equal to the stepper selection
         if (this.myStepper.indexSelected !== this.myGrid.indexSelected
             && this.myStepper.indexSelected !== -1) {
             this.myGrid.select(this.myStepper.indexSelected);
@@ -764,33 +767,27 @@ class Search {
                 // This is the first solution in the search.
                 this.myFirstSolution = this.mySolver.getSolutionFromGrid();
                 // this.myFirstSolutionBackTracks = this.myStepper.countBackwards;
-                this.myFirstSolutionDifficulty = this.myStepper.maxSelectionDifficulty;
+                // this.myFirstSolutionDifficulty = this.myStepper.maxSelectionDifficulty;
             }
             if (sudoApp instanceof SudokuMainApp) {
                 let nr = this.getNumberOfSolutions();
                 sudoApp.myTrackerDialog.setNumberOfSolutions(nr);
-                sudoApp.breakpointPassed('solutionDiscovered');
             }
+            sudoApp.breakpointPassed('solutionDiscovered');
             // Prepare the search for further solutions in the next steps
             // by changing the stepper direction to 'backward'.
             this.myStepper.setAutoDirection('backward');
         } else if (this.searchStepResult == 'searchCompleted') {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
-
+            this.setCompleted();
             if (sudoApp instanceof SudokuMainApp) {
-                sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.countSolutions =
-                    this.getNumberOfSolutions();
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
-            } else if (sudoApp instanceof SudokuFastSolverApp) {
-                sudoApp.myFastSolver.myPuzzle.myRecord.preRunRecord.countSolutions =
-                    this.getNumberOfSolutions();
             }
         }
     }
 
     publishSearchIsCompleted(nrSol) {
-        this.mySolver.myPuzzle.setSearchIsCompleted(nrSol);
         if (sudoApp instanceof SudokuMainApp) {
             if (nrSol == 0) {
                 sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!');
@@ -1198,7 +1195,7 @@ class StepperOnGrid {
         }
         // maxSelectionDifficulty one of 
         // {'Leicht','Mittel','Schwer','Sehr schwer'}.
-        // Hint: do not confuse puzzle difficulty with maxSelectionDifficulty.
+        // Hint: do not confuse puzzle level with maxSelectionDifficulty.
         // The puzzle level has two more values:'Sehr leicht' and 'Extrem schwer'.
         let tmpNeccessary = this.calculateNeccesarySelectionFrom(optionList);
         if (tmpNeccessary.index !== -1) {
@@ -1555,8 +1552,6 @@ class NewPuzzleStore {
     }
     init() {
         this.fillNewPuzzleStore();
-        this.fillVerySimple();
-        this.fillExtremeHeavy();
     }
 
     simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
@@ -1608,7 +1603,7 @@ class NewPuzzleStore {
     }
 
     async fillVerySimple() {
-        if (this.verySimplePuzzles.length < 2) {
+        if (this.verySimplePuzzles.length < 2 && this.simplePuzzles.length > 0) {
             let simplePuzzleRecord = await sudoApp.myNewPuzzleStore.popPuzzle('Leicht');
             // A simple puzzle can be made into a very simple puzzle 
             // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
@@ -1623,7 +1618,7 @@ class NewPuzzleStore {
     }
 
     async fillExtremeHeavy() {
-        if (this.extremeHeavyPuzzles.length < 2) {
+        if (this.extremeHeavyPuzzles.length < 2 && this.simplePuzzles.length > 0) {
             let simplePuzzleRecord = await this.popPuzzle('Leicht');
             // A simple puzzle can be made to extremeVeryHeavy by deleting one given
             await this.deleteOnePuzzleCell(simplePuzzleRecord);
@@ -1657,6 +1652,8 @@ class NewPuzzleStore {
                     this.simplePuzzles.push(puzzleRecord);
                     console.log('-------> push: Leicht: #' + this.simplePuzzles.length);
                     this.logPuzzleStore();
+                    this.fillVerySimple();
+                    this.fillExtremeHeavy();
                 } else {
                     console.log('push: Leicht: verfallen');
                 };
@@ -1803,9 +1800,9 @@ class SudokuPuzzleDB extends MVC_Model {
     }
 
     async userInit() {
-        sudoApp.myPuzzleDBView.startLoaderAnimation('DB initialisieren');
+        sudoApp.myCurrentPuzzleDBView.startLoaderAnimation('DB initialisieren');
         await this.initDB();
-        sudoApp.myPuzzleDBView.stopLoaderAnimation();
+        sudoApp.myCurrentPuzzleDBView.stopLoaderAnimation();
     }
 
     async initDB() {
@@ -1994,7 +1991,7 @@ class SudokuPuzzleDB extends MVC_Model {
     }
 
     mergePlayedPuzzle(puzzleRecord) {
-        let storedPuzzleRecord = sudoApp.myPuzzleDB.getPuzzleRecord(puzzleRecord.id);
+        let storedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(puzzleRecord.id);
         //Stored puzzles save their creation date
         puzzleRecord.date = storedPuzzleRecord.date;
         this.savePuzzle(puzzleRecord);
@@ -2020,8 +2017,8 @@ class SudokuPuzzleDB extends MVC_Model {
         let puzzleMap = new Map(JSON.parse(str_puzzleMap));
         if (!puzzleMap.has(puzzleId)) {
             sudoApp.mySolver.myGrid.loadSimplePuzzleArray(pa);
-            sudoApp.mySolver.myPuzzle.myRecord = await sudoApp.mySolver.setNewPuzzleRecord();
-            let currentPuzzleRecord = sudoApp.mySolver.myPuzzle.myRecord;
+            sudoApp.mySolver.myCurrentPuzzle.myRecord = await sudoApp.mySolver.calculatePuzzleRecord();
+            let currentPuzzleRecord = sudoApp.mySolver.myCurrentPuzzle.myRecord;
             currentPuzzleRecord.id = puzzleId;
             currentPuzzleRecord.name = pzName;
             this.savePuzzle(currentPuzzleRecord);
@@ -2210,27 +2207,27 @@ class SudokuPuzzleDB extends MVC_Model {
 
         if (upLoadedKeys.length == 1) {
             this.selectedIndex = this.getIndex(upLoadedKeys.pop());
-            sudoApp.myPuzzleDBController.loadBtnPressed();
+            sudoApp.myCurrentPuzzleDBController.loadBtnPressed();
         } else {
             sudoApp.mySolverController.openDBLinkPressed();
         }
     }
 
     getCurrentPuzzleFile() {
-        let currentPuzzleRecord = sudoApp.mySolver.myPuzzle.myRecord;
-        if (!sudoApp.myPuzzleDB.has(currentPuzzleRecord.id)) {
+        let currentPuzzleRecord = sudoApp.mySolver.myCurrentPuzzle.myRecord;
+        if (!sudoApp.myCurrentPuzzleDB.has(currentPuzzleRecord.id)) {
             // The current puzzle is not yet an element in the database.
             // Save the current puzzle with a new name in the database
             currentPuzzleRecord.name = 'Geteilt (' + new Date().toLocaleString('de-DE') + ')';
-            sudoApp.myPuzzleDB.savePuzzle(currentPuzzleRecord);
+            sudoApp.myCurrentPuzzleDB.savePuzzle(currentPuzzleRecord);
         } else {
             // The current puzzle is element in the database.
-            sudoApp.myPuzzleDB.mergePlayedPuzzle(currentPuzzleRecord);
+            sudoApp.myCurrentPuzzleDB.mergePlayedPuzzle(currentPuzzleRecord);
         }
         // The saved and shared puzzle becomes the new current puzzle
-        // let tmpPuzzleID = sudoApp.myPuzzleDB.getSelectedUid();
-        let puzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
-        sudoApp.mySolver.loadPuzzle(puzzleRecord);
+        // let tmpPuzzleID = sudoApp.myCurrentPuzzleDB.getSelectedUid();
+        let puzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+        sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
         sudoApp.mySolver.notify();
 
         let str_puzzleMap = localStorage.getItem("localSudokuDB");
@@ -2238,8 +2235,8 @@ class SudokuPuzzleDB extends MVC_Model {
         // puzzleMap anlegen, die nur das selektierte Element enthält.
         let newPuzzleMap = new Map();
         if (puzzleMap.size > 0) {
-            // let selectedKey = sudoApp.myPuzzleDB.getSelectedUid();
-            let selectedPuzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
+            // let selectedKey = sudoApp.myCurrentPuzzleDB.getSelectedUid();
+            let selectedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
             newPuzzleMap.set(selectedPuzzleRecord.id, selectedPuzzleRecord);
             let str_newPuzzleMap = JSON.stringify(Array.from(newPuzzleMap.entries()));
             let blob1 = new Blob([str_newPuzzleMap], { type: "text/plain;charset=utf-8" });
@@ -2272,8 +2269,8 @@ class SudokuPuzzleDBView extends MVC_View {
             let i = 0;
             for (let [key, pzRecord] of puzzleMap) {
                 let tr = document.createElement('tr');
-                tr.setAttribute("onclick", "sudoApp.myPuzzleDBController.setSelected(this)");
-                tr.setAttribute("ondblclick", "sudoApp.myPuzzleDBController.loadBtnPressed()");
+                tr.setAttribute("onclick", "sudoApp.myCurrentPuzzleDBController.setSelected(this)");
+                tr.setAttribute("ondblclick", "sudoApp.myCurrentPuzzleDBController.loadBtnPressed()");
                 tr.setAttribute("style", "cursor:pointer");
                 tr.classList.add('item')
                 if (i == this.myDB.selectedIndex) {
@@ -2353,34 +2350,34 @@ class SudokuPuzzleDBView extends MVC_View {
 class SudokuPuzzleDBController {
     constructor(puzzleDb) {
         // Der Save-Dialog
-        this.myPuzzleDB = puzzleDb;
+        this.myCurrentPuzzleDB = puzzleDb;
         //Click-Event für die Spaltenköpfe
         document.getElementById('col-name').addEventListener('click', () => {
-            this.myPuzzleDB.sort('name');
+            this.myCurrentPuzzleDB.sort('name');
         });
         document.getElementById('col-status-given').addEventListener('click', () => {
-            this.myPuzzleDB.sort('status-given');
+            this.myCurrentPuzzleDB.sort('status-given');
         });
 
         document.getElementById('col-status-solved').addEventListener('click', () => {
-            this.myPuzzleDB.sort('status-solved');
+            this.myCurrentPuzzleDB.sort('status-solved');
         });
 
         document.getElementById('col-status-open').addEventListener('click', () => {
-            this.myPuzzleDB.sort('status-open');
+            this.myCurrentPuzzleDB.sort('status-open');
         });
 
         document.getElementById('col-level').addEventListener('click', () => {
-            this.myPuzzleDB.sort('level');
+            this.myCurrentPuzzleDB.sort('level');
         });
         document.getElementById('col-backTracks').addEventListener('click', () => {
-            this.myPuzzleDB.sort('backTracks');
+            this.myCurrentPuzzleDB.sort('backTracks');
         });
         document.getElementById('col-countSolutions').addEventListener('click', () => {
-            this.myPuzzleDB.sort('countSolutions');
+            this.myCurrentPuzzleDB.sort('countSolutions');
         });
         document.getElementById('col-date').addEventListener('click', () => {
-            this.myPuzzleDB.sort('date');
+            this.myCurrentPuzzleDB.sort('date');
         });
 
         document.getElementById('pz-btn-load').addEventListener('click', () => {
@@ -2440,27 +2437,27 @@ class SudokuPuzzleDBController {
 
 
     setSelected(trNode) {
-        this.myPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
-        this.myPuzzleDB.notify();
+        this.myCurrentPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
+        this.myCurrentPuzzleDB.notify();
     }
 
     renameBtnPressed() {
-        let selectedPuzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
-        let selectedKey = sudoApp.myPuzzleDB.selectedKey();
+        let selectedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+        let selectedKey = sudoApp.myCurrentPuzzleDB.selectedKey();
         selectedPuzzleRecord.id = selectedKey;
-        sudoApp.myPuzzleSaveRenameDlg.open(
+        sudoApp.myCurrentPuzzleSaveRenameDlg.open(
             this.renamePuzzleDlgOKPressed,
             this.renamePuzzleDlgCancelPressed,
             selectedPuzzleRecord);
     }
 
     loadBtnPressed() {
-        if (this.myPuzzleDB.getSize() > 0) {
-            let puzzleRecord = this.myPuzzleDB.getSelectedPuzzle();
-            sudoApp.myPuzzleDBDialog.close();
+        if (this.myCurrentPuzzleDB.getSize() > 0) {
+            let puzzleRecord = this.myCurrentPuzzleDB.getSelectedPuzzle();
+            sudoApp.myCurrentPuzzleDBDialog.close();
             sudoApp.myTrackerDialog.close();
             sudoApp.mySolver.init();
-            sudoApp.mySolver.loadPuzzle(puzzleRecord);
+            sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
             sudoApp.mySolverController.myUndoActionStack = [];
             sudoApp.mySolverController.myRedoActionStack = [];
             sudoApp.mySolver.notify();
@@ -2470,13 +2467,13 @@ class SudokuPuzzleDBController {
     }
 
     renamePuzzleDlgOKPressed() {
-        sudoApp.myPuzzleSaveRenameDlg.close();
-        let uid = sudoApp.myPuzzleSaveRenameDlg.myId;
-        let name = sudoApp.myPuzzleSaveRenameDlg.getPuzzleName();
-        let selectedDBPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(uid);
+        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
+        let uid = sudoApp.myCurrentPuzzleSaveRenameDlg.myId;
+        let name = sudoApp.myCurrentPuzzleSaveRenameDlg.getPuzzleName();
+        let selectedDBPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(uid);
         selectedDBPuzzle.name = name;
-        sudoApp.myPuzzleDB.savePuzzle(selectedDBPuzzle);
-        sudoApp.myPuzzleDB.notify()
+        sudoApp.myCurrentPuzzleDB.savePuzzle(selectedDBPuzzle);
+        sudoApp.myCurrentPuzzleDB.notify()
         if (sudoApp.mySolver.getLoadedPuzzleUID() == uid) {
             sudoApp.mySolver.setLoadedPuzzleName(name);
             sudoApp.mySolver.notify();
@@ -2484,49 +2481,49 @@ class SudokuPuzzleDBController {
     }
 
     renamePuzzleDlgCancelPressed() {
-        sudoApp.myPuzzleSaveRenameDlg.close();
+        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
 
     nextBtnPressed() {
-        if (this.myPuzzleDB.getSize() > 0) {
-            this.myPuzzleDB.selectNextPZ();
+        if (this.myCurrentPuzzleDB.getSize() > 0) {
+            this.myCurrentPuzzleDB.selectNextPZ();
         }
     }
     previousBtnPressed() {
-        if (this.myPuzzleDB.getSize() > 0) {
+        if (this.myCurrentPuzzleDB.getSize() > 0) {
             // Select previous Puzzle
-            this.myPuzzleDB.selectPreviousPZ();
+            this.myCurrentPuzzleDB.selectPreviousPZ();
         }
     }
 
     deleteBtnPressed() {
-        let pz = this.myPuzzleDB.getSelectedPuzzle();
+        let pz = this.myCurrentPuzzleDB.getSelectedPuzzle();
         let pzName = pz.name;
-        /* sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDBController,
-            sudoApp.myPuzzleDBController.delete,
+        /* sudoApp.myConfirmDlg.open(sudoApp.myCurrentPuzzleDBController,
+            sudoApp.myCurrentPuzzleDBController.delete,
             "Puzzle löschen",
             'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
             */
-        sudoApp.myPuzzleDBController.delete();
+        sudoApp.myCurrentPuzzleDBController.delete();
     }
     initDBBtnPressed() {
-        sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDB,
-            sudoApp.myPuzzleDB.userInit,
+        sudoApp.myConfirmDlg.open(sudoApp.myCurrentPuzzleDB,
+            sudoApp.myCurrentPuzzleDB.userInit,
             "Puzzle DB löschen und initialisieren",
             'Soll die Puzzle DB endgültig gelöscht und neu initialisiert werden?');
     }
 
     delete() {
-        if (sudoApp.myPuzzleDB.getSize() > 0) {
-            let selectedId = sudoApp.myPuzzleDB.selectedKey();
+        if (sudoApp.myCurrentPuzzleDB.getSize() > 0) {
+            let selectedId = sudoApp.myCurrentPuzzleDB.selectedKey();
             let loadedPzUid = sudoApp.mySolver.getLoadedPuzzleUID();
             if (loadedPzUid == selectedId) {
                 sudoApp.mySolver.init();
                 sudoApp.mySolver.notify();
             }
-            sudoApp.myPuzzleDB.deleteSelected();
+            sudoApp.myCurrentPuzzleDB.deleteSelected();
             this.nextBtnPressed();
-            sudoApp.myPuzzleDB.notify();
+            sudoApp.myCurrentPuzzleDB.notify();
         }
     }
 
@@ -2544,12 +2541,12 @@ class SudokuPuzzleDBController {
 
     puzzleDbDownloadBtnPressed() {
         // Button on the puzzle DB view
-        this.myPuzzleDB.downloadPuzzleDb();
+        this.myCurrentPuzzleDB.downloadPuzzleDb();
     }
 
     puzzleDownloadBtnPressed() {
         // Button on the puzzle DB view
-        this.myPuzzleDB.downloadPuzzle();
+        this.myCurrentPuzzleDB.downloadPuzzle();
     }
 
     puzzleDbUploadBtnPressed() {
@@ -2559,7 +2556,7 @@ class SudokuPuzzleDBController {
 
 
     closeBtnPressed() {
-        sudoApp.myPuzzleDBDialog.close();
+        sudoApp.myCurrentPuzzleDBDialog.close();
     }
 }
 class SudokuPrintView extends MVC_View {
@@ -2581,17 +2578,17 @@ class SudokuPrintView extends MVC_View {
 
     loadHeader() {
         let puzzleIdentityRow = document.getElementById('print-pz-id-row');
-        let name = sudoApp.myPuzzleDB.getSelectedPuzzle().name;
-        let level = sudoApp.myPuzzleDB.getSelectedPuzzle().preRunRecord.level;
+        let name = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().name;
+        let level = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().preRunRecord.level;
         puzzleIdentityRow.innerHTML =
             '<b>Puzzle-Name:</b> &nbsp' + name + '; &nbsp'
             + '<b>Schwierigkeitsgrad:</b> &nbsp' + level + ';';
     }
 
     loadPrintTable() {
-        if (sudoApp.myPuzzleDB.getSize() > 0) {
+        if (sudoApp.myCurrentPuzzleDB.getSize() > 0) {
             let table = document.getElementById('print-pz-table');
-            let tableArray = sudoApp.myPuzzleDB.getSelectedPuzzle().puzzle;
+            let tableArray = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().puzzle;
             let k = 0;
             for (let row = 0; row < 9; row++) {
                 for (let col = 0; col < 9; col++) {
@@ -2659,33 +2656,52 @@ class PuzzleRecord {
     }
 }
 class Puzzle {
-    constructor(record) {
-        this.myRecord = record;
-        this.myNumberOfSolutions = 0;
-        this.mySearchIsCompleted = false;
+    // Puzzle is an object-wrapper for PuzzleRecords
+    constructor(puzzleRecord) {
+        this.myRecord = puzzleRecord;
+    }
+
+    setIdentity(identity) {
+        this.myRecord.id = identity.id;
+        this.myRecord.name = identity.name;
+        this.myRecord.date = identity.date;
+    }
+    getIdentity() {
+        return {
+            id: this.myRecord.id,
+            name: this.myRecord.name,
+            date: this.myRecord.date
+        }
+    }
+
+    setSolution(solution) {
+        this.myRecord.preRunRecord.solvedPuzzle = solution;
+    }
+    getSolution() {
+        return JSON.parse(JSON.stringify(this.myRecord.preRunRecord.solvedPuzzle));
+    }
+    setBacktracks(nr) {
+        this.myRecord.preRunRecord.backTracks = nr;
+    }
+
+    getBacktracks() {
+        return this.myRecord.preRunRecord.backTracks;
+    }
+
+    setLevel(level) {
+        this.myRecord.preRunRecord.level = level;
+    }
+    getLevel() {
+        return this.myRecord.preRunRecord.level;
+    }
+    getPreRunRecord() {
+        return JSON.parse(JSON.stringify(this.myRecord.preRunRecord));
     }
     getNumberOfSolutions() {
-        return this.myNumberOfSolutions;
+        return this.myRecord.preRunRecord.countSolutions;
     }
-    getSearchIsCompleted() {
-        return this.mySearchIsCompleted;
-    }
-    setSearchIsCompleted(nrSol) {
-        this.myNumberOfSolutions = nrSol;
-        this.mySearchIsCompleted = true;
-    }
-    set(nrSol, completed) {
-        this.myNumberOfSolutions = nrSol;
-        this.mySearchIsCompleted = completed;
-    }
-    reset() {
-        this.myNumberOfSolutions = 0;
-        this.mySearchIsCompleted = false;
-    }
-    isInitial() {
-        return this.myNumberOfSolutions == 0
-            && !this.mySearchIsCompleted;
-
+    setNumberOfSolutions(nr) {
+        this.myRecord.preRunRecord.countSolutions = nr;
     }
 }
 // ==========================================
@@ -3719,10 +3735,18 @@ class SudokuGridView extends MVC_View {
     }
 
     displayNameAndDifficulty() {
+        let currentPuzzle = sudoApp.mySolver.myCurrentPuzzle;
         let evalNode = document.getElementById("loaded-evaluations");
-        evalNode.innerHTML =
-            '<span class="pz-name"><b>Puzzle:</b> &nbsp' + sudoApp.mySolver.myPuzzle.myRecord.name + '</span>' +
-            '<span class="pz-level"><b>Level:</b> &nbsp' + sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level + '</span>'
+
+        if (currentPuzzle == undefined) {
+            evalNode.innerHTML =
+                '<span class="pz-name"><b>Puzzle:</b> &nbsp' + '-' + '</span>' +
+                '<span class="pz-level"><b>Level:</b> &nbsp' + 'Keine Angabe' + '</span>'
+        } else {
+            evalNode.innerHTML =
+                '<span class="pz-name"><b>Puzzle:</b> &nbsp' + currentPuzzle.myRecord.name + '</span>' +
+                '<span class="pz-level"><b>Level:</b> &nbsp' + currentPuzzle.myRecord.preRunRecord.level + '</span>'
+        }
     }
 
     displaySelection() {
@@ -3743,8 +3767,8 @@ class SudokuGridView extends MVC_View {
     displayAutoSelection() {
         let grid = this.getMyModel();
         if (sudoApp.mySolver.isSearching()
-            && sudoApp.mySolver.mySearch.myStepper.indexSelected !== -1) {
-            let selectedCell = grid.sudoCells[sudoApp.mySolver.mySearch.myStepper.indexSelected];
+            && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected !== -1) {
+            let selectedCell = grid.sudoCells[sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected];
             let selectedCellView = selectedCell.getMyView();
             selectedCellView.unsetAutoSelectStatus();
             selectedCellView.setAutoSelectStatus();
@@ -3820,21 +3844,6 @@ class SudokuGrid extends MVC_Model {
             this.stepLazy = false;
             sudoApp.mySolver.setActualEvalType('lazy-invisible');
         }
-    }
-    loadPuzzle(puzzleRecordToLoad) {
-        // Populate Grid 
-        for (let i = 0; i < 81; i++) {
-            let tmpCellValue = puzzleRecordToLoad.puzzle[i].cellValue;
-            let tmpCellPhase = 'define';
-            if (tmpCellValue == undefined) {
-                // Altes Format lesen
-                tmpCellValue = puzzleRecordToLoad.puzzle[i];
-            } else {
-                tmpCellPhase = puzzleRecordToLoad.puzzle[i].cellPhase;
-            }
-            this.sudoCells[i].manualSetValue(tmpCellValue, tmpCellPhase);
-        }
-        this.evaluateMatrix();
     }
 
     logGrid(comment) {
@@ -3976,7 +3985,7 @@ class SudokuGrid extends MVC_Model {
         return tmp;
     }
 
-    isInitial() {
+    isNotPartiallySolved() {
         return (this.numberOfSolvedCells() == 0);
     }
 
@@ -4152,7 +4161,9 @@ class SudokuGrid extends MVC_Model {
     }
 
     canTakeBackGivenCells() {
-        // 
+        // A non-minimal simple puzzle is called very simple.
+        // This means that if there is a cell whose solution 
+        // remains unique when deleted, then the puzzle is very simple.
         let randomCellOrder = Randomizer.getRandomNumbers(81, 0, 81);
         for (let i = 0; i < 81; i++) {
             let k = randomCellOrder[i];
@@ -4171,24 +4182,25 @@ class SudokuGrid extends MVC_Model {
                     // has a unique given. 
                     return true;
                 }
-
                 else if (this.sudoCells[k].getTotalCandidates().size == 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique given.
                     return true;
                 } else {
-                    // The deleted cell does not have a unique number to be selected
+                    // The deleted cell does not have a provable 
+                    // unique number to be selected. Please note:
+                    // This means that it cannot be ruled out that the deleted cell 
+                    // has a unique solution after all. However, we cannot prove this 
+                    // with the implemented criteria. We treat this case 
+                    // as if the deleted cell did not have a unique solution.
                     // The deletion is therefore cancelled.
                     this.select(k);
                     this.sudoCells[k].manualSetValue(tmpNr, 'define');
                 }
             }
         }
-        // this.evaluateGridStrict();
         return false;
     }
-
-
 
     getPuzzleArray() {
         let tmpPuzzleArray = [];
@@ -4210,6 +4222,8 @@ class SudokuGrid extends MVC_Model {
     }
 
     loadPuzzleArray(pa) {
+        // Loading puzzle from puzzle array, 
+        // possibly already partially solved
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = pa[i].cellValue;
             let tmpCellPhase = pa[i].cellPhase;
@@ -4218,6 +4232,7 @@ class SudokuGrid extends MVC_Model {
     }
 
     loadPuzzleArrayGivens(pa) {
+        // Loading puzzle from puzzle array, the definition only
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = pa[i].cellValue;
             let tmpCellPhase = pa[i].cellPhase;
@@ -4230,12 +4245,30 @@ class SudokuGrid extends MVC_Model {
     }
 
     loadSimplePuzzleArray(pa) {
+        // Loading puzzle from simple puzzle array.
+        // A simple puzzle array does not distinguish 
+        // between given and solved cells
         for (let i = 0; i < 81; i++) {
             if (pa[i] == '0') {
                 this.sudoCells[i].manualSetValue(pa[i], '');
             } else {
                 this.sudoCells[i].manualSetValue(pa[i], 'define');
             }
+        }
+    }
+
+    loadPuzzleRecord(puzzleRecordToLoad) {
+        //  Loading puzzle from puzzle record
+        for (let i = 0; i < 81; i++) {
+            let tmpCellValue = puzzleRecordToLoad.puzzle[i].cellValue;
+            let tmpCellPhase = 'define';
+            if (tmpCellValue == undefined) {
+                // Altes Format lesen
+                tmpCellValue = puzzleRecordToLoad.puzzle[i];
+            } else {
+                tmpCellPhase = puzzleRecordToLoad.puzzle[i].cellPhase;
+            }
+            this.sudoCells[i].manualSetValue(tmpCellValue, tmpCellPhase);
         }
     }
 
@@ -5077,7 +5110,7 @@ class SudokuCellView extends MVC_View {
         if (myCell.myNecessarys.size > 1 ||
             (myCell.myNecessarys.size == 1
                 && myCell.isSelected
-                && sudoApp.mySolver.mySearch.myStepper.indexSelected > -1)) {
+                && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1)) {
 
             myCell.myNecessarys.forEach(necessaryNr => {
                 let candidateNode = document.createElement('div');
@@ -5104,7 +5137,7 @@ class SudokuCellView extends MVC_View {
         let tmpCandidates = myCell.getCandidates();
         if (tmpCandidates.size == 1
             && myCell.isSelected
-            && sudoApp.mySolver.mySearch.myStepper.indexSelected > -1) {
+            && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
@@ -5125,7 +5158,7 @@ class SudokuCellView extends MVC_View {
         let tmpCandidates = myCell.getTotalCandidates();
         if (tmpCandidates.size == 1
             && myCell.isSelected
-            && sudoApp.mySolver.mySearch.myStepper.indexSelected > -1) {
+            && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
 
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
@@ -5160,7 +5193,7 @@ class SudokuCellView extends MVC_View {
         // Es gibt mindestens 2 Kandidaten, sprich Optionen
         if (tmpCandidates.size > 1
             && myCell.isSelected
-            && sudoApp.mySolver.mySearch.myStepper.indexSelected > -1) {
+            && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
             this.displayCandidatesInDetail(tmpCandidates);
             return true;
         } else {
@@ -5276,7 +5309,7 @@ class SudokuCellView extends MVC_View {
     }
 
     setBorderSelected() {
-        if (this.myCell.myGrid.mySolver.mySearch.myStepper.indexSelected !==
+        if (this.myCell.myGrid.mySolver.myCurrentSearch.myStepper.indexSelected !==
             this.myCell.myIndex) {
             this.myNode.classList.add('hover');
         }
@@ -5307,7 +5340,7 @@ class SudokuCellView extends MVC_View {
     setAutoSelectStatus() {
         // Die Zelle als automatisch selektiert markieren
         this.setAutoSelected();
-        let currentStep = sudoApp.mySolver.mySearch.myStepper.myBackTracker.currentStep;
+        let currentStep = sudoApp.mySolver.myCurrentSearch.myStepper.myBackTracker.currentStep;
         let tmpStep = undefined;
         let allOptions = undefined;
         let openOptions = undefined;
@@ -6034,17 +6067,28 @@ class SudokuCell extends MVC_Model {
 // Solver types 
 // ==========================================
 class SudokuSolver extends MVC_Model {
+    // The solver is the most important object in this app. 
+    // Basically, the solver has three sub-objects:
+    //  1) Grid
+    //  2) Puzzle
+    //  3) Search
+    // Initially, only the grid exists. No puzzle has been defined yet 
+    // and therefore there can be no solution search for the puzzle.
     constructor(app) {
         super(app);
-        // Die Matrix des Sudoku-Solver
-        // Die Matrix des Sudoku-Calculators
+        // The 9 x 9 grid. This is the place where 
+        // the solution to the puzzle is calculated 
+        // by logical reasoning and/or backtracking.
         this.myGrid = new SudokuGrid(this);
-        // this.myGridView = new SudokuGridView(this.myGrid);
-        this.myGrid.setMyView(this.myGridView);
-        // The solver has a puzzle record right from the start.
-        this.myPuzzle = undefined;
-        // this.mySearcher = undefined;
-        this.mySearch = undefined;
+        // A current puzzle is assigned to the grid in the solver. 
+        // It stores meta information about the puzzle to be solved.
+        // When switching from the Define phase to the Play phase, 
+        // a new puzzle is created.
+        this.myCurrentPuzzle = undefined;
+        // The solver supports the automatic solution search. 
+        // A new search is created when the automatic solution search is started.
+        // The current status of the search is saved in the search object.
+        this.myCurrentSearch = undefined;
         // the solver has two phases, 'play' or 'define'.
         this.currentPhase = 'define';
         // The solver knows the following evaluation methods
@@ -6054,42 +6098,212 @@ class SudokuSolver extends MVC_Model {
         this.playType = 'automated-solving';
     }
 
-    newPuzzle() {
-        this.myPuzzle = new Puzzle(PuzzleRecord.nullPuzzleRecord());
-        this.setGamePhase('define');
+    unsetCurrentPuzzle() {
+        this.myCurrentPuzzle = undefined;
+    }
+
+    setCurrentPuzzle(puzzleRecord) {
+        this.myCurrentPuzzle = new Puzzle(puzzleRecord);
     }
 
     init() {
         this.myGrid.init();
-        this.newPuzzle();
+        this.unsetCurrentPuzzle();
+        this.cleanUpAndDeleteCurrentSearch();
     }
 
-    getBasicPreRunRecord() {
-        // Liefert preRunRecord noch ohne 'Sehr-leicht'-level Bestimmung
-        this.deleteSearch();
-        this.createSearch();
 
-        let preRunRecord = PreRunRecord.nullPreRunRecord();
+    // =================================================
+    //                Generate puzzles
+    // =================================================
+
+    async generateNewPuzzle() {
+        let webworkerGenerator = new Worker("./JS/generatorWorker.js");
+        let myPzGen = () => new Promise(function (myResolve, myReject) {
+            const channel = new MessageChannel();
+            channel.port1.onmessage = ({ data }) => {
+                channel.port1.close();
+                if (data.error) {
+                    myReject(data.error);
+                } else {
+                    myResolve(data.result);
+                }
+            };
+            // Post request
+            let request = {
+                name: 'generate',
+                value: ''
+            }
+            let str_request = JSON.stringify(request);
+            webworkerGenerator.postMessage(str_request, [channel.port2]);
+        });
+        let str_response = await myPzGen();
+        let response = JSON.parse(str_response);
+        let generatedPuzzleRecord = response.value;
+        return generatedPuzzleRecord;
+    }
+
+    generatePuzzle() {
+        // start with the empty grid.
+        this.setGamePhase('play')
+
+        // Set a random number in a random cell
+        let randomCellIndex = Randomizer.getRandomIntInclusive(0, 80);
+        this.myGrid.select(randomCellIndex);
+        let randomCellContent = Randomizer.getRandomIntInclusive(1, 9).toString();
+        this.atCurrentSelectionSetNumber(randomCellContent);
+
+        // Solve this puzzle 
+        this.setCurrentSearchNew();
+        sudoApp.mySynchronousSearchStepLoop.start();
+        let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
+        if (stoppingBreakpoint == 'solutionDiscovered') {
+            this.myCurrentSearch.setCancelled();
+            // Turn the solved cells into Givens
+            this.setSolvedToGiven();
+            // Set the puzzle to define mode
+            this.setGamePhase('define')
+            // Delete numbers in the solution
+            // as long as the remaining puzzle remains backtrack-free.
+            this.takeBackGivenCells();
+            // Save the generated puzzle temporarily
+            let puzzleArray = this.myGrid.getPuzzleArray();
+            // Determination of the level of difficulty of the generated puzzle 
+            // by the automatic solution.
+
+            // 1) Initialize the current puzzle
+            sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
+            // 2) Initialize the current search.
+            this.cleanUpAndDeleteCurrentSearch();
+            this.setCurrentSearchNew();
+            // 3) solve the puzzle and return metadata results in a preRunRecord
+            let preRecGen = this.computePreRunRecord();
+            // 4) Compose a complete PuzzleRecord and return it
+            let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
+            puzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            puzzleRecord.date = (new Date()).toJSON();
+            // Once and for all compute the preRunRecord
+            puzzleRecord.puzzle = puzzleArray;
+            puzzleRecord.statusGiven = this.myGrid.numberOfGivens();
+            puzzleRecord.preRunRecord = preRecGen;
+            return puzzleRecord;
+        } else {
+            throw new Error('Unexpected breakpoint during generation: ' + stoppingBreakpoint)
+        }
+    }
+
+    // =================================================
+
+
+    // =================================================
+    //            Compute puzzle preRun data
+    // =================================================
+    async calculatedPreRunRecord(puzzleArray) {
+        let webworkerFastSolver = new Worker("./JS/fastSolverWorker.js");
+        let myPrRunCalc = () => new Promise(function (myResolve, myReject) {
+            const channel = new MessageChannel();
+            channel.port1.onmessage = ({ data }) => {
+                channel.port1.close();
+                if (data.error) {
+                    myReject(data.error);
+                } else {
+                    myResolve(data.result);
+                }
+            };
+            // Post request
+            let request = {
+                name: 'preRun',
+                value: puzzleArray
+            }
+            let str_request = JSON.stringify(request);
+            webworkerFastSolver.postMessage(str_request, [channel.port2]);
+        });
+        let str_response = await myPrRunCalc();
+        let response = JSON.parse(str_response);
+        let calcPreRunRecord = response.value;
+        return calcPreRunRecord;
+    }
+
+    computePuzzlePreRunData(puzzleArray) {
+        // The function of the fastSolverWorker
+        // PreRunData for the puzzle given in the parameter puzzleArray
+
+        // Load the puzzle given in the parameter into the grid. 
+        // The puzzle may already be partially solved. 
+        // Only givens are loaded.
+        this.loadPuzzleArrayGivens(puzzleArray);
+
+        // 1) Initialize the current puzzle
+        sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
+        // 2) Initialize the current search.
+        this.cleanUpAndDeleteCurrentSearch();
+        this.setCurrentSearchNew();
+        // 3) solve the puzzle and return metadata results in a preRunRecord
+        let preRecFast = this.computePreRunRecord();
+
+        return preRecFast;
+    }
+
+    logGrid(comment) {
+        this.myGrid.logGrid(comment);
+    }
+
+    // =================================================
+
+    computePreRunRecord() {
+        let preRunRecord = this.computeBasicPreRunRecord();
+        if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
+            // A non-minimal simple puzzle is called very simple.
+            preRunRecord.level = 'Sehr leicht';
+        }
+        return preRunRecord;
+    }
+
+    computeBasicPreRunRecord() {
+        // Returns the preRunRecord for the implicit puzzle in the grid,
+        // still without 'very easy' level determination
+
+        // in the search tree proceed to the first solution
+        if (this.myCurrentSearch.isCompleted()
+            || this.myCurrentSearch.isCancelled()) {
+            throw new Error('Unexpected call of computeBasicPreRunRecord()');
+        }
 
         sudoApp.mySynchronousSearchStepLoop.start();
         let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
-
         if (stoppingBreakpoint == 'solutionDiscovered') {
-            // Nach der ersten Lösung ein weiterer Suchschritt
+            // First solution discovered
+            // After the first solution proceed
             sudoApp.mySynchronousSearchStepLoop.start();
-            // Das ergibt eine weitere Lösung oder
-            // das Ende der Suche ist erreicht.
             stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
+            // This results in another solution or
+            // the end of the search has been reached.       
+        } else {
+            // the puzzle is unsolvable ???
+            this.myCurrentSearch.setCompleted();
+            //console.log('Unexpected breakpoint in computeBasicPreRunRecord(), 1. call: ' + stoppingBreakpoint)
+            this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Unlösbar';
+            this.myCurrentSearch.setCompleted();
+            // throw new Error('Unexpected breakpoint in computeBasicPreRunRecord(), 1. call: ' + stoppingBreakpoint)
         }
         if (stoppingBreakpoint == 'solutionDiscovered') {
-            // Eine zweite Lösung wurde festgestellt
-            preRunRecord.level = 'Extrem schwer';
+            // A second solution was found
+            // More than one solution is the key property 
+            // of extremely difficult puzzles
+            this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Extrem schwer';
+            this.myCurrentSearch.setCancelled();
         } else if (stoppingBreakpoint == 'searchCompleted') {
-            preRunRecord.solvedPuzzle = this.mySearch.getFirstSolution();
-            preRunRecord.backTracks = this.mySearch.getBackTracks();
-            preRunRecord.countSolutions = this.mySearch.getNumberOfSolutions();
-            preRunRecord.level = this.mySearch.getDifficulty();
+            // All properties of the implicit puzzle in the grid
+            // are now known and are summarized in the preRunRecord.
+            this.myCurrentSearch.setCompleted();
+            // implemented on solver level: "searchInfos2PuzzleRecord()"
+            this.searchInfos2PuzzleRecord();
+        } else {
+            console.log('Unexpected breakpoint in computeBasicPreRunRecord(), 2. call: ' + stoppingBreakpoint)
+            // throw new Error('Unexpected breakpoint in computeBasicPreRunRecord():  2. call:' + stoppingBreakpoint)
         }
+
+        let preRunRecord = this.myCurrentPuzzle.getPreRunRecord();
         return preRunRecord;
     }
 
@@ -6104,7 +6318,7 @@ class SudokuSolver extends MVC_Model {
         return solution;
     }
 
-    async setNewPuzzleRecord() {
+    async calculatePuzzleRecord() {
         let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
         puzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
         puzzleRecord.date = (new Date()).toJSON();
@@ -6115,27 +6329,39 @@ class SudokuSolver extends MVC_Model {
         return puzzleRecord;
     }
 
-    deleteSearch() {
-        if (this.mySearch !== undefined) {
-            this.mySearch.cleanUp();
-            this.mySearch = undefined;
+    cleanUpAndDeleteCurrentSearch() {
+        if (this.myCurrentSearch !== undefined) {
+            this.myCurrentSearch.cleanUp();
+            this.myCurrentSearch = undefined;
         }
     }
-    createSearch() {
-        this.mySearch = new Search(this.myPuzzle,
-            this,
-            this.myGrid);
-    }
-
-    getMySearch() {
-        return this.mySearch;
+    setCurrentSearchNew() {
+        this.myCurrentSearch = new Search(this, this.myGrid);
     }
 
     performSearchStep() {
-        this.mySearch.performStep();
-        if (sudoApp instanceof SudokuMainApp) {
-            this.notify();
+        if (!this.myCurrentSearch.isCompleted()
+            && !this.myCurrentSearch.isCancelled()) {
+            this.myCurrentSearch.performStep();
+            /*
+                if (this.myCurrentSearch.isCompleted()) {
+                    this.searchInfos2PuzzleRecord();
+                }
+            */
+            if (sudoApp instanceof SudokuMainApp) {
+                this.notify();
+            }
         }
+    }
+
+    searchInfos2PuzzleRecord() {
+        let search = this.myCurrentSearch;
+        let puzzle = this.myCurrentPuzzle;
+
+        puzzle.setSolution(search.getSolution());
+        puzzle.setNumberOfSolutions(search.getNumberOfSolutions());
+        puzzle.setBacktracks(search.getBackTracks());
+        puzzle.setLevel(search.getLevel());
     }
 
     performSolutionStep() {
@@ -6143,7 +6369,7 @@ class SudokuSolver extends MVC_Model {
     }
 
     isSearching() {
-        return this.mySearch !== undefined;
+        return this.myCurrentSearch !== undefined;
     }
 
     setPlayType(pt) {
@@ -6172,12 +6398,12 @@ class SudokuSolver extends MVC_Model {
         return this.playType;
     }
 
-    isInitial() {
-        return this.myPuzzle.isInitial() && this.myGrid.isInitial();
+    isNotPartiallySolved() {
+        return this.myGrid.isNotPartiallySolved();
     }
 
     getAutoDirection() {
-        return this.mySearch.myStepper.autoDirection;
+        return this.myCurrentSearch.myStepper.autoDirection;
     }
 
     setStepLazy() {
@@ -6194,31 +6420,36 @@ class SudokuSolver extends MVC_Model {
     // =================================================
     // Other Methods
     // =================================================
-    loadPuzzle(puzzleRecord) {
-        this.myPuzzle = new Puzzle(puzzleRecord);
-        this.myGrid.loadPuzzle(puzzleRecord);
-        this.mySearch = undefined;
-        this.currentPhase = 'play';
+    loadPuzzleRecord(puzzleRecord) {
+        this.myCurrentSearch = undefined;
+        // Load puzzleRecord into the solvers grid
+        this.myGrid.loadPuzzleRecord(puzzleRecord);
+        this.myGrid.evaluateMatrix();
+        // Load puzzleRecord into the solvers current puzzle
+        this.setCurrentPuzzle(JSON.parse(JSON.stringify(puzzleRecord)));
+        this.setGamePhase('play');
     }
 
     loadPuzzleArrayGivens(puzzleArray) {
+        // Called from FastSolver
+        // Loading puzzle from puzzleArray into the grid
         this.myGrid.loadPuzzleArrayGivens(puzzleArray);
         this.myGrid.evaluateMatrix();
+        // 
+        let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
+        //this.grid2puzzleRecord(puzzleRecord);
+        puzzleRecord.puzzle = puzzleArray;
+        this.setCurrentPuzzle(puzzleRecord);
     }
 
     countBackwards() {
-        return this.mySearch.myStepper.countBackwards;
+        return this.myCurrentSearch.myStepper.countBackwards;
     }
 
     atCurrentSelectionSetNumber(number) {
-        /* if (this.myStepper.indexSelected !== -1 && this.indexSelected() !== this.myStepper.indexSelected) {
-            // Eine manuelle Nummernsetzung bei laufender automatischer Ausführung
-            // führt zum Abbruch der automatischen Ausführung, weil der Backtrack-Stack
-            // inkonsistent wird.
-            this.stopBackTrackingSearch();
-        } */
-        this.myGrid.atCurrentSelectionSetNumber(number, this.currentPhase, false);
+        this.myGrid.atCurrentSelectionSetNumber(number, this.currentPhase);
     }
+
     deleteSelected() {
         this.myGrid.deleteSelected(this.currentPhase);
         this.deselect();
@@ -6234,11 +6465,10 @@ class SudokuSolver extends MVC_Model {
     setActualEvalType(value) {
         this.currentEvalType = value;
         this.myGrid.evaluateMatrix();
-        // this.notify();
     }
 
     setAutoDirection(direction) {
-        this.mySearch.myStepper.setAutoDirection(direction);
+        this.myCurrentSearch.myStepper.setAutoDirection(direction);
     }
 
     // =================================================
@@ -6248,8 +6478,11 @@ class SudokuSolver extends MVC_Model {
     getMyGrid() {
         return this.myGrid;
     }
+    getMyCurrentPuzzle() {
+        return this.myCurrentPuzzle;
+    }
     getMyStepper() {
-        return this.mySearch.myStepper;
+        return this.myCurrentSearch.myStepper;
     }
 
     getGamePhase() {
@@ -6268,37 +6501,12 @@ class SudokuSolver extends MVC_Model {
             this.currentPhase = gamePhase;
         }
     }
-    async generateNewPuzzle() {
-        let webworkerGenerator = new Worker("./JS/generatorWorker.js");
-        let myPzGen = () => new Promise(function (myResolve, myReject) {
-            const channel = new MessageChannel();
-            channel.port1.onmessage = ({ data }) => {
-                channel.port1.close();
-                if (data.error) {
-                    myReject(data.error);
-                } else {
-                    myResolve(data.result);
-                }
-            };
-            // Post request
-            let request = {
-                name: 'generate',
-                value: ''
-            }
-            let str_request = JSON.stringify(request);
-            webworkerGenerator.postMessage(str_request, [channel.port2]);
-        });
-        let str_response = await myPzGen();
-        let response = JSON.parse(str_response);
-        let generatedPuzzleRecord = response.value;
-        return generatedPuzzleRecord;
-    }
 
     setLoadedPuzzleName(name) {
-        this.myPuzzle.myRecord.name = name;
+        this.myCurrentPuzzle.myRecord.name = name;
     }
     getLoadedPuzzleUID() {
-        return this.myPuzzle.myRecord.id;
+        return this.myCurrentPuzzle.myRecord.id;
     }
 
 
@@ -6339,32 +6547,6 @@ class SudokuSolver extends MVC_Model {
     }
 
 
-    async calculatedPreRunRecord(puzzleArray) {
-        let webworkerFastSolver = new Worker("./JS/fastSolverWorker.js");
-        let myPrRunCalc = () => new Promise(function (myResolve, myReject) {
-            const channel = new MessageChannel();
-            channel.port1.onmessage = ({ data }) => {
-                channel.port1.close();
-                if (data.error) {
-                    myReject(data.error);
-                } else {
-                    myResolve(data.result);
-                }
-            };
-            // Post request
-            let request = {
-                name: 'preRun',
-                value: puzzleArray
-            }
-            let str_request = JSON.stringify(request);
-            webworkerFastSolver.postMessage(str_request, [channel.port2]);
-        });
-        let str_response = await myPrRunCalc();
-        let response = JSON.parse(str_response);
-        let calcPreRunRecord = response.value;
-        return calcPreRunRecord;
-    }
-
 
     notifyAspect(aspect, aspectValue) {
         super.notifyAspect(aspect, aspectValue);
@@ -6380,41 +6562,40 @@ class SudokuSolver extends MVC_Model {
     }
 
     clearLoadedPuzzle(key) {
-        if (this.myPuzzle.myRecord.id == key) {
+        if (this.myCurrentPuzzle.myRecord.id == key) {
             this.myGrid.init();
         }
     }
 
-    tryStartBacktracking() {
-        if (!this.isSearching()) {
-            if (this.myPuzzle.myRecord.preRunRecord.level == 'Sehr schwer'
-                || this.myPuzzle.myRecord.preRunRecord.level == 'Extrem schwer'
-                || this.myPuzzle.myRecord.preRunRecord.level == 'Unlösbar') {
-                if (this.isInitial()) {
-                    // The back-tracker can only guarantee one or more correct solutions 
-                    // for very difficult or extremely difficult puzzles if it is started 
-                    // on the initial puzzle. 
-                    this.mySearch = new Search(this.myPuzzle,
-                        this,
-                        this.myGrid);
-                } else {
-                    sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
-                        sudoApp.mySolverController.resetConfirmed,
-                        "Puzzle zurücksetzen?",
-                        "Wenn sehr schwere, extrem schwere oder unlösbare Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
-                }
+    tryStartAutomaticSearch() {
+        // The automatic solver cannot guarantee correct statements 
+        // about the existence and number of solutions 
+        // for very difficult, extremely difficult or unsolvable puzzles 
+        // that have already been partially solved.
+
+        // These puzzles are solved by backtracking. Trial and error 
+        // in the solution process means that there are steps in the solution process 
+        // with contradictory partial solutions. They trigger backtracking in the process.
+        if (this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Sehr schwer'
+            || this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Extrem schwer'
+            || this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Unlösbar') {
+            if (this.isNotPartiallySolved()) {
+                this.myCurrentSearch = new Search(this, this.myGrid);
             } else {
-                // Fair puzzle partially solved 
-                // The back-tracker can be started for fair puzzles, 
-                // even if they have already been partially solved.
-                // Any partial solution derived with the back-tracker is correct,
-                // because fair puzzles have a unique solution, i.e. no backtracking takes place.
-                this.myPuzzle.reset();
-                this.mySearch = new Search(this.myPuzzle,
-                    this,
-                    this.myGrid);
+                sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
+                    sudoApp.mySolverController.resetConfirmed,
+                    "Puzzle zurücksetzen?",
+                    "Wenn sehr schwere, extrem schwere oder unlösbare Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
             }
+        } else {
+            // The automatic solver can be started for fair puzzles, 
+            // even if they have already been partially solved.
+            // Any partial solution derived with the automatic solver is correct,
+            // because fair puzzles have a unique solution, 
+            // i.e. no backtracking takes place.
+            this.myCurrentSearch = new Search(this, this.myGrid);
         }
+
     }
 
     succeeds() {
@@ -6424,7 +6605,7 @@ class SudokuSolver extends MVC_Model {
     }
 
     reset() {
-        this.myPuzzle.reset();
+        this.cleanUpAndDeleteCurrentSearch();
         this.myGrid.reset();
     }
 }
@@ -6446,21 +6627,19 @@ class SudokuSolverView extends MVC_View {
 
         this.myGridView.upDate();
         this.displayGamePhase();
-        this.displayLoadedBenchmark(this.getMyModel().myPuzzle.myRecord.preRunRecord.level,
-            this.getMyModel().myPuzzle.myRecord.preRunRecord.backTracks);
 
         let progressBlock = document.getElementById("progress-block");
         let stepCountBox = document.getElementById("step-count-box");
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
         if (this.getMyModel().isSearching()) {
-            let mySearch = this.getMyModel().mySearch;
-            // let myStepper = this.getMyModel().mySearch.myStepper;
+            let mySearch = this.getMyModel().myCurrentSearch;
+            // let myStepper = this.getMyModel().myCurrentSearch.myStepper;
             progressBlock.style.gridTemplateColumns = "1fr 0.2fr 1fr";
             stepCountBox.style.display = "flex";
             autoModeRadioBtns.style.display = "flex";
             // this.displayGoneSteps(myStepper.getGoneSteps());
             this.displayGoneSteps(mySearch.getNumberOfSteps());
-            let tmpLevel = this.getMyModel().myPuzzle.myRecord.preRunRecord.level;
+            let tmpLevel = this.getMyModel().myCurrentPuzzle.myRecord.preRunRecord.level;
             if (tmpLevel == 'Sehr schwer') {
                 this.displayBackwardCount(mySearch.myStepper.countBackwards);
             } else {
@@ -6479,12 +6658,17 @@ class SudokuSolverView extends MVC_View {
         this.displayUndoRedo();
         this.displayPuzzleIOTechniqueBtns();
         sudoApp.mySolver.myGrid.getMyView().displayNameAndDifficulty();
-        this.displaySearchCompleted();
+        if (sudoApp.mySolver.myCurrentSearch !== undefined
+            && sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+            this.displayPuzzleSolutionInfo();
+        } else {
+            this.hidePuzzleSolutionInfo();
+        }
     }
 
-    displaySearchCompleted() {
-        let puzzle = this.getMyModel().myPuzzle;
-        if (puzzle.getSearchIsCompleted()) {
+    displayPuzzleSolutionInfo() {
+        let puzzle = this.getMyModel().myCurrentPuzzle;
+        if (puzzle !== undefined) {
             if (puzzle.getNumberOfSolutions() == 0) {
                 this.showPuzzleSolutionInfo('Keine Lösung!');
             } else {
@@ -6494,10 +6678,9 @@ class SudokuSolverView extends MVC_View {
                     this.showPuzzleSolutionInfo(puzzle.getNumberOfSolutions() + ' Lösungen');
                 }
             }
-        } else {
-            this.hidePuzzleSolutionInfo();
         }
     }
+
 
     upDateAspect(aspect, aspectValue) {
         switch (aspect) {
@@ -7157,10 +7340,13 @@ class SudokuSolverController {
     }
 
     async defineBtnPressed() {
-        this.mySolver.newPuzzle();
+        // Delete last search
+        this.mySolver.cleanUpAndDeleteCurrentSearch();
+        this.mySolver.unsetCurrentPuzzle();
         this.mySolver.myGrid.setSolvedToGiven();
-        await this.mySolver.setNewPuzzleRecord();
+        // await this.mySolver.calculatePuzzleRecord();
         this.initUndoActionStack();
+        this.mySolver.setGamePhase('define');
         this.mySolver.notify();
     }
 
@@ -7171,18 +7357,21 @@ class SudokuSolverController {
         // are calculated in the background and are stored in a new puzzle record.
         // This includes the solution of the new puzzle. The latter allows, the user to have 
         // his current number settings checked. There is a call button for this check.
+
+        // Delete last search
+        this.mySolver.cleanUpAndDeleteCurrentSearch();
         if (this.mySolver.getGamePhase() == 'play') {
             // The solver is already in the game phase 'play'.
-            // In this case we recompute the puzzle meta data 
+            // In this case we recompute the puzzle's meta data 
             // but do not create a new puzzle.
-            let previousPuzzleRecord = this.mySolver.myPuzzle.myRecord;
-            this.mySolver.myPuzzle.myRecord = await this.mySolver.setNewPuzzleRecord();
+            let previousPuzzle = new Puzzle(this.mySolver.myCurrentPuzzle.myRecord);
+            let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
+            this.mySolver.setCurrentPuzzle(puzzleRecord);
             // Retain the identity of the previous record
-            this.mySolver.myPuzzle.myRecord.id = previousPuzzleRecord.id;
-            this.mySolver.myPuzzle.myRecord.name = previousPuzzleRecord.name;
-            this.mySolver.myPuzzle.myRecord.date = previousPuzzleRecord.date;
+            this.mySolver.myCurrentPuzzle.setIdentity(previousPuzzle.getIdentity());
         } else {
-            this.mySolver.myPuzzle.myRecord = await this.mySolver.setNewPuzzleRecord();
+            let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
+            this.mySolver.setCurrentPuzzle(puzzleRecord);
             this.mySolver.setGamePhase('play');
             this.initUndoActionStack();
         }
@@ -7192,15 +7381,21 @@ class SudokuSolverController {
     startBtnPressed() {
         this.initUndoActionStack();
         if (this.mySolver.getGamePhase() == 'define') {
+            // Switching to the play phase means that the definition of the puzzle 
+            // has been finished.
+            // After switching to the play phase, the puzzle's meta-data 
+            // are calculated in the background and are stored in a new puzzle record.
             this.playBtnPressed();
         }
         if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+            // Contradictory puzzles have no solution. 
+            // It is therefore not advisable to start the automatic solution search.
             sudoApp.mySolverView.myGridView.displayUnsolvability();
-            let level = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level;
-            sudoApp.myInfoDialog.open('Start Solver', 'negativ', 'Schwierigkeitsgrad: ' + level +
-                '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.');
+            let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+            sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
+                '. <br><br> Der aktuelle Puzzle-Lösungsstatus zeigt einen Widerspruch.');
         } else {
-            this.mySolver.tryStartBacktracking();
+            this.mySolver.tryStartAutomaticSearch();
             if (this.mySolver.isSearching()) {
                 sudoApp.myTrackerDialog.open();
             }
@@ -7232,11 +7427,11 @@ class SudokuSolverController {
     }
 
     resetConfirmed() {
-        let puzzle = this.mySolver.myPuzzle;
+        let puzzle = this.mySolver.myCurrentPuzzle;
         let action = {
             operation: 'reset',
             pzSolutions: puzzle.myNumberOfSolutions,
-            pzCompleted: puzzle.mySearchIsCompleted,
+            pzCompleted: puzzle.isCompleted(),
             pzArray: this.mySolver.myGrid.getPuzzleArray()
         }
         this.myUndoActionStack.push(action);
@@ -7264,7 +7459,7 @@ class SudokuSolverController {
     undo(action) {
         switch (action.operation) {
             case 'reset': {
-                sudoApp.mySolver.myPuzzle.set(
+                sudoApp.mySolver.myCurrentPuzzle.set(
                     action.pzSolutions,
                     action.pzCompleted
                 );
@@ -7339,7 +7534,7 @@ class SudokuSolverController {
         }
         sudoApp.mySolver.notifyAspect('puzzleGenerator', aspectValue);
         //The puzzle taken from the store (pop) is loaded into the solver
-        sudoApp.mySolver.loadPuzzle(puzzleRecord);
+        sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
         // Puzzles generated into the store are in solved state.
         // So the loaded puzzle must be reset.
         sudoApp.mySolver.reset();
@@ -7356,9 +7551,9 @@ class SudokuSolverController {
         } else {
             // transfer grid state into the puzzle record
             // this.mySolver.grid2puzzle();
-            this.mySolver.grid2puzzleRecord(this.mySolver.myPuzzle.myRecord);
+            this.mySolver.grid2puzzleRecord(this.mySolver.myCurrentPuzzle.myRecord);
 
-            if (!sudoApp.myPuzzleDB.has(this.mySolver.getLoadedPuzzleUID())) {
+            if (!sudoApp.myCurrentPuzzleDB.has(this.mySolver.getLoadedPuzzleUID())) {
                 // The loaded puzzle is not yet element in the database.
                 // Save loaded puzzle with new name in the database
                 // A default name is defined
@@ -7366,27 +7561,27 @@ class SudokuSolverController {
                 // the current puzzle gets this name
                 this.mySolver.setLoadedPuzzleName(newPuzzleName);
                 // The user is asked for a name
-                sudoApp.myPuzzleSaveRenameDlg.open(
+                sudoApp.myCurrentPuzzleSaveRenameDlg.open(
                     sudoApp.mySolverController.savePuzzleDlgOKPressed,
                     sudoApp.mySolverController.savePuzzleDlgCancelPressed,
-                    this.mySolver.myPuzzle.myRecord);
+                    this.mySolver.myCurrentPuzzle.myRecord);
             } else {
                 // The current puzzle is already element in the database
                 // So only the actual puzzle state needs to be saved
-                let puzzle = this.mySolver.myPuzzle.myRecord;
-                let storedPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(puzzle.id);
+                let puzzle = this.mySolver.myCurrentPuzzle.myRecord;
+                let storedPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(puzzle.id);
                 puzzle.date = storedPuzzle.date;
-                sudoApp.myPuzzleDB.savePuzzle(puzzle);
-                sudoApp.myPuzzleDB.notify();
+                sudoApp.myCurrentPuzzleDB.savePuzzle(puzzle);
+                sudoApp.myCurrentPuzzleDB.notify();
                 sudoApp.myInfoDialog.open('Spielstand gespeichert', "positiv",
-                    'Puzzle: \"' + this.mySolver.myPuzzle.myRecord.name + '\"');
+                    'Puzzle: \"' + this.mySolver.myCurrentPuzzle.myRecord.name + '\"');
             }
         }
     }
 
     openDBLinkPressed() {
-        sudoApp.myPuzzleDBDialog.open();
-        sudoApp.myPuzzleDB.notify();
+        sudoApp.myCurrentPuzzleDBDialog.open();
+        sudoApp.myCurrentPuzzleDB.notify();
         sudoApp.myNavBar.closeNav();
     }
 
@@ -7409,25 +7604,25 @@ class SudokuSolverController {
         } else {
             // this.mySolver.stopBackTrackingSearch();
             sudoApp.myTrackerDialog.close();
-            if (!sudoApp.myPuzzleDB.has(this.mySolver.myPuzzle.myRecord.id)) {
+            if (!sudoApp.myCurrentPuzzleDB.has(this.mySolver.myCurrentPuzzle.myRecord.id)) {
                 // The current puzzle is not yet an element in the database.
                 // Save the current puzzle with a new name in the database.
                 let newName = 'Druck (' + new Date().toLocaleString('de-DE') + ')';
-                this.mySolver.myPuzzle.myRecord.name = newName;
-                sudoApp.myPuzzleDB.savePuzzle(this.mySolver.myPuzzle.myRecord);
+                this.mySolver.myCurrentPuzzle.myRecord.name = newName;
+                sudoApp.myCurrentPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
             }
             // The current puzzle is element in the database.
             // Before printing save the current state.
-            let storedPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(this.mySolver.myPuzzle.myRecord.id);
+            let storedPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(this.mySolver.myCurrentPuzzle.myRecord.id);
             // this.mySolver.grid2puzzle();
-            this.mySolver.grid2puzzleRecord(this.mySolver.myPuzzle.myRecord);
-            this.mySolver.myPuzzle.myRecord.date = storedPuzzle.date;
-            sudoApp.myPuzzleDB.savePuzzle(this.mySolver.myPuzzle.myRecord);
+            this.mySolver.grid2puzzleRecord(this.mySolver.myCurrentPuzzle.myRecord);
+            this.mySolver.myCurrentPuzzle.myRecord.date = storedPuzzle.date;
+            sudoApp.myCurrentPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
             // Print the saved puzzle
-            sudoApp.myPuzzleDBController.printSelectedPuzzle();
+            sudoApp.myCurrentPuzzleDBController.printSelectedPuzzle();
             // The saved and printed puzzle becomes the new current puzzle
-            let puzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
-            sudoApp.mySolver.loadPuzzle(puzzleRecord);
+            let puzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+            sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
             sudoApp.mySolver.notify();
         }
     }
@@ -7438,12 +7633,12 @@ class SudokuSolverController {
         // It has the effect that the display of the current puzzle includes 
         // the display of its possible unfulfillability. 
         // Normally, the unfulfillability is not displayed.
-        let level = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level;
+        let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
         if (level == 'Unlösbar') {
             if (sudoApp.mySolver.myGrid.isUnsolvable()) {
                 sudoApp.mySolver.notify();
-                let level = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.level;
-                sudoApp.myInfoDialog.open('Start Solver', 'negativ', 'Schwierigkeitsgrad: ' + level +
+                let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+                sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
                     '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.');
             } else {
                 sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
@@ -7455,7 +7650,7 @@ class SudokuSolverController {
         } else {
             // Level is fair or 'Sehr schwer', i.e. has a unique solution
             let wrongCellSet = false;
-            let solvedPuzzle = sudoApp.mySolver.myPuzzle.myRecord.preRunRecord.solvedPuzzle;
+            let solvedPuzzle = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.solvedPuzzle;
             for (let i = 0; i < 81; i++) {
                 let currentCellValue = sudoApp.mySolver.myGrid.sudoCells[i].getValue();
                 let currentCellPhase = sudoApp.mySolver.myGrid.sudoCells[i].getPhase();
@@ -7542,7 +7737,7 @@ class SudokuSolverController {
         sudoApp.myClockedSearchStepLoop.stop('cancelled');
         sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
         sudoApp.myClockedSolutionLoop.stop('cancelled');
-        sudoApp.mySolver.deleteSearch();
+        // sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
         sudoApp.myTrackerDialog.close();
         sudoApp.mySolver.notify();
     }
@@ -7566,176 +7761,20 @@ class SudokuSolverController {
     }
 
     savePuzzleDlgOKPressed() {
-        sudoApp.myPuzzleSaveRenameDlg.close();
-        let currentPuzzle = sudoApp.mySolver.myPuzzle.myRecord;
-        currentPuzzle.name = sudoApp.myPuzzleSaveRenameDlg.getPuzzleName();
-        sudoApp.myPuzzleDB.savePuzzle(currentPuzzle);
-        sudoApp.myPuzzleDB.notify()
-        sudoApp.mySolver.loadPuzzle(sudoApp.myPuzzleDB.getSelectedPuzzle());
+        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
+        let currentPuzzle = sudoApp.mySolver.myCurrentPuzzle.myRecord;
+        currentPuzzle.name = sudoApp.myCurrentPuzzleSaveRenameDlg.getPuzzleName();
+        sudoApp.myCurrentPuzzleDB.savePuzzle(currentPuzzle);
+        sudoApp.myCurrentPuzzleDB.notify()
+        sudoApp.mySolver.loadPuzzleRecord(sudoApp.myCurrentPuzzleDB.getSelectedPuzzle());
         sudoApp.mySolver.notify();
     }
 
     savePuzzleDlgCancelPressed() {
-        sudoApp.myPuzzleSaveRenameDlg.close();
-    }
-}
-class SudokuGenerator extends SudokuSolver {
-    // The generator only extends the SudokuSolver
-    // by one method, the generation method.
-    constructor(app) {
-        super(app);
-        //this.init();
-    }
-
-    init() {
-        super.init();
-        this.setActualEvalType('strict-plus');
-        this.setPlayType('automated-solving');
-    }
-
-    generatePuzzle() {
-        this.init();
-        // Set a random number in a random cell
-        let randomCellIndex = Randomizer.getRandomIntInclusive(0, 80);
-        this.myGrid.select(randomCellIndex);
-
-        let randomCellContent = Randomizer.getRandomIntInclusive(1, 9).toString();
-        this.atCurrentSelectionSetNumber(randomCellContent);
-
-        // Solve this puzzle with a non-timed
-        // automatic execution
-        this.createSearch();
-        sudoApp.mySynchronousSearchStepLoop.start();
-        // Turn the solved cells into Givens
-        super.setSolvedToGiven();
-        // this.logGrid('grid after solvedToGiven');
-        // Set the puzzle to define mode
-        this.setGamePhase('define')
-        // Delete numbers in the solution
-        // as long as the remaining puzzle remains backtrack-free.
-        // this.logGrid(i + ': grid before takeBACK');  
-        super.takeBackGivenCells();
-        // this.logGrid('grid after takeBACK');
-
-        let puzzleArray = this.myGrid.getPuzzleArray();
-        let preRec = super.getBasicPreRunRecord();
-
-        let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
-        puzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        puzzleRecord.date = (new Date()).toJSON();
-        // Once and for all compute the preRunRecord
-        puzzleRecord.puzzle = puzzleArray;
-        puzzleRecord.statusGiven = this.myGrid.numberOfGivens();
-        puzzleRecord.preRunRecord = preRec;
-        return puzzleRecord;
-    }
-
-
-    logGrid(comment) {
-        let k = 0;
-        console.log(comment);
-        let tmp = 0;
-        let mes = '';
-        for (let i = 0; i < 9; i++) {
-            k = i * 9;
-            mes = '';
-            tmp = this.myGrid.sudoCells[k + 0].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 1].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 2].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 3].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 4].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 5].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 6].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 7].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            tmp = this.myGrid.sudoCells[k + 8].getValue();
-            if (tmp == 0) {
-                mes = mes + ' _';
-            } else {
-                mes = mes + ' ' + tmp;
-            }
-            console.log(mes);
-        }
-        console.log('\n');
+        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
 }
 
-class SudokuFastSolver extends SudokuSolver {
-    // The FastSolver only extends the StepByStepSolver
-    // by one method, the computePuzzlePreRunData method.
-    constructor(app) {
-        super(app);
-        this.init();
-    }
-
-    init() {
-        super.init();
-        this.setActualEvalType('strict-plus');
-        this.setPlayType('automated-solving');
-        this.createSearch();
-    }
-
-    computePuzzlePreRunData(puzzleArray) {
-        this.loadPuzzleArrayGivens(puzzleArray);
-        let preRunRecord = this.getPreRunRecord();
-        return preRunRecord;
-    }
-
-    loadPuzzleArrayGivens(puzzleArray) {
-        super.loadPuzzleArrayGivens(puzzleArray);
-    }
-
-    getPreRunRecord() {
-        let preRunRecord = super.getBasicPreRunRecord();
-        if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
-            preRunRecord.level = 'Sehr leicht';
-        }
-        return preRunRecord;
-    }
-
-    canTakeBackGivenCells() {
-        return super.canTakeBackGivenCells();
-    }
-}
 // ==========================================
 // Apps 
 // ==========================================
@@ -7755,10 +7794,10 @@ class SudokuMainApp {
         this.mySolver.setMyView(this.mySolverView);
 
         // 2. The database component
-        this.myPuzzleDB = new SudokuPuzzleDB();
-        this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
-        this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
-        this.myPuzzleDB.init();
+        this.myCurrentPuzzleDB = new SudokuPuzzleDB();
+        this.myCurrentPuzzleDBView = new SudokuPuzzleDBView(this.myCurrentPuzzleDB);
+        this.myCurrentPuzzleDBController = new SudokuPuzzleDBController(this.myCurrentPuzzleDB);
+        this.myCurrentPuzzleDB.init();
         // 3. The PuzzleStore, which is filled with three puzzles 
         // for each difficulty level when the app is launched. 
         // When a new puzzle is requested, it is taken from the store 
@@ -7772,9 +7811,9 @@ class SudokuMainApp {
         this.myTrackerDialog = new TrackerDialog();
         this.myInfoDialog = new InfoDialog();
         this.mySettingsDialog = new SettingsDialog();
-        this.myPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
+        this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
         this.myConfirmDlg = new ConfirmDialog();
-        this.myPuzzleDBDialog = new PuzzleDBDialog();
+        this.myCurrentPuzzleDBDialog = new PuzzleDBDialog();
 
         // Loops
         this.myClockedSearchStepLoop = new ClockedSearchStepLoop();
@@ -7822,7 +7861,7 @@ class SudokuMainApp {
 
         this.myClockedSearchStepLoop.setBreakpoints(appSetting.breakpoints);
 
-        this.myPuzzleDB.init();
+        this.myCurrentPuzzleDB.init();
 
         this.myNewPuzzleStore.init();
         this.myNavBar.init();
@@ -7847,10 +7886,19 @@ class SudokuMainApp {
 }
 class SudokuGeneratorApp {
     constructor() {
-        // The two components of the Sudoku worker app are the generator 
-        // and the synchronous search step loop.
-        this.myGenerator = new SudokuGenerator(this);
+        // ==============================================================
+        // Components of the app
+        // ==============================================================
+        // 1. The solver component
+        this.mySolver = new SudokuSolver(this);
+        // 2. The synchronous search step loop.
         this.mySynchronousSearchStepLoop = new SynchronousSearchStepLoop();
+    }
+
+    init() {
+        this.mySolver.myGrid.init();
+        this.mySolver.setActualEvalType('strict-plus');
+        this.mySolver.setPlayType('automated-solving');
     }
 
     breakpointPassed(bp) {
@@ -7858,17 +7906,27 @@ class SudokuGeneratorApp {
     }
 
     getMySolver() {
-        return this.myGenerator;
-    }
-
-    init() {
-        this.myGenerator.init();
+        return this.mySolver;
     }
 }
+
 class SudokuFastSolverApp {
     constructor() {
-        this.myFastSolver = new SudokuFastSolver(this);
+        // ==============================================================
+        // Components of the app
+        // ==============================================================
+        // 1. The solver component
+        this.mySolver = new SudokuSolver(this);
+        // 2. The synchronous search step loop.
         this.mySynchronousSearchStepLoop = new SynchronousSearchStepLoop();
+    }
+
+    init() {
+        this.mySolver.myGrid.init();
+        // For background functionality, the fastest evaluation method 
+        // is 'strict-plus'.
+        this.mySolver.setActualEvalType('strict-plus');
+        this.mySolver.setPlayType('automated-solving');
     }
 
     breakpointPassed(bp) {
@@ -7876,11 +7934,7 @@ class SudokuFastSolverApp {
     }
 
     getMySolver() {
-        return this.myFastSolver;
-    }
-
-    init() {
-        this.myFastSolver.init();
+        return this.mySolver;
     }
 }
 // ==========================================

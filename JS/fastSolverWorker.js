@@ -8,7 +8,8 @@ self.addEventListener("message", (event) => {
         try {
             // If the request is "preRun", the Web Worker computes the meta data
             // of the puzzle, given in the request
-            let preRunRecord = sudoApp.myFastSolver.computePuzzlePreRunData(request.value);
+            sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
+            let preRunRecord = sudoApp.mySolver.computePuzzlePreRunData(request.value);
             // obtained through a preliminary run
             // Notice: the solutionRecord contains the solved puzzle
             let response = {
@@ -23,6 +24,7 @@ self.addEventListener("message", (event) => {
         } catch (e) {
             event.ports[0].postMessage({ error: e });
         }
+        self.close();
     }
 }, false);
 

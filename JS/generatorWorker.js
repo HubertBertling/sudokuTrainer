@@ -8,7 +8,8 @@ self.addEventListener("message", (event) => {
     if (request.name == "generate") {
         try {
             // If the message is "generate", the Web Worker generates a new puzzle
-            let puzzleRecord = sudoApp.myGenerator.generatePuzzle();
+            sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
+            let puzzleRecord = sudoApp.mySolver.generatePuzzle();
             let response = {
                 name: 'generated',
                 value: puzzleRecord
@@ -22,6 +23,7 @@ self.addEventListener("message", (event) => {
             event.ports[0].postMessage({ error: e });
         }
     }
+    self.close();
 }, false);
 
 // Launch and initialize the worker app
