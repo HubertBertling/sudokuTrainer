@@ -712,22 +712,23 @@ class Search {
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
-        this.isCancelledNow = false;
+        //  this.isCancelledNow = false;
     }
     isCompleted() {
         return this.isCompletedNow;
     }
+
     setCompleted() {
         this.isCompletedNow = true;
     }
-
+    /*
     isCancelled() {
         return this.isCancelledNow;
     }
     setCancelled() {
         this.isCancelledNow = true;
     }
-
+    */
     getNumberOfSteps() {
         return this.myStepper.goneSteps;
     }
@@ -741,11 +742,22 @@ class Search {
         return this.myFirstSolution;
     }
     getBackTracks() {
-        return this.myStepper.countBackwards;
+        if (this.getLevel() == 'Sehr schwer') {
+            return this.myStepper.countBackwards;
+        } else {
+            return '-';
+        }
     }
+
     getLevel() {
         if (this.isCompleted() && this.getNumberOfSolutions() == 0) {
             return 'Unlösbar';
+        } else if (this.isCompleted() && this.getNumberOfSolutions() > 1) {
+            return 'Extrem schwer';
+        } else if (this.isCompleted()
+            && this.myStepper.maxSelectionDifficulty == 'Leicht'
+            && this.myGrid.canTakeBackGivenCells()) {
+            return 'Sehr leicht';
         } else {
             return this.myStepper.maxSelectionDifficulty;
         }
@@ -781,6 +793,8 @@ class Search {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
+            this.mySolver.searchInfos2PuzzleRecord();
+
             if (sudoApp instanceof SudokuMainApp) {
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
             }
@@ -6161,7 +6175,7 @@ class SudokuSolver extends MVC_Model {
         sudoApp.mySynchronousSearchStepLoop.start();
         let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
-            this.myCurrentSearch.setCancelled();
+            // this.myCurrentSearch.setCancelled();
             // Turn the solved cells into Givens
             this.setSolvedToGiven();
             // Set the puzzle to define mode
@@ -6266,12 +6280,6 @@ class SudokuSolver extends MVC_Model {
         // Returns the preRunRecord for the implicit puzzle in the grid,
         // still without 'very easy' level determination
 
-        // in the search tree proceed to the first solution
-        if (this.myCurrentSearch.isCompleted()
-            || this.myCurrentSearch.isCancelled()) {
-            throw new Error('Unexpected call of computeBasicPreRunRecord()');
-        }
-
         sudoApp.mySynchronousSearchStepLoop.start();
         let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
@@ -6294,12 +6302,11 @@ class SudokuSolver extends MVC_Model {
             // More than one solution is the key property 
             // of extremely difficult puzzles
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Extrem schwer';
-            this.myCurrentSearch.setCancelled();
+            // this.myCurrentSearch.setCancelled();
         } else if (stoppingBreakpoint == 'searchCompleted') {
             // All properties of the implicit puzzle in the grid
             // are now known and are summarized in the preRunRecord.
             this.myCurrentSearch.setCompleted();
-            // implemented on solver level: "searchInfos2PuzzleRecord()"
             this.searchInfos2PuzzleRecord();
         } else {
             console.log('Unexpected breakpoint in computeBasicPreRunRecord(), 2. call: ' + stoppingBreakpoint)
@@ -6343,17 +6350,9 @@ class SudokuSolver extends MVC_Model {
     }
 
     performSearchStep() {
-        if (!this.myCurrentSearch.isCompleted()
-            && !this.myCurrentSearch.isCancelled()) {
-            this.myCurrentSearch.performStep();
-            /*
-                if (this.myCurrentSearch.isCompleted()) {
-                    this.searchInfos2PuzzleRecord();
-                }
-            */
-            if (sudoApp instanceof SudokuMainApp) {
-                this.notify();
-            }
+        this.myCurrentSearch.performStep();
+        if (sudoApp instanceof SudokuMainApp) {
+            this.notify();
         }
     }
 
@@ -6365,6 +6364,7 @@ class SudokuSolver extends MVC_Model {
         puzzle.setNumberOfSolutions(search.getNumberOfSolutions());
         puzzle.setBacktracks(search.getBackTracks());
         puzzle.setLevel(search.getLevel());
+
     }
 
     performSolutionStep() {
@@ -6524,7 +6524,7 @@ class SudokuSolver extends MVC_Model {
     grid2puzzleRecord(puzzleRecord) {
         // load current matrix into the record
         puzzleRecord.statusSolved = 0;
-        puzzleRecord.given = 0;
+        puzzleRecord.statusGiven = 0;
         puzzleRecord.puzzle = [];
         for (let i = 0; i < 81; i++) {
             puzzleRecord.puzzle.push({
@@ -6579,9 +6579,10 @@ class SudokuSolver extends MVC_Model {
         // These puzzles are solved by backtracking. Trial and error 
         // in the solution process means that there are steps in the solution process 
         // with contradictory partial solutions. They trigger backtracking in the process.
-        if (this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Sehr schwer'
-            || this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Extrem schwer'
-            || this.myCurrentPuzzle.myRecord.preRunRecord.level == 'Unlösbar') {
+        let tmpLevel = this.myCurrentPuzzle.getLevel();
+        if (tmpLevel == 'Sehr schwer'
+            || tmpLevel == 'Extrem schwer'
+            || tmpLevel == 'Unlösbar') {
             if (this.isNotPartiallySolved()) {
                 this.myCurrentSearch = new Search(this, this.myGrid);
             } else {
@@ -7381,14 +7382,14 @@ class SudokuSolverController {
         this.mySolver.notify();
     }
 
-    startBtnPressed() {
+    async startBtnPressed() {
         this.initUndoActionStack();
         if (this.mySolver.getGamePhase() == 'define') {
             // Switching to the play phase means that the definition of the puzzle 
             // has been finished.
             // After switching to the play phase, the puzzle's meta-data 
             // are calculated in the background and are stored in a new puzzle record.
-            this.playBtnPressed();
+            await this.playBtnPressed();
         }
         if (sudoApp.mySolver.myGrid.isUnsolvable()) {
             // Contradictory puzzles have no solution. 
@@ -7434,7 +7435,7 @@ class SudokuSolverController {
         let action = {
             operation: 'reset',
             pzSolutions: puzzle.myNumberOfSolutions,
-            pzCompleted: puzzle.isCompleted(),
+            // pzCompleted: puzzle.isCompleted(),
             pzArray: this.mySolver.myGrid.getPuzzleArray()
         }
         this.myUndoActionStack.push(action);
@@ -7462,10 +7463,6 @@ class SudokuSolverController {
     undo(action) {
         switch (action.operation) {
             case 'reset': {
-                sudoApp.mySolver.myCurrentPuzzle.set(
-                    action.pzSolutions,
-                    action.pzCompleted
-                );
                 sudoApp.mySolver.myGrid.loadPuzzleArray(action.pzArray);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 break;
