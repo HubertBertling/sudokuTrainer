@@ -644,10 +644,8 @@ class SynchronousSearchStepLoop extends SynchronousRunner {
         super();
     }
     start() {
-        super.start(sudoApp.mySolver.myCurrentSearch,
-            sudoApp.mySolver.myCurrentSearch.performStep);
-        // super.start(sudoApp.mySolver,
-        //    sudoApp.mySolver.performSearchStep);
+        super.start(sudoApp.mySolver,
+            sudoApp.mySolver.performSearchStep);
     }
 }
 
@@ -712,7 +710,6 @@ class Search {
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
-        //  this.isCancelledNow = false;
     }
     isCompleted() {
         return this.isCompletedNow;
@@ -721,14 +718,7 @@ class Search {
     setCompleted() {
         this.isCompletedNow = true;
     }
-    /*
-    isCancelled() {
-        return this.isCancelledNow;
-    }
-    setCancelled() {
-        this.isCancelledNow = true;
-    }
-    */
+
     getNumberOfSteps() {
         return this.myStepper.goneSteps;
     }
@@ -794,7 +784,7 @@ class Search {
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
             this.mySolver.searchInfos2PuzzleRecord();
-
+            this.myGrid.deselect();
             if (sudoApp instanceof SudokuMainApp) {
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
             }
@@ -806,9 +796,8 @@ class Search {
             if (nrSol == 0) {
                 sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!');
             } else {
-                sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung gefunden!<br><br>Suche abgeschlossen.');
+                sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br><br>Suche abgeschlossen.');
             }
-            sudoApp.mySolver.notify();
         }
     }
 
@@ -6175,7 +6164,6 @@ class SudokuSolver extends MVC_Model {
         sudoApp.mySynchronousSearchStepLoop.start();
         let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
-            // this.myCurrentSearch.setCancelled();
             // Turn the solved cells into Givens
             this.setSolvedToGiven();
             // Set the puzzle to define mode
@@ -6191,7 +6179,7 @@ class SudokuSolver extends MVC_Model {
             // 1) Initialize the current puzzle
             sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
             // 2) Initialize the current search.
-            this.cleanUpAndDeleteCurrentSearch();
+            // this.cleanUpAndDeleteCurrentSearch();
             this.setCurrentSearchNew();
             // 3) solve the puzzle and return metadata results in a preRunRecord
             let preRecGen = this.computePreRunRecord();
@@ -6249,15 +6237,13 @@ class SudokuSolver extends MVC_Model {
         // The puzzle may already be partially solved. 
         // Only givens are loaded.
         this.loadPuzzleArrayGivens(puzzleArray);
-
         // 1) Initialize the current puzzle
         sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
         // 2) Initialize the current search.
-        this.cleanUpAndDeleteCurrentSearch();
+        // this.cleanUpAndDeleteCurrentSearch();
         this.setCurrentSearchNew();
         // 3) solve the puzzle and return metadata results in a preRunRecord
         let preRecFast = this.computePreRunRecord();
-
         return preRecFast;
     }
 
@@ -6290,19 +6276,14 @@ class SudokuSolver extends MVC_Model {
             // This results in another solution or
             // the end of the search has been reached.       
         } else {
-            // the puzzle is unsolvable ???
-            this.myCurrentSearch.setCompleted();
-            //console.log('Unexpected breakpoint in computeBasicPreRunRecord(), 1. call: ' + stoppingBreakpoint)
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Unlösbar';
             this.myCurrentSearch.setCompleted();
-            // throw new Error('Unexpected breakpoint in computeBasicPreRunRecord(), 1. call: ' + stoppingBreakpoint)
         }
         if (stoppingBreakpoint == 'solutionDiscovered') {
             // A second solution was found
             // More than one solution is the key property 
             // of extremely difficult puzzles
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Extrem schwer';
-            // this.myCurrentSearch.setCancelled();
         } else if (stoppingBreakpoint == 'searchCompleted') {
             // All properties of the implicit puzzle in the grid
             // are now known and are summarized in the preRunRecord.
@@ -6548,8 +6529,6 @@ class SudokuSolver extends MVC_Model {
     setSolvedToGiven() {
         this.myGrid.setSolvedToGiven();
     }
-
-
 
     notifyAspect(aspect, aspectValue) {
         super.notifyAspect(aspect, aspectValue);
@@ -6907,7 +6886,6 @@ class SudokuSolverView extends MVC_View {
     }
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
-        let appNameHeader = document.getElementById('app-name-header');
         let initDBButton = document.getElementById('db-pz-btn-init');
         let downloadDBButton = document.getElementById('db-puzzle-btn-download-db');
         let downloadPzButton = document.getElementById('db-puzzle-btn-download-pz');
@@ -6918,7 +6896,6 @@ class SudokuSolverView extends MVC_View {
         if (this.getMyModel().getPuzzleIOtechnique()) {
             pIOcheckbox.checked = true;
             shareBtn.style.display = 'block';
-            // appNameHeader.style.gridTemplateColumns = '0.1fr 0.1fr 1.7fr 0.1fr';
             initDBButton.style.display = 'block';
             downloadDBButton.style.display = 'block';
             downloadPzButton.style.display = 'block';
@@ -6926,7 +6903,6 @@ class SudokuSolverView extends MVC_View {
         } else {
             pIOcheckbox.checked = false;
             shareBtn.style.display = 'none';
-            // appNameHeader.style.gridTemplateColumns = '0.1fr 1.8fr 0.1fr';
             initDBButton.style.display = 'none';
             downloadDBButton.style.display = 'none';
             downloadPzButton.style.display = 'none';
@@ -7680,7 +7656,11 @@ class SudokuSolverController {
             sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
             sudoApp.myClockedSolutionLoop.stop('cancelled');
         } else {
-            sudoApp.myClockedSearchStepLoop.start();
+            if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+            } else {
+                sudoApp.myClockedSearchStepLoop.start();
+            }
         }
     }
 
@@ -7692,13 +7672,21 @@ class SudokuSolverController {
             sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
             sudoApp.myClockedSolutionLoop.stop('cancelled');
         } else {
-            sudoApp.mySolver.performSearchStep();
+            if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+            } else {
+                sudoApp.mySolver.performSearchStep();
+            }
         }
     }
 
     trackerDlgFastStepPressed() {
-        sudoApp.mySolverView.startLoaderAnimation('Nächste Lösung');
-        setTimeout(this.trackerDlgFastStep, 1000);
+        if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+            sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+        } else {
+            sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
+            setTimeout(this.trackerDlgFastStep, 1000);
+        }
     }
 
     trackerDlgFastStep() {
@@ -7711,13 +7699,12 @@ class SudokuSolverController {
         } else {
             sudoApp.mySolver.performSolutionStep();
             sudoApp.mySolver.notify();
-            sudoApp.mySolverView.stopLoaderAnimation();
         }
+        sudoApp.mySolverView.stopLoaderAnimation();
     }
 
 
     trackerDlgFastPressed() {
-        //sudoApp.mySolverView.startLoaderAnimation('Lösungen ...');
         this.trackerDlgFast();
     }
     trackerDlgFast() {
@@ -7728,7 +7715,11 @@ class SudokuSolverController {
             sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
             sudoApp.myClockedSolutionLoop.stop('cancelled');
         } else {
-            sudoApp.myClockedSolutionLoop.start();
+            if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(this.mySolver.myCurrentSearch.getNumberOfSolutions());
+            } else {
+                sudoApp.myClockedSolutionLoop.start();
+            }
         }
     }
 

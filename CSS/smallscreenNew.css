@@ -1089,7 +1089,7 @@ label {
 /*=======================================*/
 
 .settings-dlg {
-    width: 100%;
+    max-width: 50rem;
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
