@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 703;
+let VERSION = 710;
 
 // ==========================================
 // Basic classes
@@ -138,7 +138,6 @@ class MVC_Model {
 
     notify() {
         // Die eigene View anzeigen
-        // console.log('notify()-calls: ' + this.notifyCalls++);
         this.myObservers.forEach(observer => {
             observer.upDate();
         });
@@ -259,24 +258,28 @@ class ConfirmDialog {
         this.myTextNode = document.getElementById("confirm-dlg-body");
         this.okNode = document.getElementById("btn-confirm-ok");
         this.cancelNode = document.getElementById("btn-confirm-cancel");
-        this.myRequestOperation = undefined;
+        this.myConfirmOperation = undefined;
+        this.myRejectOperation = undefined;
         this.thisPointer = undefined;
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
             sudoApp.myConfirmDlg.close();
-            sudoApp.myConfirmDlg.myRequestOperation.call(this.thisPointer);
+            sudoApp.myConfirmDlg.myConfirmOperation.call(this.thisPointer);
             sudoApp.mySolver.notify();
         });
         this.cancelNode.addEventListener('click', () => {
             sudoApp.myConfirmDlg.close();
+            sudoApp.myConfirmDlg.myRejectOperation.call(this.thisPointer);
+            sudoApp.mySolver.notify();
         });
     }
 
-    open(thisPointer, rqOp, header, question) {
+    open(thisPointer, confirmOp, rejectOp, header, question) {
         this.myOpen = true;
         this.thisPointer = thisPointer;
-        this.myRequestOperation = rqOp;
+        this.myConfirmOperation = confirmOp;
+        this.myRejectOperation = rejectOp;
         this.myHeader.innerText = header;
         this.myTextNode.innerText = question;
         this.myConfirmDlgNode.showModal();
@@ -372,9 +375,8 @@ class TrackerDialog {
     }
     close() {
         if (this.myOpen) {
-            sudoApp.myClockedSearchStepLoop.stop('cancelled');
-            sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-            sudoApp.myClockedSolutionLoop.stop('cancelled');
+            sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySyncRunner.stop('cancelled');
 
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
             this.reSetNumberOfSolutions();
@@ -484,6 +486,14 @@ class SynchronousRunner {
     constructor() {
         this.stopped = true;
         this.myStoppingBreakpoint = undefined;
+        // Breakpoints
+        this.myBreakpoints = {
+            contradiction: false,
+            multipleOption: false,
+            single: false,
+            hiddenSingle: false,
+            solutionDiscovered: true,
+        }
     }
 
     start(thisPointer, step) {
@@ -532,43 +542,7 @@ class SynchronousRunner {
 class ClockedRunner {
     constructor() {
         this.timer = false;
-    }
-
-    start(thisPointer, step) {
-        if (!this.isRunning()) {
-            this.myStoppingBreakpoint = undefined;
-            this.timer = window.setInterval(() => {
-                step.call(thisPointer);
-            }, 75);
-        }
-    }
-
-    isRunning() {
-        // Der timer ist ungleich false, wenn er läuft.
-        return this.timer !== false;
-    }
-
-    stop(bp) {
-        if (this.isRunning()) {
-            // Die automatische Ausführung
-            window.clearInterval(this.timer);
-            this.timer = false;
-        }
-        this.stopped = true;
-        this.myStoppingBreakpoint = bp;
-    }
-
-    getMyStoppingBreakpoint() {
-        return this.myStoppingBreakpoint;
-    }
-}
-
-class ClockedSearchStepLoop extends ClockedRunner {
-    // Clocked search step loop with breakpoints 
-    // that can be switched on and off.
-    // It can be used to monitor the step by step solution search run in detail.
-    constructor() {
-        super();
+        // Breakpoints
         this.myBreakpoints = {
             contradiction: true,
             multipleOption: true,
@@ -577,10 +551,13 @@ class ClockedSearchStepLoop extends ClockedRunner {
             solutionDiscovered: true,
         }
     }
-    start() {
-        if (sudoApp instanceof SudokuMainApp) {
-            super.start(sudoApp.mySolver,
-                sudoApp.mySolver.performSearchStep);
+
+    start(thisPointer, step) {
+        if (!this.isRunning()) {
+            this.myStoppingBreakpoint = undefined;
+            this.timer = window.setInterval(() => {
+                step.call(thisPointer);
+            }, 75);
         }
     }
     setBreakpoints(bps) {
@@ -635,54 +612,61 @@ class ClockedSearchStepLoop extends ClockedRunner {
             }
         }
     }
-}
-class SynchronousSearchStepLoop extends SynchronousRunner {
-    // The SynchronousSearchStepLoop is a search step loop with two fixed breakpoints, 
-    // namely 'solutionDiscovered' and 'searchCompleted'. It is used 
-    // for efficient solution search and not for solution observation. 
-    constructor() {
-        super();
-    }
-    start() {
-        super.start(sudoApp.mySolver,
-            sudoApp.mySolver.performSearchStep);
-    }
-}
 
-class ClockedSolutionLoop extends ClockedRunner {
-    // Clocked solution loop with two breakpoints, 
-    // namely 'solutionDiscovered' and 'searchCompleted'.
-    // The step parameter in this loop is performSolutionStep, i.e. 
-    // a step, that discovers the (next) solution in one step. 
-    constructor() {
-        super();
+    isRunning() {
+        // Der timer ist ungleich false, wenn er läuft.
+        return this.timer !== false;
     }
-    start() {
-        sudoApp.mySolverView.startLoaderAnimation('Lösungen ...');
-        if (sudoApp instanceof SudokuMainApp) {
-            super.start(sudoApp.mySolver,
-                sudoApp.mySolver.performSolutionStep);
-        }
-    }
+
     stop(bp) {
-        super.stop(bp);
-        sudoApp.mySolver.notify();
-        sudoApp.mySolverView.stopLoaderAnimation();
+        if (this.isRunning()) {
+            // Die automatische Ausführung
+            window.clearInterval(this.timer);
+            this.timer = false;
+        }
+        this.stopped = true;
+        this.myStoppingBreakpoint = bp;
     }
+
+    getMyStoppingBreakpoint() {
+        return this.myStoppingBreakpoint;
+    }
+
 
     breakpointPassed(bp) {
         switch (bp) {
             case 'solutionDiscovered': {
+                if (this.myBreakpoints.solutionDiscovered) {
+                    this.stop(bp);
+                }
                 break;
             }
             case 'searchCompleted': {
                 this.stop(bp);
                 break;
             }
-            case 'contradiction':
-            case 'multipleOption':
-            case 'single':
+            case 'contradiction': {
+                if (this.myBreakpoints.contradiction) {
+                    this.stop(bp);
+                }
+                break;
+            }
+            case 'multipleOption': {
+                if (this.myBreakpoints.multipleOption) {
+                    this.stop(bp);
+                }
+                break;
+            }
+            case 'single': {
+                if (this.myBreakpoints.single) {
+                    this.stop(bp);
+                }
+                break;
+            }
             case 'hiddenSingle': {
+                if (this.myBreakpoints.hiddenSingle) {
+                    this.stop(bp);
+                }
                 break;
             }
             default: {
@@ -690,6 +674,7 @@ class ClockedSolutionLoop extends ClockedRunner {
             }
         }
     }
+
 
 }
 
@@ -786,6 +771,7 @@ class Search {
             this.mySolver.searchInfos2PuzzleRecord();
             this.myGrid.deselect();
             if (sudoApp instanceof SudokuMainApp) {
+                sudoApp.mySolver.notify();
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
             }
         }
@@ -819,7 +805,6 @@ class StepperOnGrid {
         this.mySolver = parent;
         this.lastNumberSet = '0';
         this.indexSelected = -1;
-        // this.myResult = undefined;
         this.numberOfSolutions = 0;
         this.myGrid = suGrid;
         this.myBackTracker;
@@ -832,9 +817,6 @@ class StepperOnGrid {
 
     init() {
         this.lastNumberSet = '0';
-        // this.myResult = undefined;
-        // this.numberOfSolutions = 0;
-        // this.goneSteps = 0;
         this.countBackwards = 0;
 
         this.autoDirection = 'forward';
@@ -843,20 +825,9 @@ class StepperOnGrid {
         this.myBackTracker = new BackTracker();
     }
 
-    // =============================================================
-    // Getter
-    // =============================================================
-    /* getGoneSteps() {
-         return this.goneSteps;
-     }
- */
     getAutoDirection() {
         return this.autoDirection;
     }
-
-    // =============================================================
-    // Setter
-    // =============================================================
 
     setAutoDirection(direction) {
         this.autoDirection = direction;
@@ -865,7 +836,6 @@ class StepperOnGrid {
     // =============================================================
     // Other methods
     // =============================================================
-
 
     select(index) {
         this.indexSelected = index;
@@ -1586,7 +1556,6 @@ class NewPuzzleStore {
             if (extremePZ.puzzle[k].cellValue !== '0') {
                 extremePZ.puzzle[k].cellValue = '0';
                 let preRec = await sudoApp.mySolver.calculatedPreRunRecord(extremePZ.puzzle);
-                // puzzleRecord.preRunRecord = await this.calculatedPreRunRecord(puzzleRecord.puzzle);
                 if (preRec.level == 'Extrem schwer') {
                     extremePZ.preRunRecord.level = 'Extrem schwer';
                     extremePZ.preRunRecord.backTracks = '-';
@@ -1652,7 +1621,7 @@ class NewPuzzleStore {
             case 'Keine Angabe':
             case 'Sehr leicht':
             case 'Extrem schwer': {
-                console.log('Unbrauchbare generierte Puzzles: ' + puzzleRecord.preRunRecord.level); break;
+                // console.log('Unbrauchbare generierte Puzzles: ' + puzzleRecord.preRunRecord.level); break;
             }
             case 'Leicht': {
                 if (this.simplePuzzles.length < 2) {
@@ -1696,7 +1665,6 @@ class NewPuzzleStore {
                 break;
             }
             default: {
-                console.log('unexpected backTracking');
                 throw new Error('Unexpected difficulty: ' + puzzleRecord.preRunRecord.level);
             }
         }
@@ -2198,11 +2166,8 @@ class SudokuPuzzleDB extends MVC_Model {
 
         let upLoadedKeys = [];
         filePuzzleMap.forEach((value, key) => {
-            // console.log('key: ' + key + ', value: ' + value);
-            //  if (!puzzleMap.has(key)) {
             puzzleMap.set(key, value);
             upLoadedKeys.push(key);
-            //  }
         })
         // Kreiere die JSON-Version des Speicherobjektes
         // und speichere sie.
@@ -2684,7 +2649,7 @@ class Puzzle {
         this.myRecord.preRunRecord.solvedPuzzle = solution;
     }
     getSolution() {
-        return JSON.parse(JSON.stringify(this.myRecord.preRunRecord.solvedPuzzle));
+        return this.myRecord.preRunRecord.solvedPuzzle;
     }
     setBacktracks(nr) {
         this.myRecord.preRunRecord.backTracks = nr;
@@ -3853,6 +3818,7 @@ class SudokuGrid extends MVC_Model {
     }
 
     logGrid(comment) {
+        //Für den Test
         let k = 0;
         console.log(comment);
         let tmp = 0;
@@ -4103,14 +4069,9 @@ class SudokuGrid extends MVC_Model {
                 if (this.sudoCells[k].getNecessarys().size == 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique candidate. 
-                    // console.log(i + ': @k:'+ k + ' takeBack ' + tmpNr + ' wegen necessary');
-                    // this.logGrid(i + ': grid after takeBACK cell');
                 } else if (this.sudoCells[k].getTotalCandidates().size == 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique candidate. 
-                    // console.log(i + ': @k:'+ k + ' takeBack ' + tmpNr + ' wegen single');
-                    // this.logGrid(i + ': grid after takeBACK cell');
-
                 } else if (this.sudoCells[k].getTotalCandidates().size > 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique candidate. 
@@ -4126,15 +4087,12 @@ class SudokuGrid extends MVC_Model {
                         // undo the alternative options
                         this.select(k);
                         this.sudoCells[k].manualSetValue(tmpNr, 'define');
-
                     }
                 } else {
                     // The deleted cell does not have a unique candidate to be selected
                     // The deletion is therefore cancelled.
                     this.select(k);
                     this.sudoCells[k].manualSetValue(tmpNr, 'define');
-                    // console.log(i + ': Zelle k: ' + k + ' zurückgesetzt: ' + this.sudoCells[k].getValue());
-                    // this.logGrid(i + ': grid after takeBACK cell');
                 }
             }
         }
@@ -4186,11 +4144,15 @@ class SudokuGrid extends MVC_Model {
                 if (this.sudoCells[k].getNecessarys().size == 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique given. 
+                    this.select(k);
+                    this.sudoCells[k].manualSetValue(tmpNr, 'define');
                     return true;
                 }
                 else if (this.sudoCells[k].getTotalCandidates().size == 1) {
                     // Deleting the cell is ok because the deleted cell 
                     // has a unique given.
+                    this.select(k);
+                    this.sudoCells[k].manualSetValue(tmpNr, 'define');
                     return true;
                 } else {
                     // The deleted cell does not have a provable 
@@ -6161,8 +6123,9 @@ class SudokuSolver extends MVC_Model {
 
         // Solve this puzzle 
         this.setCurrentSearchNew();
-        sudoApp.mySynchronousSearchStepLoop.start();
-        let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
+        sudoApp.mySyncRunner.start(sudoApp.mySolver,
+            sudoApp.mySolver.performSearchStep);
+        let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
             // Turn the solved cells into Givens
             this.setSolvedToGiven();
@@ -6266,13 +6229,15 @@ class SudokuSolver extends MVC_Model {
         // Returns the preRunRecord for the implicit puzzle in the grid,
         // still without 'very easy' level determination
 
-        sudoApp.mySynchronousSearchStepLoop.start();
-        let stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
+        sudoApp.mySyncRunner.start(sudoApp.mySolver,
+            sudoApp.mySolver.performSearchStep);
+        let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
         if (stoppingBreakpoint == 'solutionDiscovered') {
             // First solution discovered
             // After the first solution proceed
-            sudoApp.mySynchronousSearchStepLoop.start();
-            stoppingBreakpoint = sudoApp.mySynchronousSearchStepLoop.getMyStoppingBreakpoint();
+            sudoApp.mySyncRunner.start(sudoApp.mySolver,
+                sudoApp.mySolver.performSearchStep);
+            stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
             // This results in another solution or
             // the end of the search has been reached.       
         } else {
@@ -6290,8 +6255,7 @@ class SudokuSolver extends MVC_Model {
             this.myCurrentSearch.setCompleted();
             this.searchInfos2PuzzleRecord();
         } else {
-            console.log('Unexpected breakpoint in computeBasicPreRunRecord(), 2. call: ' + stoppingBreakpoint)
-            // throw new Error('Unexpected breakpoint in computeBasicPreRunRecord():  2. call:' + stoppingBreakpoint)
+            throw new Error('Unexpected breakpoint in computeBasicPreRunRecord():  2. call:' + stoppingBreakpoint)
         }
 
         let preRunRecord = this.myCurrentPuzzle.getPreRunRecord();
@@ -6332,9 +6296,6 @@ class SudokuSolver extends MVC_Model {
 
     performSearchStep() {
         this.myCurrentSearch.performStep();
-        if (sudoApp instanceof SudokuMainApp) {
-            this.notify();
-        }
     }
 
     searchInfos2PuzzleRecord() {
@@ -6349,7 +6310,13 @@ class SudokuSolver extends MVC_Model {
     }
 
     performSolutionStep() {
-        sudoApp.mySynchronousSearchStepLoop.start();
+        // Repeat the execution of the step 'performSearchStep()'
+        // until the next active BreakPoint is reached.
+        sudoApp.mySyncRunner.start(sudoApp.mySolver,
+            sudoApp.mySolver.performSearchStep);
+        let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
+        return stoppingBreakpoint;
+
     }
 
     isSearching() {
@@ -6551,34 +6518,18 @@ class SudokuSolver extends MVC_Model {
 
     tryStartAutomaticSearch() {
         // The automatic solver cannot guarantee correct statements 
-        // about the existence and number of solutions 
-        // for very difficult, extremely difficult or unsolvable puzzles 
-        // that have already been partially solved.
+        // about the existence and number of solutions, about the level of difficulty
+        // for puzzles that have already been partially solved.
 
-        // These puzzles are solved by backtracking. Trial and error 
-        // in the solution process means that there are steps in the solution process 
-        // with contradictory partial solutions. They trigger backtracking in the process.
-        let tmpLevel = this.myCurrentPuzzle.getLevel();
-        if (tmpLevel == 'Sehr schwer'
-            || tmpLevel == 'Extrem schwer'
-            || tmpLevel == 'Unlösbar') {
-            if (this.isNotPartiallySolved()) {
-                this.myCurrentSearch = new Search(this, this.myGrid);
-            } else {
-                sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
-                    sudoApp.mySolverController.resetConfirmed,
-                    "Puzzle zurücksetzen?",
-                    "Wenn sehr schwere, extrem schwere oder unlösbare Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
-            }
-        } else {
-            // The automatic solver can be started for fair puzzles, 
-            // even if they have already been partially solved.
-            // Any partial solution derived with the automatic solver is correct,
-            // because fair puzzles have a unique solution, 
-            // i.e. no backtracking takes place.
+        if (this.isNotPartiallySolved()) {
             this.myCurrentSearch = new Search(this, this.myGrid);
+        } else {
+            sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
+                sudoApp.mySolverController.resetConfirmed,
+                sudoApp.mySolverController.resetRejected,
+                "Puzzle zurücksetzen?",
+                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
-
     }
 
     succeeds() {
@@ -6637,10 +6588,11 @@ class SudokuSolverView extends MVC_View {
         this.displayProgress();
         this.displayEvalType(this.getMyModel().getActualEvalType());
         this.displayPlayPlayType(this.getMyModel().getPlayType());
-        this.displayBreakpoints(sudoApp.myClockedSearchStepLoop.myBreakpoints);
+        this.displayBreakpoints(sudoApp.myClockedRunner.myBreakpoints);
         this.displayUndoRedo();
         this.displayPuzzleIOTechniqueBtns();
         sudoApp.mySolver.myGrid.getMyView().displayNameAndDifficulty();
+
         if (sudoApp.mySolver.myCurrentSearch !== undefined
             && sudoApp.mySolver.myCurrentSearch.isCompleted()) {
             this.displayPuzzleSolutionInfo();
@@ -7158,7 +7110,7 @@ class SudokuSolverController {
             //The item appSetting exists already
             appSetting = JSON.parse(str_appSetting);
             appSetting.breakpoints.contradiction = checkBoxContradiction.checked;
-            sudoApp.myClockedSearchStepLoop.getBreakpoints().contradiction = checkBoxContradiction.checked;
+            sudoApp.myClockedRunner.getBreakpoints().contradiction = checkBoxContradiction.checked;
             str_appSetting = JSON.stringify(appSetting);
             localStorage.setItem("sudokuAppSetting", str_appSetting);
         })
@@ -7170,7 +7122,7 @@ class SudokuSolverController {
             //The item appSetting exists already
             appSetting = JSON.parse(str_appSetting);
             appSetting.breakpoints.multipleOption = checkBoxMC.checked;
-            sudoApp.myClockedSearchStepLoop.getBreakpoints().multipleOption = checkBoxMC.checked;
+            sudoApp.myClockedRunner.getBreakpoints().multipleOption = checkBoxMC.checked;
             str_appSetting = JSON.stringify(appSetting);
             localStorage.setItem("sudokuAppSetting", str_appSetting);
         })
@@ -7182,7 +7134,7 @@ class SudokuSolverController {
             //The item appSetting exists already
             appSetting = JSON.parse(str_appSetting);
             appSetting.breakpoints.single = checkBoxSingle.checked;
-            sudoApp.myClockedSearchStepLoop.getBreakpoints().single = checkBoxSingle.checked;
+            sudoApp.myClockedRunner.getBreakpoints().single = checkBoxSingle.checked;
             str_appSetting = JSON.stringify(appSetting);
             localStorage.setItem("sudokuAppSetting", str_appSetting);
         })
@@ -7194,7 +7146,7 @@ class SudokuSolverController {
             //The item appSetting exists already
             appSetting = JSON.parse(str_appSetting);
             appSetting.breakpoints.hiddenSingle = checkBoxHiddenSingle.checked;
-            sudoApp.myClockedSearchStepLoop.getBreakpoints().hiddenSingle = checkBoxHiddenSingle.checked;
+            sudoApp.myClockedRunner.getBreakpoints().hiddenSingle = checkBoxHiddenSingle.checked;
             str_appSetting = JSON.stringify(appSetting);
             localStorage.setItem("sudokuAppSetting", str_appSetting);
         })
@@ -7206,7 +7158,7 @@ class SudokuSolverController {
             //The item appSetting exists already
             appSetting = JSON.parse(str_appSetting);
             appSetting.breakpoints.solutionDiscovered = checkboxSolution.checked;
-            sudoApp.myClockedSearchStepLoop.getBreakpoints().solutionDiscovered = checkboxSolution.checked;
+            sudoApp.myClockedRunner.getBreakpoints().solutionDiscovered = checkboxSolution.checked;
             str_appSetting = JSON.stringify(appSetting);
             localStorage.setItem("sudokuAppSetting", str_appSetting);
         })
@@ -7417,6 +7369,11 @@ class SudokuSolverController {
         this.myUndoActionStack.push(action);
         this.mySolver.reset();
         this.mySolver.notify();
+    }
+
+    resetRejected() {
+        this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+        sudoApp.myTrackerDialog.open();
     }
 
     undoBtnPressed() {
@@ -7649,85 +7606,106 @@ class SudokuSolverController {
     }
 
     trackerDlgStepSequencePressed() {
-        if (sudoApp.myClockedSearchStepLoop.isRunning() ||
-            sudoApp.mySynchronousSearchStepLoop.isRunning() ||
-            sudoApp.myClockedSolutionLoop.isRunning()) {
-            sudoApp.myClockedSearchStepLoop.stop('cancelled');
-            sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-            sudoApp.myClockedSolutionLoop.stop('cancelled');
+        // Suchlauf mit Haltepunkten
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                // Not able to start
                 sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
-                sudoApp.myClockedSearchStepLoop.start();
+                // Repeat the execution of the step 'performSearchStep()'
+                // until the next active BreakPoint is reached.
+                let str_appSetting = localStorage.getItem("sudokuAppSetting");
+                let appSetting = JSON.parse(str_appSetting);
+                sudoApp.myClockedRunner.setBreakpoints(appSetting.breakpoints);
+
+                sudoApp.myClockedRunner.start(sudoApp.mySolver,
+                    () => {
+                        sudoApp.mySolver.performSearchStep();
+                        sudoApp.mySolver.notify();
+                    });
             }
         }
     }
 
     trackerDlgStepPressed() {
-        if (sudoApp.myClockedSearchStepLoop.isRunning() ||
-            sudoApp.mySynchronousSearchStepLoop.isRunning() ||
-            sudoApp.myClockedSolutionLoop.isRunning()) {
-            sudoApp.myClockedSearchStepLoop.stop('cancelled');
-            sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-            sudoApp.myClockedSolutionLoop.stop('cancelled');
+        // Nächster Suchschritt
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                // Not able to start
                 sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolver.performSearchStep();
+                sudoApp.mySolver.notify();
             }
         }
     }
 
     trackerDlgFastStepPressed() {
-        if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
-            sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+        // Weitere Lösung
+        if (sudoApp.myClockedRunner.isRunning()
+            // ||
+            // sudoApp.mySyncRunner.isRunning()
+        ) {
+            sudoApp.myClockedRunner.stop('cancelled');
+            // sudoApp.mySyncRunner.stop('cancelled');
         } else {
-            sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
-            setTimeout(this.trackerDlgFastStep, 1000);
+            if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+                // Not able to start
+                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+            } else {
+                sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
+                setTimeout(this.trackerDlgFastStep, 1000);
+            }
+            sudoApp.mySolver.notify();
         }
     }
 
     trackerDlgFastStep() {
-        if (sudoApp.myClockedSearchStepLoop.isRunning() ||
-            sudoApp.mySynchronousSearchStepLoop.isRunning() ||
-            sudoApp.myClockedSolutionLoop.isRunning()) {
-            sudoApp.myClockedSearchStepLoop.stop('cancelled');
-            sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-            sudoApp.myClockedSolutionLoop.stop('cancelled');
-        } else {
-            sudoApp.mySolver.performSolutionStep();
-            sudoApp.mySolver.notify();
-        }
+        // Weitere Lösung
+        sudoApp.mySolver.performSolutionStep();
+        sudoApp.mySolver.notify();
         sudoApp.mySolverView.stopLoaderAnimation();
     }
 
 
     trackerDlgFastPressed() {
+        // Weitere Lösungen ...
         this.trackerDlgFast();
     }
     trackerDlgFast() {
-        if (sudoApp.myClockedSearchStepLoop.isRunning() ||
-            sudoApp.mySynchronousSearchStepLoop.isRunning() ||
-            sudoApp.myClockedSolutionLoop.isRunning()) {
-            sudoApp.myClockedSearchStepLoop.stop('cancelled');
-            sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-            sudoApp.myClockedSolutionLoop.stop('cancelled');
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolver.notify();
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
-                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(this.mySolver.myCurrentSearch.getNumberOfSolutions());
+                // Not able to start
+                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
-                sudoApp.myClockedSolutionLoop.start();
+                // Repeat the execution of the step 'performSolutionStep()'
+                // until the 'searchCompleted'-BreakPoint is reached.
+                let breakPts = {
+                    contradiction: false,
+                    multipleOption: false,
+                    single: false,
+                    hiddenSingle: false,
+                    solutionDiscovered: false,
+                }
+                sudoApp.myClockedRunner.setBreakpoints(breakPts);
+                sudoApp.myClockedRunner.start(sudoApp.mySolver,
+                    () => {
+                        sudoApp.mySolver.performSolutionStep();
+                    });
             }
         }
     }
 
 
     trackerDlgStopPressed() {
-        sudoApp.myClockedSearchStepLoop.stop('cancelled');
-        sudoApp.mySynchronousSearchStepLoop.stop('cancelled');
-        sudoApp.myClockedSolutionLoop.stop('cancelled');
+        sudoApp.myClockedRunner.stop('cancelled');
         // sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
         sudoApp.myTrackerDialog.close();
         sudoApp.mySolver.notify();
@@ -7807,9 +7785,8 @@ class SudokuMainApp {
         this.myCurrentPuzzleDBDialog = new PuzzleDBDialog();
 
         // Loops
-        this.myClockedSearchStepLoop = new ClockedSearchStepLoop();
-        this.mySynchronousSearchStepLoop = new SynchronousSearchStepLoop();
-        this.myClockedSolutionLoop = new ClockedSolutionLoop();
+        this.myClockedRunner = new ClockedRunner();
+        this.mySyncRunner = new SynchronousRunner();
     }
     getMySolver() {
         return this.mySolver;
@@ -7850,7 +7827,7 @@ class SudokuMainApp {
         this.mySolver.setPuzzleIOtechnique(Boolean(appSetting.puzzleIOtechnique));
         this.mySolver.notify();
 
-        this.myClockedSearchStepLoop.setBreakpoints(appSetting.breakpoints);
+        // this.myClockedRunner.setBreakpoints(appSetting.breakpoints);
 
         this.myCurrentPuzzleDB.init();
 
@@ -7860,9 +7837,8 @@ class SudokuMainApp {
     }
 
     breakpointPassed(bp) {
-        this.myClockedSearchStepLoop.breakpointPassed(bp);
-        this.mySynchronousSearchStepLoop.breakpointPassed(bp);
-        this.myClockedSolutionLoop.breakpointPassed(bp);
+        this.myClockedRunner.breakpointPassed(bp);
+        this.mySyncRunner.breakpointPassed(bp);
     }
 
     displayAppVersion() {
@@ -7883,7 +7859,7 @@ class SudokuGeneratorApp {
         // 1. The solver component
         this.mySolver = new SudokuSolver(this);
         // 2. The synchronous search step loop.
-        this.mySynchronousSearchStepLoop = new SynchronousSearchStepLoop();
+        this.mySyncRunner = new SynchronousRunner();
     }
 
     init() {
@@ -7893,7 +7869,7 @@ class SudokuGeneratorApp {
     }
 
     breakpointPassed(bp) {
-        this.mySynchronousSearchStepLoop.breakpointPassed(bp);
+        this.mySyncRunner.breakpointPassed(bp);
     }
 
     getMySolver() {
@@ -7909,7 +7885,7 @@ class SudokuFastSolverApp {
         // 1. The solver component
         this.mySolver = new SudokuSolver(this);
         // 2. The synchronous search step loop.
-        this.mySynchronousSearchStepLoop = new SynchronousSearchStepLoop();
+        this.mySyncRunner = new SynchronousRunner();
     }
 
     init() {
@@ -7921,7 +7897,7 @@ class SudokuFastSolverApp {
     }
 
     breakpointPassed(bp) {
-        this.mySynchronousSearchStepLoop.breakpointPassed(bp);
+        this.mySyncRunner.breakpointPassed(bp);
     }
 
     getMySolver() {
