@@ -921,9 +921,13 @@ label {
 }
 
 .tracker-dlg-solution {
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: flex;
     flex-direction: row;
     place-items: center;
+    border: 0.4rem solid grey;
+    background-color: rgb(192, 225, 186);
 }
 
 .label-solution {
