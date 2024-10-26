@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 712;
+let VERSION = 713;
 
 // ==========================================
 // Basic classes
@@ -6079,6 +6079,7 @@ class SudokuSolver extends MVC_Model {
         this.myGrid.init();
         this.unsetCurrentPuzzle();
         this.cleanUpAndDeleteCurrentSearch();
+        this.setGamePhase('define');
     }
 
 
@@ -6294,7 +6295,6 @@ class SudokuSolver extends MVC_Model {
     setCurrentSearchNew() {
         this.myCurrentSearch = new Search(this, this.myGrid);
     }
-
     performSearchStep() {
         this.myCurrentSearch.performStep();
     }
@@ -6574,7 +6574,7 @@ class SudokuSolverView extends MVC_View {
             autoModeRadioBtns.style.display = "flex";
             // this.displayGoneSteps(myStepper.getGoneSteps());
             this.displayGoneSteps(mySearch.getNumberOfSteps());
-            let tmpLevel = this.getMyModel().myCurrentPuzzle.myRecord.preRunRecord.level;
+            let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
             if (tmpLevel == 'Sehr schwer') {
                 this.displayBackwardCount(mySearch.myStepper.countBackwards);
             } else {
@@ -7337,7 +7337,8 @@ class SudokuSolverController {
 
     initLinkPressed() {
         // navigation bar init pressed
-        sudoApp.myTrackerDialog.close();
+        this.stopCurrentSearch();
+      
         sudoApp.myNavBar.closeNav();
         this.initUndoActionStack();
         this.mySolver.init();
@@ -7347,7 +7348,7 @@ class SudokuSolverController {
     }
 
     resetLinkPressed() {
-        sudoApp.myNavBar.closeNav();
+               sudoApp.myNavBar.closeNav();
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es nicht zurückgesetzt werden.");
@@ -7360,6 +7361,8 @@ class SudokuSolverController {
     }
 
     resetConfirmed() {
+        this.stopCurrentSearch();
+      
         let puzzle = this.mySolver.myCurrentPuzzle;
         let action = {
             operation: 'reset',
@@ -7449,8 +7452,10 @@ class SudokuSolverController {
     }
 
     async generateLinkPressed(level) {
+        this.stopCurrentSearch();
+        sudoApp.mySolver.init();
+  
         sudoApp.myNavBar.closeNav();
-        sudoApp.myTrackerDialog.close();
         // Now we are waiting for the store to be filled.
         // The rotating loader icon is started.
         let aspectValue = {
@@ -7630,6 +7635,7 @@ class SudokuSolverController {
         }
     }
 
+   
     trackerDlgStepPressed() {
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
@@ -7697,21 +7703,23 @@ class SudokuSolverController {
                 }
                 sudoApp.myClockedRunner.setBreakpoints(breakPts);
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
-                    () => {
-                        sudoApp.mySolver.performSolutionStep();
-                    });
+                        sudoApp.mySolver.performSolutionStep);
+                  
             }
         }
     }
 
 
     trackerDlgStopPressed() {
-        sudoApp.myClockedRunner.stop('cancelled');
-        // sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
-        sudoApp.myTrackerDialog.close();
+        this.stopCurrentSearch();
         sudoApp.mySolver.notify();
     }
 
+    stopCurrentSearch() {
+        sudoApp.myClockedRunner.stop('cancelled');
+        sudoApp.myTrackerDialog.close();
+    }
+  
 
     infoDlgOKPressed() {
         sudoApp.myInfoDialog.close();
