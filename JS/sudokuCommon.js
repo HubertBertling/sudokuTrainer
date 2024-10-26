@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 713;
+let VERSION = 714;
 
 // ==========================================
 // Basic classes
@@ -1566,34 +1566,42 @@ class NewPuzzleStore {
     }
 
     async fillNewPuzzleStore() {
-        if (this.simplePuzzles.length < 2
-            || this.mediumPuzzles.length < 2
-            || this.heavyPuzzles.length < 2
-            || this.veryHeavyPuzzles.length < 2) {
+        if (this.extremeHeavyPuzzles.length < 1
+            || this.verySimplePuzzles.length < 1
+            || this.simplePuzzles.length < 3
+            || this.mediumPuzzles.length < 1
+            || this.heavyPuzzles.length < 1
+            || this.veryHeavyPuzzles.length < 1) {
 
             let puzzleRecord = await sudoApp.mySolver.generateNewPuzzle();
             this.pushPuzzle(puzzleRecord);
+            if ( this.simplePuzzles.length > 1){
+                this.fillVerySimple();
+                this.fillExtremeHeavy();
+            }
             this.fillNewPuzzleStore();
         }
     }
 
     async fillVerySimple() {
-        if (this.verySimplePuzzles.length < 2) {
+        if (this.verySimplePuzzles.length < 1) {
             let simplePuzzleRecord = await sudoApp.myNewPuzzleStore.popPuzzle('Leicht');
             // A simple puzzle can be made into a very simple puzzle 
             // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
             let verySimplePuzzleRecord
                 = this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
+            
             this.verySimplePuzzles.push(verySimplePuzzleRecord);
             console.log('');
             console.log('-------> push: Sehr leicht: #' + this.verySimplePuzzles.length);
             this.logPuzzleStore();
-            this.fillVerySimple();
+        } else {
+            console.log('push:Sehr leicht: verfallen');
         }
     }
 
     async fillExtremeHeavy() {
-        if (this.extremeHeavyPuzzles.length < 2) {
+        if (this.extremeHeavyPuzzles.length < 1) {
             let simplePuzzleRecord = await this.popPuzzle('Leicht');
             // A simple puzzle can be made to extremeVeryHeavy by deleting one given
             let verySimplePuzzleRecord = await this.deleteOnePuzzleCell(simplePuzzleRecord);
@@ -1601,7 +1609,8 @@ class NewPuzzleStore {
             console.log('');
             console.log('-------> push: Extrem schwer: #' + this.extremeHeavyPuzzles.length);
             this.logPuzzleStore();
-            this.fillExtremeHeavy();
+        } else {
+            console.log('push: Extrem schwer: verfallen');
         }
     }
 
@@ -1625,7 +1634,7 @@ class NewPuzzleStore {
                 break;
             }
             case 'Leicht': {
-                if (this.simplePuzzles.length < 2) {
+                if (this.simplePuzzles.length < 3) {
                     this.simplePuzzles.push(puzzleRecord);
                     console.log('-------> push: Leicht: #' + this.simplePuzzles.length);
                     this.logPuzzleStore();
@@ -1635,7 +1644,7 @@ class NewPuzzleStore {
                 break;
             }
             case 'Mittel': {
-                if (this.mediumPuzzles.length < 2) {
+                if (this.mediumPuzzles.length < 1) {
                     this.mediumPuzzles.push(puzzleRecord);
                     console.log('-------> push: Mittel: #' + this.mediumPuzzles.length);
                     this.logPuzzleStore();
@@ -1645,7 +1654,7 @@ class NewPuzzleStore {
                 break;
             }
             case 'Schwer': {
-                if (this.heavyPuzzles.length < 2) {
+                if (this.heavyPuzzles.length < 1) {
                     this.heavyPuzzles.push(puzzleRecord);
                     console.log('-------> push: Schwer: #' + this.heavyPuzzles.length)
                     this.logPuzzleStore();
@@ -1655,7 +1664,7 @@ class NewPuzzleStore {
                 break;
             }
             case 'Sehr schwer': {
-                if (this.veryHeavyPuzzles.length < 2) {
+                if (this.veryHeavyPuzzles.length < 1) {
                     this.veryHeavyPuzzles.push(puzzleRecord);
                     console.log('');
                     console.log('-------> push: Sehr schwer: #' + this.veryHeavyPuzzles.length)
@@ -1673,13 +1682,10 @@ class NewPuzzleStore {
 
     async popPuzzle(difficulty) {
         let pz = undefined;
+
         switch (difficulty) {
             case 'Sehr leicht': {
                 pz = this.verySimplePuzzles.pop();
-                if (pz == undefined) {
-                    await this.fillVerySimple();
-                    return this.popPuzzle(difficulty);
-                }
                 break;
             }
             case 'Leicht': {
@@ -1700,10 +1706,6 @@ class NewPuzzleStore {
             }
             case 'Extrem schwer': {
                 pz = this.extremeHeavyPuzzles.pop();
-                if (pz == undefined) {
-                    await this.fillExtremeHeavy();
-                    return this.popPuzzle(difficulty);
-                }
                 break;
             }
             default: {
@@ -1714,6 +1716,7 @@ class NewPuzzleStore {
             await this.fillNewPuzzleStore();
             return this.popPuzzle(difficulty);
         } else {
+            this.fillNewPuzzleStore();
             return pz;
         }
     }
