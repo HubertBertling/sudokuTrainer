@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 721;
+let VERSION = 722;
 
 // ==========================================
 // Basic classes
@@ -5862,17 +5862,24 @@ class NewPuzzleBuffer {
         this.veryHeavyPushPromise = undefined;
         this.extremeHeavyPushPromise = undefined;
 
-        this.startWebworkerGenerator();
+        if (typeof (this.webworkerGenerator) !== 'object'
+            || this.webworkerGenerator == null) {
+            this.startWebworkerGenerator();
+        }
+
     }
 
     logPuzzleStore(head) {
-        console.log('=========== ' + head + ' =============');
-        console.log('verySimplePuzzles__: ' + this.verySimplePuzzles.length);
-        console.log('simplePuzzles______: ' + this.simplePuzzles.length);
-        console.log('mediumPuzzles______: ' + this.mediumPuzzles.length);
-        console.log('heavyPuzzles_______: ' + this.heavyPuzzles.length);
-        console.log('veryHeavyPuzzles___: ' + this.veryHeavyPuzzles.length);
-        console.log('extremeHeavyPuzzles: ' + this.extremeHeavyPuzzles.length);
+        let logActive = false;
+        if (logActive) {
+            console.log('=========== ' + head + ' =============');
+            console.log('verySimplePuzzles__: ' + this.verySimplePuzzles.length);
+            console.log('simplePuzzles______: ' + this.simplePuzzles.length);
+            console.log('mediumPuzzles______: ' + this.mediumPuzzles.length);
+            console.log('heavyPuzzles_______: ' + this.heavyPuzzles.length);
+            console.log('veryHeavyPuzzles___: ' + this.veryHeavyPuzzles.length);
+            console.log('extremeHeavyPuzzles: ' + this.extremeHeavyPuzzles.length);
+        }
     }
 
     async verySimplePuzzlePushed() {
@@ -5990,6 +5997,11 @@ class NewPuzzleBuffer {
         if (this.verySimplePuzzles.length > 0) {
             puzzleRecord = this.verySimplePuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
+
             await this.verySimplePuzzlePushed();
             puzzleRecord = this.verySimplePuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -5998,14 +6010,7 @@ class NewPuzzleBuffer {
                 false
             );
         }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
-        }
         return puzzleRecord;
-
     }
 
     async getSimplePuzzle() {
@@ -6013,19 +6018,18 @@ class NewPuzzleBuffer {
         if (this.simplePuzzles.length > 0) {
             puzzleRecord = this.simplePuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
             await this.simplePuzzlePushed();
             puzzleRecord = this.simplePuzzles.pop();
+
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
                 'message',
                 sudoApp.myNewPuzzleBuffer.simplePushWaitingListener,
                 false
             );
-        }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
         }
         return puzzleRecord;
     }
@@ -6035,6 +6039,11 @@ class NewPuzzleBuffer {
         if (this.mediumPuzzles.length > 0) {
             puzzleRecord = this.mediumPuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
+
             await this.mediumPuzzlePushed();
             puzzleRecord = this.mediumPuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -6043,14 +6052,7 @@ class NewPuzzleBuffer {
                 false
             );
         }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
-        }
         return puzzleRecord;
-
     }
 
     async getHeavyPuzzle() {
@@ -6058,6 +6060,10 @@ class NewPuzzleBuffer {
         if (this.heavyPuzzles.length > 0) {
             puzzleRecord = this.heavyPuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
             await this.heavyPuzzlePushed();
             puzzleRecord = this.heavyPuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -6066,14 +6072,7 @@ class NewPuzzleBuffer {
                 false
             );
         }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
-        }
         return puzzleRecord;
-
     }
 
     async getVeryHeavyPuzzle() {
@@ -6081,6 +6080,10 @@ class NewPuzzleBuffer {
         if (this.veryHeavyPuzzles.length > 0) {
             puzzleRecord = this.veryHeavyPuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
             await this.veryHeavyPuzzlePushed();
             puzzleRecord = this.veryHeavyPuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -6089,14 +6092,7 @@ class NewPuzzleBuffer {
                 false
             );
         }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
-        }
         return puzzleRecord;
-
     }
 
     async getExtremeHeavyPuzzle() {
@@ -6104,6 +6100,10 @@ class NewPuzzleBuffer {
         if (this.extremeHeavyPuzzles.length > 0) {
             puzzleRecord = this.extremeHeavyPuzzles.pop();
         } else {
+            if (typeof (this.webworkerGenerator) !== 'object'
+                || this.webworkerGenerator == null) {
+                this.startWebworkerGenerator();
+            }
             await this.extremeHeavyPuzzlePushed();
             puzzleRecord = this.extremeHeavyPuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -6112,14 +6112,7 @@ class NewPuzzleBuffer {
                 false
             );
         }
-        if (!this.isFilled()) {
-            if (typeof (this.webworkerGenerator) == 'object'
-                || this.webworkerGenerator == null) {
-                this.startWebworkerGenerator();
-            }
-        }
         return puzzleRecord;
-
     }
 
     isFilled() {
