@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 722;
+let VERSION = 723;
 
 // ==========================================
 // Basic classes
@@ -5839,7 +5839,7 @@ class NewPuzzleBuffer {
         this.extremeHeavyPuzzles = [];
 
         this.webworkerGenerator = null;
-
+        this.webworkerGeneratorIsStopped = false;
         this.verySimplePushPromise = undefined;
         this.simplePushPromise = undefined;
         this.mediumPushPromise = undefined;
@@ -5862,16 +5862,14 @@ class NewPuzzleBuffer {
         this.veryHeavyPushPromise = undefined;
         this.extremeHeavyPushPromise = undefined;
 
-        if (typeof (this.webworkerGenerator) !== 'object'
-            || this.webworkerGenerator == null) {
-            this.startWebworkerGenerator();
-        }
-
+        this.webworkerGeneratorIsStopped = false;
+        this.startWebworkerGenerator();
     }
 
     logPuzzleStore(head) {
-        let logActive = false;
+        let logActive = true;
         if (logActive) {
+            console.log('this.webworkerGeneratorIsStopped == ' + this.webworkerGeneratorIsStopped);
             console.log('=========== ' + head + ' =============');
             console.log('verySimplePuzzles__: ' + this.verySimplePuzzles.length);
             console.log('simplePuzzles______: ' + this.simplePuzzles.length);
@@ -5996,12 +5994,15 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.verySimplePuzzles.length > 0) {
             puzzleRecord = this.verySimplePuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
-
             await this.verySimplePuzzlePushed();
             puzzleRecord = this.verySimplePuzzles.pop();
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
@@ -6017,14 +6018,19 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.simplePuzzles.length > 0) {
             puzzleRecord = this.simplePuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            // No simple puzzle in the buffer
+
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
             await this.simplePuzzlePushed();
             puzzleRecord = this.simplePuzzles.pop();
-
             sudoApp.myNewPuzzleBuffer.webworkerGenerator.removeEventListener(
                 'message',
                 sudoApp.myNewPuzzleBuffer.simplePushWaitingListener,
@@ -6038,9 +6044,13 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.mediumPuzzles.length > 0) {
             puzzleRecord = this.mediumPuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
 
@@ -6059,9 +6069,13 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.heavyPuzzles.length > 0) {
             puzzleRecord = this.heavyPuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
             await this.heavyPuzzlePushed();
@@ -6079,9 +6093,13 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.veryHeavyPuzzles.length > 0) {
             puzzleRecord = this.veryHeavyPuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
             await this.veryHeavyPuzzlePushed();
@@ -6099,9 +6117,13 @@ class NewPuzzleBuffer {
         let puzzleRecord = undefined;
         if (this.extremeHeavyPuzzles.length > 0) {
             puzzleRecord = this.extremeHeavyPuzzles.pop();
+            if (this.needsToBeFilledup()) {
+                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
+                    this.startWebworkerGenerator();
+                }
+            }
         } else {
-            if (typeof (this.webworkerGenerator) !== 'object'
-                || this.webworkerGenerator == null) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped) {
                 this.startWebworkerGenerator();
             }
             await this.extremeHeavyPuzzlePushed();
@@ -6117,12 +6139,23 @@ class NewPuzzleBuffer {
 
     isFilled() {
         return (
-            this.extremeHeavyPuzzles.length > 0
-            && this.verySimplePuzzles.length > 0
-            && this.simplePuzzles.length > 0
-            && this.mediumPuzzles.length > 0
-            && this.heavyPuzzles.length > 0
-            && this.veryHeavyPuzzles.length > 0
+            this.extremeHeavyPuzzles.length > 1
+            && this.verySimplePuzzles.length > 1
+            && this.simplePuzzles.length > 1
+            && this.mediumPuzzles.length > 1
+            && this.heavyPuzzles.length > 1
+            && this.veryHeavyPuzzles.length > 1
+        );
+    }
+
+    needsToBeFilledup() {
+        return (
+            this.extremeHeavyPuzzles.length < 2
+            || this.verySimplePuzzles.length < 2
+            || this.simplePuzzles.length < 2
+            || this.mediumPuzzles.length < 2
+            || this.heavyPuzzles.length < 2
+            || this.veryHeavyPuzzles.length < 2
         );
     }
 
@@ -6172,6 +6205,7 @@ class NewPuzzleBuffer {
                         name: 'stopGeneration',
                         value: ''
                     }
+                    sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped = true;
                 } else {
                     response = {
                         name: 'proceedGeneration',
@@ -6195,6 +6229,7 @@ class NewPuzzleBuffer {
             "message",
             this.pushMsgHandler,
             false);
+        sudoApp.myNewPuzzleBuffer.webworkerGeneratorIsStopped = false;
     }
 
 }
