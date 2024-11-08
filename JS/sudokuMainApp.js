@@ -137,5 +137,9 @@ if (navigator.share && navigator.canShare) {
 }
 
 // Launch and initialize the app
+function startMainApp() {
+    sudoApp = new SudokuMainApp();
+    sudoApp.init();
+}
+
 startMainApp();
-// sudoApp.mySolverView.showPuzzleSolutionInfo('123 Lösungen');

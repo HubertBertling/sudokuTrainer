@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 725;
+let VERSION = 726;
 
 // ==========================================
 // Basic classes
@@ -1601,8 +1601,12 @@ class SudokuPuzzleDB extends MVC_Model {
             "0", "9", "0", "0", "0", "0", "0", "0", "5",
             "8", "0", "0", "0", "0", "0", "7", "0", "0"];
 
+            this.init
+            console.log('------>  initDB vor: ------back23');
         await this.importBackRunPuzzle(back23, 'Backtrack_23', 'lqwgzcback23g2ak');
+        console.log('------>  initDB nach: -------back23');
         await this.importBackRunPuzzle(back10, 'Backtrack_10', 'lqgwgzcback9hpfg2ak');
+        console.log('------>  initDB nach: -------back10');
         sudoApp.mySolver.init();
         sudoApp.mySolver.notify()
         this.notify();
@@ -1783,12 +1787,16 @@ class SudokuPuzzleDB extends MVC_Model {
         let str_puzzleMap = localStorage.getItem("localSudokuDB");
         let puzzleMap = new Map(JSON.parse(str_puzzleMap));
         if (!puzzleMap.has(puzzleId)) {
+
             sudoApp.mySolver.myGrid.loadSimplePuzzleArray(pa);
+            sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord());
+          
             sudoApp.mySolver.myCurrentPuzzle.myRecord = await sudoApp.mySolver.calculatePuzzleRecord();
             let currentPuzzleRecord = sudoApp.mySolver.myCurrentPuzzle.myRecord;
             currentPuzzleRecord.id = puzzleId;
             currentPuzzleRecord.name = pzName;
             this.savePuzzle(currentPuzzleRecord);
+            console.log('*************   importBackRunPuzzle OK  ****************');
         }
         sudoApp.mySolver.init();
     }
@@ -5881,7 +5889,7 @@ class NewPuzzleBuffer {
     }
 
     logPuzzleStore(head) {
-        let logActive = true;
+        let logActive = false;
         if (logActive) {
             console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
             console.log('=========== ' + head + ' =============');
@@ -6073,8 +6081,8 @@ class NewPuzzleBuffer {
                     }
 
                 }
-                // sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
-                console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
+                sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
+                // console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
                 let response = undefined;
                 if (sudoApp.myNewPuzzleBuffer.isFilled()) {
                     sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true
@@ -7952,8 +7960,6 @@ class SudokuMainApp {
         this.mySolver.setPlayType(appSetting.playMode);
         this.mySolver.setPuzzleIOtechnique(Boolean(appSetting.puzzleIOtechnique));
 
-        this.myNewPuzzleBuffer.init();
-
 
         this.mySolver.notify();
 
@@ -7961,6 +7967,8 @@ class SudokuMainApp {
 
         this.myCurrentPuzzleDB.init();
 
+        this.myNewPuzzleBuffer.init();
+        
         this.myNavBar.init();
         this.displayAppVersion();
     }
@@ -8011,20 +8019,4 @@ class SudokuFastSolverApp {
 // ==========================================
 // Basic functions
 // ==========================================
-function startMainApp() {
-    sudoApp = new SudokuMainApp();
-    sudoApp.init();
-}
-
-function startFastSolverApp() {
-    //A worker app is assigned to the variable "sudoApp".
-    sudoApp = new SudokuFastSolverApp();
-    sudoApp.init();
-}
-
-function startGeneratorApp() {
-    //A worker app is assigned to the variable "sudoApp".
-    sudoApp = new SudokuGeneratorApp();
-    sudoApp.init();
-}
 

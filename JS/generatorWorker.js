@@ -100,17 +100,6 @@ class NewPuzzleGenerator {
         }
     }
 
-    /*
-    send2Main(puzzleRecord) {
-        let request = {
-            name: 'puzzleGenerated',
-            value: puzzleRecord
-        }
-        let str_request = JSON.stringify(request);
-        self.postMessage(str_request);
-    }
-*/
-
     async send2Main(puzzleRecord) {
         //  let webworkerFastSolver = new Worker("./JS/fastSolverWorker.js");
         let sendToMain = () => new Promise(function (myResolve, myReject) {
@@ -141,5 +130,12 @@ class NewPuzzleGenerator {
         }
     }
 }
+
 // Launch and initialize the worker app
+function startGeneratorApp() {
+    //A worker app is assigned to the variable "sudoApp".
+    sudoApp = new SudokuGeneratorApp();
+    sudoApp.init();
+}
+
 startGeneratorApp();
