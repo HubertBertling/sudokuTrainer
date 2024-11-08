@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 727;
+let VERSION = 728;
 
 // ==========================================
 // Basic classes
@@ -5936,7 +5936,7 @@ class NewPuzzleBuffer {
                 }
                 break;
             }
-            case 'Extreme schwer': {
+            case 'Extrem schwer': {
                 if (this.myExtremeHeavyPuzzles.length > 0) {
                     puzzleRecord = this.myExtremeHeavyPuzzles.pop();
                 }
