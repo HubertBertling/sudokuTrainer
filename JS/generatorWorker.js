@@ -20,7 +20,7 @@ class SudokuGeneratorApp {
         this.mySolver.myGrid.init();
         this.mySolver.setActualEvalType('strict-plus');
         this.mySolver.setPlayType('automated-solving');
-        this.myNewPuzzleGenerator.generatePz();
+        this.myNewPuzzleGenerator.start();
     }
 
     breakpointPassed(bp) {
@@ -34,6 +34,9 @@ class SudokuGeneratorApp {
 
 class NewPuzzleGenerator {
     constructor() {
+        this.simpleSend1 = null;
+        this.verySimpleSend2 = null;
+        this.extremeSimpleSend3 = null;
     }
 
     simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
@@ -73,30 +76,52 @@ class NewPuzzleGenerator {
         }
     }
 
-    start() {
-        this.generatePz();
+    async start() {
+        let commandFromMain = 'proceedGeneration';
+        while (commandFromMain == 'proceedGeneration'
+            || commandFromMain == undefined
+        ) {
+            commandFromMain = await this.generatePz();
+        }
+        if (commandFromMain == 'stopGeneration') {
+            self.close();
+        } 
+        /*
+        else {
+            throw new Error('Unexpected Command from main: ' + commandFromMain);
+        }
+            */
     }
 
-    generatePz() {
-        let puzzleRecord = sudoApp.mySolver.generatePuzzle();
-        if (puzzleRecord.preRunRecord.level == 'Leicht') {
-            this.send2Main(puzzleRecord);
+    async generatePz() {
+        if (this.simpleSend1 == null) {
+            let puzzleRecord = sudoApp.mySolver.generatePuzzle();
+            if (puzzleRecord.preRunRecord.level == 'Leicht') {
+                this.simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
+                return await this.send2Main(this.simpleSend1);
+            } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
+                && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
+                return await this.send2Main(puzzleRecord);
+            }
+        }
 
+        if (this.simpleSend1 != null && this.verySimpleSend2 == null) {
             // A simple puzzle can be made into a very simple puzzle 
             // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-            let verySimplePuzzleRecord
-                = this.simplifyPuzzleByNrOfCells(7, puzzleRecord);
-            verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            this.send2Main(verySimplePuzzleRecord);
+            this.verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, this.simpleSend1);
+            this.verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            return await this.send2Main(this.verySimpleSend2);
+        }
 
+        if (this.simpleSend1 != null && this.verySimpleSend2 != null) {
             // A simple puzzle can be made to extremeVeryHeavy by deleting one given
-            let extremeHeavyPuzzleRecord = this.deleteOnePuzzleCell(puzzleRecord);
-            extremeHeavyPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            this.send2Main(extremeHeavyPuzzleRecord);
-
-        } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
-            && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
-            this.send2Main(puzzleRecord);
+            this.extremeHeavySend3 = this.deleteOnePuzzleCell(this.simpleSend1);
+            this.extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            let command = await this.send2Main(this.extremeHeavySend3);
+            this.simpleSend1 = null;
+            this.verySimpleSend2 = null;
+            this.extremeSimpleSend3 = null;
+            return command;
         }
     }
 
@@ -123,11 +148,7 @@ class NewPuzzleGenerator {
         //?????
         let str_response = await sendToMain();
         let response = JSON.parse(str_response);
-        if (response.name == 'stopGeneration') {
-            self.close();
-        } else {
-            this.generatePz();
-        }
+        return response.name;
     }
 }
 

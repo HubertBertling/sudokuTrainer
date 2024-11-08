@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 726;
+let VERSION = 727;
 
 // ==========================================
 // Basic classes
@@ -6085,7 +6085,7 @@ class NewPuzzleBuffer {
                 // console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
                 let response = undefined;
                 if (sudoApp.myNewPuzzleBuffer.isFilled()) {
-                    sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true
+                    sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
                 }
                 //Trailing mesaages may not take back the first stop message
                 if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
