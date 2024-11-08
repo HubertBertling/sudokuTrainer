@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 728;
+let VERSION = 729;
 
 // ==========================================
 // Basic classes
@@ -5959,12 +5959,12 @@ class NewPuzzleBuffer {
 
     isFilled() {
         return (
-            this.myExtremeHeavyPuzzles.length > 1
-            && this.myVerySimplePuzzles.length > 1
-            && this.mySimplePuzzles.length > 1
-            && this.myMediumPuzzles.length > 1
-            && this.myHeavyPuzzles.length > 1
-            && this.myVeryHeavyPuzzles.length > 1
+            this.myExtremeHeavyPuzzles.length > 3
+            && this.myVerySimplePuzzles.length > 3
+            && this.mySimplePuzzles.length > 3
+            && this.myMediumPuzzles.length > 3
+            && this.myHeavyPuzzles.length > 3
+            && this.myVeryHeavyPuzzles.length > 3
         );
     }
 
