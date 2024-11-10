@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 729;
+let VERSION = 730;
 
 // ==========================================
 // Basic classes
@@ -1601,8 +1601,8 @@ class SudokuPuzzleDB extends MVC_Model {
             "0", "9", "0", "0", "0", "0", "0", "0", "5",
             "8", "0", "0", "0", "0", "0", "7", "0", "0"];
 
-            this.init
-            console.log('------>  initDB vor: ------back23');
+        this.init
+        console.log('------>  initDB vor: ------back23');
         await this.importBackRunPuzzle(back23, 'Backtrack_23', 'lqwgzcback23g2ak');
         console.log('------>  initDB nach: -------back23');
         await this.importBackRunPuzzle(back10, 'Backtrack_10', 'lqgwgzcback9hpfg2ak');
@@ -1790,7 +1790,7 @@ class SudokuPuzzleDB extends MVC_Model {
 
             sudoApp.mySolver.myGrid.loadSimplePuzzleArray(pa);
             sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord());
-          
+
             sudoApp.mySolver.myCurrentPuzzle.myRecord = await sudoApp.mySolver.calculatePuzzleRecord();
             let currentPuzzleRecord = sudoApp.mySolver.myCurrentPuzzle.myRecord;
             currentPuzzleRecord.id = puzzleId;
@@ -4040,6 +4040,19 @@ class SudokuGrid extends MVC_Model {
             this.sudoCells[i].manualSetValue(tmpCellValue, tmpCellPhase);
         }
     }
+    upIndex(index) {
+        if (index < 9) { return index; } else { return (index - 9); }
+    }
+    downIndex(index) {
+        if (index > 71) { return index } else { return (index + 9) };
+    }
+    leftIndex(index) {
+        if ((index % 9) > 0) { return index - 1; } else { return index; }
+    }
+    rightIndex(index) {
+        if ((index + 1) % 9 == 0) { return index } else { return (index + 1) };
+    }
+
 
 
     createSudoGrid() {
@@ -4149,9 +4162,40 @@ class SudokuGrid extends MVC_Model {
         this.indexSelected = index;
     }
 
+
     isCellSelected() {
         return this.indexSelected !== -1;
     }
+
+    arrowUpSelect() {
+        if (this.indexSelected !== -1) {
+            let index = this.upIndex(this.indexSelected);
+            this.deselect();
+            this.setCurrentSelection(index);
+        }
+    }
+    arrowDownSelect() {
+        if (this.indexSelected !== -1) {
+            let index = this.downIndex(this.indexSelected);
+            this.deselect();
+            this.setCurrentSelection(index);
+        }
+    }
+    arrowLeftSelect() {
+        if (this.indexSelected !== -1) {
+            let index = this.leftIndex(this.indexSelected);
+            this.deselect();
+            this.setCurrentSelection(index);
+        }
+    }
+    arrowRightSelect() {
+        if (this.indexSelected !== -1) {
+            let index = this.rightIndex(this.indexSelected);
+            this.deselect();
+            this.setCurrentSelection(index);
+        }
+    }
+
 
     selectedCell() {
         if (this.indexSelected > -1) {
@@ -7051,13 +7095,35 @@ class SudokuSolverController {
                 case "6":
                 case "7":
                 case "8":
-                case "9":
+                case "9": {
                     this.handleKeyNumberPressed(event);
                     break;
+                }
                 case "Delete":
-                case "Backspace":
+                case "Backspace": {
                     this.handleDeleteKeyPressed(event);
                     break;
+                }
+                case "ArrowUp": {
+                    sudoApp.mySolver.myGrid.arrowUpSelect();
+                    sudoApp.mySolver.notify();
+                    break;
+                }
+                case "ArrowDown": {
+                    sudoApp.mySolver.myGrid.arrowDownSelect();
+                    sudoApp.mySolver.notify();
+                    break;
+                }
+                case "ArrowLeft": {
+                    sudoApp.mySolver.myGrid.arrowLeftSelect();
+                    sudoApp.mySolver.notify();
+                    break;
+                }
+                case "ArrowRight": {
+                    sudoApp.mySolver.myGrid.arrowRightSelect();
+                    sudoApp.mySolver.notify();
+                    break;
+                }
                 default:
                     return;
             }
@@ -7968,7 +8034,7 @@ class SudokuMainApp {
         this.myCurrentPuzzleDB.init();
 
         this.myNewPuzzleBuffer.init();
-        
+
         this.myNavBar.init();
         this.displayAppVersion();
     }
