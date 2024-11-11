@@ -85,12 +85,9 @@ class NewPuzzleGenerator {
         }
         if (commandFromMain == 'stopGeneration') {
             self.close();
-        } 
-        /*
-        else {
-            throw new Error('Unexpected Command from main: ' + commandFromMain);
+        } else {
+            console.log('GENERATOR: Unexpected Command from main: ' + commandFromMain);
         }
-            */
     }
 
     async generatePz() {
@@ -98,10 +95,12 @@ class NewPuzzleGenerator {
             let puzzleRecord = sudoApp.mySolver.generatePuzzle();
             if (puzzleRecord.preRunRecord.level == 'Leicht') {
                 this.simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
-                return await this.send2Main(this.simpleSend1);
+                let command = await this.send2Main(this.simpleSend1);
+                return command;
             } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
                 && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
-                return await this.send2Main(puzzleRecord);
+                let command = await this.send2Main(puzzleRecord);
+                return command;
             }
         }
 
@@ -110,23 +109,23 @@ class NewPuzzleGenerator {
             // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
             this.verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, this.simpleSend1);
             this.verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            return await this.send2Main(this.verySimpleSend2);
+            let command =  await this.send2Main(this.verySimpleSend2);
+            return command;
         }
 
         if (this.simpleSend1 != null && this.verySimpleSend2 != null) {
             // A simple puzzle can be made to extremeVeryHeavy by deleting one given
             this.extremeHeavySend3 = this.deleteOnePuzzleCell(this.simpleSend1);
             this.extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            let command = await this.send2Main(this.extremeHeavySend3);
             this.simpleSend1 = null;
             this.verySimpleSend2 = null;
             this.extremeSimpleSend3 = null;
+            let command = await this.send2Main(this.extremeHeavySend3);
             return command;
         }
     }
 
     async send2Main(puzzleRecord) {
-        //  let webworkerFastSolver = new Worker("./JS/fastSolverWorker.js");
         let sendToMain = () => new Promise(function (myResolve, myReject) {
             const channel = new MessageChannel();
             channel.port1.onmessage = ({ data }) => {
@@ -137,7 +136,7 @@ class NewPuzzleGenerator {
                     myResolve(data.result);
                 }
             };
-            // Post request
+            // Post the newly generated puzzle to main
             let request = {
                 name: 'puzzleGenerated',
                 value: puzzleRecord
@@ -145,7 +144,7 @@ class NewPuzzleGenerator {
             let str_request = JSON.stringify(request);
             self.postMessage(str_request, [channel.port2]);
         });
-        //?????
+        //Receive command from main.
         let str_response = await sendToMain();
         let response = JSON.parse(str_response);
         return response.name;

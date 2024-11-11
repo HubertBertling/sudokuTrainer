@@ -5933,7 +5933,7 @@ class NewPuzzleBuffer {
     }
 
     logPuzzleStore(head) {
-        let logActive = false;
+        let logActive = true;
         if (logActive) {
             console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
             console.log('=========== ' + head + ' =============');
@@ -6023,42 +6023,8 @@ class NewPuzzleBuffer {
         );
     }
 
-    /*
-    pushPuzzle(puzzleRecord) {
-        switch (puzzleRecord.preRunRecord.level) {
-            case 'Sehr leicht': {
-                this.myVerySimplePuzzles.push(puzzleRecord);
-                break;
-            }
-            case 'Leicht': {
-                this.mySimplePuzzles.push(puzzleRecord);
-                break;
-            }
-            case 'Mittel': {
-                this.myMediumPuzzles.push(puzzleRecord);
-                break;
-            }
-            case 'Schwer': {
-                this.myHeavyPuzzles.push(puzzleRecord);
-                break;
-            }
-            case 'Sehr schwer': {
-                this.myVeryHeavyPuzzles.push(puzzleRecord);
-                break;
-            }
-            case 'Extrem schwer': {
-                this.myExtremeHeavyPuzzles.push(puzzleRecord);
-                break;
-            }
-            default: {
-                throw new Error('Unexpected difficulty: '
-                    + puzzleRecord.preRunRecord.level);
-            }
-        }
-        this.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---')
-    }
-*/
     onPuzzleGenerated(event) {
+        // The puzzle generator worker has sent new puzzle
         let request = JSON.parse(event.data);
         if (request.name == 'puzzleGenerated') {
             try {
@@ -6066,6 +6032,10 @@ class NewPuzzleBuffer {
                 // console.log('--- push ---level---(vorher)    ' + puzzleRecord.preRunRecord.level);
                 switch (puzzleRecord.preRunRecord.level) {
                     case 'Sehr leicht': {
+                        // The myNewPuzzleBuffer has set a request for a very easy puzzle. 
+                        // The player wants a new very easy puzzle.
+                        // If such a request is set, it is served first. 
+                        // If there is no such request, the new puzzle is stored in the buffer.
                         if (sudoApp.myNewPuzzleBuffer.myVerySimplePuzzleRequests.length > 0) {
                             let puzzleRequest = sudoApp.myNewPuzzleBuffer.myVerySimplePuzzleRequests.pop();
                             puzzleRequest.respond(puzzleRecord);
@@ -6123,7 +6093,6 @@ class NewPuzzleBuffer {
                         throw new Error('Unexpected difficulty: '
                             + puzzleRecord.preRunRecord.level);
                     }
-
                 }
                 sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
                 // console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
@@ -6131,7 +6100,7 @@ class NewPuzzleBuffer {
                 if (sudoApp.myNewPuzzleBuffer.isFilled()) {
                     sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
                 }
-                //Trailing mesaages may not take back the first stop message
+                //Trailing messages may not take back the first stop message
                 if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
                     response = {
                         name: 'stopGeneration',
@@ -6143,6 +6112,7 @@ class NewPuzzleBuffer {
                         value: ''
                     }
                 }
+                if (response == undefined) {console.log('-----> onPuzzleGenerated response == undefined')};
                 let str_response = JSON.stringify(response);
                 // The serialized puzzle is sent as a message to Main
                 // respond on the received port
