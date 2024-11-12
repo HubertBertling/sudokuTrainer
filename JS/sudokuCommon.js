@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 731;
+let VERSION = 732;
 
 // ==========================================
 // Basic classes
@@ -5912,7 +5912,10 @@ class NewPuzzleBuffer {
         this.myVeryHeavyPuzzles = [];
         this.myExtremeHeavyPuzzles = [];
 
-        this.webworkerGenerator = null;
+        this.webworkerGenerator_1 = null;
+        this.webworkerGenerator_2 = null;
+        this.webworkerGenerator_3 = null;
+        
         this.webworkerGeneratorStopRequested = false;
     }
 
@@ -5938,7 +5941,7 @@ class NewPuzzleBuffer {
     }
 
     logPuzzleStore(head) {
-        let logActive = true;
+        let logActive = false;
         if (logActive) {
             console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
             console.log('=========== ' + head + ' =============');
@@ -5998,6 +6001,9 @@ class NewPuzzleBuffer {
         };
         if (this.needsToBeFilledup()) {
             if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
+                // If StopRequested the generators are going to be stopped 
+                // or are already stopped.
+                // if they are not stopped no additional workers should be started.
                 this.startWebworkerGenerator();
             }
         }
@@ -6008,12 +6014,12 @@ class NewPuzzleBuffer {
 
     isFilled() {
         return (
-            this.myExtremeHeavyPuzzles.length > 3
-            && this.myVerySimplePuzzles.length > 3
-            && this.mySimplePuzzles.length > 3
-            && this.myMediumPuzzles.length > 3
-            && this.myHeavyPuzzles.length > 3
-            && this.myVeryHeavyPuzzles.length > 3
+            this.myExtremeHeavyPuzzles.length > 2
+            && this.myVerySimplePuzzles.length > 2
+            && this.mySimplePuzzles.length > 2
+            && this.myMediumPuzzles.length > 2
+            && this.myHeavyPuzzles.length > 2
+            && this.myVeryHeavyPuzzles.length > 2
         );
     }
 
@@ -6117,7 +6123,7 @@ class NewPuzzleBuffer {
                         value: ''
                     }
                 }
-                if (response == undefined) {console.log('-----> onPuzzleGenerated response == undefined')};
+                if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
                 let str_response = JSON.stringify(response);
                 // The serialized puzzle is sent as a message to Main
                 // respond on the received port
@@ -6130,12 +6136,27 @@ class NewPuzzleBuffer {
     }
 
     startWebworkerGenerator() {
-        this.webworkerGenerator = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker neu gestartet.')
-        this.webworkerGenerator.addEventListener(
+        this.webworkerGenerator_1 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 1 <== neu gestartet.')
+        this.webworkerGenerator_1.addEventListener(
             "message",
             this.onPuzzleGenerated,
             false);
+
+        this.webworkerGenerator_2 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 2 <== neu gestartet.')
+        this.webworkerGenerator_2.addEventListener(
+            "message",
+            this.onPuzzleGenerated,
+            false);
+
+        this.webworkerGenerator_3 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 3 <== neu gestartet.')
+        this.webworkerGenerator_3.addEventListener(
+            "message",
+            this.onPuzzleGenerated,
+            false);
+
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
     }
 
@@ -6180,7 +6201,7 @@ class SudokuSolver extends MVC_Model {
     }
 
     setCurrentPuzzle(puzzleRecord) {
-            this.myCurrentPuzzle = new Puzzle(puzzleRecord);
+        this.myCurrentPuzzle = new Puzzle(puzzleRecord);
     }
 
     init() {
@@ -7646,7 +7667,7 @@ class SudokuSolverController {
                     break;
                 }
                 case 'Extrem schwer': {
-                    sudoApp.myNewPuzzleBuffer.myExtremePuzzleRequests.push(new PuzzleRequest(
+                    sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzleRequests.push(new PuzzleRequest(
                         sudoApp.myNewPuzzleBuffer,
                         level,
                         onRequestResponse
