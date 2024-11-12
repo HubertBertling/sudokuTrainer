@@ -84,6 +84,7 @@ class NewPuzzleGenerator {
             commandFromMain = await this.generatePz();
         }
         if (commandFromMain == 'stopGeneration') {
+            console.log('---> generatorWorker <--- has been stopped.')
             self.close();
         } else {
             console.log('GENERATOR: Unexpected Command from main: ' + commandFromMain);

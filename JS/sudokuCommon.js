@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 733;
+let VERSION = 734;
 
 // ==========================================
 // Basic classes
@@ -5944,9 +5944,9 @@ class NewPuzzleBuffer {
     }
 
     logPuzzleStore(head) {
-        let logActive = false;
+        let logActive = true;
         if (logActive) {
-            console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
+            //console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
             console.log('=========== ' + head + ' =============');
             console.log('myVerySimplePuzzles__: ' + this.myVerySimplePuzzles.length);
             console.log('mySimplePuzzles______: ' + this.mySimplePuzzles.length);
@@ -6010,7 +6010,7 @@ class NewPuzzleBuffer {
                 this.startWebworkerGenerator();
             }
         }
-        this.logPuzzleStore('pop')
+        // this.logPuzzleStore('pop')
         return puzzleRecord;
     }
 
@@ -6108,7 +6108,7 @@ class NewPuzzleBuffer {
                             + puzzleRecord.preRunRecord.level);
                     }
                 }
-                sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
+                // sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
                 // console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
                 let response = undefined;
                 if (sudoApp.myNewPuzzleBuffer.isFilled()) {
