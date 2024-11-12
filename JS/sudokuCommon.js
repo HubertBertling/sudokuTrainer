@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 732;
+let VERSION = 733;
 
 // ==========================================
 // Basic classes
@@ -5915,7 +5915,10 @@ class NewPuzzleBuffer {
         this.webworkerGenerator_1 = null;
         this.webworkerGenerator_2 = null;
         this.webworkerGenerator_3 = null;
-        
+        this.webworkerGenerator_4 = null;
+        this.webworkerGenerator_5 = null;
+        this.webworkerGenerator_6 = null;
+
         this.webworkerGeneratorStopRequested = false;
     }
 
@@ -6153,6 +6156,27 @@ class NewPuzzleBuffer {
         this.webworkerGenerator_3 = new Worker("./JS/generatorWorker.js");
         console.log('-----> generatorWorker ==> 3 <== neu gestartet.')
         this.webworkerGenerator_3.addEventListener(
+            "message",
+            this.onPuzzleGenerated,
+            false);
+
+        this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
+        this.webworkerGenerator_4.addEventListener(
+            "message",
+            this.onPuzzleGenerated,
+            false);
+
+        this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
+        this.webworkerGenerator_5.addEventListener(
+            "message",
+            this.onPuzzleGenerated,
+            false);
+
+        this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
+        console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
+        this.webworkerGenerator_6.addEventListener(
             "message",
             this.onPuzzleGenerated,
             false);
