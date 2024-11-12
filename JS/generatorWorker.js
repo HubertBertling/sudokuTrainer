@@ -145,7 +145,7 @@ class NewPuzzleGenerator {
             let str_request = JSON.stringify(request);
             self.postMessage(str_request, [channel.port2]);
         });
-        //?????
+        //Receive main command 'proceedGeneration' or 'stopGeneration'
         let str_response = await sendToMain();
         let response = JSON.parse(str_response);
         return response.name;

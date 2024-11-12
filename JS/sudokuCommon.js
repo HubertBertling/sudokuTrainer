@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 730;
+let VERSION = 731;
 
 // ==========================================
 // Basic classes
@@ -232,21 +232,21 @@ class NavigationBar {
 class PuzzleDBDialog {
     constructor() {
         this.myOpen = false;
-        this.myCurrentPuzzleDBDialogNode = document.getElementById("db-puzzle-dialog")
+        this.myPuzzleDBDialogNode = document.getElementById("db-puzzle-dialog")
     }
 
     open() {
         this.myOpen = true;
-        this.myCurrentPuzzleDBDialogNode.showModal();
-        this.myCurrentPuzzleDBView = new SudokuPuzzleDBView(sudoApp.myCurrentPuzzleDB);
-        sudoApp.myCurrentPuzzleDB.attach(this.myCurrentPuzzleDBView);
+        this.myPuzzleDBDialogNode.showModal();
+        this.myPuzzleDBView = new SudokuPuzzleDBView(sudoApp.myPuzzleDB);
+        sudoApp.myPuzzleDB.attach(this.myPuzzleDBView);
     }
 
     close() {
         if (this.myOpen) {
-            this.myCurrentPuzzleDBDialogNode.close();
+            this.myPuzzleDBDialogNode.close();
             this.myOpen = false;
-            sudoApp.myCurrentPuzzleDB.detach(this.myCurrentPuzzleDBView);
+            sudoApp.myPuzzleDB.detach(this.myPuzzleDBView);
         }
     }
 }
@@ -1567,9 +1567,9 @@ class SudokuPuzzleDB extends MVC_Model {
     }
 
     async userInit() {
-        sudoApp.myCurrentPuzzleDBView.startLoaderAnimation('DB initialisieren');
+        sudoApp.myPuzzleDBView.startLoaderAnimation('DB initialisieren');
         await this.initDB();
-        sudoApp.myCurrentPuzzleDBView.stopLoaderAnimation();
+        sudoApp.myPuzzleDBView.stopLoaderAnimation();
     }
 
     async initDB() {
@@ -1762,7 +1762,7 @@ class SudokuPuzzleDB extends MVC_Model {
     }
 
     mergePlayedPuzzle(puzzleRecord) {
-        let storedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(puzzleRecord.id);
+        let storedPuzzleRecord = sudoApp.myPuzzleDB.getPuzzleRecord(puzzleRecord.id);
         //Stored puzzles save their creation date
         puzzleRecord.date = storedPuzzleRecord.date;
         this.savePuzzle(puzzleRecord);
@@ -1979,7 +1979,7 @@ class SudokuPuzzleDB extends MVC_Model {
 
         if (upLoadedKeys.length == 1) {
             this.selectedIndex = this.getIndex(upLoadedKeys.pop());
-            sudoApp.myCurrentPuzzleDBController.loadBtnPressed();
+            sudoApp.myPuzzleDBController.loadBtnPressed();
         } else {
             sudoApp.mySolverController.openDBLinkPressed();
         }
@@ -1987,18 +1987,18 @@ class SudokuPuzzleDB extends MVC_Model {
 
     getCurrentPuzzleFile() {
         let currentPuzzleRecord = sudoApp.mySolver.myCurrentPuzzle.myRecord;
-        if (!sudoApp.myCurrentPuzzleDB.has(currentPuzzleRecord.id)) {
+        if (!sudoApp.myPuzzleDB.has(currentPuzzleRecord.id)) {
             // The current puzzle is not yet an element in the database.
             // Save the current puzzle with a new name in the database
             currentPuzzleRecord.name = 'Geteilt (' + new Date().toLocaleString('de-DE') + ')';
-            sudoApp.myCurrentPuzzleDB.savePuzzle(currentPuzzleRecord);
+            sudoApp.myPuzzleDB.savePuzzle(currentPuzzleRecord);
         } else {
             // The current puzzle is element in the database.
-            sudoApp.myCurrentPuzzleDB.mergePlayedPuzzle(currentPuzzleRecord);
+            sudoApp.myPuzzleDB.mergePlayedPuzzle(currentPuzzleRecord);
         }
         // The saved and shared puzzle becomes the new current puzzle
-        // let tmpPuzzleID = sudoApp.myCurrentPuzzleDB.getSelectedUid();
-        let puzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+        // let tmpPuzzleID = sudoApp.myPuzzleDB.getSelectedUid();
+        let puzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
         sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
         sudoApp.mySolver.notify();
 
@@ -2007,8 +2007,8 @@ class SudokuPuzzleDB extends MVC_Model {
         // puzzleMap anlegen, die nur das selektierte Element enthält.
         let newPuzzleMap = new Map();
         if (puzzleMap.size > 0) {
-            // let selectedKey = sudoApp.myCurrentPuzzleDB.getSelectedUid();
-            let selectedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+            // let selectedKey = sudoApp.myPuzzleDB.getSelectedUid();
+            let selectedPuzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
             newPuzzleMap.set(selectedPuzzleRecord.id, selectedPuzzleRecord);
             let str_newPuzzleMap = JSON.stringify(Array.from(newPuzzleMap.entries()));
             let blob1 = new Blob([str_newPuzzleMap], { type: "text/plain;charset=utf-8" });
@@ -2041,8 +2041,8 @@ class SudokuPuzzleDBView extends MVC_View {
             let i = 0;
             for (let [key, pzRecord] of puzzleMap) {
                 let tr = document.createElement('tr');
-                tr.setAttribute("onclick", "sudoApp.myCurrentPuzzleDBController.setSelected(this)");
-                tr.setAttribute("ondblclick", "sudoApp.myCurrentPuzzleDBController.loadBtnPressed()");
+                tr.setAttribute("onclick", "sudoApp.myPuzzleDBController.setSelected(this)");
+                tr.setAttribute("ondblclick", "sudoApp.myPuzzleDBController.loadBtnPressed()");
                 tr.setAttribute("style", "cursor:pointer");
                 tr.classList.add('item')
                 if (i == this.myDB.selectedIndex) {
@@ -2122,34 +2122,34 @@ class SudokuPuzzleDBView extends MVC_View {
 class SudokuPuzzleDBController {
     constructor(puzzleDb) {
         // Der Save-Dialog
-        this.myCurrentPuzzleDB = puzzleDb;
+        this.myPuzzleDB = puzzleDb;
         //Click-Event für die Spaltenköpfe
         document.getElementById('col-name').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('name');
+            this.myPuzzleDB.sort('name');
         });
         document.getElementById('col-status-given').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('status-given');
+            this.myPuzzleDB.sort('status-given');
         });
 
         document.getElementById('col-status-solved').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('status-solved');
+            this.myPuzzleDB.sort('status-solved');
         });
 
         document.getElementById('col-status-open').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('status-open');
+            this.myPuzzleDB.sort('status-open');
         });
 
         document.getElementById('col-level').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('level');
+            this.myPuzzleDB.sort('level');
         });
         document.getElementById('col-backTracks').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('backTracks');
+            this.myPuzzleDB.sort('backTracks');
         });
         document.getElementById('col-countSolutions').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('countSolutions');
+            this.myPuzzleDB.sort('countSolutions');
         });
         document.getElementById('col-date').addEventListener('click', () => {
-            this.myCurrentPuzzleDB.sort('date');
+            this.myPuzzleDB.sort('date');
         });
 
         document.getElementById('pz-btn-load').addEventListener('click', () => {
@@ -2184,6 +2184,10 @@ class SudokuPuzzleDBController {
             this.puzzleDownloadBtnPressed();
         });
 
+        document.getElementById('db-puzzle-btn-upload').addEventListener('click', () => {
+            this.puzzleUploadBtnPressed();
+        });
+
 
         document.getElementById('pz-btn-ok').addEventListener('click', () => {
             this.closeBtnPressed();
@@ -2209,13 +2213,13 @@ class SudokuPuzzleDBController {
 
 
     setSelected(trNode) {
-        this.myCurrentPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
-        this.myCurrentPuzzleDB.notify();
+        this.myPuzzleDB.selectedIndex = trNode.cells[0].innerText - 1;
+        this.myPuzzleDB.notify();
     }
 
     renameBtnPressed() {
-        let selectedPuzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
-        let selectedKey = sudoApp.myCurrentPuzzleDB.selectedKey();
+        let selectedPuzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
+        let selectedKey = sudoApp.myPuzzleDB.selectedKey();
         selectedPuzzleRecord.id = selectedKey;
         sudoApp.myCurrentPuzzleSaveRenameDlg.open(
             this.renamePuzzleDlgOKPressed,
@@ -2224,9 +2228,9 @@ class SudokuPuzzleDBController {
     }
 
     loadBtnPressed() {
-        if (this.myCurrentPuzzleDB.getSize() > 0) {
-            let puzzleRecord = this.myCurrentPuzzleDB.getSelectedPuzzle();
-            sudoApp.myCurrentPuzzleDBDialog.close();
+        if (this.myPuzzleDB.getSize() > 0) {
+            let puzzleRecord = this.myPuzzleDB.getSelectedPuzzle();
+            sudoApp.myPuzzleDBDialog.close();
             sudoApp.myTrackerDialog.close();
             sudoApp.mySolver.init();
             sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
@@ -2242,10 +2246,10 @@ class SudokuPuzzleDBController {
         sudoApp.myCurrentPuzzleSaveRenameDlg.close();
         let uid = sudoApp.myCurrentPuzzleSaveRenameDlg.myId;
         let name = sudoApp.myCurrentPuzzleSaveRenameDlg.getPuzzleName();
-        let selectedDBPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(uid);
+        let selectedDBPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(uid);
         selectedDBPuzzle.name = name;
-        sudoApp.myCurrentPuzzleDB.savePuzzle(selectedDBPuzzle);
-        sudoApp.myCurrentPuzzleDB.notify()
+        sudoApp.myPuzzleDB.savePuzzle(selectedDBPuzzle);
+        sudoApp.myPuzzleDB.notify()
         if (sudoApp.mySolver.getLoadedPuzzleUID() == uid) {
             sudoApp.mySolver.setLoadedPuzzleName(name);
             sudoApp.mySolver.notify();
@@ -2257,45 +2261,46 @@ class SudokuPuzzleDBController {
     }
 
     nextBtnPressed() {
-        if (this.myCurrentPuzzleDB.getSize() > 0) {
-            this.myCurrentPuzzleDB.selectNextPZ();
+        if (this.myPuzzleDB.getSize() > 0) {
+            this.myPuzzleDB.selectNextPZ();
         }
     }
     previousBtnPressed() {
-        if (this.myCurrentPuzzleDB.getSize() > 0) {
+        if (this.myPuzzleDB.getSize() > 0) {
             // Select previous Puzzle
-            this.myCurrentPuzzleDB.selectPreviousPZ();
+            this.myPuzzleDB.selectPreviousPZ();
         }
     }
 
     deleteBtnPressed() {
-        let pz = this.myCurrentPuzzleDB.getSelectedPuzzle();
+        let pz = this.myPuzzleDB.getSelectedPuzzle();
         let pzName = pz.name;
-        /* sudoApp.myConfirmDlg.open(sudoApp.myCurrentPuzzleDBController,
-            sudoApp.myCurrentPuzzleDBController.delete,
+        /* sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDBController,
+            sudoApp.myPuzzleDBController.delete,
             "Puzzle löschen",
             'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
             */
-        sudoApp.myCurrentPuzzleDBController.delete();
+        sudoApp.myPuzzleDBController.delete();
     }
     initDBBtnPressed() {
-        sudoApp.myConfirmDlg.open(sudoApp.myCurrentPuzzleDB,
-            sudoApp.myCurrentPuzzleDB.userInit,
+        sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDB,
+            sudoApp.myPuzzleDB.userInit,
+            () => { },
             "Puzzle DB löschen und initialisieren",
-            'Soll die Puzzle DB endgültig gelöscht und neu initialisiert werden?');
+            "Soll die Puzzle DB endgültig gelöscht und neu initialisiert werden?");
     }
 
     delete() {
-        if (sudoApp.myCurrentPuzzleDB.getSize() > 0) {
-            let selectedId = sudoApp.myCurrentPuzzleDB.selectedKey();
+        if (sudoApp.myPuzzleDB.getSize() > 0) {
+            let selectedId = sudoApp.myPuzzleDB.selectedKey();
             let loadedPzUid = sudoApp.mySolver.getLoadedPuzzleUID();
             if (loadedPzUid == selectedId) {
                 sudoApp.mySolver.init();
                 sudoApp.mySolver.notify();
             }
-            sudoApp.myCurrentPuzzleDB.deleteSelected();
+            sudoApp.myPuzzleDB.deleteSelected();
             this.nextBtnPressed();
-            sudoApp.myCurrentPuzzleDB.notify();
+            sudoApp.myPuzzleDB.notify();
         }
     }
 
@@ -2313,22 +2318,22 @@ class SudokuPuzzleDBController {
 
     puzzleDbDownloadBtnPressed() {
         // Button on the puzzle DB view
-        this.myCurrentPuzzleDB.downloadPuzzleDb();
+        this.myPuzzleDB.downloadPuzzleDb();
     }
 
     puzzleDownloadBtnPressed() {
         // Button on the puzzle DB view
-        this.myCurrentPuzzleDB.downloadPuzzle();
+        this.myPuzzleDB.downloadPuzzle();
     }
 
-    puzzleDbUploadBtnPressed() {
+    puzzleUploadBtnPressed() {
         // Button on the puzzle DB view
-        chooseAFile();
+        this.importPuzzles();
     }
 
 
     closeBtnPressed() {
-        sudoApp.myCurrentPuzzleDBDialog.close();
+        sudoApp.myPuzzleDBDialog.close();
     }
 }
 class SudokuPrintView extends MVC_View {
@@ -2350,17 +2355,17 @@ class SudokuPrintView extends MVC_View {
 
     loadHeader() {
         let puzzleIdentityRow = document.getElementById('print-pz-id-row');
-        let name = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().name;
-        let level = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().preRunRecord.level;
+        let name = sudoApp.myPuzzleDB.getSelectedPuzzle().name;
+        let level = sudoApp.myPuzzleDB.getSelectedPuzzle().preRunRecord.level;
         puzzleIdentityRow.innerHTML =
             '<b>Puzzle-Name:</b> &nbsp' + name + '; &nbsp'
             + '<b>Schwierigkeitsgrad:</b> &nbsp' + level + ';';
     }
 
     loadPrintTable() {
-        if (sudoApp.myCurrentPuzzleDB.getSize() > 0) {
+        if (sudoApp.myPuzzleDB.getSize() > 0) {
             let table = document.getElementById('print-pz-table');
-            let tableArray = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle().puzzle;
+            let tableArray = sudoApp.myPuzzleDB.getSelectedPuzzle().puzzle;
             let k = 0;
             for (let row = 0; row < 9; row++) {
                 for (let col = 0; col < 9; col++) {
@@ -6205,7 +6210,7 @@ class SudokuSolver extends MVC_Model {
     }
 
     setCurrentPuzzle(puzzleRecord) {
-        this.myCurrentPuzzle = new Puzzle(puzzleRecord);
+            this.myCurrentPuzzle = new Puzzle(puzzleRecord);
     }
 
     init() {
@@ -6245,9 +6250,9 @@ class SudokuSolver extends MVC_Model {
             // by the automatic solution.
 
             // 1) Initialize the current puzzle
+            this.setGamePhase('play');
             sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
             // 2) Initialize the current search.
-            // this.cleanUpAndDeleteCurrentSearch();
             this.setCurrentSearchNew();
             // 3) solve the puzzle and return metadata results in a preRunRecord
             let preRecGen = this.computePreRunRecord();
@@ -6305,6 +6310,7 @@ class SudokuSolver extends MVC_Model {
         // The puzzle may already be partially solved. 
         // Only givens are loaded.
         this.loadPuzzleArrayGivens(puzzleArray);
+        this.setGamePhase('Play');
         // 1) Initialize the current puzzle
         sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
         // 2) Initialize the current search.
@@ -6534,7 +6540,11 @@ class SudokuSolver extends MVC_Model {
         return this.myGrid;
     }
     getMyCurrentPuzzle() {
-        return this.myCurrentPuzzle;
+        if (this.currentPhase == 'play') {
+            return this.myCurrentPuzzle;
+        } else {
+            return undefined;
+        }
     }
     getMyStepper() {
         return this.myCurrentSearch.myStepper;
@@ -6561,9 +6571,13 @@ class SudokuSolver extends MVC_Model {
         this.myCurrentPuzzle.myRecord.name = name;
     }
     getLoadedPuzzleUID() {
-        return this.myCurrentPuzzle.myRecord.id;
+        if (this.currentPhase == 'play') {
+            return this.myCurrentPuzzle.myRecord.id;
+        } else {
+            // in the definition phase there is no current puzzle
+            return -1;
+        }
     }
-
 
     takeBackGivenCells() {
         this.myGrid.takeBackGivenCells();
@@ -6615,8 +6629,11 @@ class SudokuSolver extends MVC_Model {
     }
 
     clearLoadedPuzzle(key) {
-        if (this.myCurrentPuzzle.myRecord.id == key) {
-            this.myGrid.init();
+        // In the definition phase there is no current puzzle
+        if (this.currentPhase == 'play') {
+            if (this.myCurrentPuzzle.myRecord.id == key) {
+                this.myGrid.init();
+            }
         }
     }
 
@@ -7428,9 +7445,9 @@ class SudokuSolverController {
             // Retain the identity of the previous record
             this.mySolver.myCurrentPuzzle.setIdentity(previousPuzzle.getIdentity());
         } else {
+            this.mySolver.setGamePhase('play');
             let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
             this.mySolver.setCurrentPuzzle(puzzleRecord);
-            this.mySolver.setGamePhase('play');
             this.initUndoActionStack();
         }
         this.mySolver.notify();
@@ -7685,7 +7702,7 @@ class SudokuSolverController {
             // this.mySolver.grid2puzzle();
             this.mySolver.grid2puzzleRecord(this.mySolver.myCurrentPuzzle.myRecord);
 
-            if (!sudoApp.myCurrentPuzzleDB.has(this.mySolver.getLoadedPuzzleUID())) {
+            if (!sudoApp.myPuzzleDB.has(this.mySolver.getLoadedPuzzleUID())) {
                 // The loaded puzzle is not yet element in the database.
                 // Save loaded puzzle with new name in the database
                 // A default name is defined
@@ -7701,10 +7718,10 @@ class SudokuSolverController {
                 // The current puzzle is already element in the database
                 // So only the actual puzzle state needs to be saved
                 let puzzle = this.mySolver.myCurrentPuzzle.myRecord;
-                let storedPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(puzzle.id);
+                let storedPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(puzzle.id);
                 puzzle.date = storedPuzzle.date;
-                sudoApp.myCurrentPuzzleDB.savePuzzle(puzzle);
-                sudoApp.myCurrentPuzzleDB.notify();
+                sudoApp.myPuzzleDB.savePuzzle(puzzle);
+                sudoApp.myPuzzleDB.notify();
                 sudoApp.myInfoDialog.open('Spielstand gespeichert', "positiv",
                     'Puzzle: \"' + this.mySolver.myCurrentPuzzle.myRecord.name + '\"');
             }
@@ -7712,8 +7729,8 @@ class SudokuSolverController {
     }
 
     openDBLinkPressed() {
-        sudoApp.myCurrentPuzzleDBDialog.open();
-        sudoApp.myCurrentPuzzleDB.notify();
+        sudoApp.myPuzzleDBDialog.open();
+        sudoApp.myPuzzleDB.notify();
         sudoApp.myNavBar.closeNav();
     }
 
@@ -7736,24 +7753,24 @@ class SudokuSolverController {
         } else {
             // this.mySolver.stopBackTrackingSearch();
             sudoApp.myTrackerDialog.close();
-            if (!sudoApp.myCurrentPuzzleDB.has(this.mySolver.myCurrentPuzzle.myRecord.id)) {
+            if (!sudoApp.myPuzzleDB.has(this.mySolver.myCurrentPuzzle.myRecord.id)) {
                 // The current puzzle is not yet an element in the database.
                 // Save the current puzzle with a new name in the database.
                 let newName = 'Druck (' + new Date().toLocaleString('de-DE') + ')';
                 this.mySolver.myCurrentPuzzle.myRecord.name = newName;
-                sudoApp.myCurrentPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
+                sudoApp.myPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
             }
             // The current puzzle is element in the database.
             // Before printing save the current state.
-            let storedPuzzle = sudoApp.myCurrentPuzzleDB.getPuzzleRecord(this.mySolver.myCurrentPuzzle.myRecord.id);
+            let storedPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(this.mySolver.myCurrentPuzzle.myRecord.id);
             // this.mySolver.grid2puzzle();
             this.mySolver.grid2puzzleRecord(this.mySolver.myCurrentPuzzle.myRecord);
             this.mySolver.myCurrentPuzzle.myRecord.date = storedPuzzle.date;
-            sudoApp.myCurrentPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
+            sudoApp.myPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
             // Print the saved puzzle
-            sudoApp.myCurrentPuzzleDBController.printSelectedPuzzle();
+            sudoApp.myPuzzleDBController.printSelectedPuzzle();
             // The saved and printed puzzle becomes the new current puzzle
-            let puzzleRecord = sudoApp.myCurrentPuzzleDB.getSelectedPuzzle();
+            let puzzleRecord = sudoApp.myPuzzleDB.getSelectedPuzzle();
             sudoApp.mySolver.loadPuzzleRecord(puzzleRecord);
             sudoApp.mySolver.notify();
         }
@@ -7935,9 +7952,9 @@ class SudokuSolverController {
         sudoApp.myCurrentPuzzleSaveRenameDlg.close();
         let currentPuzzle = sudoApp.mySolver.myCurrentPuzzle.myRecord;
         currentPuzzle.name = sudoApp.myCurrentPuzzleSaveRenameDlg.getPuzzleName();
-        sudoApp.myCurrentPuzzleDB.savePuzzle(currentPuzzle);
-        sudoApp.myCurrentPuzzleDB.notify()
-        sudoApp.mySolver.loadPuzzleRecord(sudoApp.myCurrentPuzzleDB.getSelectedPuzzle());
+        sudoApp.myPuzzleDB.savePuzzle(currentPuzzle);
+        sudoApp.myPuzzleDB.notify()
+        sudoApp.mySolver.loadPuzzleRecord(sudoApp.myPuzzleDB.getSelectedPuzzle());
         sudoApp.mySolver.notify();
     }
 
@@ -7965,10 +7982,10 @@ class SudokuMainApp {
         this.mySolver.setMyView(this.mySolverView);
 
         // 2. The database component
-        this.myCurrentPuzzleDB = new SudokuPuzzleDB();
-        this.myCurrentPuzzleDBView = new SudokuPuzzleDBView(this.myCurrentPuzzleDB);
-        this.myCurrentPuzzleDBController = new SudokuPuzzleDBController(this.myCurrentPuzzleDB);
-        this.myCurrentPuzzleDB.init();
+        this.myPuzzleDB = new SudokuPuzzleDB();
+        this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
+        this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
+        this.myPuzzleDB.init();
 
         // The navigation bar
         this.myNavBar = new NavigationBar();
@@ -7979,7 +7996,7 @@ class SudokuMainApp {
         this.mySettingsDialog = new SettingsDialog();
         this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
         this.myConfirmDlg = new ConfirmDialog();
-        this.myCurrentPuzzleDBDialog = new PuzzleDBDialog();
+        this.myPuzzleDBDialog = new PuzzleDBDialog();
 
         // Loops
         this.myClockedRunner = new ClockedRunner();
@@ -8031,7 +8048,7 @@ class SudokuMainApp {
 
         // this.myClockedRunner.setBreakpoints(appSetting.breakpoints);
 
-        this.myCurrentPuzzleDB.init();
+        this.myPuzzleDB.init();
 
         this.myNewPuzzleBuffer.init();
 
