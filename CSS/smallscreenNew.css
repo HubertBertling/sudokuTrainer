@@ -1087,11 +1087,6 @@ label {
     height: 1.6rem;
     font-size: var(--font-size);
     text-align: right;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    background-color: var(--defined-cell-bg-color);
-    color: white;
-
 }
 
 #very-simple-Bar,
@@ -1101,23 +1096,10 @@ label {
 #very-heavy-Bar,
 #extreme-heavy-Bar {
     position: absolute;
-    width: 20%;
     height: 1.6rem;
     line-height: 1.6rem;
-}
-
-#very-simple-Bar,
-#simple-Bar,
-#medium-Bar,
-#heavy-Bar,
-#very-heavy-Bar,
-#extreme-heavy-Bar {
-    z-index: 1;
-    background-color: var(--played-cell-bg-color);
-    color: black;
-    text-align: right;
     padding-right: 0.5rem;
-}
+ }
 
 .total-bar-value {
     line-height: 1.6rem;

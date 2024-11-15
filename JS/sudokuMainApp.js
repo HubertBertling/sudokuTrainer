@@ -182,96 +182,99 @@ class NewPuzzlesBar {
     }
 
     setValue(level, puzzleCount) {
-        let totalCount = 20;
+        let adaptedPuzzleCount = 0;
+        let totalCount = 10;
         let puzzleCountProzent = 0;
-        if (puzzleCount == 0) {
-            puzzleCountProzent = Math.floor(1 / totalCount * 100);
-        } else {
-            puzzleCountProzent = Math.floor(puzzleCount / totalCount * 100);
-        }
-        if (puzzleCountProzent < 20) {
-            puzzleCountProzent = 20;
-        }
-        if (puzzleCountProzent > 100) {
-            puzzleCountProzent = 100;
-        }
 
+        if (puzzleCount == 0) {
+            adaptedPuzzleCount = 1;
+            puzzleCountProzent = Math.floor(adaptedPuzzleCount / (totalCount) * 100);
+
+        } else if (puzzleCount > 0 && puzzleCount < 11) {
+            adaptedPuzzleCount = puzzleCount;
+            puzzleCountProzent = Math.floor(adaptedPuzzleCount / (totalCount) * 100);
+
+        } else if (puzzleCount > 10) {
+            adaptedPuzzleCount = 10;
+            puzzleCountProzent = Math.floor(10 / (totalCount) * 100);
+        }
+      
         switch (level) {
             case 'Sehr leicht': {
                 this.verySimple.style.width = puzzleCountProzent + "%";
                 this.verySimple.innerHTML = puzzleCount;
-                this.verySimple.style.paddingRight = "5px";
+                this.verySimple.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.verySimple.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.verySimple.style.color = 'var(--error-cell-color)';
                 } else {
                     this.verySimple.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.verySimple.style.color = 'var(--defined-cell-color)';        
+                    this.verySimple.style.color = 'var(--defined-cell-color)';
                 }
                 break;
             }
             case 'Leicht': {
                 this.simple.style.width = puzzleCountProzent + "%";
                 this.simple.innerHTML = puzzleCount;
-                this.simple.style.paddingRight = "5px";
+                this.simple.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.simple.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.simple.style.color = 'var(--error-cell-color)';
                 } else {
                     this.simple.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.simple.style.color = 'var(--defined-cell-color)';        
+                    this.simple.style.color = 'var(--defined-cell-color)';
                 }
-                       break;
+                break;
             }
             case 'Mittel': {
                 this.medium.style.width = puzzleCountProzent + "%";
                 this.medium.innerHTML = puzzleCount;
-                this.medium.style.paddingRight = "5px";
+                this.medium.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.medium.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.medium.style.color = 'var(--error-cell-color)';
                 } else {
                     this.medium.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.medium.style.color = 'var(--defined-cell-color)';        
+                    this.medium.style.color = 'var(--defined-cell-color)';
                 }
                 break;
             }
             case 'Schwer': {
                 this.heavy.style.width = puzzleCountProzent + "%";
                 this.heavy.innerHTML = puzzleCount;
-                this.heavy.style.paddingRight = "5px";
+                this.heavy.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.heavy.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.heavy.style.color = 'var(--error-cell-color)';
                 } else {
                     this.heavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.heavy.style.color = 'var(--defined-cell-color)';        
+                    this.heavy.style.color = 'var(--defined-cell-color)';
                 }
                 break;
             }
             case 'Sehr schwer': {
                 this.veryHeavy.style.width = puzzleCountProzent + "%";
                 this.veryHeavy.innerHTML = puzzleCount;
-                this.veryHeavy.style.paddingRight = "5px";
+                this.veryHeavy.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.veryHeavy.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.veryHeavy.style.color = 'var(--error-cell-color)';
                 } else {
                     this.veryHeavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.veryHeavy.style.color = 'var(--defined-cell-color)';        
+                    this.veryHeavy.style.color = 'var(--defined-cell-color)';
                 }
                 break;
             }
             case 'Extrem schwer': {
                 this.extremeHeavy.style.width = puzzleCountProzent + "%";
                 this.extremeHeavy.innerHTML = puzzleCount;
-                this.extremeHeavy.style.paddingRight = "5px";
+                this.extremeHeavy.style.paddingRight = "6px";
                 if (puzzleCount == 0) {
                     this.extremeHeavy.style.backgroundColor = 'var(--error-cell-bg-color)';
                     this.extremeHeavy.style.color = 'var(--error-cell-color)';
                 } else {
                     this.extremeHeavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
-                    this.extremeHeavy.style.color = 'var(--defined-cell-color)';        
+                    this.extremeHeavy.style.color = 'var(--defined-cell-color)';
                 }
                 break;
             }
@@ -428,7 +431,7 @@ class NewPuzzleDlg {
     upDate() {
         if (this.myOpen) {
             this.myNewPuzzlesBar.upDate();
-            if( sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
                 this.stopLoaderAnimation();
             } else {
                 this.startLoaderAnimation();
@@ -441,11 +444,11 @@ class NewPuzzleDlg {
             this.myOpen = false;
         }
     }
-    
+
     startLoaderAnimation() {
         // Der sich drehende Loader wird angezeigt
-     //   let slNode = document.getElementById("loader-db-info");
-     //   slNode.innerText = info;
+        //   let slNode = document.getElementById("loader-db-info");
+        //   slNode.innerText = info;
         document.getElementById("loader-new-puzzle").style.display = "block";
     }
     stopLoaderAnimation() {
