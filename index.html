@@ -29,6 +29,8 @@
                 <div class="closebtn btn" onclick="sudoApp.myNavBar.closeNav()">&times;</div>
                 <a href="#" onclick="sudoApp.mySolverController.initLinkPressed()">Initialisieren</a>
                 <a href="#" onclick="sudoApp.mySolverController.resetLinkPressed()">Zurücksetzen</a>
+
+                <!---
                 <button class="dropdown-btn" id="dropdown-btn-new">
                     Neu
                     <i class="fa fa-caret-down">
@@ -36,6 +38,7 @@
                         <img src="images/no-caret.png" id="no-caret-img">
                     </i>
                 </button>
+               
                 <div class="dropdown-container" id="dropdown-container-btn-new">
                     <a href="#" onclick="sudoApp.mySolverController.generateLinkPressed('Sehr leicht')">Sehr leicht</a>
                     <a href="#" onclick="sudoApp.mySolverController.generateLinkPressed('Leicht')">Leicht</a>
@@ -44,6 +47,8 @@
                     <a href="#" onclick="sudoApp.mySolverController.generateLinkPressed('Sehr schwer')">Sehr schwer</a>
                     <a href="#" onclick="sudoApp.mySolverController.generateLinkPressed('Extrem schwer')">Extrem schwer</a>
                 </div>
+                -->
+                <a href="#" onclick="sudoApp.mySolverController.newLinkPressed()">Neu</a>
                 <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
                 <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
                 <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
@@ -83,7 +88,7 @@
                         <div id="loader-db">
                             <div id="loader-db-info"></div>
                         </div>
-                    
+
                         <div class="main-sudoku-grid" id="main-sudoku-grid">
                             <!-- block 0 -->
                         </div>
@@ -209,26 +214,100 @@
     </div>
 
     <!--Ausblendbare Elemente -->
-  
-   
-  
+
+
+
     <!--Dialoge -->
 
-    <dialog class="noprint" id="new-puzzle-dlg">
-        <div class="progress-bar" id="very-simple">
-            <div id="myBarDef">20%</div>
-            <div class="total-bar-value" id="total-bar-value">
-                5
-            </div>
+    <dialog class="new-puzzle-dlg noprint" id="new-puzzle-dlg">
+        <div class="dlg-header">
+            Neues Puzzle 
         </div>
+   
+        <div class="new-puzzle-selection" id="new-puzzle-selection">
+            <fieldset class="level-fieldset">
+                <legend class="new-puzzle-selection-legend">
+                    Schwierigkeitsgrad
+                </legend>
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-very-simple" class="level" name="level" value="Sehr leicht">
+                    <div class="label-text text-spacing prefix">Sehr leicht</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="very-simple">
+                        </div>
+                    </div>
+                </label>
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-simple" class="level" name="level"  value="Leicht">
+                    <div class="label-text text-spacing prefix">Leicht</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="simple">
+                        </div>
+                    </div>
+                </label>
+
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-medium" class="level" name="level" value="Mittel">
+                    <div class="label-text text-spacing prefix">Mittel</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="medium">
+                            <div id="medium-Bar">20%</div>
+                        </div>
+                    </div>
+                </label>
+
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-heavy" class="level" name="level"  value="Schwer">
+                    <div class="label-text text-spacing prefix">Schwer</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="heavy">
+                            <div id="heavy-Bar">20%</div>
+                        </div>
+                    </div>
+                </label>
+
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-very-heavy" class="level" name="level"  value="Sehr schwer">
+                    <div class="label-text text-spacing prefix">Sehr schwer</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="very-heavy">
+                            <div id="very-heavy-Bar">20%</div>
+                        </div>
+                    </div>
+                </label>
+
+
+                <label class="label-container first-label-container">
+                    <input type="radio" id="level-extreme-heavy" class="level" name="level"  value="Extrem schwer">
+                    <div class="label-text text-spacing prefix">Extrem schwer</div>
+                    <div class="label-text text-spacing">
+                        <div class="new-puzzle-bar" id="extreme-heavy">
+                            <div id="extreme-heavy-Bar">20%</div>
+                        </div>
+                    </div>
+                </label>
+
+            </fieldset>
+        </div>
+
   
+        <div id="new-puzzle-ok-cancel-btns">
+            <input type="button" class="main-btn ok-cancel-btn" id="btn-new-puzzle-ok" name="OK" value="Neues Puzzle" />
+            <input type="button" class="main-btn ok-cancel-btn" id="btn-new-puzzle-cancel" name="Cancel"
+                value="Abbrechen" />
+        </div>
     </dialog>
 
     <dialog class="puzzle-table-dlg noprint" id="db-puzzle-dialog">
         <div class="db-puzzle-root">
             <div class="db-puzzle-header">
                 <div class="title"> Puzzle Datenbank </div>
-                <div id="db-close-btn">&times;</div>     
+                <div id="db-close-btn">&times;</div>
             </div>
             <div class="tableFixHead">
                 <table class="db-puzzle-table " id="db-puzzle-table">
@@ -282,8 +361,8 @@
                             src="images/download.png" class="btn-image">
                         <div>Download Puzzle-DB</div>
                     </button>
-                    <button class="db-puzzle-button noprint" 
-                        id="db-puzzle-btn-upload"><img src="images/import.png" class="btn-image">
+                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img src="images/import.png"
+                            class="btn-image">
                         <div>Import Puzzle(s)</div>
                     </button>
                     <input type="file" style="display:none" id="asText">

@@ -162,6 +162,137 @@ class MVC_View {
 // ==========================================
 // Navigation and Dialogs 
 // ==========================================
+class NewPuzzlesBar {
+    constructor() {
+        this.verySimple = document.getElementById("very-simple");
+        this.simple = document.getElementById("simple");
+        this.medium = document.getElementById("medium");
+        this.heavy = document.getElementById("heavy");
+        this.veryHeavy = document.getElementById("very-heavy");
+        this.extremeHeavy = document.getElementById("extreme-heavy");
+
+    }
+    init() {
+        this.verySimple.style.width = "10%"
+        this.simple.style.width = "10%"
+        this.medium.style.width = "10%"
+        this.heavy.style.width = "10%"
+        this.veryHeavy.style.width = "10%"
+        this.extremeHeavy.style.width = "10%"
+    }
+
+    setValue(level, puzzleCount) {
+        let totalCount = 20;
+        let puzzleCountProzent = 0;
+        if (puzzleCount == 0) {
+            puzzleCountProzent = Math.floor(1 / totalCount * 100);
+        } else {
+            puzzleCountProzent = Math.floor(puzzleCount / totalCount * 100);
+        }
+        if (puzzleCountProzent < 20) {
+            puzzleCountProzent = 20;
+        }
+        if (puzzleCountProzent > 100) {
+            puzzleCountProzent = 100;
+        }
+
+        switch (level) {
+            case 'Sehr leicht': {
+                this.verySimple.style.width = puzzleCountProzent + "%";
+                this.verySimple.innerHTML = puzzleCount;
+                this.verySimple.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.verySimple.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.verySimple.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.verySimple.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.verySimple.style.color = 'var(--defined-cell-color)';        
+                }
+                break;
+            }
+            case 'Leicht': {
+                this.simple.style.width = puzzleCountProzent + "%";
+                this.simple.innerHTML = puzzleCount;
+                this.simple.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.simple.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.simple.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.simple.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.simple.style.color = 'var(--defined-cell-color)';        
+                }
+                       break;
+            }
+            case 'Mittel': {
+                this.medium.style.width = puzzleCountProzent + "%";
+                this.medium.innerHTML = puzzleCount;
+                this.medium.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.medium.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.medium.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.medium.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.medium.style.color = 'var(--defined-cell-color)';        
+                }
+                break;
+            }
+            case 'Schwer': {
+                this.heavy.style.width = puzzleCountProzent + "%";
+                this.heavy.innerHTML = puzzleCount;
+                this.heavy.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.heavy.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.heavy.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.heavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.heavy.style.color = 'var(--defined-cell-color)';        
+                }
+                break;
+            }
+            case 'Sehr schwer': {
+                this.veryHeavy.style.width = puzzleCountProzent + "%";
+                this.veryHeavy.innerHTML = puzzleCount;
+                this.veryHeavy.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.veryHeavy.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.veryHeavy.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.veryHeavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.veryHeavy.style.color = 'var(--defined-cell-color)';        
+                }
+                break;
+            }
+            case 'Extrem schwer': {
+                this.extremeHeavy.style.width = puzzleCountProzent + "%";
+                this.extremeHeavy.innerHTML = puzzleCount;
+                this.extremeHeavy.style.paddingRight = "5px";
+                if (puzzleCount == 0) {
+                    this.extremeHeavy.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.extremeHeavy.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.extremeHeavy.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.extremeHeavy.style.color = 'var(--defined-cell-color)';        
+                }
+                break;
+            }
+            default: {
+                throw new Error('Unexpected difficulty: '
+                    + level);
+            }
+
+        }
+    }
+    upDate() {
+        this.setValue('Sehr leicht', sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length);
+        this.setValue('Leicht', sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length);
+        this.setValue('Mittel', sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length);
+        this.setValue('Schwer', sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length);
+        this.setValue('Sehr schwer', sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length);
+        this.setValue('Extrem schwer', sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length);
+    }
+}
+
+
 class ProgressBar {
     constructor() {
         this.elemPlay = document.getElementById("myBarPlay");
@@ -202,38 +333,41 @@ class NavigationBar {
         /* Loop through all dropdown buttons to toggle between hiding and showing 
         its dropdown content - This allows the user to have multiple dropdowns 
         without any conflict */
-        var dropdown = document.getElementsByClassName("dropdown-btn");
+        // var dropdown = document.getElementsByClassName("dropdown-btn");
+        /*
         let caretDownImg = document.getElementById('caret-down-img');
         let noCaretImg = document.getElementById('no-caret-img');
         var i;
         noCaretImg.style.display = "block";
         caretDownImg.style.display = "none";
-
+        
+       var i;
         for (i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener("click", function () {
                 this.classList.toggle("active");
                 var dropdownContent = this.nextElementSibling;
                 if (dropdownContent.style.display === "block") {
-                    noCaretImg.style.display = "block";
-                    caretDownImg.style.display = "none";
+                    // noCaretImg.style.display = "block";
+                    // caretDownImg.style.display = "none";
                     dropdownContent.style.display = "none";
                 } else {
                     dropdownContent.style.display = "block";
-                    noCaretImg.style.display = "none";
-                    caretDownImg.style.display = "block";
+                    // noCaretImg.style.display = "none";
+                    // caretDownImg.style.display = "block";
                 }
             });
         }
+            */
     }
     openNav() {
         document.getElementById("mySidenav").style.width = "250px";
     }
     closeNav() {
-        let dropdown = document.getElementById("dropdown-btn-new");
-        let dropdownContent = document.getElementById("dropdown-container-btn-new");
-        if (dropdownContent.style.display === "block") {
-            dropdown.click();
-        }
+        // let dropdown = document.getElementById("dropdown-btn-new");
+        // let dropdownContent = document.getElementById("dropdown-container-btn-new");
+        // if (dropdownContent.style.display === "block") {
+        //    dropdown.click();
+        // }
         document.getElementById("mySidenav").style.width = "0";
     }
 }
@@ -258,12 +392,55 @@ class PuzzleDBDialog {
     }
 }
 
+class NewPuzzleDlg {
+    constructor(sudoApp) {
+        this.myOpen = false;
+        this.myNewPuzzzeDlgNode = document.getElementById("new-puzzle-dlg");
+        this.myHeader = document.getElementById("new-puzzle-header");
+        this.myNewPuzzlesBar = new NewPuzzlesBar();
+        this.okNode = document.getElementById("btn-new-puzzle-ok");
+        this.cancelNode = document.getElementById("btn-new-puzzle-cancel");
+
+        this.myOkayOperation = sudoApp.mySolverController.newPuzzleOkay;
+        this.myCancelOperation = sudoApp.mySolverController.newPuzzleCancelled;
+        this.thisPointer = sudoApp.mySolverController;
+
+        // Mit der Erzeugung des Wrappers werden 
+        // auch der Eventhandler OK und Abbrechen gesetzt
+        this.okNode.addEventListener('click', () => {
+            sudoApp.myNewPuzzleDlg.close();
+            sudoApp.myNewPuzzleDlg.myOkayOperation.call(this.thisPointer);
+            sudoApp.mySolver.notify();
+        });
+        this.cancelNode.addEventListener('click', () => {
+            sudoApp.myNewPuzzleDlg.close();
+            sudoApp.myNewPuzzleDlg.myCancelOperation.call(this.thisPointer);
+            sudoApp.mySolver.notify();
+        });
+    }
+    open() {
+        this.myOpen = true;
+        this.upDate();
+        this.myNewPuzzzeDlgNode.showModal();
+    }
+    upDate() {
+        if (this.myOpen) {
+            this.myNewPuzzlesBar.upDate();
+        }
+    }
+    close() {
+        if (this.myOpen) {
+            this.myNewPuzzzeDlgNode.close();
+            this.myOpen = false;
+        }
+    }
+}
 class ConfirmDialog {
     constructor() {
         this.myOpen = false;
         this.myConfirmDlgNode = document.getElementById("confirm-dlg");
         this.myHeader = document.getElementById("confirm-dlg-header");
-        this.myTextNode = document.getElementById("confirm-dlg-body");
+        this.myTextBody = document.getElementById("new-puzzle-dlg-body");
         this.okNode = document.getElementById("btn-confirm-ok");
         this.cancelNode = document.getElementById("btn-confirm-cancel");
         this.myConfirmOperation = undefined;
@@ -1461,7 +1638,7 @@ class SudokuBlockView extends SudokuGroupView {
     upDateNumbers() {
         let block = this.getMyModel();
         let grid = block.myGrid;
-      
+
         let gridView = grid.getMyView();
         let gridNode = gridView.getMyNode();
 

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 734;
+let VERSION = 735;
 
 // ==========================================
 // Basic classes
@@ -119,7 +119,7 @@ class MVC_Model {
         return this.myView;
     }
 
-       notify() {
+    notify() {
         // Die eigene View anzeigen
         this.myObservers.forEach(observer => {
             observer.upDate();
@@ -3823,60 +3823,47 @@ class NewPuzzleBuffer {
                 // console.log('--- push ---level---(vorher)    ' + puzzleRecord.preRunRecord.level);
                 switch (puzzleRecord.preRunRecord.level) {
                     case 'Sehr leicht': {
-                        // The myNewPuzzleBuffer has set a request for a very easy puzzle. 
-                        // The player wants a new very easy puzzle.
-                        // If such a request is set, it is served first. 
-                        // If there is no such request, the new puzzle is stored in the buffer.
-                        if (sudoApp.myNewPuzzleBuffer.myVerySimplePuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.myVerySimplePuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
                         break;
                     }
                     case 'Leicht': {
-                        if (sudoApp.myNewPuzzleBuffer.mySimplePuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.mySimplePuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.mySimplePuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
                         break;
                     }
                     case 'Mittel': {
-                        if (sudoApp.myNewPuzzleBuffer.myMediumPuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.myMediumPuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.myMediumPuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
+
                         break;
                     }
                     case 'Schwer': {
-                        if (sudoApp.myNewPuzzleBuffer.myHeavyPuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.myHeavyPuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
+
                         break;
                     }
                     case 'Sehr schwer': {
-                        if (sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
+
                         break;
                     }
                     case 'Extrem schwer': {
-                        if (sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzleRequests.length > 0) {
-                            let puzzleRequest = sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzleRequests.pop();
-                            puzzleRequest.respond(puzzleRecord);
-                        } else {
-                            sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.push(puzzleRecord);
+                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.push(puzzleRecord);
+                        if (sudoApp.myNewPuzzleDlg.myOpen) {
+                            sudoApp.myNewPuzzleDlg.upDate();
                         }
                         break;
                     }
@@ -4883,6 +4870,18 @@ class SudokuSolverController {
             this.resetConfirmed();
         }
     }
+    newPuzzleOkay() {
+        var ele = document.getElementsByName('level');
+        for (let i = 0; i < ele.length; i++) {
+            if (ele[i].checked) {
+                let puzzleRecord = sudoApp.myNewPuzzleBuffer.getPuzzle(ele[i].value)
+                this.mySolver.loadPuzzleRecord(puzzleRecord)
+           }
+        }
+    }
+    newPuzzleCancelled() {
+    // Nothing to do
+    }
 
     resetConfirmed() {
         this.stopCurrentSearch();
@@ -4975,6 +4974,8 @@ class SudokuSolverController {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+
+
     generateLinkPressed(level) {
         function onRequestResponse(puzzleRecord) {
             // We got the desired puzzle and do not longer wait
@@ -5006,7 +5007,6 @@ class SudokuSolverController {
             rl: level
         }
         sudoApp.mySolver.notifyAspect('puzzleGenerator', aspectValue);
-
         let puzzleRecord = sudoApp.myNewPuzzleBuffer.getPuzzle(level);
         if (puzzleRecord !== undefined) {
             onRequestResponse(puzzleRecord);
@@ -5125,6 +5125,14 @@ class SudokuSolverController {
     btnBreakPointSettingsPressed() {
         sudoApp.mySettingsDialog.openTopicBreakpoints();
         sudoApp.mySolver.notify();
+    }
+
+    newLinkPressed() {
+        sudoApp.myNavBar.closeNav();
+        sudoApp.myTrackerDialog.close();
+        sudoApp.myNewPuzzleDlg.open(
+            "Neues Puzzle",
+            "Wähle Schwierigkeitsgrad des neuen Puzzles");
     }
 
     printLinkPressed() {
@@ -5379,6 +5387,7 @@ class SudokuMainApp {
         this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
         this.myConfirmDlg = new ConfirmDialog();
         this.myPuzzleDBDialog = new PuzzleDBDialog();
+        this.myNewPuzzleDlg = new NewPuzzleDlg(this);
 
         // Loops
         this.myClockedRunner = new ClockedRunner();

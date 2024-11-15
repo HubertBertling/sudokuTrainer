@@ -692,14 +692,22 @@ html {
 /* ======================================*/
 
 
+.new-puzzle-selection,
 .pc-eval,
 .play-mode,
 .breakpoint-settings,
 .io-technique {
-    margin-top: 1.2rem;
-    margin-left: 0.8rem;
-    margin-right: 0.8rem;
+    margin-top: 0.2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
+
+.level-fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: left; 
+}
+
 
 .pc-floatBlock,
 .breakpoint,
@@ -1030,6 +1038,118 @@ label {
 }
 
 /*=======================================*/
+/* NewPuzzle-Dialog 
+/*=======================================*/
+
+.new-puzzle-dlg::backdrop {
+    background: hsl(201 50% 40% /.5);
+}
+
+/*
+.new-puzzle-dlg {
+    max-width: 50%;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.2rem;
+}
+*/
+
+.new-puzzle-dlg-header {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    margin: 1rem;
+    text-align: center;
+}
+
+.new-puzzle-dlg-body {
+    font-size: var(--font-size-lg);
+    margin-left: 1rem;
+}
+
+.new-puzzle-selection-legend {
+    margin-left: 0.6rem;
+    font-weight: bold;
+    font-size: var(--font-size);
+}
+
+.new-puzzle-icon {
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    height: 6rem;
+    width: 6rem;
+    background-color: white;
+}
+
+#new-puzzle-ok-cancel-btns {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    gap: 1rem;
+    margin-right: 2rem;
+}
+.new-puzzle-bar {
+    position: relative;
+    width: 50%;
+    height: 1.6rem;
+    font-size: var(--font-size);
+    text-align: right;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: var(--defined-cell-bg-color);
+    color: white;
+
+}
+
+#very-simple-Bar,
+#simple-Bar,
+#medium-Bar,
+#heavy-Bar,
+#very-heavy-Bar,
+#extreme-heavy-Bar {
+    position: absolute;
+    width: 20%;
+    height: 1.6rem;
+    line-height: 1.6rem;
+}
+
+#very-simple-Bar,
+#simple-Bar,
+#medium-Bar,
+#heavy-Bar,
+#very-heavy-Bar,
+#extreme-heavy-Bar {
+    z-index: 1;
+    background-color: var(--played-cell-bg-color);
+    color: black;
+    text-align: right;
+    padding-right: 0.5rem;
+}   
+
+.total-bar-value {
+    line-height: 1.6rem;
+    vertical-align: center;
+}
+
+
+
+#btn-new-puzzle-ok,
+#btn-new-puzzle-cancel {
+    text-align: center;
+    font-size: var(--font-size);
+}
+
+
+/*=======================================*/
 /* Confirm-Dialog 
 /*=======================================*/
 
@@ -1092,6 +1212,7 @@ label {
 /* Settings-Dialog 
 /*=======================================*/
 
+.new-puzzle-dlg,
 .settings-dlg {
     max-width: 50rem;
 
