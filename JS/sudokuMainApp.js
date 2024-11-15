@@ -458,7 +458,7 @@ class ConfirmDialog {
         this.myOpen = false;
         this.myConfirmDlgNode = document.getElementById("confirm-dlg");
         this.myHeader = document.getElementById("confirm-dlg-header");
-        this.myTextBody = document.getElementById("new-puzzle-dlg-body");
+        this.myTextBody = document.getElementById("confirm-dlg-body");
         this.okNode = document.getElementById("btn-confirm-ok");
         this.cancelNode = document.getElementById("btn-confirm-cancel");
         this.myConfirmOperation = undefined;
@@ -484,7 +484,7 @@ class ConfirmDialog {
         this.myConfirmOperation = confirmOp;
         this.myRejectOperation = rejectOp;
         this.myHeader.innerText = header;
-        this.myTextNode.innerText = question;
+        this.myTextBody.innerText = question;
         this.myConfirmDlgNode.showModal();
     }
 

@@ -1384,6 +1384,7 @@ label {
 .dlg-new-puzzle-header {
     font-size: var(--font-size-lg);
     font-weight: bold;
+    padding-left:1rem;
 }
 
 #loader-new-puzzle {
@@ -1398,6 +1399,7 @@ label {
     border-top: 0.8rem solid var(--defined-cell-bg-color);
     border-bottom: 0.8rem solid black;
     border-right: 0.8rem solid var(--played-cell-bg-color);
+    border-left: 0.8rem solid white;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
