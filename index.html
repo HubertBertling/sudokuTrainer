@@ -220,10 +220,13 @@
     <!--Dialoge -->
 
     <dialog class="new-puzzle-dlg noprint" id="new-puzzle-dlg">
-        <div class="dlg-header">
-            Neues Puzzle 
+        <div class="dlg-header-plus-rotator">
+            <div class="dlg-new-puzzle-header">
+                Neue Puzzles
+            </div>
+            <div id="loader-new-puzzle">
+            </div>
         </div>
-   
         <div class="new-puzzle-selection" id="new-puzzle-selection">
             <fieldset class="level-fieldset">
                 <legend class="new-puzzle-selection-legend">
@@ -240,7 +243,7 @@
                 </label>
 
                 <label class="label-container first-label-container">
-                    <input type="radio" id="level-simple" class="level" name="level"  value="Leicht">
+                    <input type="radio" id="level-simple" class="level" name="level" value="Leicht">
                     <div class="label-text text-spacing prefix">Leicht</div>
                     <div class="label-text text-spacing">
                         <div class="new-puzzle-bar" id="simple">
@@ -261,7 +264,7 @@
 
 
                 <label class="label-container first-label-container">
-                    <input type="radio" id="level-heavy" class="level" name="level"  value="Schwer">
+                    <input type="radio" id="level-heavy" class="level" name="level" value="Schwer">
                     <div class="label-text text-spacing prefix">Schwer</div>
                     <div class="label-text text-spacing">
                         <div class="new-puzzle-bar" id="heavy">
@@ -272,7 +275,7 @@
 
 
                 <label class="label-container first-label-container">
-                    <input type="radio" id="level-very-heavy" class="level" name="level"  value="Sehr schwer">
+                    <input type="radio" id="level-very-heavy" class="level" name="level" value="Sehr schwer">
                     <div class="label-text text-spacing prefix">Sehr schwer</div>
                     <div class="label-text text-spacing">
                         <div class="new-puzzle-bar" id="very-heavy">
@@ -283,7 +286,7 @@
 
 
                 <label class="label-container first-label-container">
-                    <input type="radio" id="level-extreme-heavy" class="level" name="level"  value="Extrem schwer">
+                    <input type="radio" id="level-extreme-heavy" class="level" name="level" value="Extrem schwer">
                     <div class="label-text text-spacing prefix">Extrem schwer</div>
                     <div class="label-text text-spacing">
                         <div class="new-puzzle-bar" id="extreme-heavy">
@@ -295,7 +298,7 @@
             </fieldset>
         </div>
 
-  
+
         <div id="new-puzzle-ok-cancel-btns">
             <input type="button" class="main-btn ok-cancel-btn" id="btn-new-puzzle-ok" name="OK" value="Neues Puzzle" />
             <input type="button" class="main-btn ok-cancel-btn" id="btn-new-puzzle-cancel" name="Cancel"

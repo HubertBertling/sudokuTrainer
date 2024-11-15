@@ -405,6 +405,8 @@ class NewPuzzleDlg {
         this.myCancelOperation = sudoApp.mySolverController.newPuzzleCancelled;
         this.thisPointer = sudoApp.mySolverController;
 
+        this.myLoader = document.getElementById("loader-new-puzzle");
+
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
@@ -426,6 +428,11 @@ class NewPuzzleDlg {
     upDate() {
         if (this.myOpen) {
             this.myNewPuzzlesBar.upDate();
+            if( sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
+                this.stopLoaderAnimation();
+            } else {
+                this.startLoaderAnimation();
+            }
         }
     }
     close() {
@@ -434,7 +441,18 @@ class NewPuzzleDlg {
             this.myOpen = false;
         }
     }
+    
+    startLoaderAnimation() {
+        // Der sich drehende Loader wird angezeigt
+     //   let slNode = document.getElementById("loader-db-info");
+     //   slNode.innerText = info;
+        document.getElementById("loader-new-puzzle").style.display = "block";
+    }
+    stopLoaderAnimation() {
+        document.getElementById("loader-new-puzzle").style.display = "none";
+    }
 }
+
 class ConfirmDialog {
     constructor() {
         this.myOpen = false;

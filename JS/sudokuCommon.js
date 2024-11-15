@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 735;
+let VERSION = 736;
 
 // ==========================================
 // Basic classes
@@ -3794,23 +3794,23 @@ class NewPuzzleBuffer {
 
     isFilled() {
         return (
-            this.myExtremeHeavyPuzzles.length > 2
-            && this.myVerySimplePuzzles.length > 2
-            && this.mySimplePuzzles.length > 2
-            && this.myMediumPuzzles.length > 2
-            && this.myHeavyPuzzles.length > 2
-            && this.myVeryHeavyPuzzles.length > 2
+            this.myExtremeHeavyPuzzles.length > 0
+            && this.myVerySimplePuzzles.length > 0
+            && this.mySimplePuzzles.length > 0
+            && this.myMediumPuzzles.length > 0
+            && this.myHeavyPuzzles.length > 0
+            && this.myVeryHeavyPuzzles.length > 0
         );
     }
 
     needsToBeFilledup() {
         return (
-            this.myExtremeHeavyPuzzles.length < 2
-            || this.myVerySimplePuzzles.length < 2
-            || this.mySimplePuzzles.length < 2
-            || this.myMediumPuzzles.length < 2
-            || this.myHeavyPuzzles.length < 2
-            || this.myVeryHeavyPuzzles.length < 2
+            this.myExtremeHeavyPuzzles.length < 1
+            || this.myVerySimplePuzzles.length < 1
+            || this.mySimplePuzzles.length < 1
+            || this.myMediumPuzzles.length < 1
+            || this.myHeavyPuzzles.length < 1
+            || this.myVeryHeavyPuzzles.length < 1
         );
     }
 
@@ -3923,7 +3923,7 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-
+            /*
         this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
         console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
         this.webworkerGenerator_4.addEventListener(
@@ -3944,8 +3944,9 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-
+            */
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
+
     }
 
 }
