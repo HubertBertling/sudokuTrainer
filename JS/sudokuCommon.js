@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 738;
+let VERSION = 739;
 
 // ==========================================
 // Basic classes
@@ -4816,9 +4816,10 @@ class SudokuSolverController {
             this.mySolver.myCurrentPuzzle.setIdentity(previousPuzzle.getIdentity());
         } else {
             this.mySolver.setGamePhase('play');
+            this.initUndoActionStack();
+            this.mySolver.notify();
             let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
             this.mySolver.setCurrentPuzzle(puzzleRecord);
-            this.initUndoActionStack();
         }
         this.mySolver.notify();
     }
