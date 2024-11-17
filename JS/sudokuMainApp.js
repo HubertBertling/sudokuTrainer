@@ -666,28 +666,28 @@ class SettingsDialog {
         this.okNode.addEventListener('click', () => {
 
             if (this.breakpointsOnly) {
-                sudoApp.mySettings.breakpoints.contradiction =
+                let mySettings = sudoApp.getMySettings();
+                mySettings.breakpoints.contradiction =
                     document.getElementById('breakpoint-contradiction').checked;
-                sudoApp.mySettings.breakpoints.multipleOption =
+                mySettings.breakpoints.multipleOption =
                     document.getElementById('breakpoint-multiple-candidates').checked;
-                sudoApp.mySettings.breakpoints.single =
+                mySettings.breakpoints.single =
                     document.getElementById('breakpoint-single').checked;
-                sudoApp.mySettings.breakpoints.hiddenSingle =
+                mySettings.breakpoints.hiddenSingle =
                     document.getElementById('breakpoint-hidden-single').checked;
-                sudoApp.mySettings.breakpoints.solution =
+                mySettings.breakpoints.solutionDiscovered =
                     document.getElementById('breakpoint-solution').checked;
-                sudoApp.mySettings.puzzleIOTechnique =
-                    document.getElementById('puzzle-io').checked;
-
-                let str_appSettings = JSON.stringify(sudoApp.mySettings);
-                localStorage.setItem("sudokuAppSetting", str_appSettings);
+           
+                sudoApp.setMySettings(mySettings);
                 sudoApp.mySolver.notify();
                 sudoApp.mySettingsDialog.close();
             } else {
+                let mySettings = sudoApp.getMySettings();
+                
                 let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
                 radioEvalNodes.forEach(radioNode => {
                     if (radioNode.checked) {
-                        sudoApp.mySettings.evalType = radioNode.getAttribute('value');
+                        mySettings.evalType = radioNode.getAttribute('value');
                     }
                 });
 
@@ -695,26 +695,26 @@ class SettingsDialog {
                 let radioPMNodes = document.querySelectorAll('.play-type');
                 radioPMNodes.forEach(radioNode => {
                     if (radioNode.checked) {
-                        sudoApp.mySettings.playMode = radioNode.getAttribute('value');
+                        mySettings.playMode = radioNode.getAttribute('value');
                     }
                 });
 
-                sudoApp.mySettings.breakpoints.contradiction =
-                    document.getElementById('breakpoint-contradiction').checked;
-                sudoApp.mySettings.breakpoints.multipleOption =
-                    document.getElementById('breakpoint-multiple-candidates').checked;
-                sudoApp.mySettings.breakpoints.single =
-                    document.getElementById('breakpoint-single').checked;
-                sudoApp.mySettings.breakpoints.hiddenSingle =
-                    document.getElementById('breakpoint-hidden-single').checked;
-                sudoApp.mySettings.breakpoints.solution =
-                    document.getElementById('breakpoint-solution').checked;
-                sudoApp.mySettings.puzzleIOTechnique =
-                    document.getElementById('puzzle-io').checked;
+                mySettings.puzzleIOTechnique =
+                document.getElementById('puzzle-io').checked;
 
-                let str_appSettings = JSON.stringify(sudoApp.mySettings);
-                localStorage.setItem("sudokuAppSetting", str_appSettings);
-                sudoApp.mySolver.notify();
+                mySettings.breakpoints.contradiction =
+                    document.getElementById('breakpoint-contradiction').checked;
+                mySettings.breakpoints.multipleOption =
+                    document.getElementById('breakpoint-multiple-candidates').checked;
+                mySettings.breakpoints.single =
+                    document.getElementById('breakpoint-single').checked;
+                mySettings.breakpoints.hiddenSingle =
+                    document.getElementById('breakpoint-hidden-single').checked;
+                mySettings.breakpoints.solutionDiscovered =
+                    document.getElementById('breakpoint-solution').checked;
+          
+                sudoApp.setMySettings(mySettings);    
+                sudoApp.init();
                 sudoApp.mySettingsDialog.close();
             }
         });
@@ -724,10 +724,11 @@ class SettingsDialog {
         });
     }
     open() {
+        let mySettings = sudoApp.getMySettings();
         // current eval-type 
         let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
         radioEvalNodes.forEach(radioNode => {
-            if (radioNode.getAttribute('value') == sudoApp.mySettings.evalType) {
+            if (radioNode.getAttribute('value') == mySettings.evalType) {
                 radioNode.checked = true;
             }
         });
@@ -735,24 +736,24 @@ class SettingsDialog {
         // current play mode
         let radioPMNodes = document.querySelectorAll('.play-type');
         radioPMNodes.forEach(radioNode => {
-            if (radioNode.getAttribute('value') == sudoApp.mySettings.playMode) {
+            if (radioNode.getAttribute('value') == mySettings.playMode) {
                 radioNode.checked = true;
             }
         });
 
         document.getElementById('breakpoint-contradiction').checked =
-            sudoApp.mySettings.breakpoints.contradiction;
+            mySettings.breakpoints.contradiction;
         document.getElementById('breakpoint-multiple-candidates').checked =
-            sudoApp.mySettings.breakpoints.multipleOption;
+            mySettings.breakpoints.multipleOption;
         document.getElementById('breakpoint-single').checked =
-            sudoApp.mySettings.breakpoints.single;
+            mySettings.breakpoints.single;
         document.getElementById('breakpoint-hidden-single').checked =
-            sudoApp.mySettings.breakpoints.hiddenSingle;
+            mySettings.breakpoints.hiddenSingle;
         document.getElementById('breakpoint-solution').checked =
-            sudoApp.mySettings.breakpoints.solution;
+            mySettings.breakpoints.solutionDiscovered;
 
         document.getElementById('puzzle-io').checked =
-            sudoApp.mySettings.puzzleIOTechnique;
+            mySettings.puzzleIOTechnique;
 
         this.topicEvalType.style.display = 'block';
         this.topicPlayMode.style.display = 'block';
@@ -764,16 +765,17 @@ class SettingsDialog {
     }
     openTopicBreakpoints() {
         this.breakpointsOnly = true;
+        let mySettings = sudoApp.getMySettings();
         document.getElementById('breakpoint-contradiction').checked =
-            sudoApp.mySettings.breakpoints.contradiction;
+            mySettings.breakpoints.contradiction;
         document.getElementById('breakpoint-multiple-candidates').checked =
-            sudoApp.mySettings.breakpoints.multipleOption;
+            mySettings.breakpoints.multipleOption;
         document.getElementById('breakpoint-single').checked =
-            sudoApp.mySettings.breakpoints.single;
+            mySettings.breakpoints.single;
         document.getElementById('breakpoint-hidden-single').checked =
-            sudoApp.mySettings.breakpoints.hiddenSingle;
+            mySettings.breakpoints.hiddenSingle;
         document.getElementById('breakpoint-solution').checked =
-            sudoApp.mySettings.breakpoints.solution;
+            mySettings.breakpoints.solutionDiscovered;
 
         this.topicEvalType.style.display = 'none';
         this.topicPlayMode.style.display = 'none';
@@ -2078,6 +2080,7 @@ class SudokuCellView extends MVC_View {
 
         myBlockNode.appendChild(tmpCellNode);
         tmpCellNode.addEventListener('click', () => {
+            
             sudoApp.mySolverController.sudokuCellPressed(myCell.getMyIndex());
         });
         this.upDateCellContent();
