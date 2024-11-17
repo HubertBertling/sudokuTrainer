@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 740;
+let VERSION = 741;
 
 // ==========================================
 // Basic classes
@@ -5210,6 +5210,7 @@ class SudokuSolverController {
 
 
     trackerDlgStopPressed() {
+        sudoApp.mySolverView.stopLoaderAnimation();             
         this.stopCurrentSearch();
         sudoApp.mySolver.notify();
     }
