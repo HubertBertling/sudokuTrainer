@@ -198,7 +198,7 @@ class NewPuzzlesBar {
             adaptedPuzzleCount = 10;
             puzzleCountProzent = Math.floor(10 / (totalCount) * 100);
         }
-      
+
         switch (level) {
             case 'Sehr leicht': {
                 this.verySimple.style.width = puzzleCountProzent + "%";
@@ -650,27 +650,131 @@ class InfoDialog {
 class SettingsDialog {
     constructor() {
         this.dlgNode = document.getElementById("settings-dlg");
-        this.closeNode = document.getElementById("settings-dlg-close-btn");
 
         this.topicEvalType = document.getElementById("pc-eval");
         this.topicPlayMode = document.getElementById("play-mode");
         this.topicBreakpoints = document.getElementById("breakpoint-settings");
         this.topicIOTechnique = document.getElementById("io-technique");
-        this.myOpen = false;
-        this.closeNode.addEventListener('click', () => {
-            sudoApp.mySolverController.settingsClosePressed();
+        
+        this.okNode = document.getElementById("btn-settings-dlg-ok");
+        this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
+
+        this.breakpointsOnly = false;
+
+        // Mit der Erzeugung des Wrappers werden 
+        // auch der Eventhandler OK und Abbrechen gesetzt
+        this.okNode.addEventListener('click', () => {
+
+            if (this.breakpointsOnly) {
+                sudoApp.mySettings.breakpoints.contradiction =
+                    document.getElementById('breakpoint-contradiction').checked;
+                sudoApp.mySettings.breakpoints.multipleOption =
+                    document.getElementById('breakpoint-multiple-candidates').checked;
+                sudoApp.mySettings.breakpoints.single =
+                    document.getElementById('breakpoint-single').checked;
+                sudoApp.mySettings.breakpoints.hiddenSingle =
+                    document.getElementById('breakpoint-hidden-single').checked;
+                sudoApp.mySettings.breakpoints.solution =
+                    document.getElementById('breakpoint-solution').checked;
+                sudoApp.mySettings.puzzleIOTechnique =
+                    document.getElementById('puzzle-io').checked;
+
+                let str_appSettings = JSON.stringify(sudoApp.mySettings);
+                localStorage.setItem("sudokuAppSetting", str_appSettings);
+                sudoApp.mySolver.notify();
+                sudoApp.mySettingsDialog.close();
+            } else {
+                let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
+                radioEvalNodes.forEach(radioNode => {
+                    if (radioNode.checked) {
+                        sudoApp.mySettings.evalType = radioNode.getAttribute('value');
+                    }
+                });
+
+                // play mode
+                let radioPMNodes = document.querySelectorAll('.play-type');
+                radioPMNodes.forEach(radioNode => {
+                    if (radioNode.checked) {
+                        sudoApp.mySettings.playMode = radioNode.getAttribute('value');
+                    }
+                });
+
+                sudoApp.mySettings.breakpoints.contradiction =
+                    document.getElementById('breakpoint-contradiction').checked;
+                sudoApp.mySettings.breakpoints.multipleOption =
+                    document.getElementById('breakpoint-multiple-candidates').checked;
+                sudoApp.mySettings.breakpoints.single =
+                    document.getElementById('breakpoint-single').checked;
+                sudoApp.mySettings.breakpoints.hiddenSingle =
+                    document.getElementById('breakpoint-hidden-single').checked;
+                sudoApp.mySettings.breakpoints.solution =
+                    document.getElementById('breakpoint-solution').checked;
+                sudoApp.mySettings.puzzleIOTechnique =
+                    document.getElementById('puzzle-io').checked;
+
+                let str_appSettings = JSON.stringify(sudoApp.mySettings);
+                localStorage.setItem("sudokuAppSetting", str_appSettings);
+                sudoApp.mySolver.notify();
+                sudoApp.mySettingsDialog.close();
+            }
+        });
+
+        this.cancelNode.addEventListener('click', () => {
+            sudoApp.mySettingsDialog.close();
         });
     }
     open() {
+        // current eval-type 
+        let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
+        radioEvalNodes.forEach(radioNode => {
+            if (radioNode.getAttribute('value') == sudoApp.mySettings.evalType) {
+                radioNode.checked = true;
+            }
+        });
+
+        // current play mode
+        let radioPMNodes = document.querySelectorAll('.play-type');
+        radioPMNodes.forEach(radioNode => {
+            if (radioNode.getAttribute('value') == sudoApp.mySettings.playMode) {
+                radioNode.checked = true;
+            }
+        });
+
+        document.getElementById('breakpoint-contradiction').checked =
+            sudoApp.mySettings.breakpoints.contradiction;
+        document.getElementById('breakpoint-multiple-candidates').checked =
+            sudoApp.mySettings.breakpoints.multipleOption;
+        document.getElementById('breakpoint-single').checked =
+            sudoApp.mySettings.breakpoints.single;
+        document.getElementById('breakpoint-hidden-single').checked =
+            sudoApp.mySettings.breakpoints.hiddenSingle;
+        document.getElementById('breakpoint-solution').checked =
+            sudoApp.mySettings.breakpoints.solution;
+
+        document.getElementById('puzzle-io').checked =
+            sudoApp.mySettings.puzzleIOTechnique;
+
         this.topicEvalType.style.display = 'block';
         this.topicPlayMode.style.display = 'block';
-        this.topicBreakpoints.style.display = 'block';;
-        this.topicIOTechnique.style.display = 'block';;
+        this.topicBreakpoints.style.display = 'block';
+        this.topicIOTechnique.style.display = 'block';
 
         this.myOpen = true;
         this.dlgNode.showModal();
     }
     openTopicBreakpoints() {
+        this.breakpointsOnly = true;
+        document.getElementById('breakpoint-contradiction').checked =
+            sudoApp.mySettings.breakpoints.contradiction;
+        document.getElementById('breakpoint-multiple-candidates').checked =
+            sudoApp.mySettings.breakpoints.multipleOption;
+        document.getElementById('breakpoint-single').checked =
+            sudoApp.mySettings.breakpoints.single;
+        document.getElementById('breakpoint-hidden-single').checked =
+            sudoApp.mySettings.breakpoints.hiddenSingle;
+        document.getElementById('breakpoint-solution').checked =
+            sudoApp.mySettings.breakpoints.solution;
+
         this.topicEvalType.style.display = 'none';
         this.topicPlayMode.style.display = 'none';
         this.topicBreakpoints.style.display = 'block';

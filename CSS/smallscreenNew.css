@@ -1205,13 +1205,17 @@ label {
     place-items: center;
 }
 
-
-.settings-dlg-close-btn {
-    width: 70%;
+#settings-ok-cancel-btns {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
     margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    gap: 1rem;
+    margin-right: 2rem;
 }
-
 
 /*======================================*/
 /*======================================*/

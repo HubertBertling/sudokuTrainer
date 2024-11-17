@@ -3923,28 +3923,28 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-            /*
-        this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
-        this.webworkerGenerator_4.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
+        /*
+    this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
+    console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
+    this.webworkerGenerator_4.addEventListener(
+        "message",
+        this.onPuzzleGenerated,
+        false);
 
-        this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
-        this.webworkerGenerator_5.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
+    this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
+    console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
+    this.webworkerGenerator_5.addEventListener(
+        "message",
+        this.onPuzzleGenerated,
+        false);
 
-        this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
-        this.webworkerGenerator_6.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
-            */
+    this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
+    console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
+    this.webworkerGenerator_6.addEventListener(
+        "message",
+        this.onPuzzleGenerated,
+        false);
+        */
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
 
     }
@@ -4583,99 +4583,6 @@ class SudokuSolverController {
                 this.resetLinkPressed();
             })
         });
-
-
-        // Radio button eval type: No-evaluation, Lazy, Strikt+ oder Strikt-
-        let mobileRadioEvalNodes = document.querySelectorAll('.radio-eval-type');
-        mobileRadioEvalNodes.forEach(radioNode => {
-            radioNode.addEventListener('click', () => {
-                let appSetting = undefined;
-                let str_appSetting = localStorage.getItem("sudokuAppSetting");
-                //The item appSetting exists already
-                appSetting = JSON.parse(str_appSetting);
-                appSetting.evalType = radioNode.getAttribute('data');
-                this.mySolver.setActualEvalType(radioNode.getAttribute('data'));
-                this.mySolver.notify();
-                str_appSetting = JSON.stringify(appSetting);
-                localStorage.setItem("sudokuAppSetting", str_appSetting);
-            })
-        });
-
-        let mobileRadioPMNodes = document.querySelectorAll('.play-type');
-        mobileRadioPMNodes.forEach(radioNode => {
-            radioNode.addEventListener('click', () => {
-                let appSetting = undefined;
-                let str_appSetting = localStorage.getItem("sudokuAppSetting");
-                //The item appSetting exists already
-                appSetting = JSON.parse(str_appSetting);
-
-                appSetting.playMode = radioNode.getAttribute('data');
-                this.mySolver.setPlayType(radioNode.getAttribute('data'));
-                str_appSetting = JSON.stringify(appSetting);
-                localStorage.setItem("sudokuAppSetting", str_appSetting);
-            })
-        });
-
-        let checkBoxContradiction = document.getElementById('breakpoint-contradiction');
-        checkBoxContradiction.addEventListener('click', () => {
-            let appSetting = undefined;
-            let str_appSetting = localStorage.getItem("sudokuAppSetting");
-            //The item appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            appSetting.breakpoints.contradiction = checkBoxContradiction.checked;
-            sudoApp.myClockedRunner.getBreakpoints().contradiction = checkBoxContradiction.checked;
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
-        })
-
-        let checkBoxMC = document.getElementById('breakpoint-multiple-candidates');
-        checkBoxMC.addEventListener('click', () => {
-            let appSetting = undefined;
-            let str_appSetting = localStorage.getItem("sudokuAppSetting");
-            //The item appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            appSetting.breakpoints.multipleOption = checkBoxMC.checked;
-            sudoApp.myClockedRunner.getBreakpoints().multipleOption = checkBoxMC.checked;
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
-        })
-
-        let checkBoxSingle = document.getElementById('breakpoint-single');
-        checkBoxSingle.addEventListener('click', () => {
-            let appSetting = undefined;
-            let str_appSetting = localStorage.getItem("sudokuAppSetting");
-            //The item appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            appSetting.breakpoints.single = checkBoxSingle.checked;
-            sudoApp.myClockedRunner.getBreakpoints().single = checkBoxSingle.checked;
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
-        })
-
-        let checkBoxHiddenSingle = document.getElementById('breakpoint-hidden-single');
-        checkBoxHiddenSingle.addEventListener('click', () => {
-            let appSetting = undefined;
-            let str_appSetting = localStorage.getItem("sudokuAppSetting");
-            //The item appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            appSetting.breakpoints.hiddenSingle = checkBoxHiddenSingle.checked;
-            sudoApp.myClockedRunner.getBreakpoints().hiddenSingle = checkBoxHiddenSingle.checked;
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
-        })
-
-        let checkboxSolution = document.getElementById('breakpoint-solution');
-        checkboxSolution.addEventListener('click', () => {
-            let appSetting = undefined;
-            let str_appSetting = localStorage.getItem("sudokuAppSetting");
-            //The item appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            appSetting.breakpoints.solutionDiscovered = checkboxSolution.checked;
-            sudoApp.myClockedRunner.getBreakpoints().solutionDiscovered = checkboxSolution.checked;
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
-        })
-
     }
 
     // ===============================================================
@@ -4878,11 +4785,11 @@ class SudokuSolverController {
             if (ele[i].checked) {
                 let puzzleRecord = sudoApp.myNewPuzzleBuffer.getPuzzle(ele[i].value)
                 this.mySolver.loadPuzzleRecord(puzzleRecord)
-           }
+            }
         }
     }
     newPuzzleCancelled() {
-    // Nothing to do
+        // Nothing to do
     }
 
     resetConfirmed() {
@@ -5125,6 +5032,10 @@ class SudokuSolverController {
     }
 
     btnBreakPointSettingsPressed() {
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+        }
         sudoApp.mySettingsDialog.openTopicBreakpoints();
         sudoApp.mySolver.notify();
     }
@@ -5217,6 +5128,8 @@ class SudokuSolverController {
         // Suchlauf mit Haltepunkten
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+            sudoApp.mySolver.notify();
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
@@ -5242,6 +5155,8 @@ class SudokuSolverController {
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+            sudoApp.mySolver.notify();
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
@@ -5255,19 +5170,20 @@ class SudokuSolverController {
 
     trackerDlgFastStepPressed() {
         // Weitere Lösung
-        if (sudoApp.myClockedRunner.isRunning()
-            // ||
-            // sudoApp.mySyncRunner.isRunning()
-        ) {
+        if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
-            // sudoApp.mySyncRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+            sudoApp.mySolver.notify();
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
                 sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
-                setTimeout(this.trackerDlgFastStep, 1000);
+                setTimeout(() => {
+                    this.trackerDlgFastStep();
+                    sudoApp.mySolverView.stopLoaderAnimation();
+                }, 1000);
             }
             sudoApp.mySolver.notify();
         }
@@ -5275,9 +5191,13 @@ class SudokuSolverController {
 
     trackerDlgFastStep() {
         // Weitere Lösung
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+            sudoApp.mySolver.notify();
+        }
         sudoApp.mySolver.performSolutionStep();
         sudoApp.mySolver.notify();
-        sudoApp.mySolverView.stopLoaderAnimation();
     }
 
 
@@ -5288,6 +5208,7 @@ class SudokuSolverController {
     trackerDlgFast() {
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
             sudoApp.mySolver.notify();
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
@@ -5304,8 +5225,14 @@ class SudokuSolverController {
                     solutionDiscovered: false,
                 }
                 sudoApp.myClockedRunner.setBreakpoints(breakPts);
+                sudoApp.mySolverView.startLoaderAnimation('Weitere Lösungen ...');
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
-                    sudoApp.mySolver.performSolutionStep);
+                    () => {
+                        let bp = sudoApp.mySolver.performSolutionStep();
+                        if (bp == 'searchCompleted') {
+                            sudoApp.mySolverView.stopLoaderAnimation();
+                        }
+                    });
 
             }
         }
@@ -5326,6 +5253,16 @@ class SudokuSolverController {
     infoDlgOKPressed() {
         sudoApp.myInfoDialog.close();
     }
+
+    settingsDlgOkPressed() {
+
+    }
+
+    settingsDlgCancelPressed() {
+
+    }
+
+
     settingsClosePressed() {
         sudoApp.mySettingsDialog.close();
     }
@@ -5379,6 +5316,8 @@ class SudokuMainApp {
         this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
         this.myPuzzleDB.init();
 
+        this.mySettings = AppSettingsRecord.nullAppSettingsRecord();
+
         // The navigation bar
         this.myNavBar = new NavigationBar();
 
@@ -5404,37 +5343,21 @@ class SudokuMainApp {
 
     init() {
         // load the app settings
-        let appSetting = undefined;
-        let tmpBreakpoints = {
-            contradiction: true,
-            multipleOption: true,
-            single: true,
-            hiddenSingle: true
-        };
-        let str_appSetting = localStorage.getItem("sudokuAppSetting");
-        if (str_appSetting == null) {
-            // appSetting does not exist in localStorage
-            appSetting = {
-                evalType: 'lazy-invisible',
-                playMode: 'automated-solving',
-                puzzleIOtechnique: false.toString(),
-                breakpoints: tmpBreakpoints
-            }
-            str_appSetting = JSON.stringify(appSetting);
-            localStorage.setItem("sudokuAppSetting", str_appSetting);
+        let str_appSettings = localStorage.getItem("sudokuAppSetting");
+        if (str_appSettings == null) {
+            // appSettings do not exist in localStorage
+            this.mySettings = AppSettingsRecord.nullAppSettingsRecord();
+            str_appSettings = JSON.stringify(this.mySettings);
+            localStorage.setItem("sudokuAppSetting", str_appSettings);
         } else {
-            // appSetting exists already
-            appSetting = JSON.parse(str_appSetting);
-            if (appSetting.breakpoints == undefined) {
-                appSetting.breakpoints = tmpBreakpoints;
-                str_appSetting = JSON.stringify(appSetting);
-                localStorage.setItem("sudokuAppSetting", str_appSetting);
-            }
+            // appSettings exist already
+            this.mySettings = JSON.parse(str_appSettings);
         }
+
         this.mySolver.init();
-        this.mySolver.setActualEvalType(appSetting.evalType);
-        this.mySolver.setPlayType(appSetting.playMode);
-        this.mySolver.setPuzzleIOtechnique(Boolean(appSetting.puzzleIOtechnique));
+        this.mySolver.setActualEvalType(this.mySettings.evalType);
+        this.mySolver.setPlayType(this.mySettings.playMode);
+        this.mySolver.setPuzzleIOtechnique(Boolean(this.mySettings.puzzleIOTechnique));
         this.mySolver.notify();
 
         this.myPuzzleDB.init();
@@ -5457,6 +5380,37 @@ class SudokuMainApp {
 
     helpFunktion() {
         window.open('./help.html');
+    }
+}
+class AppSettingsRecord {
+    constructor() {
+        this.evalTypeType = new MatheSet(['lazy-invisible',
+            'lazy',
+            'strict-plus',
+            'strict-minus']);
+        this.playModeType = new MatheSet(['automated-solving',
+            'manual']);
+    };
+    static nullAppSettingsRecord() {
+        return {
+            evalType: 'lazy-invisible',
+            playMode: 'automated-solving',
+            breakpoints: BreakpointsRecord.nullBreakpointsRecord(),
+            puzzleIOTechnique: true
+        }
+    }
+}
+
+class BreakpointsRecord {
+    constructor() { }
+    static nullBreakpointsRecord() {
+        return {
+            contradiction: true,
+            multipleOption: true,
+            single: true,
+            hiddenSingle: true,
+            solution: true
+        }
     }
 }
 

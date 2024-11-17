@@ -446,7 +446,7 @@
                         Kandidatenauswertung
                     </legend>
                     <label class="label-container first-label-container">
-                        <input type="radio" id="pc-no-eval" class="radio-eval-type" data="lazy-invisible"
+                        <input type="radio" id="pc-no-eval" class="radio-eval-type" value="lazy-invisible"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Keine Kandidatenanzeige</div>
                         <div class="label-text text-spacing">Im Hintergrund erfolgt die Kandidatenauswertung im
@@ -454,7 +454,8 @@
                         </div>
                     </label>
                     <label class="label-container">
-                        <input type="radio" id="pc-lazy" class="radio-eval-type" data="lazy" name="pc-auswertung">
+                        <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" 
+                            name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Lazy</div>
                         <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine verzögerte
                             Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer oder die
@@ -462,7 +463,7 @@
                         </div>
                     </label>
                     <label class="label-container">
-                        <input type="radio" id="pc-strict-plus" class="radio-eval-type" data="strict-plus"
+                        <input type="radio" id="pc-strict-plus" class="radio-eval-type" value="strict-plus"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Strikt + (Strikt-Plus)</div>
                         <div class="label-text text-spacing">Diese
@@ -472,7 +473,7 @@
                         </div>
                     </label>
                     <label class="label-container">
-                        <input type="radio" id="pc-strict-minus" class="radio-eval-type" data="strict-minus"
+                        <input type="radio" id="pc-strict-minus" class="radio-eval-type" value="strict-minus"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Strikt - (Strikt-Minus)</div>
                         <div class="label-text text-spacing">Wie
@@ -564,7 +565,10 @@
                     </label>
                 </fieldset>
             </div>
-            <button class="settings-dlg-close-btn btn" id="settings-dlg-close-btn">Schließen</button>
+            <div id="settings-ok-cancel-btns">
+                <button class="btn-settings-dlg-ok" id="btn-settings-dlg-ok">OK</button>
+                <button class="btn-settings-dlg-cancel" id="btn-settings-dlg-cancel">Abbrechen</button>
+            </div>
         </div>
     </dialog>
 
