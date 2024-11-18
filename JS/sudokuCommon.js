@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 741;
+let VERSION = 742;
 
 // ==========================================
 // Basic classes
@@ -5000,8 +5000,11 @@ class SudokuSolverController {
     }
 
     openSettingsDlgPressed() {
+        if (sudoApp.myClockedRunner.isRunning()) {
+            sudoApp.myClockedRunner.stop('cancelled');
+            sudoApp.mySolverView.stopLoaderAnimation();
+        }
         sudoApp.mySettingsDialog.open();
-        sudoApp.mySolver.notify();
         sudoApp.myNavBar.closeNav();
     }
 
@@ -5225,18 +5228,6 @@ class SudokuSolverController {
         sudoApp.myInfoDialog.close();
     }
 
-    settingsDlgOkPressed() {
-
-    }
-
-    settingsDlgCancelPressed() {
-
-    }
-
-
-    settingsClosePressed() {
-        sudoApp.mySettingsDialog.close();
-    }
     puzzleIOcheckboxOnchange() {
         let pIOcheckbox = document.getElementById('puzzle-io');
         let appSetting = undefined;
