@@ -883,6 +883,11 @@ label {
     gap: 0.8rem;
 }
 
+.ok-cancel-btn {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
 /*=======================================*/
 /* Tracker-Dialog 
 /*=======================================*/
