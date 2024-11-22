@@ -2833,6 +2833,7 @@ class SudokuSolverView extends MVC_View {
 
     setTrainingButtons() {
         let btnReset = document.getElementById('btn-reset')
+        let btnTip = document.getElementById('btn-tip');
         let btnRun = document.getElementById('btn-run');
         let btnShowWrongNumbers = document.getElementById('btn-showWrongNumbers');
 
@@ -2846,14 +2847,15 @@ class SudokuSolverView extends MVC_View {
         btnShowWrongNumbers.style.gridRowStart = 4;
         btnShowWrongNumbers.style.gridRowEnd = 4;
 
+        btnTip.style.display = 'none';
         btnRun.style.display = 'none';
-
 
     }
 
     setSolvingButtons() {
         let btnReset = document.getElementById('btn-reset')
         let btnShowWrongNumbers = document.getElementById('btn-showWrongNumbers');
+        let btnTip = document.getElementById('btn-tip');
         let btnRun = document.getElementById('btn-run');
 
         btnReset.style.gridColumnStart = 1;
@@ -2866,11 +2868,19 @@ class SudokuSolverView extends MVC_View {
         btnShowWrongNumbers.style.gridRowStart = 4;
         btnShowWrongNumbers.style.gridRowEnd = 4;
 
-        btnRun.style.display = 'grid';
-        btnRun.style.gridColumnStart = 3;
+        // btnTip.style.display = 'grid';
+        btnTip.style.gridColumnStart = 3;
+        btnTip.style.gridColumnEnd = 4;
+        btnTip.style.gridRowStart = 4;
+        btnTip.style.gridRowEnd = 4;
+   
+        btnRun.style.gridColumnStart = 4;
         btnRun.style.gridColumnEnd = 6;
         btnRun.style.gridRowStart = 4;
         btnRun.style.gridRowEnd = 4;
+
+        btnTip.style.display = 'grid';
+        btnRun.style.display = 'grid';
     }
 
     displayUndoRedo() {

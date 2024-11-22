@@ -161,6 +161,13 @@
                             <img src="images/lupe.png" class="btn-image">
                             Prüfen
                         </button>
+
+                        <button class="mobile-interface mobile-btn btn-tip" id="btn-tip">
+                            <img src="images/tip.png" class="btn-image">
+                            Tipp
+                        </button>
+
+
                         <button class="mobile-interface mobile-btn btn-with-image btn-run" id="btn-run">
                             <img src="images/play-96.png" class="btn-image">
                             Starte Suche
@@ -205,12 +212,12 @@
                             </div>
                         </div>
                     </dialog>
-                </div>
-            </div>
-            <div class="app-empty-footer pc-element">
-                <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
             </div>
         </div>
+        <div class="app-empty-footer pc-element">
+            <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
+        </div>
+    </div>
     </div>
 
     <!--Ausblendbare Elemente -->
@@ -300,7 +307,8 @@
 
 
         <div id="new-puzzle-ok-cancel-btns">
-            <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-ok" name="OK" value="Neues Puzzle" />
+            <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-ok" name="OK"
+                value="Neues Puzzle" />
             <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-cancel" name="Cancel"
                 value="Abbrechen" />
         </div>
@@ -454,8 +462,7 @@
                         </div>
                     </label>
                     <label class="label-container">
-                        <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" 
-                            name="pc-auswertung">
+                        <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Lazy</div>
                         <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine verzögerte
                             Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer oder die
@@ -512,22 +519,28 @@
 
                     <label class="label-container first-label-container">
                         <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem einzigen Kandidaten</div>
-                        <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit einem einzigen Kandidaten
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem einzigen Kandidaten
+                        </div>
+                        <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit einem
+                            einzigen Kandidaten
                             auftritt,
                             hat das Puzzle den Schwierigkeitsgrad 'Mittel'.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-hidden-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem versteckten einzigen Kandidaten</div>
-                        <div class="label-text text-spacing"> Durch Klicken auf die selektierte 
-                            Zelle wird das Eliminationskriterium für den ersten roten Kandidaten der Zelle angezeigt. Fall es mehrere rote Kandidaten gibt, werden diese durch erneutes Klicken nach und nach besucht.
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem versteckten einzigen
+                            Kandidaten</div>
+                        <div class="label-text text-spacing"> Durch Klicken auf die selektierte
+                            Zelle wird das Eliminationskriterium für den ersten roten Kandidaten der Zelle angezeigt.
+                            Fall es mehrere rote Kandidaten gibt, werden diese durch erneutes Klicken nach und nach
+                            besucht.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit mehreren Selektionsoptionen</div>
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit mehreren Selektionsoptionen
+                        </div>
                         <div class="label-text text-spacing">Haltepunkt für Schritte ohne eindeutigen nächsten
                             Kandidaten. Schon erprobte Kandidaten werden mit Unterstrich
                             angezeigt.
@@ -536,7 +549,8 @@
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-contradiction" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch</div>
-                        <div class="label-text text-spacing">Hinweis: die Zelle mit der Widerspruchsursache ist in der Regel ungleich der Zelle oder Gruppe, die den Widerspruch anzeigt.
+                        <div class="label-text text-spacing">Hinweis: die Zelle mit der Widerspruchsursache ist in der
+                            Regel ungleich der Zelle oder Gruppe, die den Widerspruch anzeigt.
                         </div>
                     </label>
                     <label class="label-container">

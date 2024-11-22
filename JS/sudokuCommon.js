@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 744;
+let VERSION = 745;
 
 // ==========================================
 // Basic classes
@@ -221,11 +221,11 @@ class ClockedRunner {
         this.myBreakpoints.solutionDiscovered = bps.solutionDiscovered;
     }
 
-   /*
-    getBreakpoints() {
-        return this.myBreakpoints;
-    }
-    */
+    /*
+     getBreakpoints() {
+         return this.myBreakpoints;
+     }
+     */
 
     breakpointPassed(bp) {
         switch (bp) {
@@ -4407,6 +4407,11 @@ class SudokuSolver extends MVC_Model {
         }
     }
 
+    tryStartAutomaticSearchStep() {
+        this.myCurrentSearch = new Search(this, this.myGrid);
+
+    }
+
     succeeds() {
         // In general, non-unsolvability of a puzzle does not imply the solvability of the puzzle. 
         // However, the implication applies to completely filled puzzles.
@@ -4557,6 +4562,15 @@ class SudokuSolverController {
                 this.resetLinkPressed();
             })
         });
+
+        this.btns = document.querySelectorAll('.btn-tip');
+        this.btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.tipPressed();
+            })
+        });
+
+
     }
 
     // ===============================================================
@@ -4588,26 +4602,32 @@ class SudokuSolverController {
     }
 
     handleNumberPressed(nr) {
-        if (this.mySolver.isSearching()) {
+        /* if (this.mySolver.isSearching()) {
             // Number button pressed during automatic execution
             sudoApp.myInfoDialog.open("Nummer setzen", "negativ",
                 "Während der Solver-Ausführung kann manuell keine Zelle gesetzt oder gelöscht werden.");
         } else {
-            let action = {
-                operation: 'setNr',
-                cellIndex: this.mySolver.myGrid.indexSelected,
-                cellValue: nr
-            }
-            if (action.cellIndex > -1) {
-                this.mySolver.atCurrentSelectionSetNumber(nr);
-                this.myUndoActionStack.push(action);
-                this.mySolver.notify();
-                if (this.mySolver.succeeds()) {
-                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!");
-                }
-                this.mySolver.myGrid.unsetStepLazy();
-            }
+         */
+        let action = {
+            operation: 'setNr',
+            cellIndex: this.mySolver.myGrid.indexSelected,
+            cellValue: nr
         }
+        if (action.cellIndex > -1) {
+            this.mySolver.atCurrentSelectionSetNumber(nr);
+            this.myUndoActionStack.push(action);
+            if (this.mySolver.succeeds()) {
+                sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!");
+            }
+            if (this.mySolver.isSearching()) {
+                this.mySolver.cleanUpAndDeleteCurrentSearch();
+                this.mySolver.notify();
+            }
+            this.mySolver.myGrid.unsetStepLazy();
+            this.mySolver.deselect();
+            this.mySolver.notify();
+        }
+        //}
     }
 
     handleDeleteKeyPressed(event) {
@@ -4656,8 +4676,16 @@ class SudokuSolverController {
         }
     }
     sudokuCellPressed(index) {
-        this.mySolver.select(index);
-        this.mySolver.notify();
+      /*  if (this.mySolver.isSearching()) {
+            
+            this.mySolver.cleanUpAndDeleteCurrentSearch();
+            this.mySolver.deselect();
+            this.mySolver.notify();
+        } else {
+         */
+            this.mySolver.select(index);
+            this.mySolver.notify();
+        //}
     }
 
     initUndoActionStack() {
@@ -4753,6 +4781,20 @@ class SudokuSolverController {
             this.resetConfirmed();
         }
     }
+
+    tipPressed() {
+        if (this.mySolver.isSearching()) {
+            this.mySolver.cleanUpAndDeleteCurrentSearch();
+            this.mySolver.deselect();
+            this.mySolver.notify();
+        } else {
+            this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+            this.mySolver.performSearchStep();
+            this.mySolver.notify();
+        }
+    }
+
+
     newPuzzleOkay() {
         var ele = document.getElementsByName('level');
         for (let i = 0; i < ele.length; i++) {
@@ -5213,7 +5255,7 @@ class SudokuSolverController {
 
 
     trackerDlgStopPressed() {
-        sudoApp.mySolverView.stopLoaderAnimation();             
+        sudoApp.mySolverView.stopLoaderAnimation();
         this.stopCurrentSearch();
         sudoApp.mySolver.notify();
     }
@@ -5305,7 +5347,7 @@ class SudokuMainApp {
 
     init() {
         // load the app settings
-       
+
 
         this.mySolver.init();
         let mySettings = this.getMySettings();

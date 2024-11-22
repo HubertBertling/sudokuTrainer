@@ -17,7 +17,7 @@ layout: default
     - [Undo/Redo](#undoredo)
     - [Puzzle prüfen](#puzzle-prüfen)
     - [Puzzle speichern](#puzzle-speichern)
-    - [Neues Puzzle generieren](#neues-puzzle-generieren)
+    - [Neues Puzzles generieren und laden](#neues-puzzles-generieren-und-laden)
     - [Puzzle drucken](#puzzle-drucken)
   - [Trainer-Einstellungen](#trainer-einstellungen)
     - [Einstellung Kandidatenauswertung](#einstellung-kandidatenauswertung)
