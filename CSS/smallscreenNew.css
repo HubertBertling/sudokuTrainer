@@ -877,6 +877,7 @@ label {
 }
 
 .ok-cancel-btns {
+    font-size: var(--font-size);
     margin: 2.4rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1033,6 +1034,7 @@ label {
 }
 
 .infoDlg-OK-Btn {
+    font-size: var(--font-size);
     width: 10rem;
     margin-top: 1rem;
     /* margin-left: auto; */
@@ -1172,6 +1174,8 @@ label {
     margin-right: 2rem;
 }
 
+#btn-settings-dlg-ok,
+#btn-settings-dlg-cancel,
 #btn-confirm-ok,
 #btn-confirm-cancel {
     text-align: center;

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 745;
+let VERSION = 746;
 
 // ==========================================
 // Basic classes
@@ -4696,9 +4696,11 @@ class SudokuSolverController {
     async defineBtnPressed() {
         // Delete last search
         this.mySolver.cleanUpAndDeleteCurrentSearch();
+        this.mySolver.unsetStepLazy();
+       
         this.mySolver.unsetCurrentPuzzle();
         this.mySolver.myGrid.setSolvedToGiven();
-        // await this.mySolver.calculatePuzzleRecord();
+        
         this.initUndoActionStack();
         this.mySolver.setGamePhase('define');
         this.mySolver.notify();
@@ -4759,7 +4761,8 @@ class SudokuSolverController {
 
     initLinkPressed() {
         // navigation bar init pressed
-        this.stopCurrentSearch();
+        sudoApp.myClockedRunner.stop('cancelled');
+        sudoApp.myTrackerDialog.close();
 
         sudoApp.myNavBar.closeNav();
         this.initUndoActionStack();
@@ -4784,11 +4787,15 @@ class SudokuSolverController {
 
     tipPressed() {
         if (this.mySolver.isSearching()) {
+            // The previous action was pressing the tip button
+            // The newly tip button press makes the previous press undone
             this.mySolver.cleanUpAndDeleteCurrentSearch();
+            this.mySolver.unsetStepLazy();
             this.mySolver.deselect();
             this.mySolver.notify();
         } else {
             this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+            // Select the next cell
             this.mySolver.performSearchStep();
             this.mySolver.notify();
         }
@@ -4809,7 +4816,8 @@ class SudokuSolverController {
     }
 
     resetConfirmed() {
-        this.stopCurrentSearch();
+        sudoApp.myClockedRunner.stop('cancelled');
+        sudoApp.myTrackerDialog.close();
 
         let puzzle = this.mySolver.myCurrentPuzzle;
         let action = {
@@ -4921,7 +4929,9 @@ class SudokuSolverController {
         }
 
         // Initialze
-        this.stopCurrentSearch();
+        sudoApp.myClockedRunner.stop('cancelled');
+        sudoApp.myTrackerDialog.close();
+
         sudoApp.mySolver.init();
 
         sudoApp.myNavBar.closeNav();
@@ -5256,15 +5266,13 @@ class SudokuSolverController {
 
     trackerDlgStopPressed() {
         sudoApp.mySolverView.stopLoaderAnimation();
-        this.stopCurrentSearch();
-        sudoApp.mySolver.notify();
-    }
-
-    stopCurrentSearch() {
         sudoApp.myClockedRunner.stop('cancelled');
-        sudoApp.myTrackerDialog.close();
+        sudoApp.myTrackerDialog.close();      
+        this.mySolver.cleanUpAndDeleteCurrentSearch();    
+        this.mySolver.unsetStepLazy();
+        this.mySolver.deselect();
+        this.mySolver.notify();
     }
-
 
     infoDlgOKPressed() {
         sudoApp.myInfoDialog.close();
