@@ -15,7 +15,7 @@ layout: default
     - [Initialisieren](initialisieren)
     - [Zurücksetzen](#zurücksetzen)
     - [Undo/Redo](#undoredo)
-    - [Puzzle prüfen](#puzzle-prüfen)
+    - [Unterstützung der manuellen Lösung von Puzzles](#unterstützung-der-manuellen-lösung-von-puzzles)
     - [Puzzle speichern](#puzzle-speichern)
     - [Neues Puzzles generieren und laden](#neues-puzzles-generieren-und-laden)
     - [Puzzle drucken](#puzzle-drucken)
@@ -158,9 +158,14 @@ Die Operationen des Sudoku-Trainers werden über die Tasten und die seitliche Na
 
 **Taste: Redo.** Rücknahme des Undo.
 
-### Puzzle prüfen
+### Unterstützung der manuellen Lösung von Puzzles
 
 **Taste: Prüfen.** Die gesetzten Lösungsnummern werden geprüft. Wenn sie falsch gesetzt sind, werden sie als fehlerhaft gekennzeichnet. Diese Funktion ist dann nützlich, wenn man das Puzzle manuell lösen will und man vermutet, dass man bereits einen Fehler gemacht hat.
+
+**Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. Durch das Drücken dieser Taste wird automatisch die Zelle in der Matrix selektiert, die der Solver bei der automatischen Lösung als nächste Zelle selektieren würde. Der Spieler hat dann zwei Möglichkeiten:
+
+1. Die vorgeschlagene Nummer in der Zelle setzen, oder
+1. Die Tipp-Taste erneut drücken. Dann wird die Selektion zurückgenommen.
 
 #### Puzzle speichern
 
@@ -207,7 +212,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 {: style="text-align:center"}
 ![Spielmodus](./imagesHelp/einstellungSpielmodus.png){:max-width="75%"}
 
-Der Spielmodus "Manuelles Lösen", bewirkt, dass die Taste für den Solver-Start ausgeblendet wird. Der Spielmodus "Automatisches Lösen mit und ohne Haltepunkten" schalten sie wieder zu.
+Der Spielmodus "Manuelles Lösen", bewirkt, dass die Taste für den Solver-Start ausgeblendet wird. Der Spielmodus "Automatisches Lösen mit und ohne Haltepunkten" schaltet                                                         sie wieder zu.
 
 |Tastenauswahl Manuelles Lösen|Tastenauswahl Automatisches Lösen|
 |---------|---------|
@@ -270,7 +275,7 @@ Werkzeugeinstellung:
 
 Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Zellen setzt. Will der Spieler sich der Herausforderung einer manuellen Lösungssuche ernsthaft stellen, verzichtet er auf jede Hilfe durch den Solver. Keine Kandidatenanzeige: denn sie würde ja die notwendigen Kandidaten anzeigen.
 
-Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.
+Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr, ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.
 
 {: style="text-align:center"}
 ![Prüfen](./imagesHelp/pruefungfehler.png){: width="400px"}
