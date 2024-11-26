@@ -40,6 +40,9 @@ class NewPuzzleGenerator {
     }
 
     simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
+        // Idea: Turn a simple puzzle into a very simple one by adding 
+        // nr Givens to the current puzzle. The givens can be obtained 
+        // from the cells of the entered solution.
         let randomCellOrder = Randomizer.getRandomNumbers(81, 0, 81);
         let nrSolved = 0;
         for (let i = 0; i < 81; i++) {
@@ -65,7 +68,6 @@ class NewPuzzleGenerator {
             let k = randomCellOrder[i];
             if (extremePZ.puzzle[k].cellValue !== '0') {
                 extremePZ.puzzle[k].cellValue = '0';
-                // let preRec = sudoApp.mySolver.calculatedPreRunRecord(extremePZ.puzzle);
                 let preRec = sudoApp.mySolver.computePuzzlePreRunData(extremePZ.puzzle);
                 if (preRec.level == 'Extrem schwer') {
                     extremePZ.preRunRecord.level = 'Extrem schwer';

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 747;
+let VERSION = 748;
 
 // ==========================================
 // Basic classes
@@ -4676,15 +4676,15 @@ class SudokuSolverController {
         }
     }
     sudokuCellPressed(index) {
-      /*  if (this.mySolver.isSearching()) {
-            
-            this.mySolver.cleanUpAndDeleteCurrentSearch();
-            this.mySolver.deselect();
-            this.mySolver.notify();
-        } else {
-         */
-            this.mySolver.select(index);
-            this.mySolver.notify();
+        /*  if (this.mySolver.isSearching()) {
+              
+              this.mySolver.cleanUpAndDeleteCurrentSearch();
+              this.mySolver.deselect();
+              this.mySolver.notify();
+          } else {
+           */
+        this.mySolver.select(index);
+        this.mySolver.notify();
         //}
     }
 
@@ -4695,13 +4695,19 @@ class SudokuSolverController {
 
     async defineBtnPressed() {
         // Delete last search
+        if (this.mySolver.getGamePhase() == 'play') {
+            let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+            let action = {
+                operation: 'define',
+                pzRecord: puzzleRec,
+                pzArray: this.mySolver.myGrid.getPuzzleArray()
+            }
+            this.myUndoActionStack.push(action);
+        }
         this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
-       
         this.mySolver.unsetCurrentPuzzle();
         this.mySolver.myGrid.setSolvedToGiven();
-        
-        this.initUndoActionStack();
         this.mySolver.setGamePhase('define');
         this.mySolver.notify();
     }
@@ -4763,9 +4769,17 @@ class SudokuSolverController {
         // navigation bar init pressed
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
-
         sudoApp.myNavBar.closeNav();
-        this.initUndoActionStack();
+
+        let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+        let action = {
+            operation: 'init',
+            pzRecord: puzzleRec,
+            pzArray: this.mySolver.myGrid.getPuzzleArray()
+        }
+        this.myUndoActionStack.push(action);
+
+
         this.mySolver.init();
         this.mySolver.notify();
         // Zoom in the new initiated grid
@@ -4819,11 +4833,10 @@ class SudokuSolverController {
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
 
-        let puzzle = this.mySolver.myCurrentPuzzle;
+        let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
         let action = {
             operation: 'reset',
-            pzSolutions: puzzle.myNumberOfSolutions,
-            // pzCompleted: puzzle.isCompleted(),
+            pzRecord: puzzleRec,
             pzArray: this.mySolver.myGrid.getPuzzleArray()
         }
         this.myUndoActionStack.push(action);
@@ -4855,9 +4868,12 @@ class SudokuSolverController {
     }
     undo(action) {
         switch (action.operation) {
-            case 'reset': {
+            case 'init':
+            case 'reset':
+            case 'define': {
+                this.mySolver.setCurrentPuzzle(action.pzRecord);
                 sudoApp.mySolver.myGrid.loadPuzzleArray(action.pzArray);
-                sudoApp.mySolver.myGrid.evaluateMatrix();
+                this.mySolver.setGamePhase('play');
                 break;
             }
             case 'setNr': {
@@ -4879,8 +4895,11 @@ class SudokuSolverController {
     }
 
     redo(action) {
-        // this.mySolver.stopBackTrackingSearch();
         switch (action.operation) {
+            case 'init': {
+                this.initLinkPressed();
+                break;
+            }
             case 'reset': {
                 this.resetLinkPressed();
                 break;
@@ -5267,8 +5286,8 @@ class SudokuSolverController {
     trackerDlgStopPressed() {
         sudoApp.mySolverView.stopLoaderAnimation();
         sudoApp.myClockedRunner.stop('cancelled');
-        sudoApp.myTrackerDialog.close();      
-        this.mySolver.cleanUpAndDeleteCurrentSearch();    
+        sudoApp.myTrackerDialog.close();
+        this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
         this.mySolver.deselect();
         this.mySolver.notify();
