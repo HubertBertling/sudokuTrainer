@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 749;
+let VERSION = 750;
 
 // ==========================================
 // Basic classes
@@ -4462,12 +4462,18 @@ class SudokuSolverController {
                 case "7":
                 case "8":
                 case "9": {
+                    let tmpIndex = this.mySolver.myGrid.indexSelected;
                     this.handleKeyNumberPressed(event);
+                    this.mySolver.myGrid.setCurrentSelection(tmpIndex);
+                    this.mySolver.notify();
                     break;
                 }
                 case "Delete":
                 case "Backspace": {
+                    let tmpIndex = this.mySolver.myGrid.indexSelected;
                     this.handleDeleteKeyPressed(event);
+                    this.mySolver.myGrid.setCurrentSelection(tmpIndex);
+                    this.mySolver.notify();
                     break;
                 }
                 case "ArrowUp": {
@@ -4602,12 +4608,6 @@ class SudokuSolverController {
     }
 
     handleNumberPressed(nr) {
-        /* if (this.mySolver.isSearching()) {
-            // Number button pressed during automatic execution
-            sudoApp.myInfoDialog.open("Nummer setzen", "negativ",
-                "Während der Solver-Ausführung kann manuell keine Zelle gesetzt oder gelöscht werden.");
-        } else {
-         */
         let action = {
             operation: 'setNr',
             cellIndex: this.mySolver.myGrid.indexSelected,
@@ -4627,7 +4627,6 @@ class SudokuSolverController {
             this.mySolver.deselect();
             this.mySolver.notify();
         }
-        //}
     }
 
     handleDeleteKeyPressed(event) {
@@ -4676,16 +4675,8 @@ class SudokuSolverController {
         }
     }
     sudokuCellPressed(index) {
-        /*  if (this.mySolver.isSearching()) {
-              
-              this.mySolver.cleanUpAndDeleteCurrentSearch();
-              this.mySolver.deselect();
-              this.mySolver.notify();
-          } else {
-           */
         this.mySolver.select(index);
         this.mySolver.notify();
-        //}
     }
 
     initUndoActionStack() {
