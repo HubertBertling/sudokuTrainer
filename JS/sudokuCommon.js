@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 750;
+let VERSION = 751;
 
 // ==========================================
 // Basic classes
@@ -5364,24 +5364,26 @@ class SudokuMainApp {
     }
 
     init() {
-        // load the app settings
-
-
         this.mySolver.init();
-        let mySettings = this.getMySettings();
-        this.mySolver.setActualEvalType(mySettings.evalType);
-        this.mySolver.setPlayType(mySettings.playMode);
-        this.mySolver.setPuzzleIOtechnique(Boolean(mySettings.puzzleIOTechnique));
+        this.activateAppSettings();
         this.mySolver.notify();
-
+  
         this.myPuzzleDB.init();
         this.myNewPuzzleBuffer.init();
 
         this.myNavBar.init();
         this.displayAppVersion();
     }
+    
+    activateAppSettings() {
+        let mySettings = this.getMySettings();
+        this.mySolver.setActualEvalType(mySettings.evalType);
+        this.mySolver.setPlayType(mySettings.playMode);
+        this.mySolver.setPuzzleIOtechnique(Boolean(mySettings.puzzleIOTechnique));
+    }
 
     getMySettings() {
+        // read settings from local store
         let mySettings;
         let str_appSettings = localStorage.getItem("sudokuAppSetting");
         if (str_appSettings == null) {
@@ -5397,6 +5399,7 @@ class SudokuMainApp {
 
 
     setMySettings(settingsRecord) {
+        // write settings to local store
         let str_appSettings = JSON.stringify(settingsRecord);
         localStorage.setItem("sudokuAppSetting", str_appSettings);
     }

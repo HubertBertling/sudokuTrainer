@@ -714,7 +714,9 @@ class SettingsDialog {
                     document.getElementById('breakpoint-solution').checked;
           
                 sudoApp.setMySettings(mySettings);    
-                sudoApp.init();
+                // sudoApp.init();
+                sudoApp.activateAppSettings();
+                sudoApp.mySolver.notify();
                 sudoApp.mySettingsDialog.close();
             }
         });
