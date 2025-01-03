@@ -2583,36 +2583,6 @@ class SudokuGrid extends MVC_Model {
         return this.indexSelected !== -1;
     }
 
-    arrowUpSelect() {
-        if (this.indexSelected !== -1) {
-            let index = this.upIndex(this.indexSelected);
-            this.deselect();
-            this.setCurrentSelection(index);
-        }
-    }
-    arrowDownSelect() {
-        if (this.indexSelected !== -1) {
-            let index = this.downIndex(this.indexSelected);
-            this.deselect();
-            this.setCurrentSelection(index);
-        }
-    }
-    arrowLeftSelect() {
-        if (this.indexSelected !== -1) {
-            let index = this.leftIndex(this.indexSelected);
-            this.deselect();
-            this.setCurrentSelection(index);
-        }
-    }
-    arrowRightSelect() {
-        if (this.indexSelected !== -1) {
-            let index = this.rightIndex(this.indexSelected);
-            this.deselect();
-            this.setCurrentSelection(index);
-        }
-    }
-
-
     selectedCell() {
         if (this.indexSelected > -1) {
             return this.sudoCells[this.indexSelected];
@@ -4462,42 +4432,22 @@ class SudokuSolverController {
                 case "7":
                 case "8":
                 case "9": {
-                    let tmpIndex = this.mySolver.myGrid.indexSelected;
                     this.handleKeyNumberPressed(event);
-                    this.mySolver.myGrid.setCurrentSelection(tmpIndex);
-                    this.mySolver.notify();
                     break;
                 }
                 case "Delete":
                 case "Backspace": {
-                    let tmpIndex = this.mySolver.myGrid.indexSelected;
                     this.handleDeleteKeyPressed(event);
-                    this.mySolver.myGrid.setCurrentSelection(tmpIndex);
-                    this.mySolver.notify();
                     break;
                 }
-                case "ArrowUp": {
-                    sudoApp.mySolver.myGrid.arrowUpSelect();
-                    sudoApp.mySolver.notify();
-                    break;
-                }
-                case "ArrowDown": {
-                    sudoApp.mySolver.myGrid.arrowDownSelect();
-                    sudoApp.mySolver.notify();
-                    break;
-                }
-                case "ArrowLeft": {
-                    sudoApp.mySolver.myGrid.arrowLeftSelect();
-                    sudoApp.mySolver.notify();
-                    break;
-                }
+                case "ArrowUp":
+                case "ArrowDown":
+                case "ArrowLeft":
                 case "ArrowRight": {
-                    sudoApp.mySolver.myGrid.arrowRightSelect();
-                    sudoApp.mySolver.notify();
+                    this.handleArrowKeyPressed(event);
                     break;
                 }
                 default:
-                    return;
             }
         });
 
@@ -4598,7 +4548,10 @@ class SudokuSolverController {
                 break;
             }
             case 'BODY': {
-                this.handleNumberPressed(event.key);
+                let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
+                this.clickNrBtn(event.key);
+                sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+                sudoApp.mySolver.notify();
                 break;
             }
             default: {
@@ -4606,6 +4559,22 @@ class SudokuSolverController {
             }
         }
     }
+
+    clickNrBtn(nr) {
+        let nrBtns = document.querySelectorAll(".mobile-number");
+        nrBtns.forEach(btn => {
+            if (btn.innerHTML == nr) {
+                btn.click();
+            }
+        });
+    }
+
+    clickDeleteBtn() {
+        let delBtns = document.getElementsByClassName("btn-delete-cell")
+        delBtns[0].click();
+    }
+
+
 
     handleNumberPressed(nr) {
         let action = {
@@ -4645,7 +4614,10 @@ class SudokuSolverController {
             }
             case 'BODY': {
                 // This event is generated when a number is to be deleted in a Sudoku cell.
-                this.handleDeletePressed();
+                let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
+                this.clickDeleteBtn();
+                sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+                sudoApp.mySolver.notify();
                 break;
             }
             default: {
@@ -4653,6 +4625,65 @@ class SudokuSolverController {
                 // throw new Error('Unexpected keypad event target: ' + event.target.tagName);
             }
         }
+    }
+
+    handleArrowKeyPressed(event) {
+        switch (event.target.tagName) {
+            case 'INPUT': {
+                // In dialogs with input fields, entries can be made in the field using keys on the keyboard
+                // (instead of using buttons on the GUI). In our case, two events are generated: 
+                // (1) the keydown event for the input field and (2) the keydown event for the global body element. 
+                // The latter is semantically the same as the corresponding button event. 
+                // Only numeric keys and the delete key are used. Keydowns of other keys are ignored, i.e. 
+                // no event handler is declared.
+                // If the current context is an input field, the simultaneous propagation to the cell of a Sudoku cell 
+                // must be switched off, as the solver cannot react to this.
+                event.stopPropagation();
+                break;
+            }
+            case 'BODY': {
+                // This event is generated when a number is to be deleted in a Sudoku cell.
+                this.handleArrowPressed(event);
+                break;
+            }
+            default: {
+                // 'BUTTON'
+                // throw new Error('Unexpected keypad event target: ' + event.target.tagName);
+            }
+        }
+    }
+
+
+    handleArrowPressed(event) {
+        let grid = document.getElementById('grid-plus-explainer');
+        grid.focus();
+        let newIndex = -1;
+        if (sudoApp.mySolver.myGrid.indexSelected > -1) {
+            switch (event.key) {
+                case "ArrowUp": {
+                    newIndex = sudoApp.mySolver.myGrid.upIndex(sudoApp.mySolver.myGrid.indexSelected);
+                    break;
+                }
+                case "ArrowDown": {
+                    newIndex = sudoApp.mySolver.myGrid.downIndex(sudoApp.mySolver.myGrid.indexSelected);
+                    break;
+                }
+                case "ArrowLeft": {
+                    newIndex = sudoApp.mySolver.myGrid.leftIndex(sudoApp.mySolver.myGrid.indexSelected);
+                    break;
+                }
+                case "ArrowRight": {
+                    newIndex = sudoApp.mySolver.myGrid.rightIndex(sudoApp.mySolver.myGrid.indexSelected);
+                    break;
+                }
+                default:
+            }
+        } else {
+            newIndex = 0;
+        }
+        sudoApp.mySolver.myGrid.setCurrentSelection(newIndex);
+        sudoApp.mySolver.notify();
+        grid.focus();
     }
 
     handleDeletePressed() {
@@ -4762,7 +4793,12 @@ class SudokuSolverController {
         sudoApp.myTrackerDialog.close();
         sudoApp.myNavBar.closeNav();
 
-        let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+        let puzzleRec;
+        if (this.mySolver.myCurrentPuzzle == undefined) {
+            puzzleRec = undefined;
+        } else {
+            puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+        }
         let action = {
             operation: 'init',
             pzRecord: puzzleRec,
@@ -4799,10 +4835,19 @@ class SudokuSolverController {
             this.mySolver.deselect();
             this.mySolver.notify();
         } else {
-            this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
-            // Select the next cell
-            this.mySolver.performSearchStep();
-            this.mySolver.notify();
+            if (sudoApp.mySolver.getGamePhase() == 'define') {
+                sudoApp.myInfoDialog.open("Tipp", "negativ",
+                    "Das Puzzle ist noch in der Definition. Für das unfertige Puzzle kann kein Tipp gegeben werden.");
+            } else {
+                this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+                // Select the next cell
+                this.mySolver.performSearchStep();
+                this.mySolver.notify();
+                let tippBtn = document.getElementById('btn-tip');
+                tippBtn.blur();
+                let gridPlusExplainer = document.getElementById('grid-plus-explainer');
+                gridPlusExplainer.focus();
+            }
         }
     }
 
@@ -4812,7 +4857,11 @@ class SudokuSolverController {
         for (let i = 0; i < ele.length; i++) {
             if (ele[i].checked) {
                 let puzzleRecord = sudoApp.myNewPuzzleBuffer.getPuzzle(ele[i].value)
-                this.mySolver.loadPuzzleRecord(puzzleRecord)
+                this.mySolver.myGrid.deselect();
+                this.mySolver.loadPuzzleRecord(puzzleRecord);
+                sudoApp.mySolver.notify();
+                // let gridPlusExplainer = document.getElementById('grid-plus-explainer');
+                // gridPlusExplainer.focus();       
             }
         }
     }
@@ -5123,42 +5172,56 @@ class SudokuSolverController {
         // It has the effect that the display of the current puzzle includes 
         // the display of its possible unfulfillability. 
         // Normally, the unfulfillability is not displayed.
-        let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-        if (level == 'Unlösbar') {
-            if (sudoApp.mySolver.myGrid.isUnsolvable()) {
-                sudoApp.mySolver.notify();
-                let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-                sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
-                    '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.');
-            } else {
-                sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
-                    '. <br><br> Der aktuelle Puzzle-Status zeigt noch keinen Widerspruch. Im weiteren Verlauf der Lösungssuche mit dem automatischen Solver wird ein Widerspruch aufgedeckt werden, der dazu führt, dass das Puzzle unlösbar ist.');
-            }
-        } else if (level == 'Extrem schwer') {
-            sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
-                '. <br><br> Mit dem Solver können die Anzahl der Lösungen sowie die Lösungen selbst hergeleitet werden.');
+
+        if (sudoApp.mySolver.getGamePhase() == 'define') {
+            sudoApp.myInfoDialog.open("Prüfen", "negativ",
+                "Das Puzzle ist noch in der Definition. Für unfertige Puzzles gibt es keine sinnvollen Prüfungen.");
         } else {
-            // Level is fair or 'Sehr schwer', i.e. has a unique solution
-            let wrongCellSet = false;
-            let solvedPuzzle = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.solvedPuzzle;
-            for (let i = 0; i < 81; i++) {
-                let currentCellValue = sudoApp.mySolver.myGrid.sudoCells[i].getValue();
-                let currentCellPhase = sudoApp.mySolver.myGrid.sudoCells[i].getPhase();
-                if (currentCellValue !== '0' &&
-                    currentCellPhase !== 'define' &&
-                    currentCellValue !== solvedPuzzle[i].cellValue) {
-                    // Mark cell wrong
-                    sudoApp.mySolver.myGrid.sudoCells[i].setWrong();
-                    wrongCellSet = true;
+
+            let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+            if (level == 'Unlösbar') {
+                if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+                    sudoApp.mySolver.notify();
+                    let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+                    sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
+                        '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.');
+                } else {
+                    sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
+                        '. <br><br> Der aktuelle Puzzle-Status zeigt noch keinen Widerspruch. Im weiteren Verlauf der Lösungssuche mit dem automatischen Solver wird ein Widerspruch aufgedeckt werden, der dazu führt, dass das Puzzle unlösbar ist.');
+                }
+            } else if (level == 'Extrem schwer') {
+                sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
+                    '. Das Puzzle hat mehrere Lösungen. <br><br> Mit dem Solver können die Anzahl der Lösungen sowie die Lösungen selbst hergeleitet werden.');
+            } else {
+                // Level is fair or 'Sehr schwer', i.e. has a unique solution
+                let wrongCellSet = false;
+                let solvedPuzzle = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.solvedPuzzle;
+                for (let i = 0; i < 81; i++) {
+                    let currentCellValue = sudoApp.mySolver.myGrid.sudoCells[i].getValue();
+                    let currentCellPhase = sudoApp.mySolver.myGrid.sudoCells[i].getPhase();
+                    if (currentCellValue !== '0' &&
+                        currentCellPhase !== 'define' &&
+                        currentCellValue !== solvedPuzzle[i].cellValue) {
+                        // Mark cell wrong
+                        sudoApp.mySolver.myGrid.sudoCells[i].setWrong();
+                        wrongCellSet = true;
+                    }
+                }
+                sudoApp.mySolver.notify();
+                if (wrongCellSet) {
+                    sudoApp.mySolverView.myGridView.displayWrongNumbers();
+                    sudoApp.myInfoDialog.open("Prüfergebnis", "negativ", "Es gibt falsche Lösungsnummern, siehe rot umrandete Zellen!");
+                } else {
+                    sudoApp.myInfoDialog.open('Prüfergebnis', 'positiv', 'Bisher sind alle Lösungsnummern korrekt!');
                 }
             }
-            sudoApp.mySolver.notify();
-            if (wrongCellSet) {
-                sudoApp.mySolverView.myGridView.displayWrongNumbers();
-                sudoApp.myInfoDialog.open("Prüfergebnis", "negativ", "Es gibt falsche Lösungsnummern, siehe rot umrandete Zellen!");
-            } else {
-                sudoApp.myInfoDialog.open('Prüfergebnis', 'positiv', 'Bisher sind alle Lösungsnummern korrekt!');
-            }
+            // let wrongNumbersBtn = document.getElementById('btn-showWrongNumbers');
+            // wrongNumbersBtn.blur();
+            let gridPlusExplainer = document.getElementById('grid-plus-explainer');
+            gridPlusExplainer.focus();
+            // let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
+            // sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+            // sudoApp.mySolver.notify();
         }
     }
 
@@ -5367,14 +5430,14 @@ class SudokuMainApp {
         this.mySolver.init();
         this.activateAppSettings();
         this.mySolver.notify();
-  
+
         this.myPuzzleDB.init();
         this.myNewPuzzleBuffer.init();
 
         this.myNavBar.init();
         this.displayAppVersion();
     }
-    
+
     activateAppSettings() {
         let mySettings = this.getMySettings();
         this.mySolver.setActualEvalType(mySettings.evalType);
