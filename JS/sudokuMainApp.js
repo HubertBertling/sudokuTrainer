@@ -613,13 +613,18 @@ class InfoDialog {
         this.iconNode = document.getElementById("infoIcon");
         this.infoDlgBodyNode = document.getElementById("infoDlgBody");
         this.okNode = document.getElementById("infoDlg-OK-Btn");
-        this.dlgNode.close();
-        this.myOpen = false;
+        this.myConfirmOperation = undefined;
+        this.thisPointer = undefined;
+        // Mit der Erzeugung des Wrappers werden 
+        // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-            sudoApp.mySolverController.infoDlgOKPressed();
+            sudoApp.myInfoDialog.close();
+            sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
+            sudoApp.mySolver.notify();
         });
     }
-    open(headerText, infoModus, bodyText) {
+
+    open(headerText, infoModus, bodyText, thisPointer, confirmOp) {
         this.infoDlgHeaderNode.innerHTML = headerText;
         if (infoModus == 'solutionDiscovered') {
             this.iconNode.src = "images/glueckwunsch.jpg";
@@ -632,8 +637,11 @@ class InfoDialog {
         }
         this.infoDlgBodyNode.innerHTML = bodyText;
         this.myOpen = true;
+        this.thisPointer = thisPointer;
+        this.myConfirmOperation = confirmOp;
         this.dlgNode.showModal();
     }
+
     isOpen() {
         return this.myOpen;
     }
