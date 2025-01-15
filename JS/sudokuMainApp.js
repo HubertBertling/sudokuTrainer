@@ -620,7 +620,7 @@ class InfoDialog {
         this.okNode.addEventListener('click', () => {
             sudoApp.myInfoDialog.close();
             sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
-            sudoApp.mySolver.notify();
+            // sudoApp.mySolver.notify();  15.01.25 FB Prüfentaste
         });
     }
 
