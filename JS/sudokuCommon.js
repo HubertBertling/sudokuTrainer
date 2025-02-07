@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 757;
+let VERSION = 758;
 
 // ==========================================
 // Basic classes
@@ -5339,7 +5339,7 @@ class SudokuSolverController {
                     solutionDiscovered: false
                 }
                 sudoApp.myClockedRunner.setBreakpoints(breakPts);
-                sudoApp.mySolverView.startLoaderAnimation('Weitere Lösungen ...');
+                sudoApp.mySolverView.startLoaderAnimation('Lösungen zählen ...');
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
                     () => {
                         let bp = sudoApp.mySolver.performSolutionStep();
