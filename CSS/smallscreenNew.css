@@ -914,7 +914,7 @@ label {
 
 
 .backtrack-options {
-    margin-top: 0.2rem;
+    margin-top: 0.4rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -963,7 +963,7 @@ label {
 
 .tracker-dlg-btn {
     background-color: var(--standard-btn-bg-color);
-    border-radius: 0.3rem;
+    border-radius: 0.6rem;
     border: none;
     font-size: 1rem;
     padding: 0.6rem;
