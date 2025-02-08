@@ -663,7 +663,7 @@ class SettingsDialog {
         this.topicPlayMode = document.getElementById("play-mode");
         this.topicBreakpoints = document.getElementById("breakpoint-settings");
         this.topicIOTechnique = document.getElementById("io-technique");
-        
+
         this.okNode = document.getElementById("btn-settings-dlg-ok");
         this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
 
@@ -685,13 +685,13 @@ class SettingsDialog {
                     document.getElementById('breakpoint-hidden-single').checked;
                 mySettings.breakpoints.solutionDiscovered =
                     document.getElementById('breakpoint-solution').checked;
-           
+
                 sudoApp.setMySettings(mySettings);
                 sudoApp.mySolver.notify();
                 sudoApp.mySettingsDialog.close();
             } else {
                 let mySettings = sudoApp.getMySettings();
-                
+
                 let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
                 radioEvalNodes.forEach(radioNode => {
                     if (radioNode.checked) {
@@ -708,7 +708,7 @@ class SettingsDialog {
                 });
 
                 mySettings.puzzleIOTechnique =
-                document.getElementById('puzzle-io').checked;
+                    document.getElementById('puzzle-io').checked;
 
                 mySettings.breakpoints.contradiction =
                     document.getElementById('breakpoint-contradiction').checked;
@@ -720,8 +720,8 @@ class SettingsDialog {
                     document.getElementById('breakpoint-hidden-single').checked;
                 mySettings.breakpoints.solutionDiscovered =
                     document.getElementById('breakpoint-solution').checked;
-          
-                sudoApp.setMySettings(mySettings);    
+
+                sudoApp.setMySettings(mySettings);
                 sudoApp.activateAppSettings();
                 sudoApp.mySolver.notify();
                 sudoApp.mySettingsDialog.close();
@@ -2089,7 +2089,7 @@ class SudokuCellView extends MVC_View {
 
         myBlockNode.appendChild(tmpCellNode);
         tmpCellNode.addEventListener('click', () => {
-            
+
             sudoApp.mySolverController.sudokuCellPressed(myCell.getMyIndex());
         });
         this.upDateCellContent();
@@ -2759,12 +2759,19 @@ class SudokuSolverView extends MVC_View {
         this.displayPuzzleIOTechniqueBtns();
         sudoApp.mySolver.myGrid.getMyView().displayNameAndDifficulty();
 
+        /*
         if (sudoApp.mySolver.myCurrentSearch !== undefined
             && sudoApp.mySolver.myCurrentSearch.isCompleted()) {
             this.displayPuzzleSolutionInfo();
         } else {
             this.hidePuzzleSolutionInfo();
         }
+        */
+        if (sudoApp.mySolver.myCurrentSearch == undefined
+            || !sudoApp.mySolver.myCurrentSearch.isCompleted()) {
+            this.hidePuzzleSolutionInfo();
+        }
+
     }
 
     displayPuzzleSolutionInfo() {
@@ -2882,7 +2889,7 @@ class SudokuSolverView extends MVC_View {
         btnTip.style.gridColumnEnd = 4;
         btnTip.style.gridRowStart = 4;
         btnTip.style.gridRowEnd = 4;
-   
+
         btnRun.style.gridColumnStart = 4;
         btnRun.style.gridColumnEnd = 6;
         btnRun.style.gridRowStart = 4;

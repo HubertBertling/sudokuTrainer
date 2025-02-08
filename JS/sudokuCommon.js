@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 759;
+let VERSION = 760;
 
 // ==========================================
 // Basic classes
@@ -441,6 +441,7 @@ class Search {
             if (nrSol == 0) {
                 sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!', this, () => { });
             } else {
+                sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösungen')
                 sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
             }
         }
