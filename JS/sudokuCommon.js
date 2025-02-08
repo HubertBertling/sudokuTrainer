@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 758;
+let VERSION = 759;
 
 // ==========================================
 // Basic classes
@@ -424,7 +424,10 @@ class Search {
             this.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
-            this.mySolver.searchInfos2PuzzleRecord();
+            // v759
+            // This is not the prerun calculation. Therefore
+            // the following step can be omitted.
+            // this.mySolver.searchInfos2PuzzleRecord();
             this.myGrid.deselect();
             if (sudoApp instanceof SudokuMainApp) {
                 sudoApp.mySolver.notify();
