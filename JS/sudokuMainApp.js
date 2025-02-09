@@ -1535,6 +1535,7 @@ class SudokuPuzzleDBController {
             sudoApp.mySolverController.myUndoActionStack = [];
             sudoApp.mySolverController.myRedoActionStack = [];
             sudoApp.mySolver.notify();
+            sudoApp.mySolverView.hidePuzzleSolutionInfo();
             // Zoom in the loaded puzzle
             sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
         }
@@ -2767,11 +2768,6 @@ class SudokuSolverView extends MVC_View {
             this.hidePuzzleSolutionInfo();
         }
         */
-        if (sudoApp.mySolver.myCurrentSearch == undefined
-            || !sudoApp.mySolver.myCurrentSearch.isCompleted()) {
-            this.hidePuzzleSolutionInfo();
-        }
-
     }
 
     displayPuzzleSolutionInfo() {
