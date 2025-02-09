@@ -1441,7 +1441,9 @@ label {
     text-align: center;
     z-index: 2;
     /*rotate: z -33deg;*/
-    color: red;
+    color: greenyellow;
+    background-color: black;
+    padding: 2rem;
 }
 
 /* Safari */

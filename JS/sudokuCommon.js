@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 762;
+let VERSION = 763;
 
 // ==========================================
 // Basic classes
@@ -4848,17 +4848,17 @@ class SudokuSolverController {
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es nicht zurückgesetzt werden.", this, () => { });
-        }
-        /*
-        else if (sudoApp.mySolver.isSearching()) {
-            sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
-                "bei laufendem Solver kann die Puzzle-Lösung nicht zurückgesetzt werden.", this, () => { });
-        }
-        */
-        else {
+        } else {
+            if (sudoApp.mySolver.isSearching()) {
+                // sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
+                //     "bei laufendem Solver kann die Puzzle-Lösung nicht zurückgesetzt werden.", this, () => { });
+                sudoApp.mySolverController.trackerDlgStopPressed();
+            }
             let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
             this.resetConfirmed();
-            sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+            if (tmpIndex !== -1) {
+                sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+            }
             sudoApp.mySolver.notify();
             let resetBtn = document.getElementById('btn-reset');
             resetBtn.blur();
