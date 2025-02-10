@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 763;
+let VERSION = 764;
 
 // ==========================================
 // Basic classes
@@ -4740,9 +4740,8 @@ class SudokuSolverController {
         this.myRedoActionStack = [];
     }
 
-    async defineBtnPressed() {
-        // Delete last search
-        if (this.mySolver.getGamePhase() == 'play') {
+    defineBtnPressed() {
+        if (this.mySolver.getMyCurrentPuzzle() !== undefined) {
             let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
             let action = {
                 operation: 'define',
@@ -4750,14 +4749,14 @@ class SudokuSolverController {
                 pzArray: this.mySolver.myGrid.getPuzzleArray()
             }
             this.myUndoActionStack.push(action);
+            this.mySolver.cleanUpAndDeleteCurrentSearch();
+            this.mySolver.unsetStepLazy();
+            this.mySolver.unsetCurrentPuzzle();
+            this.mySolver.myGrid.setSolvedToGiven();
+            this.mySolver.setGamePhase('define');
+            this.mySolver.notify();
+            sudoApp.mySolverView.hidePuzzleSolutionInfo();
         }
-        this.mySolver.cleanUpAndDeleteCurrentSearch();
-        this.mySolver.unsetStepLazy();
-        this.mySolver.unsetCurrentPuzzle();
-        this.mySolver.myGrid.setSolvedToGiven();
-        this.mySolver.setGamePhase('define');
-        this.mySolver.notify();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
 
     async playBtnPressed() {
@@ -4770,7 +4769,7 @@ class SudokuSolverController {
 
         // Delete last search
         this.mySolver.cleanUpAndDeleteCurrentSearch();
-        if (this.mySolver.getGamePhase() == 'play') {
+        if (this.mySolver.getMyCurrentPuzzle() !== undefined) {
             // The solver is already in the game phase 'play'.
             // In this case we recompute the puzzle's meta data 
             // but do not create a new puzzle.
