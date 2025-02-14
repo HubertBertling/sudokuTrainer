@@ -1268,6 +1268,15 @@ class SudokuGroup extends MVC_Model {
         this.myPairInfos = [];
     }
 
+    isComplete() {
+        for (let i = 0; i < 9; i++) {
+            if (this.myCells[i].getValue() == '0' ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     clear() {
         this.clearEvaluations();
     }
@@ -2019,7 +2028,7 @@ class SudokuGrid extends MVC_Model {
         // Solver einen hidden single step durchführt und erklärt
         this.stepLazy = false;
     }
-
+  
     init() {
         this.indexSelected = -1;
         this.candidateIndexSelected = -1;
@@ -2661,8 +2670,8 @@ class SudokuGrid extends MVC_Model {
         this.calculateInAdmissibles();
         let inAdmissiblesAdded = true;
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
-            if (this.calculateNecessarys()) return true;
             if (this.calculateSingles()) return true;
+            if (this.calculateNecessarys()) return true;
             inAdmissiblesAdded = false;
             // inAdmissiblesFromNecessarys can no longer exist, 
             // because the necessarys are consumed in the first part of the loop
@@ -3329,6 +3338,7 @@ class SudokuCell extends MVC_Model {
     setAdMissibleIndexSelected(nr) {
         this.candidateIndexSelected = nr;
     }
+
 
 
     getTotalInAdmissibles() {

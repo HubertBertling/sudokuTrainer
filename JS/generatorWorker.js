@@ -39,23 +39,50 @@ class NewPuzzleGenerator {
         this.extremeSimpleSend3 = null;
     }
 
-    simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
-        // Idea: Turn a simple puzzle into a very simple one by adding 
-        // nr Givens to the current puzzle. The givens can be obtained 
-        // from the cells of the entered solution.
-        let randomCellOrder = Randomizer.getRandomNumbers(81, 0, 81);
-        let nrSolved = 0;
+    deriveVerySimplePuzzle(puzzleRecord) {
+        // 
+        let localGrid = new SudokuGrid(sudoApp.mySolver);
+        localGrid.init();
+        localGrid.loadPuzzleArray(puzzleRecord.preRunRecord.solvedPuzzle);
+        // set solved to given
         for (let i = 0; i < 81; i++) {
-            let k = randomCellOrder[i];
-            if (nrSolved < nr && puzzleRecord.puzzle[k].cellValue == '0') {
-                puzzleRecord.puzzle[k].cellValue =
-                    puzzleRecord.preRunRecord.solvedPuzzle[k].cellValue;
-                puzzleRecord.puzzle[k].cellPhase = 'define';
-                puzzleRecord.preRunRecord.solvedPuzzle[k].cellPhase = 'define';
-                nrSolved++;
+            if (localGrid.sudoCells[i].getValue() !== '0') {
+                if (localGrid.sudoCells[i].getPhase() == 'play') {
+                    localGrid.sudoCells[i].setPhase('define');
+                }
             }
         }
-        puzzleRecord.statusGiven = puzzleRecord.statusGiven + nr;
+
+        for (let i = 0; i < 81; i++) {
+            if (localGrid.sudoCells[i].getValue() !== '0') {
+                if (localGrid.sudoCells[i].myBlock.isComplete()
+                    || localGrid.sudoCells[i].myRow.isComplete()
+                    || localGrid.sudoCells[i].myCol.isComplete()) {
+                    // clear cell
+                    localGrid.sudoCells[i].clear();
+
+                    puzzleRecord.puzzle[i] = {
+                        cellValue: '0',
+                        cellPhase: 'play'
+                    }
+                    puzzleRecord.preRunRecord.solvedPuzzle[i] = {
+                        // cellValue: unchanged
+                        cellPhase: 'play'
+                    }
+
+                } else {
+                    puzzleRecord.puzzle[i] = {
+                        // cellValue: unchanged
+                        cellPhase: 'define'
+                    } 
+                    puzzleRecord.preRunRecord.solvedPuzzle[i] = {
+                        // cellValue: unchanged
+                        cellPhase: 'define'
+                    }
+                }
+            }
+        }
+        puzzleRecord.statusGiven = localGrid.numberOfGivens();
         puzzleRecord.preRunRecord.level = 'Sehr leicht';
         puzzleRecord.preRunRecord.backTracks = 0;
         return puzzleRecord;
@@ -110,9 +137,9 @@ class NewPuzzleGenerator {
         if (this.simpleSend1 != null && this.verySimpleSend2 == null) {
             // A simple puzzle can be made into a very simple puzzle 
             // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-            this.verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, this.simpleSend1);
+            this.verySimpleSend2 = this.deriveVerySimplePuzzle(this.simpleSend1);
             this.verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            let command =  await this.send2Main(this.verySimpleSend2);
+            let command = await this.send2Main(this.verySimpleSend2);
             return command;
         }
 
