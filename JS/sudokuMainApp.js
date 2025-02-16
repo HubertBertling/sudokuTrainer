@@ -661,8 +661,7 @@ class SettingsDialog {
 
         this.topicEvalType = document.getElementById("pc-eval");
         this.topicBreakpoints = document.getElementById("breakpoint-settings");
-        // this.topicIOTechnique = document.getElementById("io-technique");
-
+    
         this.okNode = document.getElementById("btn-settings-dlg-ok");
         this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
 
@@ -723,6 +722,7 @@ class SettingsDialog {
         });
     }
     open() {
+        this.breakpointsOnly = false;
         let mySettings = sudoApp.getMySettings();
         // current eval-type 
         let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
