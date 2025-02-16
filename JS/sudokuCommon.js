@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 764;
+let VERSION = 765;
 
 // ==========================================
 // Basic classes
@@ -4363,15 +4363,6 @@ class SudokuSolver extends MVC_Model {
         super.notifyAspect(aspect, aspectValue);
     }
 
-    setPuzzleIOtechnique(pt) {
-        this.puzzleIOtechnique = pt;
-        this.notifyAspect('puzzleIOTechnique');
-    }
-
-    getPuzzleIOtechnique() {
-        return this.puzzleIOtechnique;
-    }
-
     clearLoadedPuzzle(key) {
         // In the definition phase there is no current puzzle
         if (this.currentPhase == 'play') {
@@ -5419,8 +5410,6 @@ class SudokuSolverController {
         let appSetting = undefined;
         let str_appSetting = localStorage.getItem("sudokuAppSetting");
         appSetting = JSON.parse(str_appSetting);
-        appSetting.puzzleIOtechnique = pIOcheckbox.checked.toString();
-        sudoApp.mySolver.setPuzzleIOtechnique(pIOcheckbox.checked);
         str_appSetting = JSON.stringify(appSetting);
         localStorage.setItem("sudokuAppSetting", str_appSetting);
     }
@@ -5504,8 +5493,6 @@ class SudokuMainApp {
     activateAppSettings() {
         let mySettings = this.getMySettings();
         this.mySolver.setActualEvalType(mySettings.evalType);
-        this.mySolver.setPlayType(mySettings.playMode);
-        this.mySolver.setPuzzleIOtechnique(Boolean(mySettings.puzzleIOTechnique));
     }
 
     getMySettings() {
@@ -5551,15 +5538,11 @@ class AppSettingsRecord {
             'lazy',
             'strict-plus',
             'strict-minus']);
-        this.playModeType = new MatheSet(['automated-solving',
-            'manual']);
-    };
+       };
     static nullAppSettingsRecord() {
         return {
             evalType: 'lazy-invisible',
-            playMode: 'automated-solving',
             breakpoints: BreakpointsRecord.nullBreakpointsRecord(),
-            puzzleIOTechnique: true
         }
     }
 }

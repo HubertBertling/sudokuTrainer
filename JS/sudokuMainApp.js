@@ -660,9 +660,8 @@ class SettingsDialog {
         this.dlgNode = document.getElementById("settings-dlg");
 
         this.topicEvalType = document.getElementById("pc-eval");
-        this.topicPlayMode = document.getElementById("play-mode");
         this.topicBreakpoints = document.getElementById("breakpoint-settings");
-        this.topicIOTechnique = document.getElementById("io-technique");
+        // this.topicIOTechnique = document.getElementById("io-technique");
 
         this.okNode = document.getElementById("btn-settings-dlg-ok");
         this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
@@ -674,6 +673,8 @@ class SettingsDialog {
         this.okNode.addEventListener('click', () => {
 
             if (this.breakpointsOnly) {
+                // The breakpoint settings dialog is a subset 
+                // of the overall settings dialog
                 let mySettings = sudoApp.getMySettings();
                 mySettings.breakpoints.contradiction =
                     document.getElementById('breakpoint-contradiction').checked;
@@ -698,17 +699,6 @@ class SettingsDialog {
                         mySettings.evalType = radioNode.getAttribute('value');
                     }
                 });
-
-                // play mode
-                let radioPMNodes = document.querySelectorAll('.play-type');
-                radioPMNodes.forEach(radioNode => {
-                    if (radioNode.checked) {
-                        mySettings.playMode = radioNode.getAttribute('value');
-                    }
-                });
-
-                mySettings.puzzleIOTechnique =
-                    document.getElementById('puzzle-io').checked;
 
                 mySettings.breakpoints.contradiction =
                     document.getElementById('breakpoint-contradiction').checked;
@@ -742,14 +732,6 @@ class SettingsDialog {
             }
         });
 
-        // current play mode
-        let radioPMNodes = document.querySelectorAll('.play-type');
-        radioPMNodes.forEach(radioNode => {
-            if (radioNode.getAttribute('value') == mySettings.playMode) {
-                radioNode.checked = true;
-            }
-        });
-
         document.getElementById('breakpoint-contradiction').checked =
             mySettings.breakpoints.contradiction;
         document.getElementById('breakpoint-multiple-candidates').checked =
@@ -761,13 +743,8 @@ class SettingsDialog {
         document.getElementById('breakpoint-solution').checked =
             mySettings.breakpoints.solutionDiscovered;
 
-        document.getElementById('puzzle-io').checked =
-            mySettings.puzzleIOTechnique;
-
         this.topicEvalType.style.display = 'block';
-        this.topicPlayMode.style.display = 'block';
         this.topicBreakpoints.style.display = 'block';
-        this.topicIOTechnique.style.display = 'block';
 
         this.myOpen = true;
         this.dlgNode.showModal();
@@ -787,9 +764,7 @@ class SettingsDialog {
             mySettings.breakpoints.solutionDiscovered;
 
         this.topicEvalType.style.display = 'none';
-        this.topicPlayMode.style.display = 'none';
         this.topicBreakpoints.style.display = 'block';
-        this.topicIOTechnique.style.display = 'none';
 
         this.myOpen = true;
         this.dlgNode.showModal();
@@ -2754,20 +2729,11 @@ class SudokuSolverView extends MVC_View {
         }
         this.displayProgress();
         this.displayEvalType(this.getMyModel().getActualEvalType());
-        this.displayPlayPlayType(this.getMyModel().getPlayType());
         this.displayBreakpoints(sudoApp.myClockedRunner.myBreakpoints);
         this.displayUndoRedo();
         this.displayPuzzleIOTechniqueBtns();
+        this.setSolvingButtons();
         sudoApp.mySolver.myGrid.getMyView().displayNameAndDifficulty();
-
-        /*
-        if (sudoApp.mySolver.myCurrentSearch !== undefined
-            && sudoApp.mySolver.myCurrentSearch.isCompleted()) {
-            this.displayPuzzleSolutionInfo();
-        } else {
-            this.hidePuzzleSolutionInfo();
-        }
-        */
     }
 
     displayPuzzleSolutionInfo() {
@@ -2805,27 +2771,10 @@ class SudokuSolverView extends MVC_View {
                 break;
             }
             case 'playType': {
-                switch (aspectValue) {
-                    case 'manual-solving':
-                    case 'training': {
-                        this.setTrainingButtons();
-                        break;
-                    }
-                    case 'automatic-solving':
-                    case 'automated-solving':
-                    case 'solving':
-                    case 'solving-trace': {
-                        this.setSolvingButtons();
-                        break;
-                    }
-                    default: {
-                        throw new Error('Unknown aspectValue playType ' + aspectValue);
-                    }
-                }
                 break;
             }
             case 'puzzleIOTechnique': {
-                this.displayPuzzleIOTechniqueBtns();
+                //      this.displayPuzzleIOTechniqueBtns();
                 break;
             }
             case 'puzzleLoading': {
@@ -3021,24 +2970,12 @@ class SudokuSolverView extends MVC_View {
         let downloadDBButton = document.getElementById('db-puzzle-btn-download-db');
         let downloadPzButton = document.getElementById('db-puzzle-btn-download-pz');
         let uploadButton = document.getElementById('db-puzzle-btn-upload');
-        let pIOcheckbox = document.getElementById('puzzle-io');
 
-
-        if (this.getMyModel().getPuzzleIOtechnique()) {
-            pIOcheckbox.checked = true;
-            shareBtn.style.display = 'block';
-            initDBButton.style.display = 'block';
-            downloadDBButton.style.display = 'block';
-            downloadPzButton.style.display = 'block';
-            uploadButton.style.display = 'block';
-        } else {
-            pIOcheckbox.checked = false;
-            shareBtn.style.display = 'none';
-            initDBButton.style.display = 'none';
-            downloadDBButton.style.display = 'none';
-            downloadPzButton.style.display = 'none';
-            uploadButton.style.display = 'none';
-        }
+        shareBtn.style.display = 'block';
+        initDBButton.style.display = 'block';
+        downloadDBButton.style.display = 'block';
+        downloadPzButton.style.display = 'block';
+        uploadButton.style.display = 'block';
     }
 
     displayProgress() {

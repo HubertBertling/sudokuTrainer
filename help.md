@@ -19,18 +19,17 @@ layout: default
     - [Puzzle speichern](#puzzle-speichern)
     - [Neues Puzzles generieren und laden](#neues-puzzles-generieren-und-laden)
     - [Puzzle drucken](#puzzle-drucken)
-  - [Trainer-Einstellungen](#trainer-einstellungen)
+  - [Der automatische Solver](#der-automatische-solver)
+    - [Solver-Einstellungen](#trainer-einstellungen)
     - [Einstellung Kandidatenauswertung](#einstellung-kandidatenauswertung)
-    - [Einstellung Spielmodus](#einstellung-spielmodus)
     - [Einstellung Haltepunkte](#einstellung-haltepunkte)
-    - [Einstellung Technik](#einstellung-technik)
   - [Die Lösungssuche des Solvers](#die-lösungssuche-des-solvers)
     - [Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?](#wie-wählt-der-solver-die-nächste-zelle-und-die-in-ihr-zu-setzende-nummer)
     - [Wie prüft der Solver die neu gesetzte Nummer?](#wie-prüft-der-solver-die-neu-gesetzte-nummer)
     - [Vorwärts und Rückwärts (Backtracking)](#vorwärts-und-rückwärts-backtracking)
 - [Nutzungsformen des Sudoku-Trainers](#nutzungsformen-des-sudoku-trainers)
   - [Manuelles Lösen](#manuelles-lösen)
-  - [Automatisches Lösen mit dem beobachtbaren Backtracker](#automatisches-lösen-mit-dem-beobachtbaren-backtracker)
+  - [Automatisches Lösen](#automatisches-lösen-mit-dem-beobachtbaren-backtracker)
 - [Die Puzzle-Datenbank](#die-puzzle-datenbank)
   - [Operationen der Datenbank](#operationen-der-datenbank)
   - [Import/Export und Teilen von Puzzles](#importexport-und-teilen-von-puzzles)
@@ -142,7 +141,7 @@ Die Operationen des Sudoku-Trainers werden über die Tasten und die seitliche Na
 
 |Navigationsbar | Tastenfeld |
 |---------------|------------|
-|![Initialisieren](./imagesHelp/initialsieren.png){:width="150px"}| ![ButtonsManual](./imagesHelp/TastenauswahlManuell.png){:width="300px"}|
+|![Initialisieren](./imagesHelp/initialsieren.png){:width="150px"}| ![ButtonsAutomatic](./imagesHelp/tastenauswahlAutomatik.png){: width=300px}
 
 #### Initialisieren
 
@@ -191,59 +190,41 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 
 **Menü-Option: Drucken.** Das aktuelle Puzzle wird ausgedruckt. Falls es noch nicht gespeichert wurde wird es zuvor mit einem Default-Namen 'Druck->>Datum<<' in der Datenbank gespeichert.
 
-### Trainer-Einstellungen
+### Solver-Einstellungen
 
 {: style="text-align:center"}
 ![Menue](./imagesHelp/menuEinstellung.png){: width="150px"}
 
-**Menü-Option: Einstellungen.** Aktuell kennt der Sudoku-Trainer 3 Einstellungsparameter
+**Menü-Option: Einstellungen.** Aktuell kennt der Sudoku-Trainer 2 Einstellungsparameter
 
 1. Kandidatenauswertung
-1. Spielmodus
-1. Technik
-
-#### Einstellung Kandidatenauswertung
+1. Haltepunkte der automatischen Lösungssuche
 
 {: style="text-align:center"}
 ![KandidatenAuswertung](./imagesHelp/einstellungKandidatenAuswertung.png){:max-width="75%"}
 
-#### Einstellung Spielmodus
-
 {: style="text-align:center"}
-![Spielmodus](./imagesHelp/einstellungSpielmodus.png){:max-width="75%"}
+![Haltepunkte](./imagesHelp/breakpointSettings.png){:max-width="75%"}
 
-Der Spielmodus "Manuelles Lösen", bewirkt, dass die Taste für den Solver-Start ausgeblendet wird. Der Spielmodus "Automatisches Lösen mit und ohne Haltepunkten" schaltet                                                         sie wieder zu.
 
-|Tastenauswahl Manuelles Lösen|Tastenauswahl Automatisches Lösen|
-|---------|---------|
-|![ButtonsManual](./imagesHelp/TastenauswahlManuell.png){:width=auto}|![ButtonsAutomatic](./imagesHelp/tastenauswahlAutomatik.png){: width=auto}|
+Die Taste "Starte Suche" startet den automatischen Solver der App. 
 
-Die Taste "Start Solver" startet den automatischen Solver der App. Der Solver besitzt einen eigenen Tastenblock.
+## Der automatische Solver
+
+
+Der Solver besitzt einen eigenen Tastenblock.
 ![Anwendungsansicht](./imagesHelp/AppView3.png)
 
 Die Tasten des automatischen Solvers haben folgende Bedeutung:
 
 |Taste  |Bedeutung  |
 |---------|---------|
-|![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}|**Nächster Schritt**. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.|
+|![NextStep](./imagesHelp/naechsterSchritt.png){:width="100px"}|**Nächster Suchschritt**. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.|
 |![stepSequence](./imagesHelp/schrittSequenz.png){:width="100px"}|**Suchlauf mit Haltepunkten.** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte anstößt. Wenn der automatische Suchprozess bereits läuft, wird er pausiert. Wenn er pausiert ist, wird er wieder gestartet. Dieser automatische Suchlauf traversiert den gesamten Suchraum bis er schließlich sein Ende erreicht. Er kann aber jederzeit zuvor manuell unterbrochen werden oder durch gesetzte Haltepunkte. Der markanteste Haltepunkt ist wohl "Haltepunkt bei Lösung".|
-|![haltePunkte](./imagesHelp/haltePunkteTaste.png){:width="100px"}|**Haltepunkte.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
-|![NextSolution](./imagesHelp/nextSolution.png){:width="100px"}|**Weitere Lösung**. Beim Drücken dieser Taste führt der Solver im Hintergrund die Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt. |
-|![solutionSequence](./imagesHelp/solutionSequenceBtn.png){:width="100px"}|**Weitere Lösungen ...** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist die Sequenz der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.|
+|![haltePunkte](./imagesHelp/haltePunkteTaste.png){:width="100px"}|**Haltepunkte setzen.** Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.|
+|![NextSolution](./imagesHelp/nextSolution.png){:width="100px"}|**Weitere Lösung anzeigen**. Beim Drücken dieser Taste führt der Solver im Hintergrund eine Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt. |
+|![solutionSequence](./imagesHelp/solutionSequenceBtn.png){:width="100px"}|**Lösungen zählen ...** Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist das Zählen der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.|
 |![Close](./imagesHelp/closeSolver.png){:width="100px"}|**Schließen.** Die automatische Suche wird abgebrochen bzw. beendet.|
-
-#### Einstellung Haltepunkte
-
-![Haltepunkte](./imagesHelp/einstellungHaltepunkte.png){:max-width="75%"}
-
-Auf der Einstellungsseite können verschiedene Haltepunkte des automatischen Lösungslaufes gesetzt und abgewählt werden.  
-
-#### Einstellung Technik
-
-- **Import/Export == on:** In der Hauptansicht ist der Teile-Button zugeschaltet. In der Datenbankansicht sind die Buttons für Puzzle-Download und -Import zugeschaltet.
-- **Import/Export == off:** In der Hauptansicht ist der Teile-Button ausgeblendet. In der Datenbankansicht sind die Buttons für Puzzle-Download und -Import ausgeblendet.
-
-### Die Lösungssuche des Solvers
 
 #### Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?
 
@@ -271,7 +252,6 @@ Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer 
 Werkzeugeinstellung:
 
 - **Kandidatenauswertung:** Keine Kandidatenanzeige  
-- **Spielmodus:** Manuelles Lösen
 
 Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Zellen setzt. Will der Spieler sich der Herausforderung einer manuellen Lösungssuche ernsthaft stellen, verzichtet er auf jede Hilfe durch den Solver. Keine Kandidatenanzeige: denn sie würde ja die notwendigen Kandidaten anzeigen.
 
@@ -285,7 +265,6 @@ Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. V
 Werkzeugeinstellung:
 
 - **Kandidatenauswertung:** Keine Kandidatenanzeige oder Lazy.
-- **Spielmodus:** Automatisches Lösen mit Haltepunkten.
 - **Haltepunkte:** Haltepunkte nach Bedarf zu- und abschalten.
 
 In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. Sie ist damit besonders lehrreich. Der Spieler beobachtet die Lösungssuche anstatt selber die Lösung zu suchen, indem er automatische Lösungsschritte ausführen lässt. Deshalb an dieser Stelle eine Übersicht über die Arten automatischer Schritte. Die folgenden Darstellungen nehmen Bezug auf das Puzzle "Backtrack_10". Es ist in jeder Puzzle-Datenbank vorhanden. Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".  
@@ -476,7 +455,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 
 ### Die initiale Datenbank ist nicht leer
 
-Sie enthält zwei sehr schwere Puzzles, 'Backtrack_10' und 'Backtrack_23'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. Hinweis: dieser Solver hat nur eine Teilmenge der bekannten logischen Kriterien für die Lösung von Puzzles implementiert. Das ist aber nicht weiter problematisch, da sich die Kriterien überschneiden. D.h. in einer gegebenen Lösungssituation eines Puzzles sind mehrere Kriterien gleichzeitig anwendbar. In den Zeitungen und Zeitschriften findet man solche Puzzles (sehr schwere) nicht. Im Internet gibt es unter anderen diese bekannte Adresse [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php), bei der man solche Puzzles finden kann.
+Sie enthält zwei sehr schwere Puzzles, 'Backtrack_10' und 'Backtrack_23'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. Hinweis: dieser Solver hat nur eine Teilmenge der bekannten logischen Kriterien für die Lösung von Puzzles implementiert. Das ist aber nicht weiter problematisch, da sich die Kriterien überschneiden. D.h. in einer gegebenen Lösungssituation eines Puzzles sind mehrere Kriterien gleichzeitig anwendbar. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Dieser Trainer kann sehr schwere Puzzles generieren. Im Internet kann zum Beispiel bei dieser bekannte Adresse [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
 
 ## Sudoku-Theorie
 
@@ -602,7 +581,7 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 1. **Mittel:** Durch die Bestimmung notwendiger Nummern und mindestens eines [Singles](#die-möglichen-inhalte-einer-sudoku-zelle) kann die Lösung des Sudokus erreicht werden.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens die Bestimmung eines [Hidden Single](#die-möglichen-inhalte-einer-sudoku-zelle). Für die Bestimmung des Hidden Singles müssen unzulässige Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
 1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Rückwärtsläufe durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '#RL' wird in der Datenbanktabelle angezeigt.
-1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Mit der Taste 'Lösungen' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku).
+1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die **mehrere Lösungen** haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku).
 Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.
 
 ### Übersicht über die Bedeutung der Schwierigkeitsgrade
@@ -628,7 +607,7 @@ Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen
 
 Extrem oder sehr schwere Sudokus eignen sich nicht für die manuelle Lösungssuche, da das notwendige Backtracking mit Papier und Bleistift durchgeführt werden müsste. Die in den Zeitungen oder Zeitschriften als 'Leicht', 'Mittel' oder 'Schwer' klassifizierten Sudoku-Puzzles sind meistens in dem hier dargestellten Sinn 'Sehr leicht', 'Leicht' oder 'Mittel'. Selten auch einmal 'Schwer'. D.h. die Zeitungs-Sudokus sind in der Regel fair. Sie können ohne Backtracking gelöst werden.
 
-Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an.
+Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe [Unterstützung der manuellen Lösung von Puzzles](#unterstützung-der-manuellen-lösung-von-puzzles). 
 
 ## Sudoku im Internet
 
