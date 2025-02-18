@@ -2770,13 +2770,6 @@ class SudokuSolverView extends MVC_View {
                 }
                 break;
             }
-            case 'playType': {
-                break;
-            }
-            case 'puzzleIOTechnique': {
-                //      this.displayPuzzleIOTechniqueBtns();
-                break;
-            }
             case 'puzzleLoading': {
                 // Zoom-in-effect of newly loaded puzzle
                 let mainGrid = document.getElementById('main-sudoku-grid');
@@ -2942,28 +2935,7 @@ class SudokuSolverView extends MVC_View {
         solutionNode.checked = breakpoints.solutionDiscovered;
     }
 
-    displayPlayPlayType(pt) {
-        let manualSolvingNode = document.getElementById('manual-solving');
-        let automaticSolvingNode = document.getElementById('automated-solving');
-        switch (pt) {
-            case 'manual-solving':
-            case 'training': {
-                manualSolvingNode.checked = true;
-                automaticSolvingNode.checked = false;
-                break;
-            }
-            case 'automated-solving':
-            case 'solving':
-            case 'solving-trace': {
-                automaticSolvingNode.checked = true;
-                manualSolvingNode.checked = false;
-                break;
-            }
-            default: {
-                throw new Error('Unknown play-mode: ' + pt);
-            }
-        }
-    }
+    
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
         let initDBButton = document.getElementById('db-pz-btn-init');

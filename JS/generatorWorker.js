@@ -19,7 +19,7 @@ class SudokuGeneratorApp {
     init() {
         this.mySolver.myGrid.init();
         this.mySolver.setActualEvalType('strict-plus');
-        this.mySolver.setPlayType('automated-solving');
+        // this.mySolver.setPlayType('automated-solving');
         this.myNewPuzzleGenerator.start();
     }
 

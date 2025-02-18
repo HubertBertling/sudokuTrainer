@@ -20,7 +20,7 @@ layout: default
     - [Neues Puzzles generieren und laden](#neues-puzzles-generieren-und-laden)
     - [Puzzle drucken](#puzzle-drucken)
   - [Der automatische Solver](#der-automatische-solver)
-    - [Solver-Einstellungen](#trainer-einstellungen)
+    - [Solver-Einstellungen](#solver-einstellungen)
     - [Einstellung Kandidatenauswertung](#einstellung-kandidatenauswertung)
     - [Einstellung Haltepunkte](#einstellung-haltepunkte)
   - [Die Lösungssuche des Solvers](#die-lösungssuche-des-solvers)

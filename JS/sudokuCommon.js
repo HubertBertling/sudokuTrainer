@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 766;
+let VERSION = 767;
 
 // ==========================================
 // Basic classes
@@ -342,6 +342,7 @@ class Search {
     // is completed.
     constructor(solver, grid) {
         this.mySolver = solver;
+        this.isTippSearch = false
         this.myGrid = grid;
         this.myStepper = new StepperOnGrid(this, this.myGrid);
         this.myGrid.clearAutoExecCellInfos();
@@ -3938,8 +3939,6 @@ class SudokuSolver extends MVC_Model {
         // The solver knows the following evaluation methods
         // 'lazy', 'lazy-invisible', 'strict-plus', 'strict-minus' 
         this.currentEvalType = 'lazy-invisible';
-        // There are two play-modes 'manual-solving' and 'automated-solving'.
-        this.playType = 'automated-solving';
     }
 
     unsetCurrentPuzzle() {
@@ -4177,30 +4176,8 @@ class SudokuSolver extends MVC_Model {
         return this.myCurrentSearch !== undefined;
     }
 
-    setPlayType(pt) {
-        switch (pt) {
-            case 'manual-solving':
-            case 'training': {
-                this.playType = 'manual-solving';
-                break;
-            }
-            case 'automated-solving':
-            case 'automatic-solving':
-            case 'solving':
-            case 'solving-trace': {
-                this.playType = 'automated-solving';
-                break;
-            }
-
-            default: {
-                throw new Error('Unknown playType: ' + pt);
-            }
-        }
-        this.notifyAspect('playType', pt);
-    }
-
-    getPlayType() {
-        return this.playType;
+    isTippSearching() {
+        return this.isSearching() && this.myCurrentSearch.isTippSearch;
     }
 
     isNotPartiallySolved() {
@@ -4390,7 +4367,6 @@ class SudokuSolver extends MVC_Model {
 
     tryStartAutomaticSearchStep() {
         this.myCurrentSearch = new Search(this, this.myGrid);
-
     }
 
     succeeds() {
@@ -4589,28 +4565,33 @@ class SudokuSolverController {
 
 
     handleNumberPressed(nr) {
-        let action = {
-            operation: 'setNr',
-            cellIndex: this.mySolver.myGrid.indexSelected,
-            cellValue: nr
-        }
-        if (action.cellIndex > -1) {
-            this.mySolver.atCurrentSelectionSetNumber(nr);
-            this.myUndoActionStack.push(action);
-            if (this.mySolver.succeeds()) {
-                sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
-                    this, () => { }
-                );
+        if (this.mySolver.isSearching() && !this.mySolver.isTippSearching()) {
+            sudoApp.myInfoDialog.open("Nummer setzen", "negativ",
+                "Während der Solver-Ausführung kann manuell keine Zelle gesetzt werden.", this, () => { });
+        } else {
+            let action = {
+                operation: 'setNr',
+                cellIndex: this.mySolver.myGrid.indexSelected,
+                cellValue: nr
             }
-            if (this.mySolver.isSearching()) {
-                this.mySolver.cleanUpAndDeleteCurrentSearch();
+            if (action.cellIndex > -1) {
+                this.mySolver.atCurrentSelectionSetNumber(nr);
+                this.myUndoActionStack.push(action);
+                if (this.mySolver.succeeds()) {
+                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
+                        this, () => { }
+                    );
+                }
+                if (this.mySolver.isSearching()) {
+                    this.mySolver.cleanUpAndDeleteCurrentSearch();
+                    this.mySolver.notify();
+                }
+                this.mySolver.myGrid.unsetStepLazy();
+                this.mySolver.deselect();
                 this.mySolver.notify();
             }
-            this.mySolver.myGrid.unsetStepLazy();
-            this.mySolver.deselect();
-            this.mySolver.notify();
+            sudoApp.mySolverView.hidePuzzleSolutionInfo();
         }
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
 
     handleDeleteKeyPressed(event) {
@@ -4704,7 +4685,7 @@ class SudokuSolverController {
         if (this.mySolver.isSearching()) {
             // Number button pressed during automatic execution
             sudoApp.myInfoDialog.open("Nummer löschen", "negativ",
-                "Während der Solver-Ausführung kann manuell keine Zelle gesetzt oder gelöscht werden.", this, () => { });
+                "Während der Solver-Ausführung kann manuell keine Zelle gelöscht werden.", this, () => { });
         } else {
             let action = {
                 operation: 'delete',
@@ -4875,6 +4856,7 @@ class SudokuSolverController {
                     "Für extrem schwere Puzzles kann kein Tipp gegeben werden.", this, () => { });
             } else {
                 this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+                this.mySolver.myCurrentSearch.isTippSearch = true;
                 // Select the next cell
                 this.mySolver.performSearchStep();
                 this.mySolver.notify();
@@ -5538,7 +5520,7 @@ class AppSettingsRecord {
             'lazy',
             'strict-plus',
             'strict-minus']);
-       };
+    };
     static nullAppSettingsRecord() {
         return {
             evalType: 'lazy-invisible',
@@ -5576,7 +5558,6 @@ class SudokuFastSolverApp {
         // For background functionality, the fastest evaluation method 
         // is 'strict-plus'.
         this.mySolver.setActualEvalType('strict-plus');
-        this.mySolver.setPlayType('automated-solving');
     }
 
     breakpointPassed(bp) {
