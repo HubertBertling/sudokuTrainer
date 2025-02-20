@@ -2,67 +2,59 @@
 layout: default
 ---
 
-<!-- vscode-markdown-toc -->
-* 1. [Sudoku-Trainer Installation](#Sudoku-TrainerInstallation)
-* 2. [Einführung in die App](#EinfhrungindieApp)
-	* 2.1. [Trainer für klassisches Sudoku](#TrainerfrklassischesSudoku)
-	* 2.2. [Sudoku-Puzzle](#Sudoku-Puzzle)
-	* 2.3. [Die möglichen Inhalte einer Sudoku-Zelle](#DiemglichenInhalteeinerSudoku-Zelle)
-	* 2.4. [Zwei Spielphasen](#ZweiSpielphasen)
-	* 2.5. [Jeder Lösungsschritt mit zwei Subschritten](#JederLsungsschrittmitzweiSubschritten)
-	* 2.6. [Trainer-Operationen](#Trainer-Operationen)
-	* 2.7. [Solver-Einstellungen](#Solver-Einstellungen)
-* 3. [Der automatische Solver](#DerautomatischeSolver)
-	* 3.1. [Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?](#WiewhltderSolverdienchsteZelleunddieinihrzusetzendeNummer)
-	* 3.2. [Wie prüft der Solver die neu gesetzte Nummer?](#WieprftderSolverdieneugesetzteNummer)
-	* 3.3. [Vorwärts und Rückwärts (Backtracking)](#VorwrtsundRckwrtsBacktracking)
-* 4. [Nutzungsformen des Sudoku-Trainers](#NutzungsformendesSudoku-Trainers)
-	* 4.1. [Manuelles Lösen](#ManuellesLsen)
-	* 4.2. [Automatisches Lösen](#AutomatischesLsen)
-* 5. [Die Puzzle-Datenbank](#DiePuzzle-Datenbank)
-	* 5.1. [Operationen der Datenbank](#OperationenderDatenbank)
-	* 5.2. [Import/Export und Teilen von Puzzles](#ImportExportundTeilenvonPuzzles)
-		* 5.2.1. [Teilen der Sudoku-Trainer-App URL](#TeilenderSudoku-Trainer-AppURL)
-		* 5.2.2. [Puzzle von SmartPhone zu SmartPhone](#PuzzlevonSmartPhonezuSmartPhone)
-		* 5.2.3. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#PuzzleDatenbankvomPCaufdasSmartphonebertragen)
-	* 5.3. [Die initiale Datenbank ist nicht leer](#DieinitialeDatenbankistnichtleer)
-* 6. [Sudoku-Theorie](#Sudoku-Theorie)
-	* 6.1. [Unzulässige Nummern und Kandidaten](#UnzulssigeNummernundKandidaten)
-	* 6.2. [Notwendige Kandidaten](#aNotwendigeKandidaten)
-	* 6.3. [Einzige Kandidaten (Singles)](#EinzigeKandidatenSingles)
-	* 6.4. [Unzulässige Kandidaten und versteckt einzige Kandidaten](#UnzulssigeKandidatenundversteckteinzigeKandidaten)
-	* 6.5. [Kriterien für die Erkennung unzulässiger Kandidaten](#KriterienfrdieErkennungunzulssigerKandidaten)
-		* 6.5.1. [Kriterium "Notwendige Nummer"](#KriteriumNotwendigeNummer)
-		* 6.5.2. [Kriterium "Nacktes Paar"](#KriteriumNacktesPaar)
-		* 6.5.3. [Kriterium: "Verstecktes Paar"](#Kriterium:VerstecktesPaar)
-		* 6.5.4. [Kriterium: Überschneidung](#Kriterium:berschneidung)
-		* 6.5.5. [Kriterium: Pointing Pair, Pointing Triple](#Kriterium:PointingPairPointingTriple)
-	* 6.6. [Methoden der Kandidatenauswertung](#MethodenderKandidatenauswertung)
-	* 6.7. [Vergleich der Auswertungsmodi Lazy und Strikt](#VergleichderAuswertungsmodiLazyundStrikt)
-	* 6.8. [Widerspruchsvolle Puzzles](#WiderspruchsvollePuzzles)
-		* 6.8.1. [ Widerspruchsvolle Zellen](#WiderspruchsvolleZellen)
-		* 6.8.2. [Widerspruchsvolle Gruppen](#WiderspruchsvolleGruppen)
-	* 6.9. [Schwierigkeitsgrade (Levels)](#SchwierigkeitsgradeLevels)
-	* 6.10. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#bersichtberdieBedeutungderSchwierigkeitsgrade)
-	* 6.11. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#WelcherSchwierigkeitsgradfrwelchenSpielertyp)
-	* 6.12. [Faire Puzzles](#FairePuzzles)
-* 7. [Sudoku im Internet](#SudokuimInternet)
+1. [Sudoku-Trainer](#sudoku-trainer)
+   1. [Sudoku-Trainer Installation](#sudoku-trainer-installation)
+   2. [Einführung in die App](#einführung-in-die-app)
+      1. [Trainer für klassisches Sudoku](#trainer-für-klassisches-sudoku)
+      2. [Sudoku-Puzzle](#sudoku-puzzle)
+      3. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
+      4. [Zwei Spielphasen](#zwei-spielphasen)
+      5. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
+      6. [Trainer-Operationen](#trainer-operationen)
+      7. [Solver-Einstellungen](#solver-einstellungen)
+   3. [Der automatische Solver](#der-automatische-solver)
+      1. [Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?](#wie-wählt-der-solver-die-nächste-zelle-und-die-in-ihr-zu-setzende-nummer)
+      2. [Wie prüft der Solver die neu gesetzte Nummer?](#wie-prüft-der-solver-die-neu-gesetzte-nummer)
+      3. [Vorwärts und Rückwärts (Backtracking)](#vorwärts-und-rückwärts-backtracking)
+   4. [Nutzungsformen des Sudoku-Trainers](#nutzungsformen-des-sudoku-trainers)
+      1. [Manuelles Lösen](#manuelles-lösen)
+      2. [Automatisches Lösen](#automatisches-lösen)
+   5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
+      1. [Operationen der Datenbank](#operationen-der-datenbank)
+      2. [Import/Export und Teilen von Puzzles](#importexport-und-teilen-von-puzzles)
+         1. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
+         2. [Puzzle von SmartPhone zu SmartPhone](#puzzle-von-smartphone-zu-smartphone)
+         3. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
+      3. [Die initiale Datenbank ist nicht leer](#die-initiale-datenbank-ist-nicht-leer)
+   6. [Sudoku-Theorie](#sudoku-theorie)
+      1. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
+      2. [Notwendige Kandidaten](#notwendige-kandidaten)
+      3. [Einzige Kandidaten (Singles)](#einzige-kandidaten-singles)
+      4. [Unzulässige Kandidaten und versteckt einzige Kandidaten](#unzulässige-kandidaten-und-versteckt-einzige-kandidaten)
+      5. [Kriterien für die Erkennung unzulässiger Kandidaten](#kriterien-für-die-erkennung-unzulässiger-kandidaten)
+         1. [Kriterium "Notwendige Nummer"](#kriterium-notwendige-nummer)
+         2. [Kriterium "Nacktes Paar"](#kriterium-nacktes-paar)
+         3. [Kriterium: "Verstecktes Paar"](#kriterium-verstecktes-paar)
+         4. [Kriterium: Überschneidung](#kriterium-überschneidung)
+         5. [Kriterium: Pointing Pair, Pointing Triple](#kriterium-pointing-pair-pointing-triple)
+      6. [Methoden der Kandidatenauswertung](#methoden-der-kandidatenauswertung)
+      7. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
+      8. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
+         1. [Widerspruchsvolle Zellen](#widerspruchsvolle-zellen)
+         2. [Widerspruchsvolle Gruppen](#widerspruchsvolle-gruppen)
+      9. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
+      10. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#übersicht-über-die-bedeutung-der-schwierigkeitsgrade)
+      11. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
+      12. [Faire Puzzles](#faire-puzzles)
+   7. [Sudoku im Internet](#sudoku-im-internet)
 
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
 
 # Sudoku-Trainer
 
 ## Sudoku-Trainer Installation
 
-Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist sehr einfach, siehe etwa [Installation-Web-App](https://support.google.com/chrome/answer/9658361?hl=de&co=GENIE.Platform%3DAndroid&oco=1). Nachfolgend ein Beisiel für Chrome und Edge auf einem Android-Gerät. Führe folgende Schritte durch:
+Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser is
 
-1. Öffne auf deinem Android-Gerät den Browser Chrome.
-1. Rufe die Website (<https://hubertbertling.github.io/sudokuTrainer/>) auf.
-1. Tippe rechts  rechts in der Adressleiste auf „Mehr“ und dann > Zum Start-Bildschirm hinzufügen > Installieren.
 
 |Installation | Installation |
 |---------------|------------|
