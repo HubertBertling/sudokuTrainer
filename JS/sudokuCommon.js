@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 772;
+let VERSION = 773;
 
 // ==========================================
 // Basic classes
@@ -5107,7 +5107,7 @@ class SudokuSolverController {
                 // The loaded puzzle is not yet element in the database.
                 // Save loaded puzzle with new name in the database
                 // A default name is defined
-                let newPuzzleName = 'PZ (' + new Date().toLocaleString('de-DE') + ')';
+                let newPuzzleName = 'PZ';
                 // the current puzzle gets this name
                 this.mySolver.setLoadedPuzzleName(newPuzzleName);
                 // The user is asked for a name
