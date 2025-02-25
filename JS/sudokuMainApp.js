@@ -1631,9 +1631,10 @@ class SudokuPrintView extends MVC_View {
     loadHeader() {
         let puzzleIdentityRow = document.getElementById('print-pz-id-row');
         let name = sudoApp.myPuzzleDB.getSelectedPuzzle().name;
+        let date = sudoApp.myPuzzleDB.getSelectedPuzzle().date;
         let level = sudoApp.myPuzzleDB.getSelectedPuzzle().preRunRecord.level;
         puzzleIdentityRow.innerHTML =
-            '<b>Puzzle-Name:</b> &nbsp' + name + '; &nbsp'
+            '<b>Puzzle-Name:</b> &nbsp' + name + ', &nbsp' + new Date(date).toLocaleDateString() + '; &nbsp'
             + '<b>Schwierigkeitsgrad:</b> &nbsp' + level + ';';
     }
 
@@ -1985,7 +1986,7 @@ class SudokuGridView extends MVC_View {
                 '<span class="pz-level"><b>Level:</b> &nbsp' + 'Keine Angabe' + '</span>'
         } else {
             evalNode.innerHTML =
-                '<span class="pz-name"><b>Puzzle:</b> &nbsp' + currentPuzzle.myRecord.name + '</span>' +
+                '<span class="pz-name"><b>Puzzle:</b> &nbsp' + currentPuzzle.myRecord.name + ', &nbsp' + new Date(currentPuzzle.myRecord.date).toLocaleDateString() + '</span>' +
                 '<span class="pz-level"><b>Level:</b> &nbsp' + currentPuzzle.myRecord.preRunRecord.level + '</span>'
         }
     }
