@@ -263,7 +263,7 @@ html {
 
 #help-button {
     width: 3.8rem;
-    right: 0.6rem;
+    left: 0.6rem;
     position: absolute;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
@@ -284,7 +284,7 @@ html {
 
 .share-icon {
     position: absolute;
-    left: 20%
+    left: 22%
 }
 
 #db-close-btn {
@@ -294,7 +294,7 @@ html {
 
 .menu-icon {
     position: absolute;
-    left: 1.2rem;
+    right: 1.2rem;
 }
 
 .menu-icon-line {
