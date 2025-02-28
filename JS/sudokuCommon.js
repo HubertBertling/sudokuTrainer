@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 775;
+let VERSION = 776;
 
 // ==========================================
 // Basic classes
@@ -5173,7 +5173,7 @@ class SudokuSolverController {
             if (!sudoApp.myPuzzleDB.has(this.mySolver.myCurrentPuzzle.myRecord.id)) {
                 // The current puzzle is not yet an element in the database.
                 // Save the current puzzle with a new name in the database.
-                let newName = 'Druck (' + new Date().toLocaleString('de-DE') + ')';
+                let newName = 'Druck';
                 this.mySolver.myCurrentPuzzle.myRecord.name = newName;
                 sudoApp.myPuzzleDB.savePuzzle(this.mySolver.myCurrentPuzzle.myRecord);
             }

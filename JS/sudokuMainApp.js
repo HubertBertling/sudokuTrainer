@@ -1261,7 +1261,7 @@ class SudokuPuzzleDB extends MVC_Model {
         if (!sudoApp.myPuzzleDB.has(currentPuzzleRecord.id)) {
             // The current puzzle is not yet an element in the database.
             // Save the current puzzle with a new name in the database
-            currentPuzzleRecord.name = 'Geteilt (' + new Date().toLocaleString('de-DE') + ')';
+            currentPuzzleRecord.name = 'Geteilt';
             sudoApp.myPuzzleDB.savePuzzle(currentPuzzleRecord);
         } else {
             // The current puzzle is element in the database.
