@@ -1425,8 +1425,9 @@ label {
 
 #search-level,
 #loader-db-info {
-    width: 14rem;
-    padding: 1.4rem;
+    margin-top: 3rem;
+    width: 15rem;
+    padding: 1rem;
     font-size: var(--font-size-lg);
     color: black;
     background-color: white;
