@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 778;
+let VERSION = 779;
 
 // ==========================================
 // Basic classes
@@ -4361,7 +4361,7 @@ class SudokuSolver extends MVC_Model {
                 sudoApp.mySolverController.resetConfirmed,
                 sudoApp.mySolverController.resetRejected,
                 "Puzzle zurücksetzen?",
-                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver keine korrekten Antworten über mögliche Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
+                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver die Vollständigkeit berechneter Lösungen nicht garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
     }
 
@@ -4904,6 +4904,9 @@ class SudokuSolverController {
         this.myUndoActionStack.push(action);
         this.mySolver.reset();
         this.mySolver.notify();
+
+        this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+        sudoApp.myTrackerDialog.open();
     }
 
     resetRejected() {
