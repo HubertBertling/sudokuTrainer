@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 779;
+let VERSION = 780;
 
 // ==========================================
 // Basic classes
@@ -4502,7 +4502,7 @@ class SudokuSolverController {
         this.btns = document.querySelectorAll('.btn-reset');
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
-                this.resetLinkPressed();
+                this.resetBtnPressed();
             })
         });
 
@@ -4812,7 +4812,7 @@ class SudokuSolverController {
         sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
     }
 
-    resetLinkPressed() {
+    resetBtnPressed() {
         sudoApp.myNavBar.closeNav();
         sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
@@ -4820,13 +4820,8 @@ class SudokuSolverController {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es nicht zurückgesetzt werden.", this, () => { });
         } else {
-            if (sudoApp.mySolver.isSearching()) {
-                // sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
-                //     "bei laufendem Solver kann die Puzzle-Lösung nicht zurückgesetzt werden.", this, () => { });
-                sudoApp.mySolverController.trackerDlgStopPressed();
-            }
             let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
-            this.resetConfirmed();
+            this.resetOperation();
             if (tmpIndex !== -1) {
                 sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
             }
@@ -4889,12 +4884,7 @@ class SudokuSolverController {
         // Nothing to do
     }
 
-    resetConfirmed() {
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
-
-        sudoApp.myClockedRunner.stop('cancelled');
-        sudoApp.myTrackerDialog.close();
-
+    resetOperation() {
         let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
         let action = {
             operation: 'reset',
@@ -4904,7 +4894,10 @@ class SudokuSolverController {
         this.myUndoActionStack.push(action);
         this.mySolver.reset();
         this.mySolver.notify();
+    }
 
+    resetConfirmed() {
+        this.resetOperation();
         this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
         sudoApp.myTrackerDialog.open();
     }
@@ -4966,7 +4959,7 @@ class SudokuSolverController {
                 break;
             }
             case 'reset': {
-                this.resetLinkPressed();
+                this.resetBtnPressed();
                 break;
             }
             case 'setNr': {
