@@ -8,20 +8,21 @@ class SudokuGeneratorApp {
         // ==============================================================
         // Components of the app
         // ==============================================================
-        // 1. The solver component
         this.mySolver = new SudokuSolver(this);
-        // 2. The synchronous search step loop.
         this.mySyncRunner = new SynchronousRunner();
-        // 3. The PuzzleGenerator
         this.myNewPuzzleGenerator = new NewPuzzleGenerator();
     }
 
     init() {
-        this.mySolver.myGrid.init();
+        this.mySolver.init();
+        // The fastest evaluation method is 'strict-plus'.
         this.mySolver.setActualEvalType('strict-plus');
-        // this.mySolver.setPlayType('automated-solving');
+    }
+
+    startPuzzleGenerator() {;
         this.myNewPuzzleGenerator.start();
     }
+
 
     breakpointPassed(bp) {
         this.mySyncRunner.breakpointPassed(bp);
@@ -159,6 +160,7 @@ function startGeneratorApp() {
     //A worker app is assigned to the variable "sudoApp".
     sudoApp = new SudokuGeneratorApp();
     sudoApp.init();
+    sudoApp.startPuzzleGenerator(); 
 }
 
 startGeneratorApp();

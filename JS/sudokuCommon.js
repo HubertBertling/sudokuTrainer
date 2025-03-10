@@ -22,6 +22,72 @@ class Randomizer {
         return randoms;
     }
 }
+
+class IndexCalculator {
+    /*
+        0	1	2	3	4	5	6	7	8
+        9	10	11	12	13	14	15	16	17
+        18	19	20	21	22	23	24	25	26
+        27	28	29	30	31	32	33	34	35
+        36	37	38	39	40	41	42	43	44
+        45	46	47	48	49	50	51	52	53
+        54	55	56	57	58	59	60	61	62
+        63	64	65	66	67	68	69	70	71
+        72	73	74	75	76	77	78	79	80
+     */
+
+    static getCellIndexRow(row, i) {
+        return row * 9 + i;
+    }
+
+    static getCellIndexCol(col, i) {
+        return col + 9 * i;
+    }
+
+    static getCellIndexBlock(block, i) {
+        return Math.floor(block / 3) * 3 * 9 + Math.floor(i / 3) * 9 + i % 3;
+    }
+
+    static calcBlockIndex(row, col) {
+        if (row == 0 && col == 0) {
+            return 0;
+        } else if (row == 0 && col == 1) {
+            return 1;
+        } else if (row == 0 && col == 2) {
+            return 2;
+        } else if (row == 1 && col == 0) {
+            return 3;
+        } else if (row == 1 && col == 1) {
+            return 4;
+        } else if (row == 1 && col == 2) {
+            return 5;
+        } else if (row == 2 && col == 0) {
+            return 6;
+        } else if (row == 2 && col == 1) {
+            return 7;
+        } else if (row == 2 && col == 2) {
+            return 8;
+        }
+    }
+    static rowIndex(cellIndex) {
+        return Math.floor(cellIndex / 9);
+    }
+    static colIndex(cellIndex) {
+        return cellIndex % 9;
+    }
+    static blockRow(cellIndex) {
+        return Math.floor(this.rowIndex(cellIndex) / 3);
+    }
+    static blockCol(cellIndex) {
+        return Math.floor(this.colIndex(cellIndex) / 3);
+    }
+    static blockIndex(cellIndex) {
+        return this.calcBlockIndex(this.blockRow(cellIndex), this.blockCol(cellIndex));
+    }
+}
+
+
+
 class MatheSet extends Set {
     // The mathematical set without repetitions.
     // Used intensively for the calculation of inadmissible
@@ -86,6 +152,7 @@ class MatheSet extends Set {
         }
     }
 }
+/* 
 class MVC_Model {
     constructor() {
         this.myObservers = [];
@@ -133,6 +200,7 @@ class MVC_Model {
         });
     }
 }
+     */
 // ==========================================
 // Automation
 // ==========================================
@@ -1255,18 +1323,19 @@ class Puzzle {
 // Grid related classes 
 // ==========================================
 
-class SudokuGroup extends MVC_Model {
+class SudokuGroup {
     // Abstrakte Klasse, deren konkrete Instanzen
     // ein Block, eine Spalte oder Reihe der Tabelle sind
-    constructor(suTable) {
-        super();
-        // Die Collection kennt ihre Tabelle
-        this.myGrid = suTable;
-        this.myCells = [];
+    constructor(cells) {
+        this.myCells = cells;
         // In jedem Block, jeder Spalte und Reihe müssen alle Zahlen 1..9 einmal vorkommen.
         // Für eine konkreten Block, eine Spalte oder Reihe sind MissingNumbers Zahlen,
         // die nicht in ihr vorkommen.
         this.myPairInfos = [];
+    }
+
+    getMyCells() {
+        return this.myCells;
     }
 
     clear() {
@@ -1854,10 +1923,14 @@ class BlockVector {
 
 }
 class SudokuBlock extends SudokuGroup {
-    constructor(suTable, blockIndex) {
-        // Der Block kennt seine Tabelle und seinen Index
-        super(suTable);
-        this.myIndex = blockIndex;
+    constructor(blockIndex) {
+        let tmpCells = [];
+        for (let i = 0; i < 9; i++) {
+            tmpCells.push(sudoApp.mySolver.myGrid.sudoCells[IndexCalculator.getCellIndexBlock(blockIndex, i)]);
+        }
+        super(tmpCells);
+        this.myIndex = rowIndex;
+
         this.myOrigin = {
             row: -1,
             col: -1
@@ -1976,48 +2049,39 @@ class SudokuBlock extends SudokuGroup {
     }
 }
 class SudokuRow extends SudokuGroup {
-    constructor(suGrid, index) {
-        super(suGrid);
-        this.myIndex = index;
-    }
-
-    addCell(sudoCell) {
-        this.myCells.push(sudoCell);
-        sudoCell.setRow(this);
+    constructor(rowIndex) {
+        let myCells = [];
+        for (let i = 0; i < 9; i++) {
+            myCells.push(sudoApp.mySolver.myGrid.sudoCells[IndexCalculator.getCellIndexRow(rowIndex, i)]);
+        }
+        super(myCells);
+        this.myIndex = rowIndex;
     }
 }
 
 class SudokuCol extends SudokuGroup {
-    constructor(suGrid, index) {
-        super(suGrid);
-        this.myIndex = index;
+    constructor(colIndex) {
+        let myCells = [];
+        for (let i = 0; i < 9; i++) {
+            myCells.push(sudoApp.mySolver.myGrid.sudoCells[IndexCalculator.getCellIndexCol(colIndex, i)]);
+        }
+        super(myCells);
+        this.myColIndex = colIndex;
     }
-    addCell(sudoCell) {
-        this.myCells.push(sudoCell);
-        sudoCell.setCol(this);
-    }
-
 }
 
-class SudokuGrid extends MVC_Model {
+class SudokuGrid {
     // Speichert die Sudokuzellen in der Wrapper-Version
-    constructor(solver) {
-        super();
-        // parent
-        this.mySolver = solver;
+    constructor() {
         // the grid content
         this.sudoCells = [];
-        this.sudoBlocks = [];
-        this.sudoRows = [];
-        this.sudoCols = [];
         // Aktuell selektierte Zelle
         this.indexSelected = -1;
         // In der selektierten Zelle die Indices der selektierten
         // zulässigen Nummer
         this.candidateIndexSelected = -1;
         // Im aktuellen Lösungsschritt wird das grid
-        // im lazy mode angezeigt. Dies ist dann nützlich, wenn der
-        // Solver einen hidden single step durchführt und erklärt
+        // im lazy mode angezeigt. Siehe Tipp-Taste.
         this.stepLazy = false;
     }
 
@@ -2139,6 +2203,7 @@ class SudokuGrid extends MVC_Model {
         return this.sudoCells[9 * row + col];
     }
 
+    /*
     puzzleSolved() {
         for (let i = 0; i < 81; i++) {
             if (this.sudoCells[i].getValue() == '0') {
@@ -2147,6 +2212,8 @@ class SudokuGrid extends MVC_Model {
         }
         return true;
     }
+        */
+
     numberOfNonEmptyCells() {
         let tmp = 0;
         for (let i = 0; i < 81; i++) {
@@ -2242,9 +2309,10 @@ class SudokuGrid extends MVC_Model {
     // Other methods
     // ========================================================
     evaluateMatrix() {
-        if (this.mySolver.currentEvalType == 'lazy-invisible') this.evaluateGridLazy();
-        if (this.mySolver.currentEvalType == 'lazy') this.evaluateGridLazy();
-        if (this.mySolver.currentEvalType == 'strict-plus' || this.mySolver.currentEvalType == 'strict-minus') this.evaluateGridStrict();
+        if (sudoApp.mySolver.currentEvalType == 'lazy-invisible') this.evaluateGridLazy();
+        if (sudoApp.mySolver.currentEvalType == 'lazy') this.evaluateGridLazy();
+        if (sudoApp.mySolver.currentEvalType == 'strict-plus'
+            || sudoApp.mySolver.currentEvalType == 'strict-minus') this.evaluateGridStrict();
     }
 
     clearAutoExecCellInfos() {
@@ -2254,9 +2322,9 @@ class SudokuGrid extends MVC_Model {
     }
 
     reset() {
-        // Alle in der Phase 'play' gesetzten Zahlen werden gelöscht
-        // Die Zellen der Aufgabenstellung bleiben erhalten
-        // Schritt 1: Die aktuelle Selektion wird zurückgesetzt
+        // All numbers set in the 'play' phase are deleted
+        // The given cells are retained
+        // Step 1: The current selection is reset
         this.initCurrentSelection();
         // Schritt 2: Die aktuellen Zellinhalte werden gelöscht
         for (let i = 0; i < 81; i++) {
@@ -2478,99 +2546,16 @@ class SudokuGrid extends MVC_Model {
 
 
     createSudoGrid() {
-        // Eine lokale Hilfsfunktion
-        function calcIndex(row, col) {
-            if (row == 0 && col == 0) {
-                return 0;
-            } else if (row == 0 && col == 1) {
-                return 1;
-            } else if (row == 0 && col == 2) {
-                return 2;
-            } else if (row == 1 && col == 0) {
-                return 3;
-            } else if (row == 1 && col == 1) {
-                return 4;
-            } else if (row == 1 && col == 2) {
-                return 5;
-            } else if (row == 2 && col == 0) {
-                return 6;
-            } else if (row == 2 && col == 1) {
-                return 7;
-            } else if (row == 2 && col == 2) {
-                return 8;
-            }
-        }
         this.sudoCells = [];
-        this.sudoBlocks = [];
-        this.sudoRows = [];
-        this.sudoCols = [];
-
-        // Die 9 Blöcke anlegen
-        for (let i = 0; i < 9; i++) {
-            let block = new SudokuBlock(this, i);
-            if (sudoApp instanceof SudokuMainApp) {
-                let blockView = new SudokuBlockView(block);
-                block.setMyView(blockView);
-            }
-            this.sudoBlocks.push(block);
-        }
-        // Die 81 Zellen anlegen und in ihren jeweiligen Block einfügen
         for (let i = 0; i < 81; i++) {
-            let row = Math.floor(i / 9);
-            let col = i % 9;
-            let blockRow = Math.floor(row / 3);
-            let blockCol = Math.floor(col / 3);
-            let tmpBlockIndex = calcIndex(blockRow, blockCol);
-
-            let cell = new SudokuCell(this, i);
-            cell.setBlock(this.sudoBlocks[tmpBlockIndex]);
-            if (sudoApp instanceof SudokuMainApp) {
-                let cellView = new SudokuCellView(cell);
-                cell.setMyView(cellView);
-            }
+            let cell = new SudokuCell(i);
             this.sudoCells.push(cell);
-            this.sudoBlocks[tmpBlockIndex].addCell(cell);
         }
         // Influencers in den Zellen setzen
         // Das geschieht nur einmal bei der Initialisierung
         for (let i = 0; i < 81; i++) {
             this.sudoCells[i].setInfluencers(this.influencersOfCell(i));
         }
-        // Setze die Row-Col-Vektoren
-        // Laufindex über dem Cell-Vektor
-        let currentIndex = 0;
-        // Die Col-Vektoren werden angelegt, zunächst leer
-        for (let i = 0; i < 9; i++) {
-            let col = new SudokuCol(this, i);
-            if (sudoApp instanceof SudokuMainApp) {
-                let colView = new SudokuColView(col);
-                col.setMyView(colView);
-            }
-            this.sudoCols.push(col);
-        }
-        for (let i = 0; i < 9; i++) {
-            // Ein Row-Vektor wird angelegt
-            let row = new SudokuRow(this, i);
-            if (sudoApp instanceof SudokuMainApp) {
-                let rowView = new SudokuRowView(row);
-                row.setMyView(rowView);
-            }
-
-            for (let j = 0; j < 9; j++) {
-                let currentCell = this.sudoCells[currentIndex];
-                // Die aktuelle Zelle wird der aktuellen Reihe hinzugefügt
-                row.addCell(currentCell);
-                // Die aktuelle Zelle wird dem Spaltenvektor j hinzugefügt
-                this.sudoCols[j].addCell(currentCell);
-                currentIndex++;
-            }
-            this.sudoRows.push(row);
-        }
-        // Row- und Col-Vektoren in den Blöcken anlegen
-        for (let i = 0; i < 9; i++) {
-            this.sudoBlocks[i].addBlockVectors();
-        }
-
     }
 
     initCurrentSelection() {
@@ -3250,11 +3235,10 @@ class SudokuGrid extends MVC_Model {
 
 }
 
-class SudokuCell extends MVC_Model {
-    constructor(grid, index) {
-        super();
+class SudokuCell {
+    constructor(index) {
         // Die Zelle kennt ihre Tabelle und ihren Index
-        this.myGrid = grid;
+        this.myGrid = sudoApp.mySolver.myGrid;
         this.myIndex = index;
         // Die Zelle kennt ihre DOM-Version
         // Mit der Erzeugung des Wrappers wird
@@ -3618,7 +3602,8 @@ class SudokuCell extends MVC_Model {
         // If this function returns ‘true’, then the cell is unsolvable in the puzzle context. 
         // If it returns ‘false’, this does not mean that it is solvable. 
         // Non-unsolvability does not imply solvability.
-        if (this.myGrid.mySolver.currentEvalType == 'lazy-invisible' || this.myGrid.mySolver.currentEvalType == 'lazy')
+        if (sudoApp.mySolver.currentEvalType == 'lazy-invisible'
+            || sudoApp.mySolver.currentEvalType == 'lazy')
             return (
                 // 1) The number has already been set once.
                 (this.getValue() !== '0' && this.myDirectInAdmissibles().has(this.getValue())) ||
@@ -3627,7 +3612,8 @@ class SudokuCell extends MVC_Model {
                 // 3) Different numbers required at the same time
                 (this.getValue() == '0' && this.myNecessarys.size > 1));
 
-        else if (this.myGrid.mySolver.currentEvalType == 'strict-plus' || this.myGrid.mySolver.currentEvalType == 'strict-minus')
+        else if (sudoApp.mySolver.currentEvalType == 'strict-plus'
+            || sudoApp.mySolver.currentEvalType == 'strict-minus')
             return (
                 // 1) The number has already been set once.
                 (this.getValue() !== '0' && this.myDirectInAdmissibles().has(this.getValue())) ||
@@ -3911,7 +3897,7 @@ class NewPuzzleBuffer {
 // ==========================================
 // Solver types 
 // ==========================================
-class SudokuSolver extends MVC_Model {
+class SudokuSolver {
     // The solver is the most important object in this app. 
     // Basically, the solver has three sub-objects:
     //  1) Grid
@@ -3919,12 +3905,15 @@ class SudokuSolver extends MVC_Model {
     //  3) Search
     // Initially, only the grid exists. No puzzle has been defined yet 
     // and therefore there can be no solution search for the puzzle.
-    constructor(app) {
-        super(app);
+    constructor() {
         // The 9 x 9 grid. This is the place where 
         // the solution to the puzzle is calculated 
         // by logical reasoning and/or backtracking.
-        this.myGrid = new SudokuGrid(this);
+        this.myGrid = new SudokuGrid();
+        // There are 3 different app types. In the main app the solver gets attached
+        // a solver view. The fast solver app and the generator app do not have a view
+        // for their solvers.
+        this.mySolverViews = [];
         // A current puzzle is assigned to the grid in the solver. 
         // It stores meta information about the puzzle to be solved.
         // When switching from the Define phase to the Play phase, 
@@ -3941,19 +3930,35 @@ class SudokuSolver extends MVC_Model {
         this.currentEvalType = 'lazy-invisible';
     }
 
+
+    init() {
+        this.myGrid.init();
+    }
+
+    reInit() {
+        this.myGrid.init();
+        this.unsetCurrentPuzzle();
+        this.cleanUpAndDeleteCurrentSearch();
+        this.setGamePhase('define');
+    }
+
+    attach(solverView) {
+        this.mySolverViews.push(solverView);
+    }
+
+    notify() {
+        this.mySolverViews.forEach(view => {
+            view.upDate();
+        });
+    }
+
+
     unsetCurrentPuzzle() {
         this.myCurrentPuzzle = undefined;
     }
 
     setCurrentPuzzle(puzzleRecord) {
         this.myCurrentPuzzle = new Puzzle(puzzleRecord);
-    }
-
-    init() {
-        this.myGrid.init();
-        this.unsetCurrentPuzzle();
-        this.cleanUpAndDeleteCurrentSearch();
-        this.setGamePhase('define');
     }
 
     generatePuzzle() {
@@ -4806,10 +4811,10 @@ class SudokuSolverController {
         this.myUndoActionStack.push(action);
 
 
-        this.mySolver.init();
+        this.mySolver.reInit();
         this.mySolver.notify();
         // Zoom in the new initiated grid
-        sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
+        this.mySolver.notifyAspect('puzzleLoading', undefined);
     }
 
     resetBtnPressed() {
@@ -5012,7 +5017,7 @@ class SudokuSolverController {
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
 
-        sudoApp.mySolver.init();
+        sudoApp.mySolver.reInit();
 
         sudoApp.myNavBar.closeNav();
         // Now we are waiting for the buffer to be filled.
@@ -5416,14 +5421,9 @@ class SudokuMainApp {
         // Components of the app
         // ==============================================================
         // 1. The solver component
-        this.mySolver = new SudokuSolver(this);
+        this.mySolver = new SudokuSolver();
         this.mySolverView = new SudokuSolverView(this.mySolver);
         this.mySolverController = new SudokuSolverController(this.mySolver);
-        // A true MVC pattern exists only for the solver. 
-        // The other model and view classes are only subcomponents of the solver classes. 
-        // They do not realize any own observer relationship.
-        this.mySolver.attach(this.mySolverView);
-        this.mySolver.setMyView(this.mySolverView);
 
         // 2. The database component
         this.myPuzzleDB = new SudokuPuzzleDB();
@@ -5457,14 +5457,19 @@ class SudokuMainApp {
     }
 
     init() {
+        // A true MVC pattern exists only for the solver. 
+        // The other model and view classes are only subcomponents of the solver classes. 
+        // They do not realize any own observer relationship.
+        this.mySolver.attach(this.mySolverView);
         this.mySolver.init();
+        this.mySolverView.init();
         this.activateAppSettings();
         this.mySolver.notify();
 
         this.myPuzzleDB.init();
         this.myNewPuzzleBuffer.init();
-
         this.myNavBar.init();
+
         this.displayAppVersion();
     }
 
@@ -5543,16 +5548,13 @@ class SudokuFastSolverApp {
         // ==============================================================
         // Components of the app
         // ==============================================================
-        // 1. The solver component
         this.mySolver = new SudokuSolver(this);
-        // 2. The synchronous search step loop.
         this.mySyncRunner = new SynchronousRunner();
     }
 
     init() {
-        this.mySolver.myGrid.init();
-        // For background functionality, the fastest evaluation method 
-        // is 'strict-plus'.
+        this.mySolver.init();
+        // The fastest evaluation method is 'strict-plus'.
         this.mySolver.setActualEvalType('strict-plus');
     }
 

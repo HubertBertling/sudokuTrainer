@@ -16,7 +16,7 @@ var VERSION = 'version_780';
 // others to this list
 var URLS = [
   `${GHPATH}/`,
-  `${GHPATH}/CSS/smallscreenNew.css`,
+  `${GHPATH}/CSS/screen.css`,
   `${GHPATH}/CSS/print.css`,
   `${GHPATH}/index.html`,
   `${GHPATH}/manifest.json`,

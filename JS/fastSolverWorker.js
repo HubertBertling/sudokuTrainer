@@ -29,7 +29,6 @@ self.addEventListener("message", (event) => {
 }, false);
 
 // Launch and initialize the worker app
-
 function startFastSolverApp() {
     //A worker app is assigned to the variable "sudoApp".
     sudoApp = new SudokuFastSolverApp();

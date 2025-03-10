@@ -136,28 +136,8 @@ if (navigator.share && navigator.canShare) {
     console.log(`Web Share API not supported.`);
 }
 
-// Launch and initialize the app
-function startMainApp() {
-    sudoApp = new SudokuMainApp();
-    sudoApp.init();
-}
-//==========================================================
 
-class MVC_View {
-    constructor(model) {
-        this.myModel = model;
-        this.myNode = null;
-    }
-    getMyModel() {
-        return this.myModel;
-    }
-    setMyNode(node) {
-        this.myNode = node;
-    }
-    getMyNode() {
-        return this.myNode;
-    }
-}
+//==========================================================
 
 // ==========================================
 // Navigation and Dialogs 
@@ -661,7 +641,7 @@ class SettingsDialog {
 
         this.topicEvalType = document.getElementById("pc-eval");
         this.topicBreakpoints = document.getElementById("breakpoint-settings");
-    
+
         this.okNode = document.getElementById("btn-settings-dlg-ok");
         this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
 
@@ -781,10 +761,9 @@ class SettingsDialog {
 // PuzzleDB
 // ==========================================
 
-class SudokuPuzzleDB extends MVC_Model {
+class SudokuPuzzleDB {
     constructor() {
-        super();
-        // 
+        this.myDBViews = [];
         this.sorted = new Map([
             ['name', 'desc'],
             ['status-given', 'desc'],
@@ -797,6 +776,17 @@ class SudokuPuzzleDB extends MVC_Model {
             ['countSolutions', 'desc'],
             ['date', 'desc']
         ]);
+    }
+
+
+    attach(dbView) {
+        this.myDBViews.push(dbView);
+    }
+
+    notify() {
+        this.myDBViews.forEach(view => {
+            view.upDate();
+        });
     }
 
     upDateVersion_2() {
@@ -1291,9 +1281,8 @@ class SudokuPuzzleDB extends MVC_Model {
     }
 }
 
-class SudokuPuzzleDBView extends MVC_View {
+class SudokuPuzzleDBView {
     constructor(sudokuDB) {
-        super(sudokuDB);
         this.myDB = sudokuDB;
     }
     upDate() {
@@ -1611,9 +1600,8 @@ class SudokuPuzzleDBController {
     }
 }
 
-class SudokuPrintView extends MVC_View {
+class SudokuPrintView {
     constructor() {
-        super();
     }
 
     clearPuzzleHeader() {
@@ -1686,12 +1674,12 @@ class SudokuPrintView extends MVC_View {
 // ==========================================
 // Grid related classes 
 // ==========================================
-class SudokuGroupView extends MVC_View {
+class SudokuGroupView {
     constructor(group) {
-        super(group);
+        this.myGroup = group;
     }
     getMyGroup() {
-        return this.myModel;
+        return this.myGroup;
     }
     displayUnsolvability() {
         // Analog die Widerspruchserkennung durch zwei gleiche notwendige Nummern in der Gruppe.
@@ -1725,14 +1713,9 @@ class SudokuGroupView extends MVC_View {
 class SudokuBlockView extends SudokuGroupView {
     constructor(block) {
         super(block);
-
     }
     upDate() {
-        let block = this.getMyModel();
-        let grid = block.myGrid;
-        let gridView = grid.getMyView();
-        let gridNode = gridView.getMyNode();
-
+        let gridNode = sudoApp.mySolverView.myGridView.getMyNode();
         // Neuer Blockknoten
         let blockNode = document.createElement("div");
         blockNode.setAttribute("class", "sudoku-block");
@@ -1743,7 +1726,7 @@ class SudokuBlockView extends SudokuGroupView {
         // Die Zellen des Blocks anzeigen
         block.myCells.forEach(cell => {
             // Jede Zelle des Blocks anzeigen.
-            let cellView = cell.getMyView();
+            let cellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];
             cellView.upDate();
         })
     }
@@ -1765,7 +1748,7 @@ class SudokuBlockView extends SudokuGroupView {
         // Die Zellen des Blocks anzeigen
         block.myCells.forEach(cell => {
             // Jede Zelle des Blocks anzeigen.
-            let cellView = cell.getMyView();
+            let cellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];
             cellView.upDateNumber();
         })
 
@@ -1863,12 +1846,39 @@ class SudokuColView extends SudokuGroupView {
     }
 }
 
-class SudokuGridView extends MVC_View {
-    constructor(suGrid) {
-        super(suGrid);
-        this.myGrid = suGrid;
+class SudokuGridView {
+    constructor(grid) {
+        this.myGrid = grid;
         this.domExplainer = document.getElementById("grid-plus-explainer");
+        this.sudoCellViews = [];
+        this.sudoBlockViews = [];
+        this.sudoRowViews = [];
+        this.sudoColViews = [];
+
     }
+
+    init() {
+        this.myGrid.sudoBlocks.forEach(sudoBlock => {
+            let tmpBlockView = new SudokuBlockView(sudoBlock);
+            this.sudoBlockViews.push(tmpBlockView);
+        });
+
+        this.myGrid.sudoCells.forEach(cell => {
+            let cellView = new SudokuCellView(cell);
+            this.sudoCellViews.push(cellView);
+        });
+
+        this.myGrid.sudoRows.forEach(sudoRow => {
+            let tmpRowView = new SudokuRowView(sudoRow);
+            this.sudoRowViews.push(tmpRowView);
+        });
+
+        this.myGrid.sudoCols.forEach(sudoCol => {
+            let tmpColView = new SudokuColView(sudoCol);
+            this.sudoColViews.push(tmpColView);
+        });
+    }
+
     upDate() {
         // Das bisherige DOM-Modell löschen
         let old_Node = document.getElementById("main-sudoku-grid");
@@ -1880,14 +1890,13 @@ class SudokuGridView extends MVC_View {
         this.setMyNode(new_Node);
 
         // Die 9 Blöcke anzeigen
-        // let grid = this.getMyModel();
         let grid = this.myGrid;
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
             // Gesetzte Nummern anzeigen
-            grid.sudoBlocks.forEach(sudoBlock => {
+            this.sudoBlockViews.forEach(blockView => {
                 // Jeden Block anzeigen.
-                let tmpBlockView = sudoBlock.getMyView();
-                tmpBlockView.upDateNumbers();
+                blockView.upDateNumbers();
+                this.sudoBlockViews.push(tmpBlockView)
             });
             if (sudoApp.mySolver.isSearching()) {
 
@@ -1897,9 +1906,8 @@ class SudokuGridView extends MVC_View {
                     let hiddenSingleCandidateExists = false;
 
                     // Jetzt nur noch über die Zellen iterieren
-                    grid.sudoCells.forEach(cell => {
-                        if (cell.getValue() == '0') {
-                            let cellView = cell.getMyView();
+                    grid.sudoCellViews.forEach(cellView => {
+                        if (cellView.myCell.getValue() == '0') {
                             if (!necessaryCandidateExists) {
                                 if (cellView.upDateNecessary()) {
                                     necessaryCandidateExists = true;
@@ -1911,9 +1919,8 @@ class SudokuGridView extends MVC_View {
 
                     // If there is no necessary number the first single number will be displayed
                     if (!necessaryCandidateExists) {
-                        grid.sudoCells.forEach(cell => {
-                            if (cell.getValue() == '0') {
-                                let cellView = cell.getMyView();
+                        grid.sudoCellViews.forEach(cellView => {
+                            if (cellView.myCell.getValue() == '0') {
                                 if (cellView.upDateSingle()) {
                                     singleCandidateExists = true;
                                     return true;
@@ -1924,10 +1931,9 @@ class SudokuGridView extends MVC_View {
 
                     // If there is no necessary and no single number the first hidden single number will be displayed       
                     if (!necessaryCandidateExists && !singleCandidateExists) {
-                        grid.sudoCells.forEach(cell => {
+                        grid.sudoCellViews.forEach(cellView => {
                             // Jede Zelle des Blocks anzeigen.
-                            if (cell.getValue() == '0') {
-                                let cellView = cell.getMyView();
+                            if (cellView.myCell.getValue() == '0') {
                                 if (cellView.upDateHiddenSingle()) {
                                     hiddenSingleCandidateExists = true;
                                     return true;
@@ -1939,9 +1945,8 @@ class SudokuGridView extends MVC_View {
                     if (!necessaryCandidateExists
                         && !singleCandidateExists
                         && !hiddenSingleCandidateExists) {
-                        grid.sudoCells.forEach(cell => {
-                            if (cell.getValue() == '0') {
-                                let cellView = cell.getMyView();
+                        grid.sudoCellViews.forEach(cellView => {
+                            if (cellView.myCell.getValue() == '0') {
                                 cellView.upDateMultipleOptions();
                                 return true;
                             }
@@ -1950,11 +1955,8 @@ class SudokuGridView extends MVC_View {
                 }
             }
         } else {
-            grid.sudoBlocks.forEach(sudoBlock => {
-                // Jeden Block anzeigen.
-                let tmpBlockView = sudoBlock.getMyView();
-                tmpBlockView.upDate();
-                // Dem Block seine View geben
+            grid.sudoBlockViews.forEach(sudoBlockView => {
+                sudoBlockView.upDate();
             });
         }
 
@@ -1992,65 +1994,56 @@ class SudokuGridView extends MVC_View {
     }
 
     displaySelection() {
-        let grid = this.getMyModel();
-        if (grid.indexSelected == -1) {
-            grid.sudoCells.forEach(cell => {
-                let cellView = cell.getMyView();
+        if (this.myGrid.indexSelected == -1) {
+            this.sudoCellViews.forEach(cellView => {
                 cellView.unsetSelectStatus();
             })
         } else {
-            let selectedCell = grid.sudoCells[grid.indexSelected];
-            let selectedCellView = selectedCell.getMyView();
+            let selectedCellView = this.sudoCellViews[this.myGrid.indexSelected];
             selectedCellView.unsetSelectStatus();
             selectedCellView.setSelectStatus();
         }
     }
 
     displayAutoSelection() {
-        let grid = this.getMyModel();
         if (sudoApp.mySolver.isSearching()
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected !== -1) {
-            let selectedCell = grid.sudoCells[sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected];
-            let selectedCellView = selectedCell.getMyView();
+            let selectedCellView = this.sudoCellViews[sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected];
             selectedCellView.unsetAutoSelectStatus();
             selectedCellView.setAutoSelectStatus();
         } else {
-            grid.sudoCells.forEach(cell => {
-                let cellView = cell.getMyView();
+            grid.sudoCellViews.forEach(cellView => {
                 cellView.unsetAutoSelectStatus();
             })
         }
     }
 
     displayUnsolvability() {
-        let myGrid = this.getMyModel();
         // Show only one contradiction.
         // In fact, a contradictory Sudoku has many contradictions at the same time.
         for (let i = 0; i < 81; i++) {
-            if (myGrid.sudoCells[i].getMyView().displayUnsolvability()) return;
+            if (this.sudoCellViews[i].displayUnsolvability()) return;
         }
         for (let i = 0; i < 9; i++) {
-            if (myGrid.sudoBlocks[i].getMyView().displayUnsolvability()) return;
+            if (this.sudoBlockViews[i].displayUnsolvability()) return;
         }
         for (let i = 0; i < 9; i++) {
-            if (myGrid.sudoRows[i].getMyView().displayUnsolvability()) return;
+            if (this.sudoRowViews[i].displayUnsolvability()) return;
         }
         for (let i = 0; i < 9; i++) {
-            if (myGrid.sudoCols[i].getMyView().displayUnsolvability()) return;
+            if (this.sudoColViews[i].displayUnsolvability()) return;
         }
     }
     displayWrongNumbers() {
-        let myGrid = this.getMyModel();
         for (let i = 0; i < 81; i++) {
-            if (myGrid.sudoCells[i].getMyView().displayWrongNumber());
+            if (this.sudoCellViews[i].displayWrongNumber());
         }
     }
 
 }
 
-class SudokuCellView extends MVC_View {
+class SudokuCellView {
     constructor(cell) {
-        super(cell);
         this.myCell = cell;
     }
 
@@ -2059,9 +2052,8 @@ class SudokuCellView extends MVC_View {
         tmpCellNode.setAttribute("class", "sudoku-grid-cell");
         this.setMyNode(tmpCellNode);
         // Neue Zelle in ihren Block einhängen
-        let myCell = this.getMyModel();
-        let myBlock = myCell.myBlock;
-        let myBlockView = myBlock.getMyView();
+        let myBlockIndex = this.myCell.myBlock.myIndex;
+        let myBlockView = sudoApp.mySolverView.myGridView.sudoBlockViews[myBlockIndex];
         let myBlockNode = myBlockView.getMyNode();
 
         myBlockNode.appendChild(tmpCellNode);
@@ -2073,21 +2065,20 @@ class SudokuCellView extends MVC_View {
     }
 
     upDateCellContent() {
-        let cell = this.getMyModel();
-        if (cell.myValue == '0') {
+        if (this.myCell.myValue == '0') {
             // The cell is not yet set
-            if (cell.candidatesEvaluated) {
+            if (this.myCell.candidatesEvaluated) {
                 this.displayCandidates();
-                this.displayNecessary(cell.myNecessarys);
-                this.displayInAdmissibleCandidates(cell.inAdmissibleCandidates, cell.myNecessarys);
+                this.displayNecessary(this.myCell.myNecessarys);
+                this.displayInAdmissibleCandidates(this.myCell.inAdmissibleCandidates, this.myCell.myNecessarys);
             } else {
                 // Display empty cell
                 this.myNode.classList.add('nested');
             }
         } else {
             // The cell is assigned a number
-            this.displayGamePhase(cell.myGamePhase);
-            this.displayMainValueNode(cell.myValue);
+            this.displayGamePhase(this.myCell.myGamePhase);
+            this.displayMainValueNode(this.myCell.myValue);
         }
     }
 
@@ -2096,9 +2087,9 @@ class SudokuCellView extends MVC_View {
         tmpCellNode.setAttribute("class", "sudoku-grid-cell");
         this.setMyNode(tmpCellNode);
         // Neue Zelle in ihren Block einhängen
-        let myCell = this.getMyModel();
-        let myBlock = myCell.myBlock;
-        let myBlockView = myBlock.getMyView();
+
+        let myBlockIndex = this.myCell.myBlock.myIndex;
+        let myBlockView = sudoApp.mySolverView.myGridView.sudoBlockViews[myBlockIndex];
         let myBlockNode = myBlockView.getMyNode();
 
         myBlockNode.appendChild(tmpCellNode);
@@ -2119,13 +2110,12 @@ class SudokuCellView extends MVC_View {
 
     upDateNecessary() {
         // Gebe notwendige Nummer aus oder leere Zelle
-        let myCell = this.getMyModel();
-        if (myCell.myNecessarys.size > 1 ||
-            (myCell.myNecessarys.size == 1
-                && myCell.isSelected
+        if (this.myCell.myNecessarys.size > 1 ||
+            (this.myCell.myNecessarys.size == 1
+                && this.myCell.isSelected
                 && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1)) {
 
-            myCell.myNecessarys.forEach(necessaryNr => {
+            this.myCell.myNecessarys.forEach(necessaryNr => {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
@@ -2144,12 +2134,10 @@ class SudokuCellView extends MVC_View {
     }
 
     upDateSingle() {
-        let myCell = this.getMyModel();
-
         // Gebe Single Nummer aus oder leere Zelle
-        let tmpCandidates = myCell.getCandidates();
+        let tmpCandidates = this.myCell.getCandidates();
         if (tmpCandidates.size == 1
-            && myCell.isSelected
+            && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
@@ -2164,13 +2152,11 @@ class SudokuCellView extends MVC_View {
     }
 
     upDateHiddenSingle() {
-        let myCell = this.getMyModel();
-
         // Gebe Single Nummer aus oder leere Zelle
         this.getMyNode().classList.add('nested');
-        let tmpCandidates = myCell.getTotalCandidates();
+        let tmpCandidates = this.myCell.getTotalCandidates();
         if (tmpCandidates.size == 1
-            && myCell.isSelected
+            && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
 
             let candidate = Array.from(tmpCandidates)[0]
@@ -2180,7 +2166,7 @@ class SudokuCellView extends MVC_View {
             candidateNode.classList.add('single');
             this.getMyNode().appendChild(candidateNode);
 
-            let redAdmissibles = myCell.getCandidates().difference(tmpCandidates);
+            let redAdmissibles = this.myCell.getCandidates().difference(tmpCandidates);
             redAdmissibles.forEach(redAdmissible => {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', redAdmissible);
@@ -2198,14 +2184,13 @@ class SudokuCellView extends MVC_View {
     }
 
     upDateMultipleOptions() {
-        let myCell = this.getMyModel();
         // Eine selektierte Zelle mit Optionen
         this.getMyNode().classList.add('nested');
         // Die Optionen sind zulässige Kandidaten
-        let tmpCandidates = myCell.getTotalCandidates();
+        let tmpCandidates = this.myCell.getTotalCandidates();
         // Es gibt mindestens 2 Kandidaten, sprich Optionen
         if (tmpCandidates.size > 1
-            && myCell.isSelected
+            && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
             this.displayCandidatesInDetail(tmpCandidates);
             return true;
@@ -2215,14 +2200,13 @@ class SudokuCellView extends MVC_View {
     }
 
     displayCandidates() {
-        let cell = this.getMyModel();
         let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' || sudoApp.mySolver.getActualEvalType() == 'strict-plus');
         if (inAdmissiblesVisible) {
-            this.displayCandidatesInDetail(cell.getCandidates());
+            this.displayCandidatesInDetail(this.myCell.getCandidates());
         } else {
             // Angezeigte inAdmissibles sind zunächst einmal Zulässige
             // und dürfen jetzt nicht mehr angezeigt werden
-            this.displayCandidatesInDetail(cell.getTotalCandidates());
+            this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
         }
     }
 
@@ -2366,8 +2350,7 @@ class SudokuCellView extends MVC_View {
         allOptions = new MatheSet(tmpStep.myOptionList)
         openOptions = new MatheSet(tmpStep.myNextOptions);
 
-        let cell = this.getMyModel();
-        if (cell.myValue == '0' && this.myNode.children.length == 0) {
+        if (this.myCell.myValue == '0' && this.myNode.children.length == 0) {
             // Die Zelle ist noch nicht gesetzt
             this.displayCandidates();
             this.displayNecessary(cell.myNecessarys);
@@ -2397,36 +2380,34 @@ class SudokuCellView extends MVC_View {
     }
 
     displayTasks() {
-        let tmpCell = this.getMyModel();
-
-        if (tmpCell.myNecessarys.size > 0) {
-            let collection = tmpCell.myNecessaryGroups.get(Array.from(tmpCell.myNecessarys)[0]);
+        if (this.myCell.myNecessarys.size > 0) {
+            let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
             collection.myCells.forEach(e => {
-                if (e !== tmpCell) {
+                if (e !== this.myCell) {
                     if (e.getValue() == '0') {
                         e.myView.setBorderGreenSelected();
                         e.myInfluencers.forEach(cell => {
-                            if (cell.getValue() == Array.from(tmpCell.myNecessarys)[0]) {
+                            if (cell.getValue() == Array.from(this.myCell.myNecessarys)[0]) {
                                 cell.myView.setBorderWhiteSelected();
                             }
                         });
                     }
                 }
             });
-            sudoApp.mySolver.myView.displayTechnique('Notwendige ' + Array.from(tmpCell.myNecessarys)[0] +
+            sudoApp.mySolver.myView.displayTechnique('Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
                 ' in dieser Gruppe setzen.');
             return;
         }
-        if (tmpCell.getCandidates().size == 1) {
-            sudoApp.mySolver.myView.displayTechnique('Single ' + Array.from(tmpCell.getCandidates())[0] + ' in dieser Zelle setzen.');
+        if (this.myCell.getCandidates().size == 1) {
+            sudoApp.mySolver.myView.displayTechnique('Single ' + Array.from(this.myCell.getCandidates())[0] + ' in dieser Zelle setzen.');
 
-            if (tmpCell.getCandidates().size == 1) {
-                let single = Array.from(tmpCell.getCandidates())[0];
+            if (this.myCell.getCandidates().size == 1) {
+                let single = Array.from(this.myCell.getCandidates())[0];
                 let numberSet = new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
                 numberSet.forEach(nr => {
                     if (nr !== single) {
                         let coveredNrs = new MatheSet();
-                        tmpCell.myInfluencers.forEach(cell => {
+                        this.myCell.myInfluencers.forEach(cell => {
                             if (cell.getValue() == nr) {
                                 if (!coveredNrs.has(nr)) {
                                     cell.myView.setBorderWhiteSelected();
@@ -2442,14 +2423,14 @@ class SudokuCellView extends MVC_View {
             }
             return;
         }
-        if (tmpCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolver.myView.displayTechnique('Hidden Single ' + Array.from(tmpCell.getTotalCandidates())[0] + ' in dieser Zelle setzen.');
+        if (this.myCell.getTotalCandidates().size == 1) {
+            sudoApp.mySolver.myView.displayTechnique('Hidden Single ' + Array.from(this.myCell.getTotalCandidates())[0] + ' in dieser Zelle setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }
             return;
         }
-        if (tmpCell.getTotalCandidates().size > 1) {
+        if (this.myCell.getTotalCandidates().size > 1) {
             sudoApp.mySolver.myView.displayTechnique('Aus mehreren Kandidaten eine Nummer setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('multipleOption');
@@ -2459,38 +2440,37 @@ class SudokuCellView extends MVC_View {
     }
 
     displayReasons() {
-        let tmpCell = this.getMyModel();
-        let adMissibleNrSelected = tmpCell.getAdMissibleNrSelected();
+        let adMissibleNrSelected = this.myCell.getAdMissibleNrSelected();
 
-        if (tmpCell.myNecessarys.size > 0) {
-            if (adMissibleNrSelected == Array.from(tmpCell.myNecessarys)[0]) {
-                let collection = tmpCell.myNecessaryGroups.get(Array.from(tmpCell.myNecessarys)[0]);
+        if (this.myCell.myNecessarys.size > 0) {
+            if (adMissibleNrSelected == Array.from(this.myCell.myNecessarys)[0]) {
+                let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
                 collection.myCells.forEach(e => {
-                    if (e !== tmpCell) {
+                    if (e !== this.myCell) {
                         if (e.getValue() == '0') {
                             e.myView.setBorderGreenSelected()
                             e.myInfluencers.forEach(cell => {
-                                if (cell.getValue() == Array.from(tmpCell.myNecessarys)[0]) {
+                                if (cell.getValue() == Array.from(this.myCell.myNecessarys)[0]) {
                                     cell.myView.setBorderWhiteSelected();
                                 }
                             });
                         }
                     }
                 });
-                sudoApp.mySolver.myView.displayTechnique('Notwendige ' + Array.from(tmpCell.myNecessarys)[0] +
+                sudoApp.mySolver.myView.displayTechnique('Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
                     ' in dieser Gruppe setzen.');
                 return;
             }
         }
 
-        if (tmpCell.inAdmissibleCandidates.size > 0 &&
-            tmpCell.inAdmissibleCandidatesFromNecessarys.size > 0) {
-            if (tmpCell.inAdmissibleCandidatesFromNecessarys.has(adMissibleNrSelected)) {
+        if (this.myCell.inAdmissibleCandidates.size > 0 &&
+            this.myCell.inAdmissibleCandidatesFromNecessarys.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromNecessarys.has(adMissibleNrSelected)) {
                 // Wenn die selektierte Zelle eine rote Nummer enthält, die durch eine notwendige
                 // Nummer verursacht ist, wird dies angezeigt.
                 let necessaryCell = undefined;
                 // Bestimme die Zelle der notwendigen Nummer
-                tmpCell.myInfluencers.forEach(cell => {
+                this.myCell.myInfluencers.forEach(cell => {
                     if (cell.getNecessarys().has(adMissibleNrSelected)) {
                         necessaryCell = cell;
                     }
@@ -2498,12 +2478,12 @@ class SudokuCellView extends MVC_View {
                 // Bestimme die gemeinsame Gruppe der Zelle mit der roten Nummer
                 // und der Zelle mit der notwendigen Nummer
                 let tmpGroup = undefined;
-                if (tmpCell.myBlock == necessaryCell.myBlock) {
-                    tmpGroup = tmpCell.myBlock;
-                } else if (tmpCell.myRow == necessaryCell.myRow) {
-                    tmpGroup = tmpCell.myRow;
-                } else if (tmpCell.myCol == necessaryCell.myCol) {
-                    tmpGroup = tmpCell.myCol;
+                if (this.myCell.myBlock == necessaryCell.myBlock) {
+                    tmpGroup = this.myCell.myBlock;
+                } else if (this.myCell.myRow == necessaryCell.myRow) {
+                    tmpGroup = this.myCell.myRow;
+                } else if (this.myCell.myCol == necessaryCell.myCol) {
+                    tmpGroup = this.myCell.myCol;
                 }
                 // Gebe die Gruppe aus
                 tmpGroup.myCells.forEach(cell => {
@@ -2518,17 +2498,17 @@ class SudokuCellView extends MVC_View {
                 return;
             }
         }
-        if (tmpCell.inAdmissibleCandidates.size > 0 &&
-            tmpCell.inAdmissibleCandidatesFromPairs.size > 0) {
-            if (tmpCell.inAdmissibleCandidatesFromPairs.has(adMissibleNrSelected)) {
+        if (this.myCell.inAdmissibleCandidates.size > 0 &&
+            this.myCell.inAdmissibleCandidatesFromPairs.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromPairs.has(adMissibleNrSelected)) {
                 // Wenn für die selektierte Zelle kritische Paare gespeichert sind,
                 // dann gibt es in der Zelle indirekt unzulässige Nummern, die durch sie
                 // verursacht werden.
                 // Die Block, Spalte oder Zeile des Paares wird markiert.
                 let pairArray = [];
-                let pairInfo = tmpCell.inAdmissibleCandidatesFromPairs.get(adMissibleNrSelected);
+                let pairInfo = this.myCell.inAdmissibleCandidatesFromPairs.get(adMissibleNrSelected);
                 pairInfo.collection.myCells.forEach(cell => {
-                    if (cell !== tmpCell) {
+                    if (cell !== this.myCell) {
                         cell.myView.setBorderSelected();
                     }
                 });
@@ -2545,10 +2525,10 @@ class SudokuCellView extends MVC_View {
             }
         }
 
-        if (tmpCell.inAdmissibleCandidates.size > 0 &&
-            tmpCell.inAdmissibleCandidatesFromIntersection.size > 0) {
+        if (this.myCell.inAdmissibleCandidates.size > 0 &&
+            this.myCell.inAdmissibleCandidatesFromIntersection.size > 0) {
 
-            let info = tmpCell.inAdmissibleCandidatesFromIntersectionInfo.get(adMissibleNrSelected);
+            let info = this.myCell.inAdmissibleCandidatesFromIntersectionInfo.get(adMissibleNrSelected);
             info.block.myCells.forEach(cell => {
                 cell.myView.setBorderSelected();
             });
@@ -2560,10 +2540,10 @@ class SudokuCellView extends MVC_View {
             return;
         }
 
-        if (tmpCell.inAdmissibleCandidates.size > 0 &&
-            tmpCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
+        if (this.myCell.inAdmissibleCandidates.size > 0 &&
+            this.myCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
 
-            let info = tmpCell.inAdmissibleCandidatesFromPointingPairsInfo.get(adMissibleNrSelected);
+            let info = this.myCell.inAdmissibleCandidatesFromPointingPairsInfo.get(adMissibleNrSelected);
             info.rowCol.myCells.forEach(cell => {
                 cell.myView.setBorderSelected();
             });
@@ -2578,13 +2558,13 @@ class SudokuCellView extends MVC_View {
             return;
         }
 
-        if (tmpCell.inAdmissibleCandidates.size > 0 &&
-            tmpCell.inAdmissibleCandidatesFromHiddenPairs.size > 0) {
-            if (tmpCell.inAdmissibleCandidatesFromHiddenPairs.has(adMissibleNrSelected)) {
+        if (this.myCell.inAdmissibleCandidates.size > 0 &&
+            this.myCell.inAdmissibleCandidatesFromHiddenPairs.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromHiddenPairs.has(adMissibleNrSelected)) {
                 // Für ein Subpaar muss nicht jede einzelne Nummer geprüft werden.
                 // 
                 let pairArray = [];
-                const [pairInfo] = tmpCell.inAdmissibleCandidatesFromHiddenPairs.values();
+                const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
                 pairInfo.collection.myCells.forEach(cell => {
                     if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                         cell.myView.setBorderRedSelected();
@@ -2607,11 +2587,10 @@ class SudokuCellView extends MVC_View {
     };
 
     setSelectStatus() {
-        let tmpCell = this.getMyModel();
         this.setSelected();
         if (sudoApp.mySolver.isSearching()
             && sudoApp.mySolver.getAutoDirection() == 'forward') {
-            if (tmpCell.candidateIndexSelected == -1) {
+            if (this.myCell.candidateIndexSelected == -1) {
                 // Nach dem ersten Click auf die Zelle ist noch 
                 // kein Kandidat in der Zelle selektiert.
                 // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
@@ -2637,46 +2616,44 @@ class SudokuCellView extends MVC_View {
     }
 
     displayWrongNumber() {
-        let cell = this.getMyModel();
-        if (cell.isWrong()) {
+        if (this.myCell.isWrong()) {
             this.myNode.classList.add('wrong');
         }
     }
     displayUnsolvability() {
-        let cell = this.getMyModel();
         let mySolverView = sudoApp.mySolver.getMyView();
         // 1) The basic contradiction of the Sudoku is defined below. With this alone, the solver
         // would successfully solve the puzzles by backtracking. However, many more cells
         // would have to be set before an existing contradiction with this criterion would be uncovered.
         // All other criteria merely serve to uncover contradictions earlier.
-        if (cell.getValue() !== '0' && cell.myDirectInAdmissibles().has(cell.getValue())) {
-            cell.myInfluencers.forEach(influencerCell => {
-                if (influencerCell.getValue() == cell.getValue()) {
+        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+            this.myCell.myInfluencers.forEach(influencerCell => {
+                if (influencerCell.getValue() == this.myCell.getValue()) {
                     influencerCell.myView.displayCellError();
                 }
             })
             this.displayCellError();
-            mySolverView.displayReasonUnsolvability('Die Nummer ' + cell.getValue() + ' ist bereits einmal gesetzt.');
+            mySolverView.displayReasonUnsolvability('Die Nummer ' + this.myCell.getValue() + ' ist bereits einmal gesetzt.');
             return true;
         }
         // 2) The unsolvability is already recognized if there is no longer any admissible candidate at all. 
         // any more.
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible' || sudoApp.mySolver.getActualEvalType() == 'lazy') {
             // if (cell.getValue() == '0' && cell.getTotalCandidates().size == 0) { 
-            if (cell.getValue() == '0' && cell.getCandidates().size == 0) {
+            if (this.myCell.getValue() == '0' && this.myCell.getCandidates().size == 0) {
                 this.displayCellError();
                 mySolverView.displayReasonUnsolvability('Überhaupt keine zulässige Nummer.');
                 return true;
             }
         } else if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' || sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
-            if (cell.getValue() == '0' && cell.getTotalCandidates().size == 0) {
+            if (this.myCell.getValue() == '0' && this.myCell.getTotalCandidates().size == 0) {
                 this.displayCellError();
                 mySolverView.displayReasonUnsolvability('Überhaupt keine zulässige Nummer.');
                 return true;
             }
         }
         // 3) The inconsistency is also already established if two different required numbers are to be set in a cell at the same time.
-        if (cell.getValue() == '0' && cell.myNecessarys.size > 1) {
+        if (this.myCell.getValue() == '0' && this.myCell.myNecessarys.size > 1) {
             this.displayCellError();
             mySolverView.displayReasonUnsolvability('Gleichzeitig verschiedene notwendige Nummern.');
             return true;
@@ -2687,14 +2664,18 @@ class SudokuCellView extends MVC_View {
     }
 }
 
-class SudokuSolverView extends MVC_View {
+class SudokuSolverView {
     constructor(solver) {
-        super(solver);
+        this.mySolver = solver;
         this.myGridView = new SudokuGridView(solver.myGrid);
-        solver.myGrid.setMyView(this.myGridView);
+        //   solver.myGrid.setMyView(this.myGridView);
         this.progressBar = new ProgressBar();
+    }
+
+    init() {
         this.displayTechnique('');
         this.displayReasonUnsolvability('');
+        this.myGridView.init();
     }
 
     upDate() {
@@ -2936,7 +2917,7 @@ class SudokuSolverView extends MVC_View {
         solutionNode.checked = breakpoints.solutionDiscovered;
     }
 
-    
+
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
         let initDBButton = document.getElementById('db-pz-btn-init');
@@ -3043,5 +3024,10 @@ class SudokuSolverView extends MVC_View {
 
 }
 
-//==========================================================
+// Launch and initialize the app
+function startMainApp() {
+    sudoApp = new SudokuMainApp();
+    sudoApp.init();
+}
+
 startMainApp();
