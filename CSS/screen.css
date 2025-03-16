@@ -610,13 +610,17 @@ html {
     color: var(--delete-btn-color);
 }
 
-#btn-run,
 #btn-pause,
 #btn-stop {
     display: none;
 }
 
-
+#btn-run {
+    grid-column-start: 4;
+    grid-column-end: 6;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
 
 #btn-autoStep {
     grid-column-start: 1;

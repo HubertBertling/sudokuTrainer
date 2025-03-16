@@ -19,7 +19,8 @@ class SudokuGeneratorApp {
         this.mySolver.setActualEvalType('strict-plus');
     }
 
-    startPuzzleGenerator() {;
+    startPuzzleGenerator() {
+        ;
         this.myNewPuzzleGenerator.start();
     }
 
@@ -35,9 +36,6 @@ class SudokuGeneratorApp {
 
 class NewPuzzleGenerator {
     constructor() {
-        this.simpleSend1 = null;
-        this.verySimpleSend2 = null;
-        this.extremeSimpleSend3 = null;
     }
 
     simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
@@ -95,38 +93,31 @@ class NewPuzzleGenerator {
     }
 
     async generatePz() {
-        if (this.simpleSend1 == null) {
-            let puzzleRecord = sudoApp.mySolver.generatePuzzle();
-            if (puzzleRecord.preRunRecord.level == 'Leicht') {
-                this.simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
-                let command = await this.send2Main(this.simpleSend1);
-                return command;
-            } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
-                && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
-                let command = await this.send2Main(puzzleRecord);
-                return command;
+        let puzzleRecord = sudoApp.mySolver.generatePuzzle();
+        let command = 'proceedGeneration';
+        if (puzzleRecord.preRunRecord.level == 'Leicht') {
+            // Case simple puzzle generated
+            let simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
+            command = await this.send2Main(simpleSend1);
+            if (command !== 'stopGeneration') {
+                // A simple puzzle can be made into a very simple puzzle 
+                // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
+                let verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, simpleSend1);
+                verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                command = await this.send2Main(verySimpleSend2);
             }
+            if (command !== 'stopGeneration') {
+                // A simple puzzle can be made to extremeHeavy by deleting one given
+                let extremeHeavySend3 = this.deleteOnePuzzleCell(simpleSend1);
+                extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                command = await this.send2Main(extremeHeavySend3);
+            }
+        } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
+            && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
+            // The normal case
+            command = await this.send2Main(puzzleRecord);
         }
-
-        if (this.simpleSend1 != null && this.verySimpleSend2 == null) {
-            // A simple puzzle can be made into a very simple puzzle 
-            // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-            this.verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, this.simpleSend1);
-            this.verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            let command =  await this.send2Main(this.verySimpleSend2);
-            return command;
-        }
-
-        if (this.simpleSend1 != null && this.verySimpleSend2 != null) {
-            // A simple puzzle can be made to extremeVeryHeavy by deleting one given
-            this.extremeHeavySend3 = this.deleteOnePuzzleCell(this.simpleSend1);
-            this.extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-            this.simpleSend1 = null;
-            this.verySimpleSend2 = null;
-            this.extremeSimpleSend3 = null;
-            let command = await this.send2Main(this.extremeHeavySend3);
-            return command;
-        }
+        return command;
     }
 
     async send2Main(puzzleRecord) {
@@ -160,7 +151,7 @@ function startGeneratorApp() {
     //A worker app is assigned to the variable "sudoApp".
     sudoApp = new SudokuGeneratorApp();
     sudoApp.init();
-    sudoApp.startPuzzleGenerator(); 
+    sudoApp.startPuzzleGenerator();
 }
 
 startGeneratorApp();

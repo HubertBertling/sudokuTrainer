@@ -22,7 +22,6 @@ class Randomizer {
         return randoms;
     }
 }
-
 class IndexCalculator {
     /*
         0	1	2	3	4	5	6	7	8
@@ -45,7 +44,10 @@ class IndexCalculator {
     }
 
     static getCellIndexBlock(block, i) {
-        return Math.floor(block / 3) * 3 * 9 + Math.floor(i / 3) * 9 + i % 3;
+        let rows = (Math.floor(block / 3) * 3 + Math.floor(i / 3)) * 9;
+        let partialRows = (block % 3) * 3;
+        let cellIndex = rows + partialRows + (i % 3);
+        return cellIndex;
     }
 
     static calcBlockIndex(row, col) {
@@ -408,13 +410,11 @@ class Search {
     // On the way through the tree there occur steps which discover a solution
     // of the given puzzle. Finally the end of the tree will be reached. The search
     // is completed.
-    constructor(solver, grid) {
-        this.mySolver = solver;
+    constructor() {
         this.isTippSearch = false
-        this.myGrid = grid;
-        this.myStepper = new StepperOnGrid(this, this.myGrid);
-        this.myGrid.clearAutoExecCellInfos();
-        this.myGrid.deselect();
+        this.myStepper = new StepperOnGrid();
+        sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
+        sudoApp.mySolver.myGrid.deselect();
         this.myStepper.init();
         // 
         this.myFirstSolution = [];
@@ -456,7 +456,7 @@ class Search {
             return 'Extrem schwer';
         } else if (this.isCompleted()
             && this.myStepper.maxSelectionDifficulty == 'Leicht'
-            && this.myGrid.canTakeBackGivenCells()) {
+            && sudoApp.mySolver.myGrid.canTakeBackGivenCells()) {
             return 'Sehr leicht';
         } else {
             return this.myStepper.maxSelectionDifficulty;
@@ -466,9 +466,9 @@ class Search {
     performStep() {
         // The previous step result is undefined or 'inProgress'
         // Make the grid selection equal to the stepper selection
-        if (this.myStepper.indexSelected !== this.myGrid.indexSelected
+        if (this.myStepper.indexSelected !== sudoApp.mySolver.myGrid.indexSelected
             && this.myStepper.indexSelected !== -1) {
-            this.myGrid.select(this.myStepper.indexSelected);
+            sudoApp.mySolver.myGrid.select(this.myStepper.indexSelected);
         }
         // perform the next automated step
         this.searchStepResult = this.myStepper.autoStep().processResult;
@@ -477,7 +477,7 @@ class Search {
             if (this.getNumberOfSolutions() == 1) {
                 // Fair puuzles have exact one solution.
                 // This is the first solution in the search.
-                this.myFirstSolution = this.mySolver.getSolutionFromGrid();
+                this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
                 // this.myFirstSolutionBackTracks = this.myStepper.countBackwards;
                 // this.myFirstSolutionDifficulty = this.myStepper.maxSelectionDifficulty;
             }
@@ -490,21 +490,21 @@ class Search {
             // by changing the stepper direction to 'backward'.
             this.myStepper.setAutoDirection('backward');
         } else if (this.searchStepResult == 'searchCompleted') {
-            this.myGrid.backTracks = this.countBackwards;
+            sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
-            this.myGrid.deselect();
+            sudoApp.mySolver.myGrid.deselect();
             if (sudoApp instanceof SudokuMainApp) {
                 sudoApp.mySolver.notify();
                 // This is not the prerun calculation. 
                 // Have a look at method "computeBasicPreRunRecord()". 
                 // Therefore, the following step replaces
-                // --> this.mySolver.searchInfos2PuzzleRecord();
+                // --> sudoApp.mySolver.searchInfos2PuzzleRecord();
                 // by
-                // -->  this.mySolver.numberOfSolutions2PuzzleRecord();
+                // -->  sudoApp.mySolver.numberOfSolutions2PuzzleRecord();
                 // Only the number of solutions must be transferred from search
                 // to the puzzle record.
-                this.mySolver.numberOfSolutions2PuzzleRecord();
+                sudoApp.mySolver.numberOfSolutions2PuzzleRecord();
                 this.publishSearchIsCompleted(this.getNumberOfSolutions());
             }
         }
@@ -526,7 +526,7 @@ class Search {
     }
 
     cleanUp() {
-        this.myGrid.clearAutoExecCellInfos();
+        sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
         this.myStepper = undefined;
     }
 }
@@ -539,12 +539,10 @@ class StepperOnGrid {
     // A forward step is a pair of actions (select cell, set number),
     // a backward step is a pair (select cell, reset set number)
 
-    constructor(parent, suGrid) {
-        this.mySolver = parent;
+    constructor() {
         this.lastNumberSet = '0';
         this.indexSelected = -1;
         this.numberOfSolutions = 0;
-        this.myGrid = suGrid;
         this.myBackTracker;
         this.goneSteps = 0;
         this.maxSelectionDifficulty = 'Leicht';
@@ -577,7 +575,7 @@ class StepperOnGrid {
 
     select(index) {
         this.indexSelected = index;
-        this.myGrid.select(index);
+        sudoApp.mySolver.myGrid.select(index);
     }
 
     autoStep() {
@@ -674,12 +672,12 @@ class StepperOnGrid {
             let tmpAction = this.atCurrentSelectionSetAutoNumber(currentStep);
             // If a hidden single has been set in this cell, 
             // switch the evaluation mode back to 'No evaluation'.
-            this.myGrid.unsetStepLazy();
+            sudoApp.mySolver.myGrid.unsetStepLazy();
             this.lastNumberSet = currentStep.getValue();
             this.goneSteps++;
             // If the numbering leads to insolvability
             // the solver must go back
-            if (this.myGrid.isUnsolvable()) {
+            if (sudoApp.mySolver.myGrid.isUnsolvable()) {
                 this.setAutoDirection('backward');
                 this.countBackwards++;
                 let autoStepResult = {
@@ -688,7 +686,7 @@ class StepperOnGrid {
                 }
                 sudoApp.breakpointPassed('contradiction');
                 return autoStepResult;
-            } else if (this.myGrid.isFinished()) {
+            } else if (sudoApp.mySolver.myGrid.isFinished()) {
                 let autoStepResult = {
                     processResult: 'solutionDiscovered',
                     action: tmpAction
@@ -706,7 +704,7 @@ class StepperOnGrid {
     }
 
     atCurrentSelectionSetAutoNumber(step) {
-        this.myGrid.atCurrentSelectionSetAutoNumber(step);
+        sudoApp.mySolver.myGrid.atCurrentSelectionSetAutoNumber(step);
         let tmpAction = {
             operation: 'setNr',
             cellIndex: step.myCellIndex,
@@ -717,13 +715,13 @@ class StepperOnGrid {
     }
 
     deleteSelected(phase) {
-        this.myGrid.deleteSelected(phase);
-        this.myGrid.unsetStepLazy();
+        sudoApp.mySolver.myGrid.deleteSelected(phase);
+        sudoApp.mySolver.myGrid.unsetStepLazy();
         this.deselect();
     }
 
     deselect() {
-        this.myGrid.deselect();
+        sudoApp.mySolver.myGrid.deselect();
         this.indexSelected = -1;
     }
 
@@ -765,7 +763,7 @@ class StepperOnGrid {
             // Start state
             // a) The cell of the current step is selected in the matrix
             // b) The selected cell has not yet been deleted
-            if (this.myGrid.sudoCells[currentStep.getCellIndex()].getValue() !== '0') {
+            if (sudoApp.mySolver.myGrid.sudoCells[currentStep.getCellIndex()].getValue() !== '0') {
                 this.goneSteps++;
                 this.deleteSelected('play');
                 // Determine the new current step after deleting the cell
@@ -783,12 +781,12 @@ class StepperOnGrid {
         // In der Regel sind das Zellen mit 2 Optionsnummern.
         let maxSelection = selectionList[0];
         let maxIndex = maxSelection.index;
-        let maxWeight = this.myGrid.sudoCells[maxIndex].countMyInfluencersWeight();
+        let maxWeight = sudoApp.mySolver.myGrid.sudoCells[maxIndex].countMyInfluencersWeight();
         // Kontexte mit einem größeren Entscheidungsgrad, also mit weniger zulässigen Nummern, zählen mehr.
         for (let i = 1; i < selectionList.length; i++) {
             let currentSelection = selectionList[i];
             let currentIndex = currentSelection.index;
-            let currentWeight = this.myGrid.sudoCells[currentIndex].countMyInfluencersWeight();
+            let currentWeight = sudoApp.mySolver.myGrid.sudoCells[currentIndex].countMyInfluencersWeight();
             if (currentWeight > maxWeight) {
                 maxSelection = currentSelection;
                 maxIndex = currentIndex;
@@ -877,13 +875,13 @@ class StepperOnGrid {
     getOptionalSelections() {
         let selectionList = [];
         for (let i = 0; i < 81; i++) {
-            if (this.myGrid.sudoCells[i].getValue() == '0') {
+            if (sudoApp.mySolver.myGrid.sudoCells[i].getValue() == '0') {
                 let selection = {
                     index: i,
-                    options: Array.from(this.myGrid.sudoCells[i].getTotalCandidates()),
-                    //       indirectNecessaryOnes: Array.from(this.myGrid.sudoCells[i].getIndirectNecessarys()),
-                    necessaryOnes: Array.from(this.myGrid.sudoCells[i].getNecessarys()),
-                    level_0_singles: Array.from(this.myGrid.sudoCells[i].getSingles())
+                    options: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getTotalCandidates()),
+                    //       indirectNecessaryOnes: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getIndirectNecessarys()),
+                    necessaryOnes: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getNecessarys()),
+                    level_0_singles: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getSingles())
                 }
                 selectionList.push(selection);
             }
@@ -964,7 +962,7 @@ class StepperOnGrid {
     }
 
     deadlockReached() {
-        return this.myGrid.isUnsolvable();
+        return sudoApp.mySolver.myGrid.isUnsolvable();
     }
 }
 class BackTracker {
@@ -1640,8 +1638,8 @@ class SudokuGroup {
                                 newInAdmissibles.forEach(inAdNr => {
                                     let inAdmissiblePairInfo = {
                                         collection: this,
-                                        pairCell1: this.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
-                                        pairCell2: this.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]
+                                        pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
+                                        pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]
                                     }
 
                                     this.myCells[j].inAdmissibleCandidatesFromPairs.set(inAdNr, inAdmissiblePairInfo);
@@ -1669,18 +1667,24 @@ class SudokuGroup {
                     this.myCells[cellIndex].addNecessary(i.toString(), this);
                     let necessaryCell = this.myCells[cellIndex];
                     if (this instanceof SudokuBlock) {
-                        let tmpRow = necessaryCell.myRow;
-                        let tmpCol = necessaryCell.myCol;
+                        // let tmpRow = necessaryCell.myRow;
+                        // let tmpCol = necessaryCell.myCol;
+                        let tmpRow = sudoApp.mySolver.myGrid.sudoRows[IndexCalculator.rowIndex(necessaryCell.myIndex)];
+                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpRow.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpCol.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                     } else if (this instanceof SudokuRow) {
-                        let tmpBlock = necessaryCell.myBlock;
-                        let tmpCol = necessaryCell.myCol;
+                        // let tmpBlock = necessaryCell.myBlock;
+                        // let tmpCol = necessaryCell.myCol;
+                        let tmpBlock = sudoApp.mySolver.myGrid.sudoBlocks[IndexCalculator.blockIndex(necessaryCell.myIndex)];
+                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];                      
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpBlock.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpCol.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                     } else if (this instanceof SudokuCol) {
-                        let tmpRow = necessaryCell.myRow;
-                        let tmpBlock = necessaryCell.myBlock;
+                        // let tmpRow = necessaryCell.myRow;
+                        // let tmpBlock = necessaryCell.myBlock;
+                        let tmpRow = sudoApp.mySolver.myGrid.sudoRows[IndexCalculator.rowIndex(necessaryCell.myIndex)];
+                        let tmpBlock = sudoApp.mySolver.myGrid.sudoBlocks[IndexCalculator.blockIndex(necessaryCell.myIndex)];
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpRow.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpBlock.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                     }
@@ -1929,7 +1933,7 @@ class SudokuBlock extends SudokuGroup {
             tmpCells.push(sudoApp.mySolver.myGrid.sudoCells[IndexCalculator.getCellIndexBlock(blockIndex, i)]);
         }
         super(tmpCells);
-        this.myIndex = rowIndex;
+        this.myIndex = blockIndex;
 
         this.myOrigin = {
             row: -1,
@@ -1959,7 +1963,7 @@ class SudokuBlock extends SudokuGroup {
     }
 
     getBlockCellAt(row, col) {
-        return this.myGrid.getCellAt(this.myOrigin.row + row, this.myOrigin.col + col);
+        return sudoApp.mySolver.myGrid.getCellAt(this.myOrigin.row + row, this.myOrigin.col + col);
     }
 
     getMatrixRowFromBlockRow(blockRow) {
@@ -2075,6 +2079,9 @@ class SudokuGrid {
     constructor() {
         // the grid content
         this.sudoCells = [];
+        this.sudoBlocks = [];
+        this.sudoRows = [];
+        this.sudoCols = [];
         // Aktuell selektierte Zelle
         this.indexSelected = -1;
         // In der selektierten Zelle die Indices der selektierten
@@ -2086,6 +2093,11 @@ class SudokuGrid {
     }
 
     init() {
+        this.sudoCells = [];
+        this.sudoBlocks = [];
+        this.sudoRows = [];
+        this.sudoCols = [];
+
         this.indexSelected = -1;
         this.candidateIndexSelected = -1;
         // Erzeuge die interne Tabelle
@@ -2546,10 +2558,28 @@ class SudokuGrid {
 
 
     createSudoGrid() {
-        this.sudoCells = [];
+            // Die 81 Zellen anlegen
         for (let i = 0; i < 81; i++) {
             let cell = new SudokuCell(i);
             this.sudoCells.push(cell);
+        }
+        // Die 9 Blöcke anlegen
+        for (let i = 0; i < 9; i++) {
+            let block = new SudokuBlock(i);
+            this.sudoBlocks.push(block);
+        }
+        // Setze die Row-Col-Vektoren
+        for (let i = 0; i < 9; i++) {
+            let col = new SudokuCol(i);
+            this.sudoCols.push(col);
+        }
+        for (let i = 0; i < 9; i++) {
+            let row = new SudokuRow(i);
+            this.sudoRows.push(row);
+        }
+        // Row- und Col-Vektoren in den Blöcken anlegen
+        for (let i = 0; i < 9; i++) {
+            this.sudoBlocks[i].addBlockVectors();
         }
         // Influencers in den Zellen setzen
         // Das geschieht nur einmal bei der Initialisierung
@@ -3237,8 +3267,6 @@ class SudokuGrid {
 
 class SudokuCell {
     constructor(index) {
-        // Die Zelle kennt ihre Tabelle und ihren Index
-        this.myGrid = sudoApp.mySolver.myGrid;
         this.myIndex = index;
         // Die Zelle kennt ihre DOM-Version
         // Mit der Erzeugung des Wrappers wird
@@ -3405,7 +3433,7 @@ class SudokuCell {
         this.myValue = nr;
         this.myValueType = 'manual';
         this.myGamePhase = gamePhase;
-        this.myAutoStepNumber = this.myGrid.numberOfNonEmptyCells() - this.myGrid.numberOfGivens();
+        this.myAutoStepNumber = sudoApp.mySolver.myGrid.numberOfNonEmptyCells() - sudoApp.mySolver.myGrid.numberOfGivens();
     }
 
     autoSetValue(currentStep) {
@@ -3413,7 +3441,7 @@ class SudokuCell {
         this.myValue = nr;
         this.myValueType = 'auto';
         this.myGamePhase = 'play';
-        this.myAutoStepNumber = this.myGrid.numberOfNonEmptyCells() - this.myGrid.numberOfGivens();
+        this.myAutoStepNumber = sudoApp.mySolver.myGrid.numberOfNonEmptyCells() - sudoApp.mySolver.myGrid.numberOfGivens();
         this.myOptions = currentStep.options();
     }
 
@@ -3952,6 +3980,12 @@ class SudokuSolver {
         });
     }
 
+    notifyAspect(aspect, aspectValue) {
+        // Die eigene View anzeigen
+        this.mySolverViews.forEach(view => {
+            view.upDateAspect(aspect, aspectValue);
+        });
+    }
 
     unsetCurrentPuzzle() {
         this.myCurrentPuzzle = undefined;
@@ -4143,7 +4177,7 @@ class SudokuSolver {
         }
     }
     setCurrentSearchNew() {
-        this.myCurrentSearch = new Search(this, this.myGrid);
+        this.myCurrentSearch = new Search();
     }
     performSearchStep() {
         this.myCurrentSearch.performStep();
@@ -4341,10 +4375,6 @@ class SudokuSolver {
         this.myGrid.setSolvedToGiven();
     }
 
-    notifyAspect(aspect, aspectValue) {
-        super.notifyAspect(aspect, aspectValue);
-    }
-
     clearLoadedPuzzle(key) {
         // In the definition phase there is no current puzzle
         if (this.currentPhase == 'play') {
@@ -4360,7 +4390,7 @@ class SudokuSolver {
         // for puzzles that have already been partially solved.
 
         if (this.isNotPartiallySolved()) {
-            this.myCurrentSearch = new Search(this, this.myGrid);
+            this.myCurrentSearch = new Search();
         } else {
             sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
                 sudoApp.mySolverController.resetConfirmed,
@@ -4371,7 +4401,7 @@ class SudokuSolver {
     }
 
     tryStartAutomaticSearchStep() {
-        this.myCurrentSearch = new Search(this, this.myGrid);
+        this.myCurrentSearch = new Search();
     }
 
     succeeds() {
@@ -4855,7 +4885,7 @@ class SudokuSolverController {
                 sudoApp.myInfoDialog.open("Tipp", "negativ",
                     "Für extrem schwere Puzzles kann kein Tipp gegeben werden.", this, () => { });
             } else {
-                this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+                this.mySolver.myCurrentSearch = new Search();
                 this.mySolver.myCurrentSearch.isTippSearch = true;
                 // Select the next cell
                 this.mySolver.performSearchStep();
@@ -4903,12 +4933,12 @@ class SudokuSolverController {
 
     resetConfirmed() {
         this.resetOperation();
-        this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+        this.mySolver.myCurrentSearch = new Search();
         sudoApp.myTrackerDialog.open();
     }
 
     resetRejected() {
-        this.mySolver.myCurrentSearch = new Search(this.mySolver, this.mySolver.myGrid);
+        this.mySolver.myCurrentSearch = new Search();
         sudoApp.myTrackerDialog.open();
     }
 
