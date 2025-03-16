@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 780;
+let VERSION = 781;
 
 // ==========================================
 // Basic classes
@@ -154,55 +154,6 @@ class MatheSet extends Set {
         }
     }
 }
-/* 
-class MVC_Model {
-    constructor() {
-        this.myObservers = [];
-        // Dies ist eine Sondersituation. In dieser Anwendung
-        // besitzt jedes Model eine View.
-        this.myView = null;
-        this.parentModel = null;
-    }
-    attach(view) {
-        // Die View kann ein Beobachter des Models sein.
-        // Aber nicht in jedem Fall.
-        // Im Puzzle-Generator sind die Views abgeschaltet,
-        // sie sind nicht als Beobachter eingetragen.
-        this.myObservers.push(view);
-    }
-    detach(view) {
-        this.myObservers.forEach(observer => {
-            if (observer == view) {
-                let myIndex = this.myObservers.indexOf(view);
-                if (myIndex !== -1) {
-                    this.myObservers.splice(myIndex, 1);
-                }
-            }
-        });
-    }
-
-    setMyView(view) {
-        this.myView = view;
-    }
-    getMyView() {
-        return this.myView;
-    }
-
-    notify() {
-        // Die eigene View anzeigen
-        this.myObservers.forEach(observer => {
-            observer.upDate();
-        });
-    }
-
-    notifyAspect(aspect, aspectValue) {
-        // Die eigene View anzeigen
-        this.myObservers.forEach(observer => {
-            observer.upDateAspect(aspect, aspectValue);
-        });
-    }
-}
-     */
 // ==========================================
 // Automation
 // ==========================================
@@ -290,12 +241,6 @@ class ClockedRunner {
         this.myBreakpoints.hiddenSingle = bps.hiddenSingle;
         this.myBreakpoints.solutionDiscovered = bps.solutionDiscovered;
     }
-
-    /*
-     getBreakpoints() {
-         return this.myBreakpoints;
-     }
-     */
 
     breakpointPassed(bp) {
         switch (bp) {
@@ -411,7 +356,7 @@ class Search {
     // of the given puzzle. Finally the end of the tree will be reached. The search
     // is completed.
     constructor() {
-        this.isTippSearch = false
+        this.isTippSearch = false;
         this.myStepper = new StepperOnGrid();
         sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
         sudoApp.mySolver.myGrid.deselect();

@@ -312,45 +312,11 @@ class ProgressBar {
 class NavigationBar {
     constructor() {
     }
-    init() {
-        /* Loop through all dropdown buttons to toggle between hiding and showing 
-        its dropdown content - This allows the user to have multiple dropdowns 
-        without any conflict */
-        // var dropdown = document.getElementsByClassName("dropdown-btn");
-        /*
-        let caretDownImg = document.getElementById('caret-down-img');
-        let noCaretImg = document.getElementById('no-caret-img');
-        var i;
-        noCaretImg.style.display = "block";
-        caretDownImg.style.display = "none";
-        
-       var i;
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    // noCaretImg.style.display = "block";
-                    // caretDownImg.style.display = "none";
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                    // noCaretImg.style.display = "none";
-                    // caretDownImg.style.display = "block";
-                }
-            });
-        }
-            */
-    }
+    
     openNav() {
         document.getElementById("mySidenav").style.width = "250px";
     }
     closeNav() {
-        // let dropdown = document.getElementById("dropdown-btn-new");
-        // let dropdownContent = document.getElementById("dropdown-container-btn-new");
-        // if (dropdownContent.style.display === "block") {
-        //    dropdown.click();
-        // }
         document.getElementById("mySidenav").style.width = "0";
     }
 }
@@ -370,7 +336,6 @@ class PuzzleDBDialog {
         if (this.myOpen) {
             this.myPuzzleDBDialogNode.close();
             this.myOpen = false;
-            // sudoApp.myPuzzleDB.detach(this.myPuzzleDBView);
         }
     }
 }
@@ -1537,13 +1502,6 @@ class SudokuPuzzleDBController {
     }
 
     deleteBtnPressed() {
-        let pz = this.myPuzzleDB.getSelectedPuzzle();
-        let pzName = pz.name;
-        /* sudoApp.myConfirmDlg.open(sudoApp.myPuzzleDBController,
-            sudoApp.myPuzzleDBController.delete,
-            "Puzzle löschen",
-            'Soll das Puzzle \"' + pzName + '\" endgültig gelöscht werden?');
-            */
         sudoApp.myPuzzleDBController.delete();
     }
     initDBBtnPressed() {
@@ -1677,6 +1635,7 @@ class SudokuPrintView {
 // ==========================================
 class SudokuGroupView {
     constructor(group) {
+        // group is the model of this view
         this.myGroup = group;
     }
     getMyGroup() {
@@ -1713,6 +1672,7 @@ class SudokuGroupView {
 
 class SudokuBlockView extends SudokuGroupView {
     constructor(block) {
+        // block is the model of this view
         super(block);
     }
     getMyBlock() {
@@ -1756,6 +1716,7 @@ class SudokuBlockView extends SudokuGroupView {
 
 class SudokuRowView extends SudokuGroupView {
     constructor(row) {
+    // row is the model of this view
         super(row);
         this.myRow = row;
     }
@@ -1788,7 +1749,8 @@ class SudokuRowView extends SudokuGroupView {
 
 class SudokuColView extends SudokuGroupView {
     constructor(col) {
-        super(col);
+       // block is the model of this view
+           super(col);
     }
     getMyCol() {
         return super.getMyGroup();
