@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 781;
+let VERSION = 782;
 
 // ==========================================
 // Basic classes
@@ -5443,7 +5443,6 @@ class SudokuMainApp {
 
         this.myPuzzleDB.init();
         this.myNewPuzzleBuffer.init();
-        this.myNavBar.init();
 
         this.displayAppVersion();
     }
