@@ -27,6 +27,29 @@ self.addEventListener("message", (event) => {
         self.close();
     }
 }, false);
+class SudokuFastSolverApp {
+    constructor() {
+        // ==============================================================
+        // Components of the app
+        // ==============================================================
+        this.mySolver = new SudokuSolver(this);
+        this.mySyncRunner = new SynchronousRunner();
+    }
+
+    init() {
+        this.mySolver.init();
+        // The fastest evaluation method is 'strict-plus'.
+        this.mySolver.setActualEvalType('strict-plus');
+    }
+
+    breakpointPassed(bp) {
+        this.mySyncRunner.breakpointPassed(bp);
+    }
+
+    getMySolver() {
+        return this.mySolver;
+    }
+}
 
 // Launch and initialize the worker app
 function startFastSolverApp() {
