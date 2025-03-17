@@ -1449,7 +1449,7 @@ label {
     font-weight: normal;
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    border: 1rem solid gray;
+    border: 1rem solid DimGray;
     padding: 2rem;
 }
 
