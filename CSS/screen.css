@@ -1444,8 +1444,12 @@ label {
     text-align: center;
     z-index: 2;
     /*rotate: z -33deg;*/
-    color: greenyellow;
-    background-color: black;
+ /*   color: greenyellow;
+    background-color: black; */
+    font-weight: normal;
+    background-color: var(--played-cell-bg-color);
+    color: var(--played-cell-color);
+    border: 1rem solid gray;
     padding: 2rem;
 }
 
