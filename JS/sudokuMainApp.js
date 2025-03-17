@@ -482,6 +482,7 @@ class PuzzleSaveRenameDialog {
 class TrackerDialog {
     constructor() {
         this.btnContainer = document.getElementById("mobile-btn-container");
+        this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
         this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
         this.trackerDlgNode = document.getElementById("trackerDlg");
         this.trackerImage = document.getElementById("trackerImg");
@@ -541,10 +542,14 @@ class TrackerDialog {
     setNumberOfSolutions(nr) {
         this.solutionNumber = nr;
         this.trackerNrOfSolutions.innerHTML = this.solutionNumber;
+        this.trackerDlgSolution.style.backgroundColor =  
+            'var(--played-cell-bg-color)';
     }
     reSetNumberOfSolutions() {
         this.solutionNumber = 0;
         this.trackerNrOfSolutions.innerHTML = this.solutionNumber;
+        this.trackerDlgSolution.style.backgroundColor =  
+        'var(--nested-cell-bg-color)';
     }
     getNumberOfSolutions() {
         return this.solutionNumber;

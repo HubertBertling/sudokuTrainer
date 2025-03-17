@@ -950,7 +950,6 @@ label {
     flex-direction: row;
     place-items: center;
     border: 0.4rem solid DimGrey; 
-    /* background-color: rgb(192, 225, 186); */
     background-color: var(--played-cell-bg-color);
 }
 
