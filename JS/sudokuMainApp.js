@@ -1999,7 +1999,6 @@ class SudokuGridView {
 class SudokuCellView {
     constructor(cell) {
         this.myCell = cell;
-        console.log(' --> Zellwert nach der Übergabe: ' + this.myCell.myValue);
         this.myNode = undefined;
     }
 
@@ -2642,7 +2641,6 @@ class SudokuSolverView {
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
         this.myGridView.upDate();
         // Indication that the puzzle cannot be solved, if this is the case
-        this.displayReasonUnsolvability('');
         this.displayProgress();
         // this.displayEvalType(this.mySolver.getActualEvalType());
         // this.displayBreakpoints(sudoApp.myClockedRunner.myBreakpoints);
