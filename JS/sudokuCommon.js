@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 782;
+let VERSION = 783;
 
 // ==========================================
 // Basic classes
@@ -5346,6 +5346,7 @@ class SudokuSolverController {
 
             }
         }
+
     }
 
 
