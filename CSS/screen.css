@@ -950,17 +950,16 @@ label {
     flex-direction: row;
     place-items: center;
     border: 0.4rem solid DimGrey; 
-    background-color: rgb(192, 225, 186);
+    /* background-color: rgb(192, 225, 186); */
+    background-color: var(--played-cell-bg-color);
 }
 
 .label-solution {
-    font-weight: bold;
     font-size: 1.4rem;
     padding: 0.6rem;
 }
 
 .number-of-solutions {
-    font-weight: bold;
     text-align: center;
     font-size: 1.4rem;
 }
