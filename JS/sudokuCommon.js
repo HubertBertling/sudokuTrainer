@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 789;
+let VERSION = 790;
 
 // ==========================================
 // Basic classes
@@ -420,21 +420,9 @@ class Search {
                 // Fair puuzles have exact one solution.
                 // This is the first solution in the search.
                 this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
-                // this.myFirstSolutionBackTracks = this.myStepper.countBackwards;
-                // this.myFirstSolutionDifficulty = this.myStepper.maxSelectionDifficulty;
             }
-
-            /*
-            if (sudoApp instanceof SudokuMainApp) {
-                let nr = this.getNumberOfSolutions();
-                sudoApp.myTrackerDialog.setNumberOfSolutions(nr);
-            }
-            */
-
-              let nr = this.getNumberOfSolutions();
-              sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
-
-
+            let nr = this.getNumberOfSolutions();
+            sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
             sudoApp.breakpointPassed('solutionDiscovered');
             // Prepare the search for further solutions in the next steps
             // by changing the stepper direction to 'backward'.
@@ -444,8 +432,7 @@ class Search {
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
             sudoApp.mySolver.myGrid.deselect();
-
-            sudoApp.mySolver.notifyAspect('searchIsCompleted', 
+            sudoApp.mySolver.notifyAspect('searchIsCompleted',
                 this.getNumberOfSolutions());
         }
     }
@@ -455,7 +442,6 @@ class Search {
         this.myStepper = undefined;
     }
 }
-
 
 class StepperOnGrid {
     // A temporary stepper for automatic execution is created for the Sudoku matrix.
@@ -479,10 +465,9 @@ class StepperOnGrid {
     init() {
         this.lastNumberSet = '0';
         this.countBackwards = 0;
-
         this.autoDirection = 'forward';
         this.maxSelectionDifficulty = 'Leicht';
-        // Der Stepper hat immer einen aktuellen BackTracker
+        // The stepper always owns an actual backTracker
         this.myBackTracker = new BackTracker();
     }
 
@@ -531,7 +516,7 @@ class StepperOnGrid {
             // i.e. the next selection is the next option of this step.
             if (currentStep instanceof BackTrackOptionStep &&
                 currentStep.getCellIndex() !== -1) {
-                // Lege einen neuen Step an mit der Nummer der nächsten Option
+                // Create a new step with the number of the next option
                 let realStep = this.myBackTracker.getNextBackTrackRealStep();
                 // Select the cell of the optionStep whose index is also saved in the new realStep
                 this.select(realStep.getCellIndex());
@@ -699,15 +684,14 @@ class StepperOnGrid {
         }
     }
 
-
     calculateMinSelectionFrom(selectionList) {
-        // Berechnet die nächste Selektion
-        // Nicht eindeutig;        
-        // In der Regel sind das Zellen mit 2 Optionsnummern.
+        // Calculates the next selection. Not unique;        
+        // These are usually cells with 2 option numbers.
         let maxSelection = selectionList[0];
         let maxIndex = maxSelection.index;
         let maxWeight = sudoApp.mySolver.myGrid.sudoCells[maxIndex].countMyInfluencersWeight();
-        // Kontexte mit einem größeren Entscheidungsgrad, also mit weniger zulässigen Nummern, zählen mehr.
+        // Contexts with a greater degree of decision, 
+        // i.e. with fewer permissible numbers, count more.
         for (let i = 1; i < selectionList.length; i++) {
             let currentSelection = selectionList[i];
             let currentIndex = currentSelection.index;
@@ -722,7 +706,7 @@ class StepperOnGrid {
     }
 
     calculateNeccesarySelectionFrom(selectionList) {
-        // Berechnet Selektion von Zellen, die eine notwendige Nummer enthalten.
+        // Calculates selection of cells that contain a required number.
         let currentIndex = -1;
         let currentNr = '0';
         let minIndex = -1;
@@ -755,19 +739,18 @@ class StepperOnGrid {
             return selectionList[minIndex];
         }
         else {
-            // Falls es keine Zellen mit notwendigen Nummern gibt
+            // If there are no cells with required numbers
             return emptySelection;
         }
     }
 
     calculateLevel_0_SinglesSelectionFrom(selectionList) {
-        // Berechnet Selektion von Zellen, die ein level_0_single enthalten.
+        // Calculates selection of cells that contain a level_0_single.
         for (let i = 0; i < selectionList.length; i++) {
             if (selectionList[i].level_0_singles.length > 0) {
                 return selectionList[i];
             }
         }
-        // Falls es keine Zellen mit dieser Eigenschaft gibt
         let emptySelection = {
             index: -1,
             options: [],
@@ -779,18 +762,16 @@ class StepperOnGrid {
     }
 
     calculateOneOptionSelectionFrom(selectionList) {
-        // Berechnet Selektion von Zellen, die genau eine zulässige Nummer enthalten.
+        // Calculates selection of cells that contain exactly one number.
         for (let i = 0; i < selectionList.length; i++) {
             if (selectionList[i].necessaryOnes.length == 0 &&
                 selectionList[i].options.length == 1) {
                 return selectionList[i];
             }
         }
-        // Falls es keine Zellen mit diese Eigenschaft gibt
         let emptySelection = {
             index: -1,
             options: [],
-            // indirectNecessaryOnes: [],
             necessaryOnes: [],
             level_0_singles: []
         }
@@ -804,14 +785,13 @@ class StepperOnGrid {
                 let selection = {
                     index: i,
                     options: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getTotalCandidates()),
-                    //       indirectNecessaryOnes: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getIndirectNecessarys()),
                     necessaryOnes: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getNecessarys()),
                     level_0_singles: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getSingles())
                 }
                 selectionList.push(selection);
             }
         }
-        // Wenn alle Zellen gesetzt sind, ist diese Liste leer
+        // If all cells are set, this list is empty
         return selectionList;
     }
 
@@ -835,7 +815,7 @@ class StepperOnGrid {
         if (tmpNeccessary.index !== -1) {
             return tmpNeccessary;
         }
-        // Bestimmt die nächste Zelle mit single
+        // Determines the next cell with single
         let tmpLevel_0_single = this.calculateLevel_0_SinglesSelectionFrom(optionList);
         if (tmpLevel_0_single.index !== -1) {
             switch (this.maxSelectionDifficulty) {
@@ -844,14 +824,14 @@ class StepperOnGrid {
                     break;
                 }
                 default: {
-                    // Schwierigkeitsgrad bleibt unverändert.
+                    // Difficulty level remains unchanged.
                 }
             }
             return tmpLevel_0_single;
         }
 
-        // Bestimmt die nächste Zelle mit hidden single, d.h.
-        // unter Verwendung von indirekt unzulässigen Nummern
+        // Determines the next cell with hidden single, i.e.
+        // using indirectly invalid numbers
         let oneOption = this.calculateOneOptionSelectionFrom(optionList);
         if (oneOption.index !== -1) {
             switch (this.maxSelectionDifficulty) {
@@ -861,17 +841,17 @@ class StepperOnGrid {
                     break;
                 }
                 default: {
-                    // Schwierigkeitsgrad bleibt unverändert.
+                    // Difficulty level remains unchanged.
                 }
             }
             return oneOption;
         }
 
         let tmpMin = this.calculateMinSelectionFrom(optionList);
-        // Falls es keine notwendigen Nummern gibt:
-        // Bestimme eine nächste Zelle mit minimaler Anzahl zulässiger Nummern
-        // Diese Zelle ist nicht eindeutig
-        // Diese Zelle kann eine mit der vollen Optionsmenge sein
+        // If there are no required numbers:
+        // Determine a next cell with minimum number of allowed numbers
+        // This cell is not unique
+        // This cell can be one with the full option set
         switch (this.maxSelectionDifficulty) {
             case 'Leicht':
             case 'Mittel':
@@ -880,7 +860,7 @@ class StepperOnGrid {
                 break;
             }
             default: {
-                // Schwierigkeitsgrad bleibt unverändert.
+                // Difficulty level remains unchanged.
             }
         }
         return tmpMin;
@@ -903,8 +883,6 @@ class BackTracker {
     // The Backtracker generates an execution tree of option steps, which contains for each option of 
     // the option step an option path. The option path consists of a sequence
     // of real steps that document a number setting.
-
-
     constructor() {
         // The Backtracker stores the current step of the backtracking process.
         // Initially, the current step is a pseudo option step, which is also
@@ -954,23 +932,22 @@ class BackTracker {
 
 class BackTrackOptionStep {
     constructor(ownerPath, cellIndex, optionList) {
-        // Der Optionstep befindet sich in einem Optionpath
+        // The option step is located in an option path
         this.myOwnerPath = ownerPath;
-        // Der BackTrackOptionStep zeigt auf eine Grid-Zelle
+        // The BackTrackOptionStep points to a grid cell
         this.myCellIndex = cellIndex;
-        // Der BackTrackOptionStep speichert die Optionsnummern des Schrittes
+        // The BackTrackOptionStep saves the option numbers of the step
         this.myOptionList = optionList.slice();
-        // Die Optionsliste wird mittels pop-Operationen abgearbeitet.
-        // Damit dennoch die normale (FIFO) Reihenfolge der Bearbeitung realisiert wird,
-        // wird die Liste umgedreht.
+        // The option list is processed using pop operations.
+        // So that the normal (FIFO) sequence of processing is still realised,
+        // the list is reversed.
         this.myNextOptions = optionList.slice().reverse();
-
-        // Der OptonStep hat für jede Option einen eigenen BackTrackOptionPath
+        // The OptonStep has a separate BackTrackOptionPath for each option
         if (optionList.length == 1) {
-            // Dann kann es nur einen Pfad geben, und dieser wird sofort angelegt.
-            // Nur der Optionsschritt an der Wurzel hat nur eine Option, eine Pseudo-Option.
-            // Später gibt es keine einelementigen Optionslisten.
-            // Denn eine Option wählen muss man erst, wenn mindestens 2 Optionen zur Auswahl stehen.
+            // Then there can only be one path, and this is created immediately.
+            // Only the option step at the root has only one option, a pseudo-option.
+            // Later, there are no single-element option lists.
+            // Because you only have to select an option if there are at least 2 options to choose from.
             this.myOwnerPath = new BackTrackOptionPath(optionList[0], this)
         }
     }
@@ -978,8 +955,8 @@ class BackTrackOptionStep {
         return sudoApp.mySolver.myGrid.sudoCells[this.myCellIndex];
     }
     isOpen(nr) {
-        // Die Nummer nr ist offen, wenn sie noch nicht probiert wurde,
-        // d.h. sie befindet sich noch in der NextOption-Liste
+        // The number nr is open if it has not yet been tried,
+        // i.e. it is still in the NextOption list
         for (let i = 0; i < this.myNextOptions.length; i++) {
             if (this.myNextOptions[i] == nr) {
                 return true;
@@ -988,7 +965,7 @@ class BackTrackOptionStep {
         return false;
     }
     options() {
-        // Die Optionen des Option-Steps
+        // The options of the option step
         let tmpOptionList = [];
         this.myOptionList.forEach(optionNr => {
             let tmpOption = {
@@ -1026,7 +1003,7 @@ class BackTrackOptionStep {
         }
     }
     isFinished() {
-        // Der BackTrackOptionStep ist beendet, wenn alle seine Pfade beendet sind
+        // The BackTrackOptionStep is finished when all its paths are finished
         for (let i = 0; i < this.myBackTrackOptionPaths.length; i++) {
             if (!this.myBackTrackOptionPaths[i].isFinished()) {
                 return false;
@@ -1043,12 +1020,11 @@ class BackTrackOptionStep {
 }
 class BackTrackRealStep {
     constructor(ownerPath, stepIndex, cellIndex, cellValue) {
-        // Der Realstep befindet sich in einem Optionpath
+        // The real step is located in an option path
         this.myOwnerPath = ownerPath;
-        // Der Step zeigt auf Sudokuzelle
+        // The step points to sudoku cell
         this.myStepsIndex = stepIndex;
         this.myCellIndex = cellIndex;
-        // Der Step kennt den Inhalt der Sudoku-Zelle
         this.myCellValue = cellValue;
     }
     addBackTrackRealStep(cellIndex, cellValue) {
@@ -1080,33 +1056,33 @@ class BackTrackRealStep {
     }
 }
 class BackTrackOptionPath {
-    // Ein BackTrackOptionPath besteht im Kern aus zwei Elmenten:
-    // 1. Die Nummer (Option), für die der Pfad gemacht wird.
-    // 2. aus einer Sequenz von BackTrackRealSteps
-    // 3. Der letzte Schritt ist ein OptonStep, wenn nicht vorher
-    // ein Erfolg oder Unlösbarkeit eingetreten ist.
+    // A BackTrackOptionPath essentially consists of two elements:
+    // 1. the number (option) for which the path is made.
+    // 2. a sequence of BackTrackRealSteps
+    // 3. the last step is an OptonStep, if not previously defined
+    // a success or unsolvability has not occurred before.
     constructor(value, ownerStep) {
-        // Nie nummeer, für die dieser path entsteht
+        // The number for which this path is created
         this.myValue = value;
-        //Die Schrittsequenz bestehend ausschließlich aus realsteps
+        // The step sequence consisting exclusively of real steps
         this.myBackTrackRealSteps = [];
-        //Weitere Hilfsattribute
-        this.myLastBackTrackOptionStep; // Der Abschluss dies Pfades
-        this.myOwnerStep = ownerStep; // Der Optionstep, der diesen Pfad besitzt
+        //Other auxiliary attributes
+        this.myLastBackTrackOptionStep; // The end of this path
+        this.myOwnerStep = ownerStep; // The option step that owns this path
     }
     options(currentIndex) {
         let tmpOptions = [];
         if (currentIndex > 0) {
-            // Nur eine Option mitten im Pfad
+            // Only one option in the middle of the path
             let tmpOption = {
                 value: this.myBackTrackRealSteps[currentIndex].getValue(),
                 open: false
             }
             tmpOptions.push(tmpOption);
         } else {
-            // Der erste Schritt im Pfad
+            // The first step in the path
             if (this.myValue == '0') {
-                // Der Wurzelpfad
+                // The root path
                 let tmpOption = {
                     value: this.myBackTrackRealSteps[currentIndex].getValue(),
                     open: false
@@ -1120,7 +1096,7 @@ class BackTrackOptionPath {
     }
     getDepth() {
         if (this.myValue == '0') {
-            // Ich bin der Rootpath
+            // I am the root path
             return 0;
         } else {
             return this.myOwnerStep.getDepth();
@@ -1131,16 +1107,16 @@ class BackTrackOptionPath {
     }
 
     addBackTrackRealStep(cellIndex, cellValue) {
-        // Der neue Realstep wird in diesem Path angelegt
+        // The new real step is created in this path
         let realStep = new BackTrackRealStep(this, this.myBackTrackRealSteps.length, cellIndex, cellValue);
         this.myBackTrackRealSteps.push(realStep);
         return realStep;
     }
 
     addBackTrackOptionStep(cellIndex, optionList) {
-        // Der neue Optionstep wird in diesem Path angelegt
+        // The new option step is created in this path
         this.myLastBackTrackOptionStep = new BackTrackOptionStep(this, cellIndex, optionList);
-        // Damit ist dieser Pfad beendet. Es kann nur in seinen Subpfaden weitergehen
+        // This concludes this path. It can only continue in its sub-paths
         return this.myLastBackTrackOptionStep;
     }
 
@@ -1149,17 +1125,17 @@ class BackTrackOptionPath {
     }
 
     previousFromBackTrackRealStep(currentIndex) {
-        // Rückwärts vom BackTrackRealStep
+        // Backwards from BackTrackRealStep
         if (currentIndex == 0) {
             return this.myOwnerStep;
         } else {
-            // der vorige step liegt in diesem Path
+            // the previous step is in this path
             return this.myBackTrackRealSteps[currentIndex - 1];
         }
     }
     previousFromBackTrackOptionStep() {
-        // Rückwärts vom BackTrackOptionStep
-        // Es kann vorkommen, dass die realStep Sequenz leer ist
+        // Backwards from BackTrackOptionStep
+        // It can happen that the realStep sequence is empty
         if (this.myBackTrackRealSteps.length == 0) {
             return this.myOwnerStep;
         } else
@@ -1247,13 +1223,10 @@ class Puzzle {
 // ==========================================
 
 class SudokuGroup {
-    // Abstrakte Klasse, deren konkrete Instanzen
-    // ein Block, eine Spalte oder Reihe der Tabelle sind
+    // Abstract class whose concrete instances are
+    // are a block, column or row of the table
     constructor(cells) {
         this.myCells = cells;
-        // In jedem Block, jeder Spalte und Reihe müssen alle Zahlen 1..9 einmal vorkommen.
-        // Für eine konkreten Block, eine Spalte oder Reihe sind MissingNumbers Zahlen,
-        // die nicht in ihr vorkommen.
         this.myPairInfos = [];
     }
 
@@ -1271,9 +1244,9 @@ class SudokuGroup {
 
 
     isUnsolvable() {
-        // Wenn es eine Gruppe mit Conflicting Singles gibt, ist das Sudoku unlösbar.
-        // Wenn es eine Gruppe gibt, in der nicht mehr alle Nummern vorkommen.
-        // Wenn es eine Gruppe gibt, in der dieselbe Nummer mehrmals notwendig ist.
+        // If there is a group with Conflicting Singles, the Sudoku is unsolvable.
+        // If there is a group in which not all numbers appear.
+        // If there is a group in which the same number is required several times.
         return (
             this.withConflictingSingles() > 0 ||
             this.withConflictingNecessaryNumbers() > 0 ||
@@ -1286,7 +1259,7 @@ class SudokuGroup {
         let intNecessary = -1;
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
-                // Wir betrachten nur offene Zellen
+                // We only consider open cells
                 let necessarys = this.myCells[i].getNecessarys();
                 if (necessarys.size == 1) {
                     necessarys.forEach(nr => {
@@ -1298,9 +1271,8 @@ class SudokuGroup {
                     });
                 }
             }
-            // Wenn wir den ersten Konflikt gefunden haben, können wir die Suche
-            // abbrechen. 
-            if (found) return intNecessary;
+            // Once we have found the first conflict, we can cancel the search.
+      if (found) return intNecessary;
         }
         return -1;
     }
@@ -1309,7 +1281,6 @@ class SudokuGroup {
         let myNumbers = new MatheSet();
         this.myCells.forEach(cell => {
             if (cell.getValue() == '0') {
-                // myNumbers = myNumbers.union(cell.getTotalCandidates());
                 myNumbers = myNumbers.union(cell.getCandidates());
             } else {
                 myNumbers.add(cell.getValue());
@@ -1329,76 +1300,74 @@ class SudokuGroup {
     }
 
     calculateHiddenPairs() {
-        // Berechnet Subpaare in der Gruppe. Dies sind
-        // Zellen, die mindestens 2 Nummern enthalten und
-        // zwei Zellen enthalten das gleiche Paar-Subset und
-        // alle anderen Zellen enthalten keine der Paarnummern.
+        // Calculates sub-pairs in the group. These are
+        // cells that contain at least 2 numbers and
+        // two cells contain the same pair subset and
+        // all other cells do not contain any of the pair numbers.
 
-        // Idee: Zähle für jede Nummer 1 .. 9 die Häufigkeit ihres Auftretens
-        // numberCounts[0] = Häufigkeit der 1, bzw. die Indices der Auftreten der 1
-        // numberCounts[1] = Häufigkeit der 2, bzw. die Indices der Auftreten der 2
-        // usw.
+        // Idea: Count the frequency of occurrence for each number 1 .. 9
+        // numberCounts[0] = frequency of 1, or the indices of the occurrences of 1
+        // numberCounts[1] = frequency of 2, or the indices of the occurrence of 2
+        // etc.
 
         this.numberCounts = [];
         this.twinPosition = [];
         this.hiddenPairs = [];
         for (let i = 0; i < 9; i++) {
-            // Für die 9 Nummern jeweils eine leere Indices-Liste
+            // An empty index list for each of the 9 numbers
             this.numberCounts.push([]);
-            // Für jede Position in der Gruppe eine leere twin-nummernliste
+            // An empty twin number list for each position in the group
             this.twinPosition.push([]);
         }
-        // Iteriere über die Gruppe
+        // Iterate over the group
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
-                // let permNumbers = this.myCells[i].getCandidates();
                 let permNumbers = this.myCells[i].getTotalCandidates();
                 permNumbers.forEach(nr => {
                     let iNr = parseInt(nr);
-                    // Für jede Nummer die Indices ihres Auftretens speichern
+                    // Save the indices of their occurrence for each number
                     this.numberCounts[iNr - 1].push(i);
                 })
             }
         }
-        // NumberCounts auswerten auf Paare
-        // Bestimme Nummern, die genau 2 mal vorkommen
-        // Iteriere über die Nummern
+        // Evaluate NumberCounts for pairs
+        // Determine numbers that occur exactly 2 times
+        // Iterate over the numbers
         for (let i = 0; i < 9; i++) {
             if (this.numberCounts[i].length == 2) {
-                // Eine Nummer, für die es 2 Indices gibt, 
-                // d.h. in der collection gibt es sie 2-mal.
-                // In twinPosition für jede twin-Nummer die beiden Positionen speichern.
+                // A number for which there are 2 indices,
+                // i.e. it exists twice in the collection.
+                // Store the two positions for each twin number in twinPosition.
                 this.twinPosition[this.numberCounts[i][0]].push(i + 1);
                 this.twinPosition[this.numberCounts[i][1]].push(i + 1);
             }
         }
-        // Ein Subpaar liegt dann vor, wenn 
-        // an einer twinPosition exakt 2 Nummern vorliegen und
-        // die gleichen zwei Nummern an einer zweiten Postion ein weiteres mal vorliegen.
-        // Rückgabe: Nummernpaare mit jeweils 2 Positionen. Gegebenenfalls leer
+        // A sub-pair exists if
+        // there are exactly 2 numbers at a twin position and
+        // the same two numbers are present a second time at a second position.
+        // Return: Number pairs with 2 positions each. Empty if necessary
 
-        // Es können mehrere Paare vorhanden sein
+        // There can be several pairs
         let tmpSubPairs = [];
         for (let i = 0; i < 9; i++) {
             if (this.twinPosition[i].length == 2) {
-                // An dieser Position liegen zwei twin-nummern vor
-                // Checke alle begonnenen Paare
+                // There are two twin numbers at this position
+                // Check all started pairs
                 let hiddenPairFound = false;
                 for (let k = 0; k < tmpSubPairs.length; k++) {
                     let tmpSubPair = tmpSubPairs[k];
                     if (tmpSubPair.nr1 == this.twinPosition[i][0].toString() &&
                         tmpSubPair.nr2 == this.twinPosition[i][1].toString()) {
-                        // Übereinstimmung  mit einem begonnenen Paar
+                        // Match with a started pair
                         tmpSubPair.pos2 = i;
-                        // Das Paar ist vollständig
+                        // The pair is complete
                         this.hiddenPairs.push(tmpSubPair);
                         hiddenPairFound = true;
-                        // tmpSubPairs = [];
                     }
                 }
                 if (!hiddenPairFound) {
-                    // Keine Übereinstimmung mit einem begonnenen Paar
-                    // Ein neues Paar wird begonnen.
+                    // No match with a started pair
+                    // A new pair is started.
                     let tmpSubPair = {
                         nr1: this.twinPosition[i][0].toString(),
                         nr2: this.twinPosition[i][1].toString(),
@@ -1412,20 +1381,18 @@ class SudokuGroup {
 
     }
 
-
-
     calculateEqualPairs() {
-        // Zellen, die exakt ein Paar enthalten und
-        // zwei Zellen enthalten das gleiche Paar
+        // cells that contain exactly one pair and
+        // two cells contain the same pair
         this.myPairInfos = [];
-        // Iteriere über die Gruppe
+        // Iterate over the group
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
                 let tmpCandidates = this.myCells[i].getTotalCandidates()
                 if (tmpCandidates.size == 2) {
-                    // Infos zum Paar speichern
+                    // Save info about the pair
                     let currentPair = new MatheSet(tmpCandidates);
-                    // Prüfen, ob das Paar schon in der PaarInfoliste ist
+                    // Check whether the pair is already in the pair info list
                     if (this.myPairInfos.length == 0) {
                         let pairInfo = {
                             pairInfoIndex: i,
@@ -1438,12 +1405,12 @@ class SudokuGroup {
                         let pairInfoStored = false;
                         while (j < this.myPairInfos.length && !pairInfoStored) {
                             if (currentPair.equals(this.myPairInfos[j].pairSet)) {
-                                // Das Paar existiert schon in der Infoliste
+                                // The pair already exists in the info list
                                 this.myPairInfos[j].pairIndices.push(this.myCells[i].getIndex());
                                 pairInfoStored = true;
                             } else {
                                 if (j == this.myPairInfos.length - 1) {
-                                    // Das Paar ist nicht vorhanden und wird jetzt eingefügt
+                                    // The pair does not exist and is now inserted
                                     let pairInfo = {
                                         pairInfoIndex: i,
                                         pairIndices: [this.myCells[i].getIndex()],
@@ -1466,7 +1433,7 @@ class SudokuGroup {
         let inAdmissiblesAdded = false;
         for (let k = 0; k < this.hiddenPairs.length; k++) {
             let hiddenPair = this.hiddenPairs[k];
-            // Erste Paar-Zelle bereinigen
+            // Clean up first pair cell
             let cell1 = this.myCells[hiddenPair.pos1];
             let tmpCandidates1 = cell1.getTotalCandidates();
             let newInAdmissibles1 = tmpCandidates1.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
@@ -1489,7 +1456,7 @@ class SudokuGroup {
                 }
             }
 
-            // Zweite Paar-Zelle bereinigen
+            // Clean up second pair cell
             let cell2 = this.myCells[hiddenPair.pos2];
             let tmpCandidates2 = cell2.getTotalCandidates();
             let newInAdmissibles2 = tmpCandidates2.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
@@ -1521,7 +1488,7 @@ class SudokuGroup {
             if (cell.getValue() == '0' && cell !== necessaryCell) {
                 let oldInAdmissibles = new MatheSet(cell.inAdmissibleCandidates);
                 if (cell.getCandidates().has(necessaryNr)) {
-                    // Nur zulässige können neu unzulässig werden.
+                    // Only admissible ones can become inadmissible.
                     cell.inAdmissibleCandidates =
                         cell.inAdmissibleCandidates.add(necessaryNr);
                     let localAdded = !oldInAdmissibles.equals(cell.inAdmissibleCandidates);
@@ -1602,7 +1569,7 @@ class SudokuGroup {
                         // let tmpBlock = necessaryCell.myBlock;
                         // let tmpCol = necessaryCell.myCol;
                         let tmpBlock = sudoApp.mySolver.myGrid.sudoBlocks[IndexCalculator.blockIndex(necessaryCell.myIndex)];
-                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];                      
+                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpBlock.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                         inAdmissiblesAdded = inAdmissiblesAdded || tmpCol.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
                     } else if (this instanceof SudokuCol) {
@@ -2483,7 +2450,7 @@ class SudokuGrid {
 
 
     createSudoGrid() {
-            // Die 81 Zellen anlegen
+        // Die 81 Zellen anlegen
         for (let i = 0; i < 81; i++) {
             let cell = new SudokuCell(i);
             this.sudoCells.push(cell);
@@ -2800,7 +2767,7 @@ class SudokuGrid {
         // Eliminiere die strongNumbers in col des Blocks tmpBlock
         let inAdmissiblesAdded = false;
 
-        // Iteriere über die 3 Zellen der Blockspalte
+        // Iterate over the 3 cells of the block column
         for (let row = 0; row < 3; row++) {
             let tmpCell = tmpBlock.getBlockCellAt(row, col);
 
@@ -2839,11 +2806,11 @@ class SudokuGrid {
         let tmpBlock = null;
         let inAdmissiblesAdded = false;
 
-        // Iteriere über die 9 Blöcke der Matrix
+        // Iterate over the 9 blocks of the matrix
         for (let i = 0; i < 9; i++) {
             tmpBlock = this.sudoBlocks[i];
 
-            // Iteriere über die Reihenvektoren
+            // Iterate over the row vectors
             for (let row = 0; row < 3; row++) {
                 let pointingNrs = tmpBlock.myRowVectors[row].getPointingNrs();
                 pointingNrs.forEach(pointingNr => {
@@ -2852,7 +2819,7 @@ class SudokuGrid {
                 })
             }
 
-            // Iteriere über die Spaltenvektoren
+            // Iterate over the column vectors
             for (let col = 0; col < 3; col++) {
                 let pointingNrs = tmpBlock.myColVectors[col].getPointingNrs();
                 pointingNrs.forEach(pointingNr => {
@@ -2870,13 +2837,13 @@ class SudokuGrid {
         let block = pointingVector.myBlock;
         let blockOriginCol = block.myOrigin.col;
 
-        // Iteriere über die Zellen der Reihe
+        // Iterate over the cells in the row
         for (let col = 0; col < 9; col++) {
             if (col < blockOriginCol || col > (blockOriginCol + 2)) {
                 // col nicht im Pointing Vector
                 let tmpCell = this.getCellAt(rowIndex, col);
                 if (tmpCell.getValue() == '0') {
-                    // Die Zelle ist ungesetzt
+                    // The cell is unset
                     let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
                     let tmpCandidates = tmpCell.getTotalCandidates();
 
@@ -2909,7 +2876,7 @@ class SudokuGrid {
         let block = pointingVector.myBlock;
         let blockOriginRow = block.myOrigin.row;
 
-        // Iteriere über die Zellen der Spalte
+        // Iterate over the cells in the column
         for (let row = 0; row < 9; row++) {
             if (row < blockOriginRow || row > (blockOriginRow + 2)) {
                 // row nicht im Pointing Vector
