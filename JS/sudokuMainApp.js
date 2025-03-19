@@ -1,63 +1,77 @@
-// ==========================================================================
-// Service Worker
-// ==========================================================================
-
-if (navigator.serviceWorker) {
-    // declaring scope manually
-    navigator.serviceWorker.register("sw.js", { scope: "/sudokuTrainer/" }).then(
-        (registration) => {
-            console.log("Service worker registration succeeded:", registration);
-        },
-        (error) => {
-            console.error(`Service worker registration failed: ${error}`);
-        },
-    );
-} else {
-    console.error("Service workers are not supported.");
+function startMainApp() {
+    startSudokuServiceWorker();
+    startSudokuFileReader();
+    startSudokuFileHandlingAPI();
+    setAppURLShareBtnEventHandler();
+    setPuzzleShareBtnEventHandler();
+    sudoApp = new SudokuMainApp();
+    sudoApp.init();
 }
 
-// ==========================================================================
-// File handling via the DOM <input> Element
-// ==========================================================================
-if (window.File && window.FileReader
-    && window.FileList && window.Blob) {
-    // File handling via the DOM <input> Element
-    window.onload = function () {
-        const input = document.getElementById('asText');
-        input.addEventListener('change', function (e) {
-            const file = asText.files[0];
-            const textType = /text.*/;
-            if (file.type.match(textType)) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    let strFilePuzzleMap = reader.result;
-                    sudoApp.myPuzzleDB.upLoadPuzzle(strFilePuzzleMap);
-                }
-                reader.readAsText(file);
-            } else {
-                alert('Dateityp nicht unterstützt!');
-            }
-        });
+function startSudokuServiceWorker() {
+    if (navigator.serviceWorker) {
+        // declaring scope manually
+        navigator.serviceWorker.register("sw.js", { scope: "/sudokuTrainer/" }).then(
+            (registration) => {
+                console.log("Service worker registration succeeded:", registration);
+            },
+            (error) => {
+                console.error(`Service worker registration failed: ${error}`);
+            },
+        );
+    } else {
+        console.error("Service workers are not supported.");
     }
-} else {
-    alert('Dieser Browser unterstützt den Zugriff auf lokale Dateien nicht');
 }
 
-// ==========================================================================
-// FILE HANDLING API
-// The File Handling API enables the web app 'sudokuTrainer' to register 
-// its ability to handle file type 'text' with the operating system. This enables
-// the file manager of the OS or other operating system flows to use 'sudokuTrainer'
-// web app to open the file, just like with a native app.
-// ==========================================================================
-if ('launchQueue' in window) {
-    console.log('File Handling API is supported!');
+function startSudokuFileReader() {
+    // ==========================================================================
+    // File handling via the DOM <input> Element
+    // ==========================================================================
+    if (window.File && window.FileReader
+        && window.FileList && window.Blob) {
+        // File handling via the DOM <input> Element
+        window.onload = function () {
+            const input = document.getElementById('asText');
+            input.addEventListener('change', function (e) {
+                const file = asText.files[0];
+                const textType = /\*.text/;
+                if (file.type.match(textType)) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        let strFilePuzzleMap = reader.result;
+                        sudoApp.myPuzzleDB.upLoadPuzzle(strFilePuzzleMap);
+                    }
+                    reader.readAsText(file);
+                } else {
+                    // alert('Dateityp nicht unterstützt!');
+                    console.log('Dateityp nicht unterstützt!');
+                }
+            });
+        }
+    } else {
+        // alert('Dieser Browser unterstützt den Zugriff auf lokale Dateien nicht');
+        console.log('Dieser Browser unterstützt den Zugriff auf lokale Dateien nicht');
+    }
+}
 
-    launchQueue.setConsumer(launchParams => {
-        handleFiles(launchParams.files);
-    });
-} else {
-    console.error('File Handling API is not supported!');
+function startSudokuFileHandlingAPI() {
+    // ==========================================================================
+    // FILE HANDLING API
+    // The File Handling API enables the web app 'sudokuTrainer' to register 
+    // its ability to handle file type 'text' with the operating system. This enables
+    // the file manager of the OS or other operating system flows to use 'sudokuTrainer'
+    // web app to open the file, just like with a native app.
+    // ==========================================================================
+    if ('launchQueue' in window) {
+        console.log('File Handling API is supported!');
+
+        launchQueue.setConsumer(launchParams => {
+            handleFiles(launchParams.files);
+        });
+    } else {
+        console.error('File Handling API is not supported!');
+    }
 }
 
 async function handleFiles(files) {
@@ -79,65 +93,64 @@ async function handleFiles(files) {
 // to share to.
 // ==========================================================================
 
-// ==========================================================================
-// Share sudokuTrainer URL
-// ==========================================================================
+function setAppURLShareBtnEventHandler() {
+    // Share sudokuTrainer URL
+    let btn = document.getElementById('share-app-btn');
+    const resultPara = document.querySelector(".result");
+    if (navigator.share && navigator.canShare) {
+        // Web Share API ist Verfügbar!
+        btn.addEventListener("click", async () => {
 
-let btn = document.getElementById('share-app-btn');
-const resultPara = document.querySelector(".result");
-if (navigator.share && navigator.canShare) {
-    // Web Share API ist Verfügbar!
-    btn.addEventListener("click", async () => {
-
-        if (navigator.canShare) {
-            navigator.share(
-                {
-                    title: "Sudoku-Trainer",
-                    text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
-                    url: "https://hubertbertling.github.io/sudokuTrainer",
-                }
-            )
-                .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
-                .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
-        } else {
-            resultPara.textContent = `Your system doesn't support sharing.`;
-        }
-    });
-} else {
-    resultPara.textContent = `Web Share API not supported.`;
-}
-
-// ==========================================================================
-// Share SudokuTrainer File
-// ==========================================================================
-let shareButton = document.getElementById('share-button');
-if (navigator.share && navigator.canShare) {
-    // Web Share API ist Verfügbar!
-    shareButton.addEventListener("click", async () => {
-        if (sudoApp.mySolver.getGamePhase() == 'define') {
-            sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
-                "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.");
-        } else {
-            let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                navigator.share({
-                    files: [file],
-                    title: 'Puzzle teilen',
-                    text: 'Puzzle',
-                })
-                    .then(() => console.log('Share was successful.'))
-                    .catch((error) => console.log('Sharing failed', error));
+            if (navigator.canShare) {
+                navigator.share(
+                    {
+                        title: "Sudoku-Trainer",
+                        text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
+                        url: "https://hubertbertling.github.io/sudokuTrainer",
+                    }
+                )
+                    .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
+                    .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
             } else {
-                console.log(`Your system doesn't support sharing files.`);
+                resultPara.textContent = `Your system doesn't support sharing.`;
             }
-        }
-    });
-} else {
-    console.log(`Web Share API not supported.`);
+        });
+    } else {
+        resultPara.textContent = `Web Share API not supported.`;
+    }
+    console.log(resultPara.textContent);
 }
 
-
-//==========================================================
+function setPuzzleShareBtnEventHandler() {
+    // ==========================================================================
+    // Share SudokuTrainer File
+    // ==========================================================================
+    let shareButton = document.getElementById('share-button');
+    if (navigator.share && navigator.canShare) {
+        // Web Share API ist Verfügbar!
+        shareButton.addEventListener("click", async () => {
+            if (sudoApp.mySolver.getGamePhase() == 'define') {
+                sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
+                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.");
+            } else {
+                let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Puzzle teilen',
+                        text: 'Puzzle',
+                    })
+                        .then(() => console.log('Share was successful.'))
+                        .catch((error) => console.log('Sharing failed', error));
+                } else {
+                    console.log(`Your system doesn't support sharing files.`);
+                }
+            }
+        });
+    } else {
+        console.log(`Web Share API not supported.`);
+    }
+}
 
 // ==========================================
 // Navigation and Dialogs 
@@ -4096,9 +4109,5 @@ class SudokuMainApp {
 }
 
 // Launch and initialize the app
-function startMainApp() {
-    sudoApp = new SudokuMainApp();
-    sudoApp.init();
-}
 
 startMainApp();
