@@ -35,7 +35,7 @@ function startSudokuFileReader() {
             const input = document.getElementById('asText');
             input.addEventListener('change', function (e) {
                 const file = asText.files[0];
-                const textType = /\*.text/;
+                const textType = /text.*/;
                 if (file.type.match(textType)) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
