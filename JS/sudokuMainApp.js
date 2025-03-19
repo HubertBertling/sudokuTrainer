@@ -2483,8 +2483,9 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
                     }
                 });
-                pairInfo.pairCell1.myView.setBorderRedSelected();
-                pairInfo.pairCell2.myView.setBorderRedSelected();
+                sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell1.myIndex].setBorderRedSelected();
+                sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell2.myIndex].setBorderRedSelected();
+
                 pairArray = Array.from(pairInfo.pairCell1.getTotalCandidates());
                 sudoApp.mySolverView.displayTechnique(
                     adMissibleNrSelected
