@@ -2760,7 +2760,8 @@ class SudokuSolverView {
 
     publishSearchIsCompleted(nrSol) {
         if (nrSol == 0) {
-            sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!', this, () => { });
+            sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
+            sudoApp.mySolverView.showPuzzleSolutionInfo('Keine Lösung');
         } else {
             if (nrSol == 1) {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösung');
