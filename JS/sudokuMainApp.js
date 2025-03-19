@@ -2275,7 +2275,7 @@ class SudokuCellView {
     }
 
     setBorderSelected() {
-        if (this.myCell.myGrid.mySolver.myCurrentSearch.myStepper.indexSelected !==
+        if (sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected !==
             this.myCell.myIndex) {
             this.myNode.classList.add('hover');
         }
