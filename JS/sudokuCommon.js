@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 795;
+let VERSION = 796;
 
 // ==========================================
 // Basic classes
@@ -362,7 +362,8 @@ class Search {
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
-    }
+       }
+
     isCompleted() {
         return this.isCompletedNow;
     }
@@ -1272,7 +1273,7 @@ class SudokuGroup {
                 }
             }
             // Once we have found the first conflict, we can cancel the search.
-      if (found) return intNecessary;
+            if (found) return intNecessary;
         }
         return -1;
     }
@@ -4283,6 +4284,9 @@ class SudokuSolver {
 
         if (this.isNotPartiallySolved()) {
             this.myCurrentSearch = new Search();
+            if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+                this.myCurrentSearch.myStepper.setAutoDirection('backward');
+            }
         } else {
             sudoApp.myConfirmDlg.open(sudoApp.mySolverController,
                 sudoApp.mySolverController.resetConfirmed,
@@ -4294,7 +4298,10 @@ class SudokuSolver {
 
     tryStartAutomaticSearchStep() {
         this.myCurrentSearch = new Search();
-    }
+        if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+            this.myCurrentSearch.myStepper.setAutoDirection('backward');
+        }
+  }
 
     succeeds() {
         // In general, non-unsolvability of a puzzle does not imply the solvability of the puzzle. 

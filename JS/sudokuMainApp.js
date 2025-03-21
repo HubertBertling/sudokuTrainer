@@ -1867,12 +1867,12 @@ class SudokuGridView {
         });
 
         if (sudoApp.mySolver.isSearching()) {
+            new_Node.style.border = "3px dashed white";
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                 // Candidates are not displayed in the matrix
                 // except for the cell of the next step
                 this.displayCandidateInvisibleMatrix();
             }
-            new_Node.style.border = "3px dashed white";
         } else {
             new_Node.style.border = "3px solid grey";
         }
@@ -1985,20 +1985,26 @@ class SudokuGridView {
         }
     }
 
-    displayUnsolvability() {
-        // Show only one contradiction.
-        // In fact, a contradictory Sudoku has many contradictions at the same time.
-        for (let i = 0; i < 81; i++) {
-            if (this.sudoCellViews[i].displayUnsolvability()) return;
-        }
-        for (let i = 0; i < 9; i++) {
-            if (this.sudoBlockViews[i].displayUnsolvability()) return;
-        }
-        for (let i = 0; i < 9; i++) {
-            if (this.sudoRowViews[i].displayUnsolvability()) return;
-        }
-        for (let i = 0; i < 9; i++) {
-            if (this.sudoColViews[i].displayUnsolvability()) return;
+        displayUnsolvability() {
+        if (sudoApp.mySolver.getGamePhase() == 'define') {
+            for (let i = 0; i < 81; i++) {
+                if (this.sudoCellViews[i].displayBasicUnsolvability()) return;
+            }
+        } else {
+            // Show only one contradiction.
+            // In fact, a contradictory Sudoku has many contradictions at the same time.
+            for (let i = 0; i < 81; i++) {
+                if (this.sudoCellViews[i].displayUnsolvability()) return;
+            }
+            for (let i = 0; i < 9; i++) {
+                if (this.sudoBlockViews[i].displayUnsolvability()) return;
+            }
+            for (let i = 0; i < 9; i++) {
+                if (this.sudoRowViews[i].displayUnsolvability()) return;
+            }
+            for (let i = 0; i < 9; i++) {
+                if (this.sudoColViews[i].displayUnsolvability()) return;
+            }
         }
     }
     displayWrongNumbers() {
@@ -2592,7 +2598,28 @@ class SudokuCellView {
             this.myNode.classList.add('wrong');
         }
     }
+
+    displayBasicUnsolvability() {
+        let mySolverView = sudoApp.mySolverView;
+        // 1) The basic contradiction of the Sudoku is defined below. With this alone, the solver
+        // would successfully solve the puzzles by backtracking. However, many more cells
+        // would have to be set before an existing contradiction with this criterion would be uncovered.
+        // All other criteria merely serve to uncover contradictions earlier.
+        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+            this.myCell.myInfluencers.forEach(influencerCell => {
+                if (influencerCell.getValue() == this.myCell.getValue()) {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[influencerCell.myIndex].displayCellError();
+                }
+            })
+            this.displayCellError();
+            mySolverView.displayReasonUnsolvability('Die Nummer ' + this.myCell.getValue() + ' ist bereits einmal gesetzt.');
+            return true;
+        }
+        mySolverView.displayReasonUnsolvability('');
+    }
+
     displayUnsolvability() {
+        this.displayBasicUnsolvability();
         let mySolverView = sudoApp.mySolverView;
         // 1) The basic contradiction of the Sudoku is defined below. With this alone, the solver
         // would successfully solve the puzzles by backtracking. However, many more cells
@@ -2762,7 +2789,7 @@ class SudokuSolverView {
     publishSearchIsCompleted(nrSol) {
         if (nrSol == 0) {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
-            sudoApp.mySolverView.showPuzzleSolutionInfo('Keine Lösung');
+            // sudoApp.mySolverView.showPuzzleSolutionInfo('Keine Lösung');
         } else {
             if (nrSol == 1) {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösung');
@@ -3371,19 +3398,19 @@ class SudokuSolverController {
             // are calculated in the background and are stored in a new puzzle record.
             await this.playBtnPressed();
         }
-        if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+       /* if (sudoApp.mySolver.myGrid.isUnsolvable()) {
             // Contradictory puzzles have no solution. 
             // It is therefore not advisable to start the automatic solution search.
             sudoApp.mySolverView.myGridView.displayUnsolvability();
             let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
             sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
                 '. <br><br> Der aktuelle Puzzle-Lösungsstatus zeigt einen Widerspruch.', this, () => { });
-        } else {
+        } else {  */
             this.mySolver.tryStartAutomaticSearch();
             if (this.mySolver.isSearching()) {
                 sudoApp.myTrackerDialog.open();
             }
-        }
+        // }
     }
 
     initLinkPressed() {
@@ -3421,6 +3448,10 @@ class SudokuSolverController {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es nicht zurückgesetzt werden.", this, () => { });
         } else {
+
+            this.mySolver.unsetStepLazy();
+            sudoApp.mySolverView.displayReasonUnsolvability('');
+      
             let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
             this.resetOperation();
             if (tmpIndex !== -1) {
@@ -3442,6 +3473,7 @@ class SudokuSolverController {
             this.mySolver.cleanUpAndDeleteCurrentSearch();
             this.mySolver.unsetStepLazy();
             this.mySolver.deselect();
+            sudoApp.mySolverView.displayReasonUnsolvability('');
             this.mySolver.notify();
         } else {
             if (sudoApp.mySolver.getGamePhase() == 'define') {
@@ -3452,6 +3484,9 @@ class SudokuSolverController {
                     "Für extrem schwere Puzzles kann kein Tipp gegeben werden.", this, () => { });
             } else {
                 this.mySolver.myCurrentSearch = new Search();
+                if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+                    this.mySolver.myCurrentSearch.myStepper.setAutoDirection('backward');
+                };              
                 this.mySolver.myCurrentSearch.isTippSearch = true;
                 // Select the next cell
                 this.mySolver.performSearchStep();
@@ -3817,7 +3852,7 @@ class SudokuSolverController {
                     sudoApp.mySolver.notify();
                     let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
                     sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
-                        '. <br><br> Der aktuelle Puzzle-Status zeigt einen Widerspruch.',
+                        '. <br><br> Das aktuelle Puzzle ist unlösbar. Starte die Suche, um den Widerspruch anzuzeigen.',
                         this, setFocusBack
                     );
                 } else {
@@ -3867,7 +3902,7 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
-                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+                sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 // Repeat the execution of the step 'performSearchStep()'
                 // until the next active BreakPoint is reached.
@@ -3891,7 +3926,7 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
-                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+                sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
@@ -3908,7 +3943,7 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
-                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+                sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
                 setTimeout(() => {
@@ -3944,7 +3979,7 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
-                sudoApp.mySolver.myCurrentSearch.publishSearchIsCompleted(sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+                sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 // Repeat the execution of the step 'performSolutionStep()'
                 // until the 'searchCompleted'-BreakPoint is reached.
@@ -3978,6 +4013,7 @@ class SudokuSolverController {
         this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
         this.mySolver.deselect();
+        sudoApp.mySolverView.displayReasonUnsolvability('');
         this.mySolver.notify();
     }
 
