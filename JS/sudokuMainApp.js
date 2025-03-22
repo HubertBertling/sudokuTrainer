@@ -3193,10 +3193,8 @@ class SudokuSolverController {
 
 
     handleNumberPressed(nr) {
-        if (this.mySolver.isSearching() && !this.mySolver.isTippSearching()) {
-            sudoApp.myInfoDialog.open("Nummer setzen", "negativ",
-                "Während der Solver-Ausführung kann manuell keine Zelle gesetzt werden.", this, () => { });
-        } else {
+        if (!this.mySolver.isSearching()) {
+            // Prevent setting a number when a tip is shown.
             let action = {
                 operation: 'setNr',
                 cellIndex: this.mySolver.myGrid.indexSelected,
@@ -3333,6 +3331,7 @@ class SudokuSolverController {
         this.mySolver.select(index);
         this.mySolver.notify();
         sudoApp.mySolverView.hidePuzzleSolutionInfo();
+
     }
 
     initUndoActionStack() {
