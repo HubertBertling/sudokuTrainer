@@ -1985,7 +1985,7 @@ class SudokuGridView {
         }
     }
 
-        displayUnsolvability() {
+    displayUnsolvability() {
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             for (let i = 0; i < 81; i++) {
                 if (this.sudoCellViews[i].displayBasicUnsolvability()) return;
@@ -3389,28 +3389,29 @@ class SudokuSolverController {
     }
 
     async startBtnPressed() {
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
-        this.initUndoActionStack();
-        if (this.mySolver.getGamePhase() == 'define') {
-            // Switching to the play phase means that the definition of the puzzle 
-            // has been finished.
-            // After switching to the play phase, the puzzle's meta-data 
-            // are calculated in the background and are stored in a new puzzle record.
-            await this.playBtnPressed();
-        }
-       /* if (sudoApp.mySolver.myGrid.isUnsolvable()) {
-            // Contradictory puzzles have no solution. 
-            // It is therefore not advisable to start the automatic solution search.
-            sudoApp.mySolverView.myGridView.displayUnsolvability();
-            let level = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-            sudoApp.myInfoDialog.open('Starte Suche', 'negativ', 'Schwierigkeitsgrad: ' + level +
-                '. <br><br> Der aktuelle Puzzle-Lösungsstatus zeigt einen Widerspruch.', this, () => { });
-        } else {  */
+        if (this.mySolver.isSearching()) {
+            // The previous action was pressing the tip button
+            // The start button press makes the previous tip press undone
+            this.mySolver.cleanUpAndDeleteCurrentSearch();
+            this.mySolver.unsetStepLazy();
+            this.mySolver.deselect();
+            sudoApp.mySolverView.displayReasonUnsolvability('');
+            this.mySolver.notify();
+        } else {
+            sudoApp.mySolverView.hidePuzzleSolutionInfo();
+            this.initUndoActionStack();
+            if (this.mySolver.getGamePhase() == 'define') {
+                // Switching to the play phase means that the definition of the puzzle 
+                // has been finished.
+                // After switching to the play phase, the puzzle's meta-data 
+                // are calculated in the background and are stored in a new puzzle record.
+                await this.playBtnPressed();
+            }
             this.mySolver.tryStartAutomaticSearch();
             if (this.mySolver.isSearching()) {
                 sudoApp.myTrackerDialog.open();
             }
-        // }
+        }
     }
 
     initLinkPressed() {
@@ -3451,7 +3452,7 @@ class SudokuSolverController {
 
             this.mySolver.unsetStepLazy();
             sudoApp.mySolverView.displayReasonUnsolvability('');
-      
+
             let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
             this.resetOperation();
             if (tmpIndex !== -1) {
@@ -3486,7 +3487,7 @@ class SudokuSolverController {
                 this.mySolver.myCurrentSearch = new Search();
                 if (sudoApp.mySolver.myGrid.isUnsolvable()) {
                     this.mySolver.myCurrentSearch.myStepper.setAutoDirection('backward');
-                };              
+                };
                 this.mySolver.myCurrentSearch.isTippSearch = true;
                 // Select the next cell
                 this.mySolver.performSearchStep();

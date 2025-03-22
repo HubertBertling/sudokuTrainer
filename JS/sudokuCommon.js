@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 796;
+let VERSION = 797;
 
 // ==========================================
 // Basic classes
@@ -362,7 +362,7 @@ class Search {
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
-       }
+    }
 
     isCompleted() {
         return this.isCompletedNow;
@@ -4285,6 +4285,8 @@ class SudokuSolver {
         if (this.isNotPartiallySolved()) {
             this.myCurrentSearch = new Search();
             if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+                // If the current numbering leads to insolvability
+                // the solver must go back
                 this.myCurrentSearch.myStepper.setAutoDirection('backward');
             }
         } else {
@@ -4299,9 +4301,11 @@ class SudokuSolver {
     tryStartAutomaticSearchStep() {
         this.myCurrentSearch = new Search();
         if (sudoApp.mySolver.myGrid.isUnsolvable()) {
+            // If the current numbering leads to insolvability
+            // the solver must go back
             this.myCurrentSearch.myStepper.setAutoDirection('backward');
         }
-  }
+    }
 
     succeeds() {
         // In general, non-unsolvability of a puzzle does not imply the solvability of the puzzle. 
