@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 798;
+let VERSION = 799;
 
 // ==========================================
 // Basic classes
@@ -353,7 +353,7 @@ class Search {
     // of the given puzzle. Finally the end of the tree will be reached. The search
     // is completed.
     constructor() {
-        this.isTippSearch = false;
+        this.isTipSearch = false;
         this.myStepper = new StepperOnGrid();
         sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
         sudoApp.mySolver.myGrid.deselect();
@@ -4108,8 +4108,8 @@ class SudokuSolver {
         return this.myCurrentSearch !== undefined;
     }
 
-    isTippSearching() {
-        return this.isSearching() && this.myCurrentSearch.isTippSearch;
+    isTipSearching() {
+        return this.isSearching() && this.myCurrentSearch.isTipSearch;
     }
 
     isNotPartiallySolved() {

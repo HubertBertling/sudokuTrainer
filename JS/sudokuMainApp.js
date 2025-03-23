@@ -3390,10 +3390,11 @@ class SudokuSolverController {
     async startBtnPressed() {
         if (this.mySolver.isSearching()) {
             // The previous action was pressing the tip button
+            // This is due to the fact that the start button is 
+            // displayed and pressed while the solver is in search mode.
             // The start button press makes the previous tip press undone
             this.mySolver.cleanUpAndDeleteCurrentSearch();
             this.mySolver.unsetStepLazy();
-            this.mySolver.deselect();
             sudoApp.mySolverView.displayReasonUnsolvability('');
             this.mySolver.notify();
         } else {
@@ -3468,11 +3469,12 @@ class SudokuSolverController {
     tipPressed() {
         sudoApp.mySolverView.hidePuzzleSolutionInfo();
         if (this.mySolver.isSearching()) {
-            // The previous action was pressing the tip button
+            // The previous action was pressing the tip button.
+            // This is due to the fact that the tip button is 
+            // displayed and pressed while the solver is in search mode.
             // The newly tip button press makes the previous press undone
             this.mySolver.cleanUpAndDeleteCurrentSearch();
             this.mySolver.unsetStepLazy();
-            this.mySolver.deselect();
             sudoApp.mySolverView.displayReasonUnsolvability('');
             this.mySolver.notify();
         } else {
@@ -3487,7 +3489,7 @@ class SudokuSolverController {
                 if (sudoApp.mySolver.myGrid.isUnsolvable()) {
                     this.mySolver.myCurrentSearch.myStepper.setAutoDirection('backward');
                 };
-                this.mySolver.myCurrentSearch.isTippSearch = true;
+                this.mySolver.myCurrentSearch.isTipSearch = true;
                 // Select the next cell
                 this.mySolver.performSearchStep();
                 this.mySolver.notify();
