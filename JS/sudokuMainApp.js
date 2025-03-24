@@ -2507,15 +2507,17 @@ class SudokuCellView {
             this.myCell.inAdmissibleCandidatesFromIntersection.size > 0) {
 
             let info = this.myCell.inAdmissibleCandidatesFromIntersectionInfo.get(adMissibleNrSelected);
-            info.block.getMyCells().forEach(cell => {
-                sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
-            });
-            info.rowCol.getMyCells().forEach(cell => {
-                sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
-            });
+            if (info !== undefined) {
+                info.block.getMyCells().forEach(cell => {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
+                });
+                info.rowCol.getMyCells().forEach(cell => {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
+                });
 
-            sudoApp.mySolverView.displayTechnique(adMissibleNrSelected + ' unzulässig wegen Überschneidung');
-            return;
+                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected + ' unzulässig wegen Überschneidung');
+                return;
+            }
         }
 
         if (this.myCell.inAdmissibleCandidates.size > 0 &&
