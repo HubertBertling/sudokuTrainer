@@ -2507,6 +2507,8 @@ class SudokuCellView {
             this.myCell.inAdmissibleCandidatesFromIntersection.size > 0) {
 
             let info = this.myCell.inAdmissibleCandidatesFromIntersectionInfo.get(adMissibleNrSelected);
+            // In case of several inadmissible candidates, the currently selected candidate may
+            // not match the currently analysed criterion. In this case, info is undefined.
             if (info !== undefined) {
                 info.block.getMyCells().forEach(cell => {
                     sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
@@ -2524,18 +2526,22 @@ class SudokuCellView {
             this.myCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
 
             let info = this.myCell.inAdmissibleCandidatesFromPointingPairsInfo.get(adMissibleNrSelected);
-            info.rowCol.getMyCells().forEach(cell => {
-                sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
-            });
-            info.pVector.myCells.forEach(cell => {
-                if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
-                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
-                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderRedSelected();
-                }
-            })
-            sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
-                + ' unzulässig wegen Pointing Pair');
-            return;
+            // In case of several inadmissible candidates, the currently selected candidate may
+            // not match the currently analysed criterion. In this case, info is undefined.
+            if (info !== undefined) {
+                info.rowCol.getMyCells().forEach(cell => {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
+                });
+                info.pVector.myCells.forEach(cell => {
+                    if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
+                        sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
+                        sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderRedSelected();
+                    }
+                })
+                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
+                    + ' unzulässig wegen Pointing Pair');
+                return;
+            }
         }
 
         if (this.myCell.inAdmissibleCandidates.size > 0 &&
