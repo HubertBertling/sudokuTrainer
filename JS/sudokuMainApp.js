@@ -3820,7 +3820,8 @@ class SudokuSolverController {
         try {
             const text = await navigator.clipboard.readText()
             sudoApp.mySolver.myGrid.loadPuzzleString(text);
-            sudoApp.mySolver.notify();
+            this.defineBtnPressed();
+            this.playBtnPressed();
         } catch (error) {
             console.log('Failed to read clipboard');
         }
