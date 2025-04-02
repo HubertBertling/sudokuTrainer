@@ -3802,6 +3802,30 @@ class SudokuSolverController {
             "Wähle Schwierigkeitsgrad des neuen Puzzles");
     }
 
+    async copyLinkPressed() {
+        sudoApp.myNavBar.closeNav();
+        sudoApp.myTrackerDialog.close();
+        try {
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async pasteLinkPressed() {
+        sudoApp.myNavBar.closeNav();
+        sudoApp.myTrackerDialog.close();
+        try {
+            const text = await navigator.clipboard.readText()
+            sudoApp.mySolver.myGrid.loadPuzzleString(text);
+            sudoApp.mySolver.notify();
+        } catch (error) {
+            console.log('Failed to read clipboard');
+        }
+    }
+
     printLinkPressed() {
         sudoApp.mySolverView.hidePuzzleSolutionInfo();
 

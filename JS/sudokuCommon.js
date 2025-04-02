@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 802;
+let VERSION = 803;
 
 // ==========================================
 // Basic classes
@@ -2383,6 +2383,24 @@ class SudokuGrid {
             tmpPuzzleArray.push(this.sudoCells[i].getValue());
         }
         return tmpPuzzleArray;
+    }
+
+    getPuzzleString() {
+        let tmpStr = '';
+        for (let i = 0; i < 81; i++) {
+            tmpStr = tmpStr + this.sudoCells[i].getValue();
+        }
+        return tmpStr;
+    }
+
+    loadPuzzleString(puzzleStr) {
+        for (let i = 0; i < 81; i++) {
+            if (puzzleStr[i] == '0') {
+                this.sudoCells[i].manualSetValue(puzzleStr[i], '');
+            } else {
+                this.sudoCells[i].manualSetValue(puzzleStr[i], 'define');
+            }
+        }
     }
 
     loadPuzzleArray(pa) {
