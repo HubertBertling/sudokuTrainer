@@ -597,7 +597,6 @@ class InfoDialog {
         this.okNode.addEventListener('click', () => {
             sudoApp.myInfoDialog.close();
             sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
-            // sudoApp.mySolver.notify();  15.01.25 FB Prüfentaste
         });
     }
 
@@ -3833,13 +3832,16 @@ class SudokuSolverController {
             const text = await navigator.clipboard.readText();
             console.log(text);
             let numberRegex = /^\d+$/;
-            if (!numberRegex.test(text)) {
-                throw new Error('invalid clipboard puzzle');
-            } else {
+            if (numberRegex.test(text)) {
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 this.defineBtnPressed();
                 this.playBtnPressed();
+            } else {
+                sudoApp.myInfoDialog.open("Clipboard puzzle einfügen", 'negativ',
+                    "Kein gültiges Puzzle im Clipboard",
+                    this, () => { }
+                );
             }
         } catch (error) {
             console.log('Failed to read clipboard puzzle');
