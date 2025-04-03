@@ -3830,13 +3830,18 @@ class SudokuSolverController {
     async pasteLinkPressed() {
         this.initLinkPressed();
         try {
-            const text = await navigator.clipboard.readText()
-            sudoApp.mySolver.myGrid.loadPuzzleString(text);
-            sudoApp.mySolver.myGrid.evaluateMatrix();
-            this.defineBtnPressed();
-            this.playBtnPressed();
+            const text = await navigator.clipboard.readText();
+            let numberRegex = /^\d+$/;
+            if (!numberRegex.test(text)) {
+                throw new Error('Failed to read clipboard puzzle');
+            } else {
+                sudoApp.mySolver.myGrid.loadPuzzleString(text);
+                sudoApp.mySolver.myGrid.evaluateMatrix();
+                this.defineBtnPressed();
+                this.playBtnPressed();
+            }
         } catch (error) {
-            console.log('Failed to read clipboard');
+            console.log('Failed to read clipboard puzzle');
         }
     }
 
