@@ -3831,9 +3831,10 @@ class SudokuSolverController {
         this.initLinkPressed();
         try {
             const text = await navigator.clipboard.readText();
+            console.log(text);
             let numberRegex = /^\d+$/;
             if (!numberRegex.test(text)) {
-                throw new Error('Failed to read clipboard puzzle');
+                throw new Error('invalid clipboard puzzle');
             } else {
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
