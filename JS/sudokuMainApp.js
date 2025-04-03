@@ -3822,7 +3822,7 @@ class SudokuSolverController {
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
-                this.myCopyFeedbackDialog.open();
+                sudoApp.myCopyFeedbackDialog.open();
             }
         } catch (err) {
             console.error(err);
