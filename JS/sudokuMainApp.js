@@ -3816,6 +3816,7 @@ class SudokuSolverController {
     }
 
     async copyLinkPressed() {
+        sudoApp.myNavBar.closeNav();
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
@@ -3828,6 +3829,7 @@ class SudokuSolverController {
 
     async pasteLinkPressed() {
         this.initLinkPressed();
+        sudoApp.myNavBar.closeNav();
         try {
             const text = await navigator.clipboard.readText();
             console.log(text);
@@ -3838,8 +3840,8 @@ class SudokuSolverController {
                 this.defineBtnPressed();
                 this.playBtnPressed();
             } else {
-                sudoApp.myInfoDialog.open("Clipboard puzzle einfügen", 'negativ',
-                    "Kein gültiges Puzzle im Clipboard",
+                sudoApp.myInfoDialog.open("Clipboard Puzzle einfügen", 'negativ',
+                    "Kein gültiges Puzzle im Clipboard.",
                     this, () => { }
                 );
             }
