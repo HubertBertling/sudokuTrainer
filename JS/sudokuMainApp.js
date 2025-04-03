@@ -3829,7 +3829,7 @@ class SudokuSolverController {
 
     async pasteLinkPressed() {
         this.initLinkPressed();
-        this.defineBtnPressed(); 
+        // this.defineBtnPressed(); 
         try {
             const text = await navigator.clipboard.readText()
             sudoApp.mySolver.myGrid.loadPuzzleString(text);
