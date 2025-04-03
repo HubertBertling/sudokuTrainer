@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 813;
+let VERSION = 815;
 
 // ==========================================
 // Basic classes
@@ -2595,15 +2595,17 @@ class SudokuGrid {
             // because the necessarys are consumed in the first part of the loop
             // derive_inAdmissiblesFromSingles can no longer exist,
             // for the same reason.
-            if (this.derive_inAdmissiblesFromNakedPairs()) {
+            if (this.derive_inAdmissiblesFromSingles()) {
+                inAdmissiblesAdded = true;
+            } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
+                inAdmissiblesAdded = true;
+            } else if (this.derive_inAdmissiblesFromNakedPairs()) {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromIntersection()) {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
                 inAdmissiblesAdded = true;
-            } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
-                inAdmissiblesAdded = true;
-            }
+            } 
         }
     }
 

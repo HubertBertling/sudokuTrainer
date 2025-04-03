@@ -3817,8 +3817,6 @@ class SudokuSolverController {
     }
 
     async copyLinkPressed() {
-        sudoApp.myNavBar.closeNav();
-        sudoApp.myTrackerDialog.close();
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
@@ -3830,12 +3828,11 @@ class SudokuSolverController {
     }
 
     async pasteLinkPressed() {
-        sudoApp.myNavBar.closeNav();
-        sudoApp.myTrackerDialog.close();
+        this.initLinkPressed();
+        this.defineBtnPressed(); 
         try {
             const text = await navigator.clipboard.readText()
             sudoApp.mySolver.myGrid.loadPuzzleString(text);
-            this.defineBtnPressed();
             this.playBtnPressed();
         } catch (error) {
             console.log('Failed to read clipboard');
