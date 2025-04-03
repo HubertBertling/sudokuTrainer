@@ -457,6 +457,20 @@ class ConfirmDialog {
     }
 }
 
+
+class CopyFeedbackDialog {
+    constructor() {
+        this.myCopyFeedbackDlgNode = document.getElementById("copyFeedback-dlg");
+    }
+
+    open() {
+        this.myCopyFeedbackDlgNode.showModal();
+        setTimeout(() => {
+            this.myCopyFeedbackDlgNode.close();
+        }, 1000);
+    }
+}
+
 class PuzzleSaveRenameDialog {
     constructor() {
         this.okHandler = undefined;
@@ -3808,6 +3822,7 @@ class SudokuSolverController {
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
+                this.myCopyFeedbackDialog.open();
             }
         } catch (err) {
             console.error(err);
@@ -4108,6 +4123,7 @@ class SudokuMainApp {
         this.mySettingsDialog = new SettingsDialog();
         this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
         this.myConfirmDlg = new ConfirmDialog();
+        this.myCopyFeedbackDialog = new CopyFeedbackDialog();
         this.myPuzzleDBDialog = new PuzzleDBDialog();
         this.myNewPuzzleDlg = new NewPuzzleDlg(this);
 
