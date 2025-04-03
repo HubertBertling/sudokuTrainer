@@ -1192,7 +1192,8 @@ label {
 
 .copyFeedback-dlg {
     width: 10rem;
-    height: 5rem;
+    height: 2rem;
+    background-color: black;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -1203,7 +1204,7 @@ label {
     margin-right: auto;
 }
 .copyFeedback-dlg-body {
-    background-color: black;
+    text-align: center;
     color:white;
     font-size: var(--font-size-xl);
     margin-left: 1rem;
