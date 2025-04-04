@@ -1206,9 +1206,8 @@ label {
 .copyFeedback-dlg-body {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 25%;
     transform: translate(-50%, -50%);
-    display: none;
     text-align: center;
     color:white;
     font-size: var(--font-size-xl);
