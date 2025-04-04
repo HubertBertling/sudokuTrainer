@@ -1191,8 +1191,8 @@ label {
 }
 
 .copyFeedback-dlg {
-    width: 20rem;
-    height: 4rem;
+    width: 30rem;
+    height: 10rem;
     background-color: black;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
