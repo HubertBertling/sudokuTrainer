@@ -2817,6 +2817,11 @@ class SudokuSolverView {
             } else {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösungen');
             }
+            console.log('SearchInfo');
+            console.log('countNecessaryCandidates:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates);
+            console.log('countSingles:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles);
+            console.log('countHiddenSingles:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles);
+            
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
         }
     }

@@ -362,6 +362,12 @@ class Search {
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
+
+        this.searchInfo = {
+            countNecessaryCandidates: 0,
+            countSingles: 0,
+            countHiddenSingles: 0,
+        }
     }
 
     isCompleted() {
@@ -548,8 +554,21 @@ class StepperOnGrid {
                 // Now a number must be determined for this selection.
                 // Result will be: realStep with number
                 let tmpValue = '0';
-                if (tmpSelection.options.length == 1) { tmpValue = tmpSelection.options[0]; }
-                if (tmpSelection.necessaryOnes.length == 1) { tmpValue = tmpSelection.necessaryOnes[0]; }
+
+                if (tmpSelection.necessaryOnes.length == 1) {
+                    tmpValue = tmpSelection.necessaryOnes[0];
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates++;
+                } else if (tmpSelection.options.length == 1) {
+                    tmpValue = tmpSelection.options[0];
+
+                    let tmpCell = sudoApp.mySolver.myGrid.sudoCells[tmpSelection.index];
+                    if (tmpCell.inAdmissibleCandidates.size == 0) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles++;
+                    } else {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles++;     
+                    }
+                }
+
                 if (!(tmpValue == '0')) {
                     // The selection has a unique number. I.e. it continues uniquely.
                     // Create a new realStep with the unique number
@@ -2605,7 +2624,7 @@ class SudokuGrid {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
                 inAdmissiblesAdded = true;
-            } 
+            }
         }
     }
 
