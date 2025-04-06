@@ -2760,6 +2760,18 @@ class SudokuSolverView {
         switch (aspect) {
             case 'nrOfSolutions': {
                 sudoApp.myTrackerDialog.setNumberOfSolutions(aspectValue);
+
+                console.log('SearchInfo');
+                console.log('givens: ' + sudoApp.mySolver.myGrid.numberOfGivens()); 
+                console.log('countNecessaryCandidates: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates);
+                console.log('countSingles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles);
+                console.log('countHiddenSingles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles);
+                console.log('--> countNakedPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs);
+                console.log('--> countHiddenPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs);
+                console.log('--> countIntersection: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection);
+                console.log('--> countPointingPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs);
+                console.log('countMultipleOptions: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptions);
+               
                 break;
             }
             case 'searchIsCompleted': {
@@ -2817,11 +2829,18 @@ class SudokuSolverView {
             } else {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösungen');
             }
+            /*
             console.log('SearchInfo');
-            console.log('countNecessaryCandidates:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates);
-            console.log('countSingles:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles);
-            console.log('countHiddenSingles:' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles);
-            
+            console.log('givens: ' + sudoApp.mySolver.myGrid.numberOfGivens()); 
+            console.log('countNecessaryCandidates: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates);
+            console.log('countSingles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles);
+            console.log('countHiddenSingles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles);
+            console.log('--> countNakedPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs);
+            console.log('--> countHiddenPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs);
+            console.log('--> countIntersection: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection);
+            console.log('--> countPointingPairs: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs);
+            console.log('countMultipleOptions: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptions);
+            */
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
         }
     }
