@@ -371,7 +371,8 @@ class Search {
             countHiddenPairs: 0,
             countIntersection: 0,
             countPointingPairs: 0,
-            countMultipleOptions: 0
+            countMultipleOptionsFirstTry: 0,
+            countMultipleOptionsSecondTryAndMore: 0
         }
     }
 
@@ -571,18 +572,6 @@ class StepperOnGrid {
                         sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles++;
                     } else if (tmpCell.inAdmissibleCandidates.size > 0) {
                         sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles++;
-                      //  tmpCell.countAppliedEliminationRules();
-                      /*  for (let i = 0; i < 81; i++) { 
-                            let iCell = sudoApp.mySolver.myGrid.sudoCells[i];
-                            let setOfInfluencers = new Set (tmpCell.myInfluencers);
-                            if (setOfInfluencers.has(iCell) &&
-                                tmpCell.myIndex !== i &&
-                                iCell.getValue() == '0' && 
-                                iCell.inAdmissibleCandidates.size > 0) {
-                                    iCell.countAppliedEliminationRules();
-                            }
-                        }
-                            */   
                     }
                 }
 
@@ -600,7 +589,7 @@ class StepperOnGrid {
                     // The selection does not have a unique number. I.e. it continues with several options.
                     this.myBackTracker.addBackTrackOptionStep(tmpSelection.index, tmpSelection.options.slice());
 
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptions++;
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry++;
                     // The first option of the optionStep is selected immediately
                     // New realStep with the first option number
 
@@ -697,6 +686,7 @@ class StepperOnGrid {
             } else {
                 // There are options that have not yet been tried
                 // Switch search direction!!!
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore++;
                 this.setAutoDirection('forward');
                 return this.stepForward();
             }
@@ -2628,18 +2618,27 @@ class SudokuGrid {
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             if (this.calculateNecessarys()) return true;
             if (this.calculateSingles()) return true;
+
             inAdmissiblesAdded = false;
             if (this.derive_inAdmissiblesFromHiddenPairs()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromNakedPairs()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromIntersection()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                }
                 inAdmissiblesAdded = true;
             }
         }
@@ -3290,21 +3289,6 @@ class SudokuCell {
 
     setAdMissibleIndexSelected(nr) {
         this.candidateIndexSelected = nr;
-    }
-
-    countAppliedEliminationRules() {
-        if (this.inAdmissibleCandidatesFromPairs.size > 0) {
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-        }
-        if (this.inAdmissibleCandidatesFromHiddenPairs.size > 0) {
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-        }
-        if (this.inAdmissibleCandidatesFromIntersection.size > 0) {
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-        }
-        if (this.inAdmissibleCandidatesFromPointingPairs.size > 0) {
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-        }
     }
 
     getTotalInAdmissibles() {
