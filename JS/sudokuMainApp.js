@@ -3479,6 +3479,7 @@ class SudokuSolverController {
             }
             this.mySolver.tryStartAutomaticSearch();
             if (this.mySolver.isSearching()) {
+                sudoApp.mySolver.myGrid.evaluateMatrix();
                 sudoApp.myTrackerDialog.open();
             }
         }

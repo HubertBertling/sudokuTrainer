@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 831;
+let VERSION = 832;
 
 // ==========================================
 // Basic classes
@@ -2621,7 +2621,12 @@ class SudokuGrid {
             if (this.calculateSingles()) return true;
 
             inAdmissiblesAdded = false;
-            if (this.derive_inAdmissiblesFromHiddenPairs()) {
+            if (this.derive_inAdmissiblesFromSingles()) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
+                }         
+                inAdmissiblesAdded = true;
+            } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
                 if (sudoApp.mySolver.isSearching()) {
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
                 }
