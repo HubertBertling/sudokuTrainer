@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 833;
+let VERSION = 834;
 
 // ==========================================
 // Basic classes
@@ -372,6 +372,8 @@ class Search {
             countHiddenPairs: 0,
             countIntersection: 0,
             countPointingPairs: 0,
+            countBackwardSteps: 0,
+            countMultipleOptionSteps: 0,
             countMultipleOptionsFirstTry: 0,
             countMultipleOptionsSecondTryAndMore: 0
         }
@@ -589,7 +591,8 @@ class StepperOnGrid {
                     // =============================================================================
                     // The selection does not have a unique number. I.e. it continues with several options.
                     this.myBackTracker.addBackTrackOptionStep(tmpSelection.index, tmpSelection.options.slice());
-
+                    
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps++;
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry++;
                     // The first option of the optionStep is selected immediately
                     // New realStep with the first option number
@@ -687,6 +690,7 @@ class StepperOnGrid {
             } else {
                 // There are options that have not yet been tried
                 // Switch search direction!!!
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps++;
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore++;
                 this.setAutoDirection('forward');
                 return this.stepForward();
@@ -708,6 +712,7 @@ class StepperOnGrid {
                 this.deleteSelected('play');
                 // Determine the new current step after deleting the cell
                 let prevStep = this.myBackTracker.previousStep();
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps++;
                 autoStepResult.processResult = 'inProgress';
                 return autoStepResult;
             }

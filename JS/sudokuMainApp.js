@@ -2822,6 +2822,8 @@ class SudokuSolverView {
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                             '<b>Angewandte Techniken</b> <br>' +
                             ' * Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
+                            ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps + '<br>' +
+                            ' * Mehroptionen-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
                             ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
@@ -2844,6 +2846,8 @@ class SudokuSolverView {
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                             '<b>Angewandte Techniken</b> <br>' +
                             ' * Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
+                            ' * Mehroptionen-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
+                            ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps + '<br>' +
                             ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
