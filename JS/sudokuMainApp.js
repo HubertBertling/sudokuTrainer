@@ -2773,9 +2773,9 @@ class SudokuSolverView {
                         'info',
                         'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                         '<b>Angewandte Techniken</b> <br>' +
-                        'Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                        'Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                        'Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
+                        ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
+                        ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
+                        ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                         '<b>Kandidaten eliminiert mittels</b><br>'+
                         ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                         ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
@@ -2791,9 +2791,9 @@ class SudokuSolverView {
                         'info',
                         'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                         '<b>Angewandte Techniken</b> <br>' +
-                        'Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                        'Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                        'Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
+                        ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
+                        ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
+                        ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                         '<b>Kandidaten eliminiert mittels</b><br>'+
                         ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                         ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
