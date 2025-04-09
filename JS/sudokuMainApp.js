@@ -2777,6 +2777,7 @@ class SudokuSolverView {
                         ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                         ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                         '<b>Kandidaten eliminiert mittels</b><br>'+
+                        ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles + '<br>' +
                         ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                         ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
                         ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
@@ -2795,6 +2796,7 @@ class SudokuSolverView {
                         ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                         ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                         '<b>Kandidaten eliminiert mittels</b><br>'+
+                        ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles + '<br>' +
                         ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                         ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
                         ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 830;
+let VERSION = 831;
 
 // ==========================================
 // Basic classes
@@ -367,6 +367,7 @@ class Search {
             countNecessaryCandidates: 0,
             countSingles: 0,
             countHiddenSingles: 0,
+            countFromSingles: 0,
             countNakedPairs: 0,
             countHiddenPairs: 0,
             countIntersection: 0,
@@ -2656,10 +2657,35 @@ class SudokuGrid {
         let c5 = false;
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             c4 = this.derive_inAdmissiblesFromSingles();
+            if (c4) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
+                }         
+            }
             c1 = this.derive_inAdmissiblesFromHiddenPairs();
+            if (c1) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                }
+            }
             c2 = this.derive_inAdmissiblesFromNakedPairs();
+            if (c2) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                }
+            }
             c3 = this.derive_inAdmissiblesFromIntersection();
+            if (c3) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                }
+            }
             c5 = this.derive_inAdmissiblesFromPointingPairs();
+            if (c5) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                }
+            }
             inAdmissiblesAdded = c1 || c2 || c3 || c4 || c5;
         }
     }
