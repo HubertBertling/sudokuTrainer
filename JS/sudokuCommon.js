@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 834;
+let VERSION = 835;
 
 // ==========================================
 // Basic classes
@@ -591,7 +591,7 @@ class StepperOnGrid {
                     // =============================================================================
                     // The selection does not have a unique number. I.e. it continues with several options.
                     this.myBackTracker.addBackTrackOptionStep(tmpSelection.index, tmpSelection.options.slice());
-                    
+
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps++;
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry++;
                     // The first option of the optionStep is selected immediately
@@ -1580,10 +1580,10 @@ class SudokuGroup {
         return inAdmissiblesAdded;
     }
 
-    calculateNecessarys() {
+    calculateNextNecessary() {
         // Notwendige Nummern sind zulässige Nummern einer Zelle,
         // die in der Block, Reihe oder Spalte der Zelle genau einmal vorkommen.
-        let inAdmissiblesAdded = false;
+        // let inAdmissiblesAdded = false;
         for (let i = 1; i < 10; i++) {
             // let cellIndex = this.occursOnceInTotalAdmissibles(i);
             let cellIndex = this.occursOnce(i);
@@ -1592,33 +1592,28 @@ class SudokuGroup {
             if (cellIndex !== -1) {
                 if (!this.myCells[cellIndex].myNecessarys.has(i.toString())) {
                     this.myCells[cellIndex].addNecessary(i.toString(), this);
-                    let necessaryCell = this.myCells[cellIndex];
-                    if (this instanceof SudokuBlock) {
-                        // let tmpRow = necessaryCell.myRow;
-                        // let tmpCol = necessaryCell.myCol;
-                        let tmpRow = sudoApp.mySolver.myGrid.sudoRows[IndexCalculator.rowIndex(necessaryCell.myIndex)];
-                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpRow.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpCol.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
-                    } else if (this instanceof SudokuRow) {
-                        // let tmpBlock = necessaryCell.myBlock;
-                        // let tmpCol = necessaryCell.myCol;
-                        let tmpBlock = sudoApp.mySolver.myGrid.sudoBlocks[IndexCalculator.blockIndex(necessaryCell.myIndex)];
-                        let tmpCol = sudoApp.mySolver.myGrid.sudoCols[IndexCalculator.colIndex(necessaryCell.myIndex)];
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpBlock.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpCol.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
-                    } else if (this instanceof SudokuCol) {
-                        // let tmpRow = necessaryCell.myRow;
-                        // let tmpBlock = necessaryCell.myBlock;
-                        let tmpRow = sudoApp.mySolver.myGrid.sudoRows[IndexCalculator.rowIndex(necessaryCell.myIndex)];
-                        let tmpBlock = sudoApp.mySolver.myGrid.sudoBlocks[IndexCalculator.blockIndex(necessaryCell.myIndex)];
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpRow.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
-                        inAdmissiblesAdded = inAdmissiblesAdded || tmpBlock.derive_inAdmissiblesFromNecessarys(necessaryCell, i.toString());
+                    return true;
                     }
+            }
+        }
+        return false;
+    }
+
+    calculateNecessarys() {
+        // Notwendige Nummern sind zulässige Nummern einer Zelle,
+        // die in der Block, Reihe oder Spalte der Zelle genau einmal vorkommen.
+        // let inAdmissiblesAdded = false;
+        for (let i = 1; i < 10; i++) {
+            // let cellIndex = this.occursOnceInTotalAdmissibles(i);
+            let cellIndex = this.occursOnce(i);
+            // Wenn die Nummer i genau einmal in der Gruppe vorkommt
+            // trage sie ein in der Necessary-liste der Zelle
+            if (cellIndex !== -1) {
+                if (!this.myCells[cellIndex].myNecessarys.has(i.toString())) {
+                    this.myCells[cellIndex].addNecessary(i.toString(), this);
                 }
             }
         }
-        return inAdmissiblesAdded;
     }
 
     occursOnce(permNr) {
@@ -2614,44 +2609,40 @@ class SudokuGrid {
         }
     }
 
-
     evaluateGridLazy() {
         // Calculate the grid only so far, 
         // that the next step can be done unambiguously
         this.clearEvaluations();
         this.calculateInAdmissibles();
+        if (this.calculateNextNecessary()) {
+            // sudoApp.mySolver.notify();      
+            return true;
+        }
         let inAdmissiblesAdded = true;
-        while (inAdmissiblesAdded && !this.isUnsolvable()) {
-            if (this.calculateNecessarys()) return true;
-            if (this.calculateSingles()) return true;
 
+        
+
+        while (inAdmissiblesAdded && !this.isUnsolvable()) {
+            if (this.calculateHiddenSingles()) {
+                return true;
+            }
             inAdmissiblesAdded = false;
             if (!sudoApp.mySolver.currentEvalType == 'lazy-invisible' &&
                 !sudoApp.mySolver.currentEvalType == 'lazy' &&
                 this.derive_inAdmissiblesFromSingles()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
-                }
+                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                }
+                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromNakedPairs()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                }
+                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromIntersection()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                }
+                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                }
+                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
                 inAdmissiblesAdded = true;
             }
         }
@@ -2669,35 +2660,10 @@ class SudokuGrid {
         let c5 = false;
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             c4 = this.derive_inAdmissiblesFromSingles();
-            if (c4) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
-                }
-            }
             c1 = this.derive_inAdmissiblesFromHiddenPairs();
-            if (c1) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                }
-            }
             c2 = this.derive_inAdmissiblesFromNakedPairs();
-            if (c2) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                }
-            }
             c3 = this.derive_inAdmissiblesFromIntersection();
-            if (c3) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                }
-            }
             c5 = this.derive_inAdmissiblesFromPointingPairs();
-            if (c5) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                }
-            }
             inAdmissiblesAdded = c1 || c2 || c3 || c4 || c5;
         }
     }
@@ -2721,8 +2687,18 @@ class SudokuGrid {
     }
 
     calculateSingles() {
+        for (let i = 0; i < 81; i++) {
+            if (this.sudoCells[i].getValue() == '0') {
+                if (this.sudoCells[i].getCandidates().size == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    calculateHiddenSingles() {
         // All singles, regardless wether real or hidden singles
-        let added = false;
         for (let i = 0; i < 81; i++) {
             if (this.sudoCells[i].getValue() == '0') {
                 if (this.sudoCells[i].getTotalCandidates().size == 1) {
@@ -2730,7 +2706,7 @@ class SudokuGrid {
                 }
             }
         }
-        return added;
+        return false;
     }
 
     derive_inAdmissiblesFromSingles() {
@@ -3123,6 +3099,25 @@ class SudokuGrid {
         }
     }
 
+    calculateNextNecessary() {
+        // Iteriere über die Blöcke
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            if (tmpBlock.calculateNextNecessary()) return true;
+        }
+        // Iteriere über die Reihen
+        for (let i = 0; i < 9; i++) {
+            let tmpRow = this.sudoRows[i];
+            if (tmpRow.calculateNextNecessary()) return true;
+        }
+        // Iteriere über die Spalten
+        for (let i = 0; i < 9; i++) {
+            let tmpCol = this.sudoCols[i];
+            if (tmpCol.calculateNextNecessary()) return true;
+        }
+        return false;
+    }
+
     calculateNecessarys() {
         // Iteriere über die Blöcke
         for (let i = 0; i < 9; i++) {
@@ -3300,6 +3295,9 @@ class SudokuCell {
         this.myNecessarys = new MatheSet();
         this.myNecessaryGroups = new Map();
     }
+
+   
+
 
     // ===================================================================
     // Getter
@@ -4270,7 +4268,7 @@ class SudokuSolver {
 
     setActualEvalType(value) {
         this.currentEvalType = value;
-        this.myGrid.evaluateMatrix();
+        // this.myGrid.evaluateMatrix();
     }
 
     setAutoDirection(direction) {
@@ -4439,3 +4437,101 @@ class BreakpointsRecord {
     }
 }
 
+class SudokuMainApp {
+    constructor() {
+        // ==============================================================
+        // Components of the app
+        // ==============================================================
+        // 1. The solver component
+        this.mySolver = new SudokuSolver();
+        this.mySolverView = new SudokuSolverView(this.mySolver);
+        this.mySolverController = new SudokuSolverController(this.mySolver);
+
+        // 2. The database component
+        this.myPuzzleDB = new SudokuPuzzleDB();
+        this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
+        this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
+        this.myPuzzleDB.init();
+
+        // The navigation bar
+        this.myNavBar = new NavigationBar();
+
+        // Used dialogs
+        this.myTrackerDialog = new TrackerDialog();
+        this.myInfoDialog = new InfoDialog();
+        this.mySettingsDialog = new SettingsDialog();
+        this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
+        this.myConfirmDlg = new ConfirmDialog();
+        this.myCopyFeedbackDialog = new CopyFeedbackDialog();
+        this.myPuzzleDBDialog = new PuzzleDBDialog();
+        this.myNewPuzzleDlg = new NewPuzzleDlg(this);
+
+        // Loops
+        this.myClockedRunner = new ClockedRunner();
+        this.mySyncRunner = new SynchronousRunner();
+
+        this.myNewPuzzleBuffer = new NewPuzzleBuffer();
+
+    }
+    getMySolver() {
+        return this.mySolver;
+    }
+
+    init() {
+        // A true MVC pattern exists only for the solver. 
+        // The other model and view classes are only subcomponents of the solver classes. 
+        // They do not realize any own observer relationship.
+        this.mySolver.attach(this.mySolverView);
+        this.mySolver.init();
+        this.mySolverView.init();
+        this.activateAppSettings();
+        this.mySolver.notify();
+
+        this.myPuzzleDB.init();
+        this.myNewPuzzleBuffer.init();
+
+        this.displayAppVersion();
+    }
+
+    activateAppSettings() {
+        let mySettings = this.getMySettings();
+        this.mySolver.setActualEvalType(mySettings.evalType);
+    }
+
+    getMySettings() {
+        // read settings from local store
+        let mySettings;
+        let str_appSettings = localStorage.getItem("sudokuAppSetting");
+        if (str_appSettings == null) {
+            // appSettings do not exist in localStorage
+            mySettings = AppSettingsRecord.nullAppSettingsRecord()
+            this.setMySettings(mySettings)
+        } else {
+            // appSettings exist already
+            mySettings = JSON.parse(str_appSettings);
+        }
+        return mySettings;
+    }
+
+
+    setMySettings(settingsRecord) {
+        // write settings to local store
+        let str_appSettings = JSON.stringify(settingsRecord);
+        localStorage.setItem("sudokuAppSetting", str_appSettings);
+    }
+
+    breakpointPassed(bp) {
+        this.myClockedRunner.breakpointPassed(bp);
+        this.mySyncRunner.breakpointPassed(bp);
+    }
+
+    displayAppVersion() {
+        let versionNode = document.getElementById('appVersion');
+        versionNode.innerHTML =
+            '<b>AppVersion:</b> &nbsp' + VERSION;
+    }
+
+    helpFunktion() {
+        window.open('./help.html');
+    }
+}

@@ -2789,27 +2789,7 @@ class SudokuSolverView {
                             this,
                             () => { }
                         );
-                    } else {
-                        sudoApp.myInfoDialog.open(
-                            'Lösung gefunden',
-                            'info',
-                            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Angewandte Techniken</b> <br>' +
-                            ' * Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                            ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
-                            '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles + '<br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection
-                            ,
-                            this,
-                            () => { }
-                        );
-                    }
+                    } 
                 } else if (sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Sehr schwer') {
 
                     if (sudoApp.mySolver.currentEvalType == 'lazy-invisible' ||
@@ -2839,34 +2819,7 @@ class SudokuSolverView {
                             this,
                             () => { }
                         );
-                    } else {
-                        sudoApp.myInfoDialog.open(
-                            'Lösung gefunden',
-                            'info',
-                            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Angewandte Techniken</b> <br>' +
-                            ' * Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            ' * Mehroptionen-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
-                            ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps + '<br>' +
-                            ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                            ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
-                            '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles + '<br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection + '<br>' +
-                            '<b>Backtracking</b><br>' +
-                            ' * Erster Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                            ' * Zweiter Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore
-                            ,
-                            this,
-                            () => { }
-                        );
-
-
-                    }
+                    } 
                 }
                 break;
             }
@@ -3667,6 +3620,7 @@ class SudokuSolverController {
     resetConfirmed() {
         this.resetOperation();
         this.mySolver.myCurrentSearch = new Search();
+        sudoApp.mySolver.myGrid.evaluateMatrix();
         sudoApp.myTrackerDialog.open();
     }
 
@@ -4215,104 +4169,6 @@ class SudokuSolverController {
 // ==========================================
 // Apps 
 // ==========================================
-class SudokuMainApp {
-    constructor() {
-        // ==============================================================
-        // Components of the app
-        // ==============================================================
-        // 1. The solver component
-        this.mySolver = new SudokuSolver();
-        this.mySolverView = new SudokuSolverView(this.mySolver);
-        this.mySolverController = new SudokuSolverController(this.mySolver);
-
-        // 2. The database component
-        this.myPuzzleDB = new SudokuPuzzleDB();
-        this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
-        this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
-        this.myPuzzleDB.init();
-
-        // The navigation bar
-        this.myNavBar = new NavigationBar();
-
-        // Used dialogs
-        this.myTrackerDialog = new TrackerDialog();
-        this.myInfoDialog = new InfoDialog();
-        this.mySettingsDialog = new SettingsDialog();
-        this.myCurrentPuzzleSaveRenameDlg = new PuzzleSaveRenameDialog();
-        this.myConfirmDlg = new ConfirmDialog();
-        this.myCopyFeedbackDialog = new CopyFeedbackDialog();
-        this.myPuzzleDBDialog = new PuzzleDBDialog();
-        this.myNewPuzzleDlg = new NewPuzzleDlg(this);
-
-        // Loops
-        this.myClockedRunner = new ClockedRunner();
-        this.mySyncRunner = new SynchronousRunner();
-
-        this.myNewPuzzleBuffer = new NewPuzzleBuffer();
-
-    }
-    getMySolver() {
-        return this.mySolver;
-    }
-
-    init() {
-        // A true MVC pattern exists only for the solver. 
-        // The other model and view classes are only subcomponents of the solver classes. 
-        // They do not realize any own observer relationship.
-        this.mySolver.attach(this.mySolverView);
-        this.mySolver.init();
-        this.mySolverView.init();
-        this.activateAppSettings();
-        this.mySolver.notify();
-
-        this.myPuzzleDB.init();
-        this.myNewPuzzleBuffer.init();
-
-        this.displayAppVersion();
-    }
-
-    activateAppSettings() {
-        let mySettings = this.getMySettings();
-        this.mySolver.setActualEvalType(mySettings.evalType);
-    }
-
-    getMySettings() {
-        // read settings from local store
-        let mySettings;
-        let str_appSettings = localStorage.getItem("sudokuAppSetting");
-        if (str_appSettings == null) {
-            // appSettings do not exist in localStorage
-            mySettings = AppSettingsRecord.nullAppSettingsRecord()
-            this.setMySettings(mySettings)
-        } else {
-            // appSettings exist already
-            mySettings = JSON.parse(str_appSettings);
-        }
-        return mySettings;
-    }
-
-
-    setMySettings(settingsRecord) {
-        // write settings to local store
-        let str_appSettings = JSON.stringify(settingsRecord);
-        localStorage.setItem("sudokuAppSetting", str_appSettings);
-    }
-
-    breakpointPassed(bp) {
-        this.myClockedRunner.breakpointPassed(bp);
-        this.mySyncRunner.breakpointPassed(bp);
-    }
-
-    displayAppVersion() {
-        let versionNode = document.getElementById('appVersion');
-        versionNode.innerHTML =
-            '<b>AppVersion:</b> &nbsp' + VERSION;
-    }
-
-    helpFunktion() {
-        window.open('./help.html');
-    }
-}
 
 // Launch and initialize the app
 
