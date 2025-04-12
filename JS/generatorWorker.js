@@ -16,7 +16,7 @@ class SudokuGeneratorApp {
     init() {
         this.mySolver.init();
         // The fastest evaluation method is 'strict-plus'.
-        this.mySolver.setActualEvalType('lazy');
+        this.mySolver.setActualEvalType('strict-plus');
     }
 
     startPuzzleGenerator() {
