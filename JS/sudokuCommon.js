@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 837;
+let VERSION = 838;
 
 // ==========================================
 // Basic classes
@@ -1517,7 +1517,7 @@ class SudokuGroup {
         if (inAdmissiblesAdded){
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                console.log('FromHiddenPairs')
+                // console.log('FromHiddenPairs')
             }
         }
         return inAdmissiblesAdded;
@@ -1586,7 +1586,7 @@ class SudokuGroup {
         if (inAdmissiblesAdded) {
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                console.log('FromNakedPairs')
+                // console.log('FromNakedPairs')
             }
         }
         return inAdmissiblesAdded;
@@ -2642,7 +2642,6 @@ class SudokuGrid {
                 this.derive_inAdmissiblesFromSingles()) {
                 if (sudoApp.mySolver.isSearching()) {
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
-                    console.log('FromSingles')
                 }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
@@ -2650,16 +2649,8 @@ class SudokuGrid {
             } else if (this.derive_inAdmissiblesFromNakedPairs()) {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromIntersection()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                    console.log('Intersection')
-                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                    console.log('FromPointingPairs')
-                }
                 inAdmissiblesAdded = true;
             }
         }
@@ -2903,6 +2894,12 @@ class SudokuGrid {
                 pointingNrs.forEach(pointingNr => {
                     let newInAdmissiblesAdded = this.eliminatePointingNrInGridRow(pointingNr, tmpBlock.myRowVectors[row], tmpBlock.myOrigin.row + row);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
+                    if (newInAdmissiblesAdded) {
+                        if (sudoApp.mySolver.isSearching()) {
+                            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                            // console.log('FromPointingPairs')
+                        }        
+                    }    
                 })
             }
 
@@ -2912,7 +2909,13 @@ class SudokuGrid {
                 pointingNrs.forEach(pointingNr => {
                     let newInAdmissiblesAdded = this.eliminatePointingNrInGridCol(pointingNr, tmpBlock.myColVectors[col], tmpBlock.myOrigin.col + col);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
-                })
+                    if (newInAdmissiblesAdded) {
+                        if (sudoApp.mySolver.isSearching()) {
+                            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                            // console.log('FromPointingPairs')
+                        }        
+                    }
+                 })
             }
         }
         return inAdmissiblesAdded;
@@ -3052,6 +3055,12 @@ class SudokuGrid {
 
                     let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(tmpBlock, row2, tmpRow, strongNumbersInRowInsideBlock);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
+                    if (newInAdmissiblesAdded1 || newInAdmissiblesAdded2) {
+                        if (sudoApp.mySolver.isSearching()) {
+                            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                            // console.log('Intersection')
+                        }        
+                    }
                 }
             }
             // Iteriere über die Spalten des Blocks
@@ -3101,6 +3110,12 @@ class SudokuGrid {
 
                     let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(tmpBlock, col2, tmpCol, strongNumbersInColInsideBlock);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
+                    if (newInAdmissiblesAdded1 || newInAdmissiblesAdded2) {
+                        if (sudoApp.mySolver.isSearching()) {
+                            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                            // console.log('Intersection')
+                        }        
+                    }
                 }
             }
         }
