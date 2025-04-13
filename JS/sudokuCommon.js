@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 836;
+let VERSION = 837;
 
 // ==========================================
 // Basic classes
@@ -1514,6 +1514,12 @@ class SudokuGroup {
                 }
             }
         }
+        if (inAdmissiblesAdded){
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                console.log('FromHiddenPairs')
+            }
+        }
         return inAdmissiblesAdded;
     }
 
@@ -1577,6 +1583,12 @@ class SudokuGroup {
                 }
             }
         }
+        if (inAdmissiblesAdded) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                console.log('FromNakedPairs')
+            }
+        }
         return inAdmissiblesAdded;
     }
 
@@ -1593,7 +1605,7 @@ class SudokuGroup {
                 if (!this.myCells[cellIndex].myNecessarys.has(i.toString())) {
                     this.myCells[cellIndex].addNecessary(i.toString(), this);
                     return true;
-                    }
+                }
             }
         }
         return false;
@@ -2620,8 +2632,6 @@ class SudokuGrid {
         }
         let inAdmissiblesAdded = true;
 
-        
-
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             if (this.calculateHiddenSingles()) {
                 return true;
@@ -2630,19 +2640,26 @@ class SudokuGrid {
             if (!sudoApp.mySolver.currentEvalType == 'lazy-invisible' &&
                 !sudoApp.mySolver.currentEvalType == 'lazy' &&
                 this.derive_inAdmissiblesFromSingles()) {
-                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
+                    console.log('FromSingles')
+                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
-                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromNakedPairs()) {
-                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromIntersection()) {
-                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                    console.log('Intersection')
+                }
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
-                if (sudoApp.mySolver.isSearching()) sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                    console.log('FromPointingPairs')
+                }
                 inAdmissiblesAdded = true;
             }
         }
@@ -3296,7 +3313,7 @@ class SudokuCell {
         this.myNecessaryGroups = new Map();
     }
 
-   
+
 
 
     // ===================================================================
