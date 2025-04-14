@@ -3895,7 +3895,7 @@ class SudokuSolverController {
         sudoApp.myNavBar.closeNav();
         try {
             const text = await navigator.clipboard.readText();
-            console.log(text);
+            // console.log(text);
             let numberRegex = /^\d+$/;
             if (numberRegex.test(text)) {
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
