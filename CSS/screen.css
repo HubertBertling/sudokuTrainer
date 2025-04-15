@@ -25,9 +25,6 @@
     --selected-cell-color: white;
     --selected-cell-border-color: Magenta;
 
-
-
-
     --error-cell-bg-color: #e91e63;
     --error-cell-color: white;
 
@@ -361,7 +358,7 @@ html {
     height: var(--sudoku-cell-size);
     width: var(--sudoku-cell-size);
     display: grid;
-    font-size: 1.6rem;
+    font-size: 2rem;
     place-items: center;
     margin: 0.05rem;
 }
@@ -380,7 +377,7 @@ html {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     place-items: center;
-    font-size: 1.0rem;
+    font-size: 1.2rem;
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
 }
@@ -399,7 +396,7 @@ html {
 
 .nested>div.single {
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 .nested>div.neccessary {
