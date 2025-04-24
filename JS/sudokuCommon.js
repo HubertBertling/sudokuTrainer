@@ -1514,7 +1514,7 @@ class SudokuGroup {
                 }
             }
         }
-        if (inAdmissiblesAdded){
+        if (inAdmissiblesAdded) {
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
                 // console.log('FromHiddenPairs')
@@ -2628,23 +2628,15 @@ class SudokuGrid {
         this.calculateInAdmissibles();
         if (this.calculateNextNecessary()) {
             // sudoApp.mySolver.notify();      
-            return true;
+            return;
         }
         let inAdmissiblesAdded = true;
 
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             if (this.calculateHiddenSingles()) {
-                return true;
+                return;
             }
-            inAdmissiblesAdded = false;
-            if (!sudoApp.mySolver.currentEvalType == 'lazy-invisible' &&
-                !sudoApp.mySolver.currentEvalType == 'lazy' &&
-                this.derive_inAdmissiblesFromSingles()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countFromSingles++;
-                }
-                inAdmissiblesAdded = true;
-            } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
+            if (this.derive_inAdmissiblesFromHiddenPairs()) {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromNakedPairs()) {
                 inAdmissiblesAdded = true;
@@ -2652,6 +2644,8 @@ class SudokuGrid {
                 inAdmissiblesAdded = true;
             } else if (this.derive_inAdmissiblesFromPointingPairs()) {
                 inAdmissiblesAdded = true;
+            } else {
+                inAdmissiblesAdded = false;
             }
         }
     }
@@ -2757,49 +2751,41 @@ class SudokuGrid {
     }
 
     derive_inAdmissiblesFromNakedPairs() {
-        let c1 = false;
-        let c2 = false;
-        let c3 = false;
         // Iteriere über die Blockn
         for (let i = 0; i < 9; i++) {
             let tmpBlock = this.sudoBlocks[i];
-            c1 = c1 || tmpBlock.derive_inAdmissiblesFromNakedPairs();
+            if (tmpBlock.derive_inAdmissiblesFromNakedPairs()) return true;
         }
         // Iteriere über die Reihen
         for (let i = 0; i < 9; i++) {
             let tmpRow = this.sudoRows[i];
-            c2 = c2 || tmpRow.derive_inAdmissiblesFromNakedPairs();
+            if (tmpRow.derive_inAdmissiblesFromNakedPairs()) return true;
         }
         // Iteriere über die Spalten
         for (let i = 0; i < 9; i++) {
             let tmpCol = this.sudoCols[i];
-            c3 = c3 || tmpCol.derive_inAdmissiblesFromNakedPairs();
+            if(tmpCol.derive_inAdmissiblesFromNakedPairs()) return true;
         }
-        let inAdmissiblesAdded = c1 || c2 || c3;
-        return inAdmissiblesAdded;
+        return false;
     }
 
     derive_inAdmissiblesFromHiddenPairs() {
-        let c1 = false;
-        let c2 = false;
-        let c3 = false;
         // Iteriere über die Blockn
         for (let i = 0; i < 9; i++) {
             let tmpBlock = this.sudoBlocks[i];
-            c1 = c1 || tmpBlock.derive_inAdmissiblesFromHiddenPairs();
+            if(tmpBlock.derive_inAdmissiblesFromHiddenPairs()) return true;
         }
         // Iteriere über die Reihen
         for (let i = 0; i < 9; i++) {
             let tmpRow = this.sudoRows[i];
-            c2 = c2 || tmpRow.derive_inAdmissiblesFromHiddenPairs();
+            if (tmpRow.derive_inAdmissiblesFromHiddenPairs()) return true;
         }
         // Iteriere über die Spalten
         for (let i = 0; i < 9; i++) {
             let tmpCol = this.sudoCols[i];
-            c3 = c3 || tmpCol.derive_inAdmissiblesFromHiddenPairs();
+            if (tmpCol.derive_inAdmissiblesFromHiddenPairs()) return true;
         }
-        let inAdmissiblesAdded = c1 || c2 || c3;
-        return inAdmissiblesAdded;
+        return false;
     }
 
     // Funktionen für die Überschneidungstechnik
@@ -2898,8 +2884,8 @@ class SudokuGrid {
                         if (sudoApp.mySolver.isSearching()) {
                             sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
                             // console.log('FromPointingPairs')
-                        }        
-                    }    
+                        }
+                    }
                 })
             }
 
@@ -2913,9 +2899,9 @@ class SudokuGrid {
                         if (sudoApp.mySolver.isSearching()) {
                             sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
                             // console.log('FromPointingPairs')
-                        }        
+                        }
                     }
-                 })
+                })
             }
         }
         return inAdmissiblesAdded;
@@ -3059,7 +3045,7 @@ class SudokuGrid {
                         if (sudoApp.mySolver.isSearching()) {
                             sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
                             // console.log('Intersection')
-                        }        
+                        }
                     }
                 }
             }
@@ -3114,7 +3100,7 @@ class SudokuGrid {
                         if (sudoApp.mySolver.isSearching()) {
                             sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
                             // console.log('Intersection')
-                        }        
+                        }
                     }
                 }
             }
