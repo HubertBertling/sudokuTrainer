@@ -3041,12 +3041,7 @@ class SudokuGrid {
 
                     let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(tmpBlock, row2, tmpRow, strongNumbersInRowInsideBlock);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
-                    if (newInAdmissiblesAdded1 || newInAdmissiblesAdded2) {
-                        if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                            // console.log('Intersection')
-                        }
-                    }
+                  
                 }
             }
             // Iteriere über die Spalten des Blocks
@@ -3096,13 +3091,13 @@ class SudokuGrid {
 
                     let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(tmpBlock, col2, tmpCol, strongNumbersInColInsideBlock);
                     inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
-                    if (newInAdmissiblesAdded1 || newInAdmissiblesAdded2) {
-                        if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                            // console.log('Intersection')
-                        }
-                    }
                 }
+            }
+        }
+        if (inAdmissiblesAdded) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                // console.log('Intersection')
             }
         }
         return inAdmissiblesAdded;
