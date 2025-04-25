@@ -1985,7 +1985,322 @@ class SudokuBlock extends SudokuGroup {
         this.myCells.push(sudoCell);
         sudoCell.setBlock(this);
     }
+
+    derive_inAdmissibles() {
+        let inAdmissiblesAdded = false;
+        if (this.derive_inAdmissiblesFromHiddenPairs()) {
+            inAdmissiblesAdded = true;
+        } else if (this.derive_inAdmissiblesFromNakedPairs()) {
+            inAdmissiblesAdded = true;
+        } else if (this.derive_inAdmissiblesFromIntersection()) {
+            inAdmissiblesAdded = true;
+        } else if (this.derive_inAdmissiblesFromPointingPairs()) {
+            inAdmissiblesAdded = true;
+        } else {
+            inAdmissiblesAdded = false;
+        }
+        return inAdmissiblesAdded;
+    }
+
+    derive_inAdmissiblesFromIntersection() {
+        let tmpRow = null;
+        let tmpCol = null;
+        let inAdmissiblesAdded = false;
+        // Iterate over the 3 rows of the block
+        for (let row = 0; row < 3; row++) {
+            let matrixRow = this.getMatrixRowFromBlockRow(row);
+            let numbersInRowOutsideBlock = new MatheSet();
+            let numbersInRowInsideBlock = new MatheSet();
+            let strongNumbersInRowInsideBlock = new MatheSet();
+            tmpRow = sudoApp.mySolver.myGrid.sudoRows[matrixRow];
+
+            // Iterate over the cells in the row
+            for (let col = 0; col < 9; col++) {
+                if (tmpRow.myCells[col].getValue() == '0') {
+                    if (this.isBlockCol(col)) {
+                        numbersInRowInsideBlock = numbersInRowInsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
+                    } else {
+                        numbersInRowOutsideBlock = numbersInRowOutsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
+                    }
+                }
+                // The strict numbers only occur in the block, not outside the block
+                strongNumbersInRowInsideBlock = numbersInRowInsideBlock.difference(numbersInRowOutsideBlock);
+            }
+            // Reduce the block cells by the strict numbers
+            if (strongNumbersInRowInsideBlock.size > 0) {
+                // Set the strict numbers inadmissible in 2 rows of the block
+                let row1 = 0;
+                let row2 = 0;
+                switch (row) {
+                    case 0: {
+                        row1 = 1;
+                        row2 = 2;
+                        break;
+                    }
+                    case 1: {
+                        row1 = 0;
+                        row2 = 2;
+                        break;
+                    }
+                    case 2: {
+                        row1 = 0;
+                        row2 = 1;
+                    }
+                }
+                let newInAdmissiblesAdded1 = this.cellIntersectionInRowEliminate(this, row1, tmpRow, strongNumbersInRowInsideBlock);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
+
+                let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(this, row2, tmpRow, strongNumbersInRowInsideBlock);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
+
+            }
+        }
+        // Iteriere über die Spalten des Blocks
+        for (let col = 0; col < 3; col++) {
+            let matrixCol = this.getMatrixColFromBlockCol(col);
+            let numbersInColOutsideBlock = new MatheSet();
+            let numbersInColInsideBlock = new MatheSet();
+            let strongNumbersInColInsideBlock = new MatheSet();
+            tmpCol = sudoApp.mySolver.myGrid.sudoCols[matrixCol];
+
+            // Iteriere über die Zellen der Spalte
+            for (let row = 0; row < 9; row++) {
+                if (tmpCol.myCells[row].getValue() == '0') {
+                    if (this.isBlockRow(row)) {
+                        numbersInColInsideBlock = numbersInColInsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
+                    } else {
+                        numbersInColOutsideBlock = numbersInColOutsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
+                    }
+                }
+                strongNumbersInColInsideBlock = numbersInColInsideBlock.difference(numbersInColOutsideBlock);
+            }
+            // Die Blockzellen um die strengen Nummern reduzieren
+            if (strongNumbersInColInsideBlock.size > 0) {
+                // In 2 Spalten der Block die strong NUmmern inadmissible setzen
+                let col1 = 0;
+                let col2 = 0;
+                //
+                switch (col) {
+                    case 0: {
+                        col1 = 1;
+                        col2 = 2;
+                        break;
+                    }
+                    case 1: {
+                        col1 = 0;
+                        col2 = 2;
+                        break;
+                    }
+                    case 2: {
+                        col1 = 0;
+                        col2 = 1;
+                    }
+                }
+                // col1 bereinigen            
+                let newInAdmissiblesAdded1 = this.cellIntersectionInColEliminate(this, col1, tmpCol, strongNumbersInColInsideBlock);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
+
+                let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(this, col2, tmpCol, strongNumbersInColInsideBlock);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
+            }
+        }
+        if (inAdmissiblesAdded) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                // console.log('FromHiddenPairs')
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
+
+
+    derive_inAdmissiblesFromPointingPairs() {
+        let inAdmissiblesAdded = false;
+
+        // Iterate over the row vectors
+        for (let row = 0; row < 3; row++) {
+            let pointingNrs = this.myRowVectors[row].getPointingNrs();
+            pointingNrs.forEach(pointingNr => {
+                let newInAdmissiblesAdded = this.eliminatePointingNrInGridRow(pointingNr, this.myRowVectors[row], this.myOrigin.row + row);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
+            })
+        }
+
+        // Iterate over the column vectors
+        for (let col = 0; col < 3; col++) {
+            let pointingNrs = this.myColVectors[col].getPointingNrs();
+            pointingNrs.forEach(pointingNr => {
+                let newInAdmissiblesAdded = this.eliminatePointingNrInGridCol(pointingNr, this.myColVectors[col], this.myOrigin.col + col);
+                inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
+            })
+        }
+        if (inAdmissiblesAdded) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                // console.log('FromHiddenPairs')
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
+    // Funktionen für die Überschneidungstechnik
+
+    cellIntersectionInRowEliminate(tmpBlock, row, strongRow, strongNumbers) {
+        // Eliminiere die strongNumbers in row des Blocks tmpBlock
+        let inAdmissiblesAdded = false;
+
+        // Iteriere über die 3 Zellen der Blockreihe
+        for (let col = 0; col < 3; col++) {
+            let tmpCell = tmpBlock.getBlockCellAt(row, col);
+
+            if (tmpCell.getValue() == '0') {
+                let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
+                let tmpCandidates = tmpCell.getTotalCandidates();
+                let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
+
+                if (inAdmissiblesFromIntersection.size > 0) {
+                    tmpCell.inAdmissibleCandidates =
+                        tmpCell.inAdmissibleCandidates.union(inAdmissiblesFromIntersection);
+                    let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
+                    inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+                    if (localAdded) {
+                        let newInAdmissibles =
+                            tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
+                        // Die Liste der indirekt unzulässigen verursacht von overlap wird gesetzt
+                        tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
+                        newInAdmissibles.forEach(inAdNr => {
+                            let overlapInfo = {
+                                block: tmpBlock,
+                                rowCol: strongRow
+                            }
+                            tmpCell.inAdmissibleCandidatesFromIntersectionInfo.set(inAdNr, overlapInfo);
+                        })
+                    }
+                }
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
+    cellIntersectionInColEliminate(tmpBlock, col, strongCol, strongNumbers) {
+        // Eliminiere die strongNumbers in col des Blocks tmpBlock
+        let inAdmissiblesAdded = false;
+
+        // Iterate over the 3 cells of the block column
+        for (let row = 0; row < 3; row++) {
+            let tmpCell = tmpBlock.getBlockCellAt(row, col);
+
+            if (tmpCell.getValue() == '0') {
+                let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
+                let tmpCandidates = tmpCell.getTotalCandidates();
+                let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
+
+                if (inAdmissiblesFromIntersection.size > 0) {
+
+                    tmpCell.inAdmissibleCandidates =
+                        tmpCell.inAdmissibleCandidates.union(inAdmissiblesFromIntersection);
+                    let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
+                    inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+                    if (localAdded) {
+                        let newInAdmissibles =
+                            tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
+                        tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
+
+                        newInAdmissibles.forEach(inAdNr => {
+                            let overlapInfo = {
+                                block: tmpBlock,
+                                rowCol: strongCol
+                            }
+                            tmpCell.inAdmissibleCandidatesFromIntersectionInfo.set(inAdNr, overlapInfo);
+                        })
+                    }
+                }
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
+    eliminatePointingNrInGridRow(pointingNr, pointingVector, rowIndex) {
+        // Eliminiere pointingNr in row mit Index rowIndex
+        let inAdmissiblesAdded = false;
+        let block = pointingVector.myBlock;
+        let blockOriginCol = block.myOrigin.col;
+
+        // Iterate over the cells in the row
+        for (let col = 0; col < 9; col++) {
+            if (col < blockOriginCol || col > (blockOriginCol + 2)) {
+                // col nicht im Pointing Vector
+                let tmpCell = sudoApp.mySolver.myGrid.getCellAt(rowIndex, col);
+                if (tmpCell.getValue() == '0') {
+                    // The cell is unset
+                    let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
+                    let tmpCandidates = tmpCell.getTotalCandidates();
+
+                    if (tmpCandidates.has(pointingNr)) {
+                        tmpCell.inAdmissibleCandidates.add(pointingNr);
+
+                        let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
+                        inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+
+                        if (localAdded) {
+                            tmpCell.inAdmissibleCandidatesFromPointingPairs.add(pointingNr);
+                            let pointingPairInfo = {
+                                pNr: pointingNr,
+                                pVector: pointingVector,
+                                rowCol: sudoApp.mySolver.myGrid.sudoRows[rowIndex]
+                            }
+                            tmpCell.inAdmissibleCandidatesFromPointingPairsInfo.set(pointingNr, pointingPairInfo);
+                        }
+                    }
+                }
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
+
+    eliminatePointingNrInGridCol(pointingNr, pointingVector, colIndex) {
+        // Eliminiere pointingNr in coö mit Index colIndex
+        let inAdmissiblesAdded = false;
+        let block = pointingVector.myBlock;
+        let blockOriginRow = block.myOrigin.row;
+
+        // Iterate over the cells in the column
+        for (let row = 0; row < 9; row++) {
+            if (row < blockOriginRow || row > (blockOriginRow + 2)) {
+                // row nicht im Pointing Vector
+                let tmpCell = sudoApp.mySolver.myGrid.getCellAt(row, colIndex);
+
+                if (tmpCell.getValue() == '0') {
+                    // Die Zelle ist ungesetzt
+                    let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
+                    let tmpCandidates = tmpCell.getTotalCandidates();
+
+                    if (tmpCandidates.has(pointingNr)) {
+                        tmpCell.inAdmissibleCandidates.add(pointingNr);
+
+                        let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
+                        inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+
+                        if (localAdded) {
+                            tmpCell.inAdmissibleCandidatesFromPointingPairs.add(pointingNr);
+                            let pointingPairInfo = {
+                                pNr: pointingNr,
+                                pVector: pointingVector,
+                                rowCol: sudoApp.mySolver.myGrid.sudoCols[colIndex]
+                            }
+                            tmpCell.inAdmissibleCandidatesFromPointingPairsInfo.set(pointingNr, pointingPairInfo);
+                        }
+                    }
+                }
+            }
+        }
+        return inAdmissiblesAdded;
+    }
+
 }
+
 class SudokuRow extends SudokuGroup {
     constructor(rowIndex) {
         let myCells = [];
@@ -1994,6 +2309,17 @@ class SudokuRow extends SudokuGroup {
         }
         super(myCells);
         this.myIndex = rowIndex;
+    }
+    derive_inAdmissibles() {
+        let inAdmissiblesAdded = false;
+        if (super.derive_inAdmissiblesFromHiddenPairs()) {
+            inAdmissiblesAdded = true;
+        } else if (super.derive_inAdmissiblesFromNakedPairs()) {
+            inAdmissiblesAdded = true;
+        } else {
+            inAdmissiblesAdded = false;
+        }
+        return inAdmissiblesAdded;
     }
 }
 
@@ -2005,6 +2331,17 @@ class SudokuCol extends SudokuGroup {
         }
         super(myCells);
         this.myColIndex = colIndex;
+    }
+    derive_inAdmissibles() {
+        let inAdmissiblesAdded = false;
+        if (super.derive_inAdmissiblesFromHiddenPairs()) {
+            inAdmissiblesAdded = true;
+        } else if (super.derive_inAdmissiblesFromNakedPairs()) {
+            inAdmissiblesAdded = true;
+        } else {
+            inAdmissiblesAdded = false;
+        }
+        return inAdmissiblesAdded;
     }
 }
 
@@ -2633,21 +2970,28 @@ class SudokuGrid {
         let inAdmissiblesAdded = true;
 
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
-            if (this.calculateHiddenSingles()) {
-                return;
-            }
-            if (this.derive_inAdmissiblesFromHiddenPairs()) {
-                inAdmissiblesAdded = true;
-            } else if (this.derive_inAdmissiblesFromNakedPairs()) {
-                inAdmissiblesAdded = true;
-            } else if (this.derive_inAdmissiblesFromIntersection()) {
-                inAdmissiblesAdded = true;
-            } else if (this.derive_inAdmissiblesFromPointingPairs()) {
-                inAdmissiblesAdded = true;
-            } else {
-                inAdmissiblesAdded = false;
-            }
+            if (this.calculateHiddenSingles()) return;
+            inAdmissiblesAdded = this.derive_inAdmissibles();
         }
+    }
+
+    derive_inAdmissibles() {
+        // Iteriere über die Blockn
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            if (tmpBlock.derive_inAdmissibles()) return true;
+        }
+        // Iteriere über die Reihen
+        for (let i = 0; i < 9; i++) {
+            let tmpRow = this.sudoRows[i];
+            if (tmpRow.derive_inAdmissibles()) return true;
+        }
+        // Iteriere über die Spalten
+        for (let i = 0; i < 9; i++) {
+            let tmpCol = this.sudoCols[i];
+            if (tmpCol.derive_inAdmissibles()) return true;
+        }
+        return false;
     }
 
     evaluateGridStrict() {
@@ -2657,16 +3001,10 @@ class SudokuGrid {
         let inAdmissiblesAdded = true;
         let c1 = false;
         let c2 = false;
-        let c3 = false;
-        let c4 = false;
-        let c5 = false;
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
-            c4 = this.derive_inAdmissiblesFromSingles();
-            c1 = this.derive_inAdmissiblesFromHiddenPairs();
-            c2 = this.derive_inAdmissiblesFromNakedPairs();
-            c3 = this.derive_inAdmissiblesFromIntersection();
-            c5 = this.derive_inAdmissiblesFromPointingPairs();
-            inAdmissiblesAdded = c1 || c2 || c3 || c4 || c5;
+            c1 = this.derive_inAdmissiblesFromSingles();
+            c2 = this.derive_inAdmissibles();
+            inAdmissiblesAdded = c1 || c2;
         }
     }
 
@@ -2749,360 +3087,6 @@ class SudokuGrid {
         }
         return inAdmissiblesAdded;
     }
-
-    derive_inAdmissiblesFromNakedPairs() {
-        // Iteriere über die Blockn
-        for (let i = 0; i < 9; i++) {
-            let tmpBlock = this.sudoBlocks[i];
-            if (tmpBlock.derive_inAdmissiblesFromNakedPairs()) return true;
-        }
-        // Iteriere über die Reihen
-        for (let i = 0; i < 9; i++) {
-            let tmpRow = this.sudoRows[i];
-            if (tmpRow.derive_inAdmissiblesFromNakedPairs()) return true;
-        }
-        // Iteriere über die Spalten
-        for (let i = 0; i < 9; i++) {
-            let tmpCol = this.sudoCols[i];
-            if(tmpCol.derive_inAdmissiblesFromNakedPairs()) return true;
-        }
-        return false;
-    }
-
-    derive_inAdmissiblesFromHiddenPairs() {
-        // Iteriere über die Blockn
-        for (let i = 0; i < 9; i++) {
-            let tmpBlock = this.sudoBlocks[i];
-            if(tmpBlock.derive_inAdmissiblesFromHiddenPairs()) return true;
-        }
-        // Iteriere über die Reihen
-        for (let i = 0; i < 9; i++) {
-            let tmpRow = this.sudoRows[i];
-            if (tmpRow.derive_inAdmissiblesFromHiddenPairs()) return true;
-        }
-        // Iteriere über die Spalten
-        for (let i = 0; i < 9; i++) {
-            let tmpCol = this.sudoCols[i];
-            if (tmpCol.derive_inAdmissiblesFromHiddenPairs()) return true;
-        }
-        return false;
-    }
-
-    // Funktionen für die Überschneidungstechnik
-
-    cellIntersectionInRowEliminate(tmpBlock, row, strongRow, strongNumbers) {
-        // Eliminiere die strongNumbers in row des Blocks tmpBlock
-        let inAdmissiblesAdded = false;
-
-        // Iteriere über die 3 Zellen der Blockreihe
-        for (let col = 0; col < 3; col++) {
-            let tmpCell = tmpBlock.getBlockCellAt(row, col);
-
-            if (tmpCell.getValue() == '0') {
-                let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                let tmpCandidates = tmpCell.getTotalCandidates();
-                let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
-
-                if (inAdmissiblesFromIntersection.size > 0) {
-                    tmpCell.inAdmissibleCandidates =
-                        tmpCell.inAdmissibleCandidates.union(inAdmissiblesFromIntersection);
-                    let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
-                    inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-                    if (localAdded) {
-                        let newInAdmissibles =
-                            tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
-                        // Die Liste der indirekt unzulässigen verursacht von overlap wird gesetzt
-                        tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
-                        newInAdmissibles.forEach(inAdNr => {
-                            let overlapInfo = {
-                                block: tmpBlock,
-                                rowCol: strongRow
-                            }
-                            tmpCell.inAdmissibleCandidatesFromIntersectionInfo.set(inAdNr, overlapInfo);
-                        })
-                    }
-                }
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
-    cellIntersectionInColEliminate(tmpBlock, col, strongCol, strongNumbers) {
-        // Eliminiere die strongNumbers in col des Blocks tmpBlock
-        let inAdmissiblesAdded = false;
-
-        // Iterate over the 3 cells of the block column
-        for (let row = 0; row < 3; row++) {
-            let tmpCell = tmpBlock.getBlockCellAt(row, col);
-
-            if (tmpCell.getValue() == '0') {
-                let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                let tmpCandidates = tmpCell.getTotalCandidates();
-                let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
-
-                if (inAdmissiblesFromIntersection.size > 0) {
-
-                    tmpCell.inAdmissibleCandidates =
-                        tmpCell.inAdmissibleCandidates.union(inAdmissiblesFromIntersection);
-                    let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
-                    inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-                    if (localAdded) {
-                        let newInAdmissibles =
-                            tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
-                        tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
-
-                        newInAdmissibles.forEach(inAdNr => {
-                            let overlapInfo = {
-                                block: tmpBlock,
-                                rowCol: strongCol
-                            }
-                            tmpCell.inAdmissibleCandidatesFromIntersectionInfo.set(inAdNr, overlapInfo);
-                        })
-                    }
-                }
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
-
-    derive_inAdmissiblesFromPointingPairs() {
-        let tmpBlock = null;
-        let inAdmissiblesAdded = false;
-
-        // Iterate over the 9 blocks of the matrix
-        for (let i = 0; i < 9; i++) {
-            tmpBlock = this.sudoBlocks[i];
-
-            // Iterate over the row vectors
-            for (let row = 0; row < 3; row++) {
-                let pointingNrs = tmpBlock.myRowVectors[row].getPointingNrs();
-                pointingNrs.forEach(pointingNr => {
-                    let newInAdmissiblesAdded = this.eliminatePointingNrInGridRow(pointingNr, tmpBlock.myRowVectors[row], tmpBlock.myOrigin.row + row);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
-                    if (newInAdmissiblesAdded) {
-                        if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                            // console.log('FromPointingPairs')
-                        }
-                    }
-                })
-            }
-
-            // Iterate over the column vectors
-            for (let col = 0; col < 3; col++) {
-                let pointingNrs = tmpBlock.myColVectors[col].getPointingNrs();
-                pointingNrs.forEach(pointingNr => {
-                    let newInAdmissiblesAdded = this.eliminatePointingNrInGridCol(pointingNr, tmpBlock.myColVectors[col], tmpBlock.myOrigin.col + col);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
-                    if (newInAdmissiblesAdded) {
-                        if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                            // console.log('FromPointingPairs')
-                        }
-                    }
-                })
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
-    eliminatePointingNrInGridRow(pointingNr, pointingVector, rowIndex) {
-        // Eliminiere pointingNr in row mit Index rowIndex
-        let inAdmissiblesAdded = false;
-        let block = pointingVector.myBlock;
-        let blockOriginCol = block.myOrigin.col;
-
-        // Iterate over the cells in the row
-        for (let col = 0; col < 9; col++) {
-            if (col < blockOriginCol || col > (blockOriginCol + 2)) {
-                // col nicht im Pointing Vector
-                let tmpCell = this.getCellAt(rowIndex, col);
-                if (tmpCell.getValue() == '0') {
-                    // The cell is unset
-                    let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                    let tmpCandidates = tmpCell.getTotalCandidates();
-
-                    if (tmpCandidates.has(pointingNr)) {
-                        tmpCell.inAdmissibleCandidates.add(pointingNr);
-
-                        let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
-                        inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-
-                        if (localAdded) {
-                            tmpCell.inAdmissibleCandidatesFromPointingPairs.add(pointingNr);
-                            let pointingPairInfo = {
-                                pNr: pointingNr,
-                                pVector: pointingVector,
-                                rowCol: this.sudoRows[rowIndex]
-                            }
-                            tmpCell.inAdmissibleCandidatesFromPointingPairsInfo.set(pointingNr, pointingPairInfo);
-                        }
-                    }
-                }
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
-
-    eliminatePointingNrInGridCol(pointingNr, pointingVector, colIndex) {
-        // Eliminiere pointingNr in coö mit Index colIndex
-        let inAdmissiblesAdded = false;
-        let block = pointingVector.myBlock;
-        let blockOriginRow = block.myOrigin.row;
-
-        // Iterate over the cells in the column
-        for (let row = 0; row < 9; row++) {
-            if (row < blockOriginRow || row > (blockOriginRow + 2)) {
-                // row nicht im Pointing Vector
-                let tmpCell = this.getCellAt(row, colIndex);
-
-                if (tmpCell.getValue() == '0') {
-                    // Die Zelle ist ungesetzt
-                    let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                    let tmpCandidates = tmpCell.getTotalCandidates();
-
-                    if (tmpCandidates.has(pointingNr)) {
-                        tmpCell.inAdmissibleCandidates.add(pointingNr);
-
-                        let localAdded = !oldInAdmissibles.equals(tmpCell.inAdmissibleCandidates);
-                        inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-
-                        if (localAdded) {
-                            tmpCell.inAdmissibleCandidatesFromPointingPairs.add(pointingNr);
-                            let pointingPairInfo = {
-                                pNr: pointingNr,
-                                pVector: pointingVector,
-                                rowCol: this.sudoCols[colIndex]
-                            }
-                            tmpCell.inAdmissibleCandidatesFromPointingPairsInfo.set(pointingNr, pointingPairInfo);
-                        }
-                    }
-                }
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
-    derive_inAdmissiblesFromIntersection() {
-        let tmpBlock = null;
-        let tmpRow = null;
-        let tmpCol = null;
-        let inAdmissiblesAdded = false;
-
-        // Iterate over the 9 blocks of the matrix
-        for (let i = 0; i < 9; i++) {
-            tmpBlock = this.sudoBlocks[i];
-
-            // Iterate over the 3 rows of the block
-            for (let row = 0; row < 3; row++) {
-                let matrixRow = tmpBlock.getMatrixRowFromBlockRow(row);
-                let numbersInRowOutsideBlock = new MatheSet();
-                let numbersInRowInsideBlock = new MatheSet();
-                let strongNumbersInRowInsideBlock = new MatheSet();
-                tmpRow = this.sudoRows[matrixRow];
-
-                // Iterate over the cells in the row
-                for (let col = 0; col < 9; col++) {
-                    if (tmpRow.myCells[col].getValue() == '0') {
-                        if (tmpBlock.isBlockCol(col)) {
-                            numbersInRowInsideBlock = numbersInRowInsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
-                        } else {
-                            numbersInRowOutsideBlock = numbersInRowOutsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
-                        }
-                    }
-                    // The strict numbers only occur in the block, not outside the block
-                    strongNumbersInRowInsideBlock = numbersInRowInsideBlock.difference(numbersInRowOutsideBlock);
-                }
-                // Reduce the block cells by the strict numbers
-                if (strongNumbersInRowInsideBlock.size > 0) {
-                    // Set the strict numbers inadmissible in 2 rows of the block
-                    let row1 = 0;
-                    let row2 = 0;
-                    switch (row) {
-                        case 0: {
-                            row1 = 1;
-                            row2 = 2;
-                            break;
-                        }
-                        case 1: {
-                            row1 = 0;
-                            row2 = 2;
-                            break;
-                        }
-                        case 2: {
-                            row1 = 0;
-                            row2 = 1;
-                        }
-                    }
-                    let newInAdmissiblesAdded1 = this.cellIntersectionInRowEliminate(tmpBlock, row1, tmpRow, strongNumbersInRowInsideBlock);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
-
-                    let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(tmpBlock, row2, tmpRow, strongNumbersInRowInsideBlock);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
-                  
-                }
-            }
-            // Iteriere über die Spalten des Blocks
-            for (let col = 0; col < 3; col++) {
-                let matrixCol = tmpBlock.getMatrixColFromBlockCol(col);
-                let numbersInColOutsideBlock = new MatheSet();
-                let numbersInColInsideBlock = new MatheSet();
-                let strongNumbersInColInsideBlock = new MatheSet();
-                tmpCol = this.sudoCols[matrixCol];
-
-                // Iteriere über die Zellen der Spalte
-                for (let row = 0; row < 9; row++) {
-                    if (tmpCol.myCells[row].getValue() == '0') {
-                        if (tmpBlock.isBlockRow(row)) {
-                            numbersInColInsideBlock = numbersInColInsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
-                        } else {
-                            numbersInColOutsideBlock = numbersInColOutsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
-                        }
-                    }
-                    strongNumbersInColInsideBlock = numbersInColInsideBlock.difference(numbersInColOutsideBlock);
-                }
-                // Die Blockzellen um die strengen Nummern reduzieren
-                if (strongNumbersInColInsideBlock.size > 0) {
-                    // In 2 Spalten der Block die strong NUmmern inadmissible setzen
-                    let col1 = 0;
-                    let col2 = 0;
-                    //
-                    switch (col) {
-                        case 0: {
-                            col1 = 1;
-                            col2 = 2;
-                            break;
-                        }
-                        case 1: {
-                            col1 = 0;
-                            col2 = 2;
-                            break;
-                        }
-                        case 2: {
-                            col1 = 0;
-                            col2 = 1;
-                        }
-                    }
-                    // col1 bereinigen            
-                    let newInAdmissiblesAdded1 = this.cellIntersectionInColEliminate(tmpBlock, col1, tmpCol, strongNumbersInColInsideBlock);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
-
-                    let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(tmpBlock, col2, tmpCol, strongNumbersInColInsideBlock);
-                    inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
-                }
-            }
-        }
-        if (inAdmissiblesAdded) {
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                // console.log('Intersection')
-            }
-        }
-        return inAdmissiblesAdded;
-    }
-
 
     calculateInAdmissibles() {
         for (let i = 0; i < 81; i++) {
