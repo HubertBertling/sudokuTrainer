@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 843
+let VERSION = 844
 
 // ==========================================
 // Basic classes
@@ -1980,26 +1980,26 @@ class SudokuBlock extends SudokuGroup {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                console.log('FromHiddenPairs in Block: ' + this.myIndex);
+                // console.log('FromHiddenPairs in Block: ' + this.myIndex);
             }
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                console.log('FromNakedPairs in Block: ' + this.myIndex);
+                // console.log('FromNakedPairs in Block: ' + this.myIndex);
             }
         } else if (this.derive_inAdmissiblesFromIntersection()) {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                console.log('FromIntersection in Block: ' + this.myIndex);
+                // console.log('FromIntersection in Block: ' + this.myIndex);
             }
    
         } else if (this.derive_inAdmissiblesFromPointingPairs()) {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                console.log('FromPointingPairs in Block: ' + this.myIndex);
+                // console.log('FromPointingPairs in Block: ' + this.myIndex);
             }
    
         } else {
@@ -2310,14 +2310,14 @@ class SudokuRow extends SudokuGroup {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                console.log('FromHiddenPairs in Row: ' + this.myIndex);
+                // console.log('FromHiddenPairs in Row: ' + this.myIndex);
             }
         
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                console.log('FromHiddenPairs in Row: ' + this.myIndex);
+                // console.log('FromHiddenPairs in Row: ' + this.myIndex);
             }
         
         } else {
@@ -2342,14 +2342,14 @@ class SudokuCol extends SudokuGroup {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                console.log('FromHiddenPairs in Col: ' + this.myIndex);
+                // console.log('FromHiddenPairs in Col: ' + this.myIndex);
             }
   
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
             if (sudoApp.mySolver.isSearching()) {
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                console.log('FromNakedPairs in Col: ' + this.myIndex);
+                // console.log('FromNakedPairs in Col: ' + this.myIndex);
             }
         } else {
             inAdmissiblesAdded = false;
