@@ -1263,7 +1263,22 @@ class SudokuGroup {
     constructor(cells) {
         this.myCells = cells;
         this.myPairInfos = [];
+        this.hiddenSingle = undefined;
     }
+
+    isWithHiddenSingle() {
+        for (let i = 0; i < 9; i++) {
+            if (this.myCells[i].getTotalCandidates().size == 1) {
+                //???
+
+                this.hiddenSingle = this.myCells[i];
+                return true;
+            }
+        }
+        this.hiddenSingle = undefined;
+        return false;
+    }
+
 
     getMyCells() {
         return this.myCells;
@@ -1275,6 +1290,7 @@ class SudokuGroup {
 
     clearEvaluations() {
         this.myPairInfos = [];
+        this.hasHiddenSingle = false;
     }
 
 
@@ -1513,6 +1529,20 @@ class SudokuGroup {
                     inAdmissiblesAdded = true;
                 }
             }
+            if (inAdmissiblesAdded) {
+                if (this.isWithHiddenSingle()) {
+                    if (sudoApp.mySolver.isSearching()) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                        if (this instanceof SudokuBlock) {
+                            console.log('FromHiddenPairs in Block: ' + this.myIndex);
+                        } else if (this instanceof SudokuRow) {
+                            console.log('FromHiddenPairs in Row: ' + this.myIndex);
+                        } else if (this instanceof SudokuCol) {
+                            console.log('FromHiddenPairs in Col: ' + this.myIndex);
+                        }
+                    }
+                }
+            }
         }
         return inAdmissiblesAdded;
     }
@@ -1575,6 +1605,12 @@ class SudokuGroup {
                         }
                     }
                 }
+            }
+        }
+        if (this.isWithHiddenSingle()) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                console.log('FromNakedPairs in Block: ' + this.myIndex);
             }
         }
         return inAdmissiblesAdded;
@@ -1978,30 +2014,12 @@ class SudokuBlock extends SudokuGroup {
         let inAdmissiblesAdded = false;
         if (this.derive_inAdmissiblesFromHiddenPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                // console.log('FromHiddenPairs in Block: ' + this.myIndex);
-            }
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                // console.log('FromNakedPairs in Block: ' + this.myIndex);
-            }
         } else if (this.derive_inAdmissiblesFromIntersection()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                // console.log('FromIntersection in Block: ' + this.myIndex);
-            }
-   
         } else if (this.derive_inAdmissiblesFromPointingPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                // console.log('FromPointingPairs in Block: ' + this.myIndex);
-            }
-   
         } else {
             inAdmissiblesAdded = false;
         }
@@ -2061,6 +2079,12 @@ class SudokuBlock extends SudokuGroup {
 
             }
         }
+        if (this.isWithHiddenSingle()) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                console.log('FromIntersection in Block: ' + this.myIndex);
+            }
+        }
         // Iteriere über die Spalten des Blocks
         for (let col = 0; col < 3; col++) {
             let matrixCol = this.getMatrixColFromBlockCol(col);
@@ -2109,6 +2133,13 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(this, col2, tmpCol, strongNumbersInColInsideBlock);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
             }
+
+        }
+        if (this.isWithHiddenSingle()) {
+            if (sudoApp.mySolver.isSearching()) {
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                console.log('FromIntersection in Block: ' + this.myIndex);
+            }
         }
         return inAdmissiblesAdded;
     }
@@ -2125,8 +2156,14 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded = this.eliminatePointingNrInGridRow(pointingNr, this.myRowVectors[row], this.myOrigin.row + row);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
             })
-        }
 
+            if (this.isWithHiddenSingle()) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                    console.log('FromPointingPairs in Block: ' + this.myIndex);
+                }
+            }
+        }
         // Iterate over the column vectors
         for (let col = 0; col < 3; col++) {
             let pointingNrs = this.myColVectors[col].getPointingNrs();
@@ -2134,6 +2171,13 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded = this.eliminatePointingNrInGridCol(pointingNr, this.myColVectors[col], this.myOrigin.col + col);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
             })
+
+            if (this.isWithHiddenSingle()) {
+                if (sudoApp.mySolver.isSearching()) {
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                    console.log('FromPointingPairs in Block: ' + this.myIndex);
+                }
+            }
         }
         return inAdmissiblesAdded;
     }
@@ -2308,18 +2352,8 @@ class SudokuRow extends SudokuGroup {
         let inAdmissiblesAdded = false;
         if (this.derive_inAdmissiblesFromHiddenPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                // console.log('FromHiddenPairs in Row: ' + this.myIndex);
-            }
-        
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                // console.log('FromHiddenPairs in Row: ' + this.myIndex);
-            }
-        
         } else {
             inAdmissiblesAdded = false;
         }
@@ -2336,28 +2370,19 @@ class SudokuCol extends SudokuGroup {
         super(myCells);
         this.myIndex = colIndex;
     }
+
     derive_inAdmissibles() {
         let inAdmissiblesAdded = false;
         if (this.derive_inAdmissiblesFromHiddenPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                // console.log('FromHiddenPairs in Col: ' + this.myIndex);
-            }
-  
         } else if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-                // console.log('FromNakedPairs in Col: ' + this.myIndex);
-            }
         } else {
             inAdmissiblesAdded = false;
         }
         return inAdmissiblesAdded;
     }
 }
-
 class SudokuGrid {
     // Speichert die Sudokuzellen in der Wrapper-Version
     constructor() {
