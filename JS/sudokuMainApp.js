@@ -1807,15 +1807,6 @@ class SudokuRowView extends SudokuGroupView {
         return this.getMyGroup();
     }
 
-    /*
-    upDate() {
-        let ida = this.getMyRow().isInAdmissibleDisplayActive();
-        this.myCellViews.forEach(cellView => {
-            cellView.upDateInadmissibles();
-        })
-    }
-        */
-
     displayUnsolvability() {
         let tmp = super.displayUnsolvability();
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
@@ -1845,7 +1836,7 @@ class SudokuColView extends SudokuGroupView {
         let tmpCellViews = [];
         for (let i = 0; i < 9; i++) {
             tmpCellViews.push(sudoApp.mySolverView.myGridView.sudoCellViews[
-                IndexCalculator.getCellIndexRow(colIndex, i)]);
+                IndexCalculator.getCellIndexCol(colIndex, i)]);
         }
         this.setCellViews(tmpCellViews);
     }
@@ -1853,15 +1844,7 @@ class SudokuColView extends SudokuGroupView {
     getMyCol() {
         return this.getMyGroup();
     }
-    /*
-        upDate() {
-            let ida = this.getMyCol().isInAdmissibleDisplayActive();
-            this.myCellViews.forEach(cellView => {
-                cellView.upDateInadmissibles();
-            })
-        }
-            */
-
+    
     displayUnsolvability() {
         let tmp = super.displayUnsolvability();
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
@@ -2212,7 +2195,7 @@ class SudokuCellView {
                             }
                             if (overlapInfo.col !== undefined) {
                                 let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
-                                sudoApp.mySolverView.myGridView.sudoRowViews[overlapInfo.col.myIndex].displayDependentInAdmisssibles(log);
+                                sudoApp.mySolverView.myGridView.sudoColViews[overlapInfo.col.myIndex].displayDependentInAdmisssibles(log);
                                 let intersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     -1,
