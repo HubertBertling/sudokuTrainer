@@ -2203,21 +2203,21 @@ class SudokuCellView {
                             if (overlapInfo.row !== undefined) {
                                 let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
                                 sudoApp.mySolverView.myGridView.sudoRowViews[overlapInfo.row.myIndex].displayDependentInAdmisssibles(log);
-                                let intersection = {
-                                    blockIndex: overlapInfo.block.myIndex,
-                                    rowIndex: overlapInfo.row.myIndex,
-                                    colIndex: -1
-                                }
+                                let intersection = new Intersection(
+                                    overlapInfo.block.myIndex,
+                                    overlapInfo.row.myIndex,
+                                    -1
+                                )
                                 sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
                             }
                             if (overlapInfo.col !== undefined) {
                                 let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
                                 sudoApp.mySolverView.myGridView.sudoRowViews[overlapInfo.col.myIndex].displayDependentInAdmisssibles(log);
-                                let intersection = {
-                                    blockIndex: overlapInfo.block.myIndex,
-                                    rowIndex: -1,
-                                    colIndex: overlapInfo.col.myIndex
-                                }
+                                let intersection = new Intersection(
+                                    overlapInfo.block.myIndex,
+                                    -1,
+                                    overlapInfo.col.myIndex,
+                                )
                                 sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
                             }
                         }
@@ -3032,7 +3032,7 @@ class SudokuSolverView {
                             ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                             ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
                             ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size
+                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
                             ,
                             this,
                             () => { }
@@ -3059,7 +3059,7 @@ class SudokuSolverView {
                             ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
                             ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
                             ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size + '<br>' +
+                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size() + '<br>' +
                             '<b>Backtracking</b><br>' +
                             ' * Erster Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
                             ' * Zweiter Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore

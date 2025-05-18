@@ -344,6 +344,42 @@ class ClockedRunner {
     }
 }
 
+class InterscetionSet {
+    constructor() {
+        this.isSet = [];
+    }
+    add(is) {
+        if (!this.has(is)) {
+            this.isSet.push(is);
+        }
+    }
+    has(is) {
+        for (let i = 0; i < this.isSet.length; i++) {
+            if (this.isSet[i].equals(is)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    size() {
+        return this.isSet.length;
+    }
+}
+
+class Intersection {
+    constructor(blockIndex, rowIndex, colIndex) {
+        this.blockIndex = blockIndex;
+        this.rowIndex = rowIndex;
+        this.colIndex = colIndex;
+    }
+    equals(intersection) {
+        return (this.blockIndex == intersection.blockIndex &&
+            this.rowIndex == intersection.rowIndex &&
+            this.colIndex == intersection.colIndex
+        )
+    }
+}
+
 class Search {
     // A search represents a the traverse through the Sudoku search tree.
     // 'performStep()' is the basic traversal step.
@@ -375,7 +411,7 @@ class Search {
             countMultipleOptionsFirstTry: 0,
             countMultipleOptionsSecondTryAndMore: 0
         }
-        this.intersections = new MatheSet();
+        this.intersections = new InterscetionSet();
     }
 
     isCompleted() {
@@ -2073,7 +2109,7 @@ class SudokuBlock extends SudokuGroup {
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
             }
         }
-   
+
         /*
         if (sudoApp.mySolver.myGrid.isWithHiddenSingle()) {
             if (sudoApp.mySolver.isSearching()) {
@@ -2418,17 +2454,6 @@ class SudokuGrid {
         this.evaluateMatrix();
     }
 
-/*
-    markInAdmissibleDisplayStatus() {
-        let hiddenSingle = this.isWithHiddenSingle();
-        if (hiddenSingle !== undefined) {
-            hiddenSingle.markInAdmissibleDisplayStatus();
-            return true;
-        } else {
-            return false;
-        }
-    }
-*/
     isWithSingle() {
         for (let i = 0; i < 81; i++) {
             if (this.sudoCells[i].getTotalCandidates().size == 1) {
@@ -3369,67 +3394,67 @@ class SudokuCell {
         this.myNecessaryGroups = new Map();
     }
 
-/*
-    markInAdmissibleDisplayStatus() {
-        // This is a hidden single.
-        // All groups which cause this hidden single are set to active
-        this.inAdmissibleCandidates.forEach(candidate => {
-            if (this.inAdmissibleCandidatesFromPairs.has(candidate)) {
-                let inAdmissiblePairInfo = this.inAdmissibleCandidatesFromPairs.get(candidate);
-                inAdmissiblePairInfo.collection.inAdmissibleDisplayActive = true;
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
-
-                    if (inAdmissiblePairInfo.collection instanceof SudokuBlock) {
-                        console.log('FromNakedPairs in Block: ' + inAdmissiblePairInfo.collection.myIndex);
-                    } else if (inAdmissiblePairInfo.collection instanceof SudokuRow) {
-                        console.log('FromNakedPairs in Row: ' + inAdmissiblePairInfo.collection.myIndex);
-                    } else if (inAdmissiblePairInfo.collection instanceof SudokuCol) {
-                        console.log('FromNakedPairs in Col: ' + inAdmissiblePairInfo.collection.myIndex);
+    /*
+        markInAdmissibleDisplayStatus() {
+            // This is a hidden single.
+            // All groups which cause this hidden single are set to active
+            this.inAdmissibleCandidates.forEach(candidate => {
+                if (this.inAdmissibleCandidatesFromPairs.has(candidate)) {
+                    let inAdmissiblePairInfo = this.inAdmissibleCandidatesFromPairs.get(candidate);
+                    inAdmissiblePairInfo.collection.inAdmissibleDisplayActive = true;
+                    if (sudoApp.mySolver.isSearching()) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+    
+                        if (inAdmissiblePairInfo.collection instanceof SudokuBlock) {
+                            console.log('FromNakedPairs in Block: ' + inAdmissiblePairInfo.collection.myIndex);
+                        } else if (inAdmissiblePairInfo.collection instanceof SudokuRow) {
+                            console.log('FromNakedPairs in Row: ' + inAdmissiblePairInfo.collection.myIndex);
+                        } else if (inAdmissiblePairInfo.collection instanceof SudokuCol) {
+                            console.log('FromNakedPairs in Col: ' + inAdmissiblePairInfo.collection.myIndex);
+                        }
+                        inAdmissiblePairInfo.collection.markInAdmissibleDisplayStatus();
                     }
-                    inAdmissiblePairInfo.collection.markInAdmissibleDisplayStatus();
                 }
-            }
-            if (this.inAdmissibleCandidatesFromHiddenPairs.has(candidate)) {
-                let inAdmissibleSubPairInfo = this.inAdmissibleCandidatesFromHiddenPairs.get(candidate);
-                inAdmissibleSubPairInfo.collection.inAdmissibleDisplayActive = true;
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                    if (inAdmissibleSubPairInfo.collection instanceof SudokuBlock) {
-                        console.log('FromHiddenPairs in Block: ' + inAdmissibleSubPairInfo.collection.myIndex);
-                    } else if (inAdmissibleSubPairInfo.collection instanceof SudokuRow) {
-                        console.log('FromHiddenPairs in Row: ' + inAdmissibleSubPairInfo.collection.myIndex);
-                    } else if (inAdmissibleSubPairInfo.collection instanceof SudokuCol) {
-                        console.log('FromHiddenPairs in Col: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                if (this.inAdmissibleCandidatesFromHiddenPairs.has(candidate)) {
+                    let inAdmissibleSubPairInfo = this.inAdmissibleCandidatesFromHiddenPairs.get(candidate);
+                    inAdmissibleSubPairInfo.collection.inAdmissibleDisplayActive = true;
+                    if (sudoApp.mySolver.isSearching()) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                        if (inAdmissibleSubPairInfo.collection instanceof SudokuBlock) {
+                            console.log('FromHiddenPairs in Block: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                        } else if (inAdmissibleSubPairInfo.collection instanceof SudokuRow) {
+                            console.log('FromHiddenPairs in Row: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                        } else if (inAdmissibleSubPairInfo.collection instanceof SudokuCol) {
+                            console.log('FromHiddenPairs in Col: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                        }
+                        inAdmissibleSubPairInfo.collection.markInAdmissibleDisplayStatus();
                     }
-                    inAdmissibleSubPairInfo.collection.markInAdmissibleDisplayStatus();
                 }
-            }
-            if (this.inAdmissibleCandidatesFromIntersectionInfo.has(candidate)) {
-                let overlapInfo = this.inAdmissibleCandidatesFromIntersectionInfo.get(candidate);
-                overlapInfo.block.inAdmissibleDisplayActive = true;
-                overlapInfo.rowCol.inAdmissibleDisplayActive = true;
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                    console.log('FromIntersection in Block: ' + overlapInfo.block.myIndex);
-                    console.log('FromIntersection in RowCol: ' + overlapInfo.rowCol.myIndex);
+                if (this.inAdmissibleCandidatesFromIntersectionInfo.has(candidate)) {
+                    let overlapInfo = this.inAdmissibleCandidatesFromIntersectionInfo.get(candidate);
+                    overlapInfo.block.inAdmissibleDisplayActive = true;
+                    overlapInfo.rowCol.inAdmissibleDisplayActive = true;
+                    if (sudoApp.mySolver.isSearching()) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
+                        console.log('FromIntersection in Block: ' + overlapInfo.block.myIndex);
+                        console.log('FromIntersection in RowCol: ' + overlapInfo.rowCol.myIndex);
+                    }
+                    overlapInfo.block.markInAdmissibleDisplayStatus();
+                    overlapInfo.rowCol.markInAdmissibleDisplayStatus();
                 }
-                overlapInfo.block.markInAdmissibleDisplayStatus();
-                overlapInfo.rowCol.markInAdmissibleDisplayStatus();
-            }
-            if (this.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
-                let pointingPairInfo = this.inAdmissibleCandidatesFromPairs.get(candidate);
-                pointingPairInfo.rowCol.inAdmissibleDisplayActive = true;
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                    console.log('FromPointingPairs in Block: ' + pointingPairInfo.rowCol.myIndex);
+                if (this.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
+                    let pointingPairInfo = this.inAdmissibleCandidatesFromPairs.get(candidate);
+                    pointingPairInfo.rowCol.inAdmissibleDisplayActive = true;
+                    if (sudoApp.mySolver.isSearching()) {
+                        sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
+                        console.log('FromPointingPairs in Block: ' + pointingPairInfo.rowCol.myIndex);
+                    }
+                    pointingPairInfo.rowCol.markInAdmissibleDisplayStatus();
                 }
-                pointingPairInfo.rowCol.markInAdmissibleDisplayStatus();
-            }
-        });
-
-    }
-        */
+            });
+    
+        }
+            */
     // ===================================================================
     // Getter
     // ===================================================================
