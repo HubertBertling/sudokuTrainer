@@ -1741,11 +1741,6 @@ class SudokuBlockView extends SudokuGroupView {
         this.setCellViews(tmpCellViews);
     }
 
-    displayDependentInAdmisssibles(log) {
-        if (super.displayDependentInAdmisssibles()) {
-            console.log(log);
-        }
-    }
     getMyBlock() {
         return this.getMyGroup();
     }
@@ -1844,7 +1839,7 @@ class SudokuColView extends SudokuGroupView {
     getMyCol() {
         return this.getMyGroup();
     }
-    
+
     displayUnsolvability() {
         let tmp = super.displayUnsolvability();
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
@@ -1889,14 +1884,6 @@ class SudokuGridView {
         this.sudoCellViews[hiddenSingle.myIndex].displayDependentInAdmisssibles();
     }
 
-    /*
-        if (hiddenSingle == undefined) {
-            this.displayAllInAdmissibleCandidates()
-        } else {
-            this.sudoCellViews[hiddenSingle.getMyIndex()].displayInAdmissibleCandidates();
-        }
-    }
-*/
     upDate(hiddenSingle) {
         // Based on the familiar MVC pattern (Model View Controller),  
         // the view of the grid is completely rebuilt after a change to the grid.
@@ -1910,15 +1897,6 @@ class SudokuGridView {
         this.sudoBlockViews = [];
         this.sudoRowViews = [];
         this.sudoColViews = [];
-
-        /*
-        if (sudoApp.mySolver.isSearching()) {
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs = 0;
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs = 0;
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection = 0;
-            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs = 0;
-        }
-            */
 
         // The new cell views are created.
         // Each cell view gets a link to its cell
@@ -1967,16 +1945,6 @@ class SudokuGridView {
             this.sudoCellViews[hiddenSingle.myIndex].displayDependentInAdmisssibles();
         }
 
-        /*
-        // update from row and column perspective
-        this.sudoRowViews.forEach(sudoRowView => {
-            sudoRowView.upDate(withHiddenSingleContext);
-        });
-
-        this.sudoColViews.forEach(sudoColView => {
-            sudoColView.upDate(withHiddenSingleContext);
-        });
-*/
         if (sudoApp.mySolver.isSearching()) {
             new_Node.style.border = "3px dashed white";
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
@@ -2148,44 +2116,49 @@ class SudokuCellView {
                 this.myCell.inAdmissibleCandidates.forEach(candidate => {
                     if (this.myCell.inAdmissibleCandidatesFromPairs.has(candidate)) {
                         let inAdmissiblePairInfo = this.myCell.inAdmissibleCandidatesFromPairs.get(candidate);
+
                         if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs++;
+                            let nakedPair = new NakedPair(
+                                inAdmissiblePairInfo.pairCell1.myIndex,
+                                inAdmissiblePairInfo.pairCell2.myIndex,
+                                inAdmissiblePairInfo.collection.myIndex);
+                            sudoApp.mySolver.myCurrentSearch.nakedPairs.add(nakedPair);
+
                             if (inAdmissiblePairInfo.collection instanceof SudokuBlock) {
-                                this.sudoBlockViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromNakedPairs in Block: ' + inAdmissiblePairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoBlockViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissiblePairInfo.collection instanceof SudokuRow) {
-                                this.sudoRowViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromNakedPairs in Row: ' + inAdmissiblePairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoRowViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissiblePairInfo.collection instanceof SudokuCol) {
-                                this.sudoColViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromNakedPairs in Col: ' + inAdmissiblePairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoColViews[inAdmissiblePairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             }
                         }
                     }
                     if (this.myCell.inAdmissibleCandidatesFromHiddenPairs.has(candidate)) {
                         let inAdmissibleSubPairInfo = this.myCell.inAdmissibleCandidatesFromHiddenPairs.get(candidate);
+
                         if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
+                            let hiddenPairRule = new HiddenPair(
+                                inAdmissibleSubPairInfo.subPairCell1.myIndex,
+                                inAdmissibleSubPairInfo.subPairCell2.myIndex,
+                                inAdmissibleSubPairInfo.collection.myIndex);
+                            sudoApp.mySolver.myCurrentSearch.hiddenPairs.add(hiddenPairRule);
+
                             if (inAdmissibleSubPairInfo.collection instanceof SudokuBlock) {
-                                this.sudoBlockViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromHiddenPairs in Block: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoBlockViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissibleSubPairInfo.collection instanceof SudokuRow) {
-                                this.sudoRowkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromHiddenPairs in Row: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoRowkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissibleSubPairInfo.collection instanceof SudokuCol) {
-                                this.sudoColkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromHiddenPairs in Col: ' + inAdmissibleSubPairInfo.collection.myIndex);
+                                sudoApp.mySolverView.myGridView.sudoColkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             }
                         }
                     }
                     if (this.myCell.inAdmissibleCandidatesFromIntersectionInfo.has(candidate)) {
                         let overlapInfo = this.myCell.inAdmissibleCandidatesFromIntersectionInfo.get(candidate);
                         if (sudoApp.mySolver.isSearching()) {
-                            let log = 'FromIntersection in Block: ' + overlapInfo.block.myIndex;
-                            sudoApp.mySolverView.myGridView.sudoBlockViews[overlapInfo.block.myIndex].displayDependentInAdmisssibles(log);
+                            sudoApp.mySolverView.myGridView.sudoBlockViews[overlapInfo.block.myIndex].displayDependentInAdmisssibles();
                             if (overlapInfo.row !== undefined) {
-                                let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
-                                sudoApp.mySolverView.myGridView.sudoRowViews[overlapInfo.row.myIndex].displayDependentInAdmisssibles(log);
+                                // let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
+                                sudoApp.mySolverView.myGridView.sudoRowViews[overlapInfo.row.myIndex].displayDependentInAdmisssibles();
                                 let intersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     overlapInfo.row.myIndex,
@@ -2194,8 +2167,8 @@ class SudokuCellView {
                                 sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
                             }
                             if (overlapInfo.col !== undefined) {
-                                let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
-                                sudoApp.mySolverView.myGridView.sudoColViews[overlapInfo.col.myIndex].displayDependentInAdmisssibles(log);
+                                // let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
+                                sudoApp.mySolverView.myGridView.sudoColViews[overlapInfo.col.myIndex].displayDependentInAdmisssibles();
                                 let intersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     -1,
@@ -2206,16 +2179,25 @@ class SudokuCellView {
                         }
                     }
                     if (this.myCell.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
-                        let pointingPairInfo = this.myCell.inAdmissibleCandidatesFromPairs.get(candidate);
+                        let pointingPairInfo = this.myCell.inAdmissibleCandidatesFromPointingPairsInfo.get(candidate);
                         if (sudoApp.mySolver.isSearching()) {
-                            sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
                             if (pointingPairInfo.row !== undefined) {
                                 sudoApp.mySolverView.myGridView.sudoRowViews[pointingPairInfo.row.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromPointingPairs in Row: ' + pointingPairInfo.row.myIndex);
+                                let pointingPair = new PointingPair(
+                                    pointingPairInfo.pVector.myBlock.myIndex, 
+                                    pointingPairInfo.row.myIndex, 
+                                    -1
+                                )
+                                sudoApp.mySolver.myCurrentSearch.pointingPairs.add(pointingPair);
                             }
                             if (pointingPairInfo.col !== undefined) {
                                 sudoApp.mySolverView.myGridView.sudoColViews[pointingPairInfo.col.myIndex].displayDependentInAdmisssibles();
-                                console.log('FromPointingPairs in Col: ' + pointingPairInfo.col.myIndex);
+                                 let pointingPair = new PointingPair(
+                                    pointingPairInfo.pVector.myBlock.myIndex, 
+                                    -1,
+                                    pointingPairInfo.col.myIndex
+                                )
+                                sudoApp.mySolver.myCurrentSearch.pointingPairs.add(pointingPair);
                             }
                         }
                     }
@@ -3012,9 +2994,9 @@ class SudokuSolverView {
                             ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                             '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
+                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
+                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
+                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
                             ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
                             ,
                             this,
@@ -3039,9 +3021,9 @@ class SudokuSolverView {
                             ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
                             '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNakedPairs + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs + '<br>' +
+                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
+                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
+                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
                             ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size() + '<br>' +
                             '<b>Backtracking</b><br>' +
                             ' * Erster Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +

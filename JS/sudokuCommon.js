@@ -344,27 +344,77 @@ class ClockedRunner {
     }
 }
 
-class InterscetionSet {
+class RuleSet {
     constructor() {
-        this.isSet = [];
+        this.ruleSet = [];
     }
-    add(is) {
-        if (!this.has(is)) {
-            this.isSet.push(is);
+    add(rule) {
+        if (!this.has(rule)) {
+            this.ruleSet.push(rule);
         }
     }
-    has(is) {
-        for (let i = 0; i < this.isSet.length; i++) {
-            if (this.isSet[i].equals(is)) {
+    has(rule) {
+        for (let i = 0; i < this.ruleSet.length; i++) {
+            if (this.ruleSet[i].equals(rule)) {
                 return true;
             }
         }
         return false;
     }
     size() {
-        return this.isSet.length;
+        return this.ruleSet.length;
     }
 }
+
+
+class NakedPair {
+    constructor(cell1Index, cell2Index, groupIndex) {
+        this.cell1Index = cell1Index;
+        this.cell2Index = cell2Index;
+        this.groupIndex = groupIndex;
+    }
+    equals(nakedPair) {
+        return (
+            this.cell1Index == nakedPair.cell1Index &&
+            this.cell2Index == nakedPair.cell2Index &&
+            this.groupIndex == nakedPair.groupIndex)
+    }
+}
+
+class HiddenPair {
+    constructor(cell1Index, cell2Index, groupIndex) {
+        this.cell1Index = cell1Index;
+        this.cell2Index = cell2Index;
+        this.groupIndex = groupIndex;
+    }
+    equals(nakedPair) {
+        return (
+            this.cell1Index == nakedPair.cell1Index &&
+            this.cell2Index == nakedPair.cell2Index &&
+            this.groupIndex == nakedPair.groupIndex)
+    }
+}
+
+class PointingPair {
+    constructor(v0_index, v1_index, v2_index, row_index, col_index) {
+        this.v0_index = v0_index;
+        this.v1_index = v1_index;
+        this.v2_index = v2_index;
+        this.row_index = row_index;
+        this.col_index = col_index;
+    }
+
+    equals(pointingPair) {
+        return (
+            this.v0_index == pointingPair.v0_index &&
+            this.v1_index == pointingPair.v1_index &&
+            this.v2_index == pointingPair.v2_index &&
+            this.row_index == pointingPair.row_index &&
+            this.col_index == pointingPair.col_index
+        )
+    }
+}
+
 
 class Intersection {
     constructor(blockIndex, rowIndex, colIndex) {
@@ -402,16 +452,16 @@ class Search {
             countSingles: 0,
             countHiddenSingles: 0,
             countFromSingles: 0,
-            countNakedPairs: 0,
-            countHiddenPairs: 0,
-            countIntersection: 0,
-            countPointingPairs: 0,
             countBackwardSteps: 0,
             countMultipleOptionSteps: 0,
             countMultipleOptionsFirstTry: 0,
             countMultipleOptionsSecondTryAndMore: 0
         }
-        this.intersections = new InterscetionSet();
+
+        this.nakedPairs = new RuleSet();
+        this.hiddenPairs = new RuleSet();
+        this.intersections = new RuleSet();
+        this.pointingPairs = new RuleSet();
     }
 
     isCompleted() {
@@ -1540,6 +1590,18 @@ class SudokuGroup {
                             subPairCell1: this.myCells[hiddenPair.pos1],
                             subPairCell2: this.myCells[hiddenPair.pos2]
                         }
+                        /*
+                                                if (sudoApp.mySolver.isSearching()) {
+                                                    let hiddenPairRule = new HiddenPair(
+                                                        hiddenPair.nr1,
+                                                        hiddenPair.nr2,
+                                                        hiddenPair.pos1,
+                                                        hiddenPair.pos21,
+                                                        this.myIndex);
+                                                    sudoApp.mySolver.myCurrentSearch.hiddenPairs.add(hiddenPairRule);
+                                                }
+                                                // console.log('Hidden Pair - {' + hiddenPairRule.nr1 + ', ' + hiddenPairRule.nr2 + '}');
+                        */
                         cell1.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, inAdmissibleSubPairInfo);
                     })
                     inAdmissiblesAdded = true;
@@ -1566,20 +1628,6 @@ class SudokuGroup {
                         cell2.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, inAdmissibleSubPairInfo);
                     })
                     inAdmissiblesAdded = true;
-                }
-            }
-
-            if (inAdmissiblesAdded) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenPairs++;
-                    /*if (this instanceof SudokuBlock) {
-                        console.log('FromHiddenPairs in Block: ' + this.myIndex);
-                    } else if (this instanceof SudokuRow) {
-                        console.log('FromHiddenPairs in Row: ' + this.myIndex);
-                    } else if (this instanceof SudokuCol) {
-                        console.log('FromHiddenPairs in Col: ' + this.myIndex);
-                    }
-                        */
                 }
             }
         }
@@ -2110,14 +2158,6 @@ class SudokuBlock extends SudokuGroup {
             }
         }
 
-        /*
-        if (sudoApp.mySolver.myGrid.isWithHiddenSingle()) {
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                console.log('FromIntersection in Block: ' + this.myIndex);
-            }
-        }
-            */
         // Iteriere über die Spalten des Blocks
         for (let col = 0; col < 3; col++) {
             let matrixCol = this.getMatrixColFromBlockCol(col);
@@ -2166,17 +2206,7 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(this, col2, tmpCol, strongNumbersInColInsideBlock);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
             }
-
         }
-
-        /*
-        if (sudoApp.mySolver.myGrid.isWithHiddenSingle()) {
-            if (sudoApp.mySolver.isSearching()) {
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countIntersection++;
-                console.log('FromIntersection in Block: ' + this.myIndex);
-            }
-        }
-            */
         return inAdmissiblesAdded;
     }
 
@@ -2192,14 +2222,6 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded = this.eliminatePointingNrInGridRow(pointingNr, this.myRowVectors[row], this.myOrigin.row + row);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
             })
-            /*
-                        if (sudoApp.mySolver.myGrid.isWithHiddenSingle()) {
-                            if (sudoApp.mySolver.isSearching()) {
-                                sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                                console.log('FromPointingPairs in Block: ' + this.myIndex);
-                            }
-                        }
-                            */
         }
         // Iterate over the column vectors
         for (let col = 0; col < 3; col++) {
@@ -2208,14 +2230,6 @@ class SudokuBlock extends SudokuGroup {
                 let newInAdmissiblesAdded = this.eliminatePointingNrInGridCol(pointingNr, this.myColVectors[col], this.myOrigin.col + col);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded;
             })
-            /*
-            if (sudoApp.mySolver.myGrid.isWithHiddenSingle()) {
-                if (sudoApp.mySolver.isSearching()) {
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countPointingPairs++;
-                    console.log('FromPointingPairs in Block: ' + this.myIndex);
-                }
-            }
-                */
         }
         return inAdmissiblesAdded;
     }
@@ -2768,7 +2782,6 @@ class SudokuGrid {
                 }
             }
         }
-        // this.evaluateGridStrict();
     }
 
     unsolvableAll(options, k) {
