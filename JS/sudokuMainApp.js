@@ -1941,9 +1941,16 @@ class SudokuGridView {
             sudoBlockView.upDate();
         });
 
-        if (hiddenSingle !== undefined) {
-            this.sudoCellViews[hiddenSingle.myIndex].displayDependentInAdmisssibles();
-        }
+        if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
+            sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
+            this.sudoCellViews.forEach(sudoCellView => {
+                sudoCellView.classifyCandidateNodesInAdmissible();
+            });
+        } else {
+            if (hiddenSingle !== undefined) {
+                this.sudoCellViews[hiddenSingle.myIndex].displayDependentInAdmisssibles();
+            }
+      }
 
         if (sudoApp.mySolver.isSearching()) {
             new_Node.style.border = "3px dashed white";
@@ -2184,16 +2191,16 @@ class SudokuCellView {
                             if (pointingPairInfo.row !== undefined) {
                                 sudoApp.mySolverView.myGridView.sudoRowViews[pointingPairInfo.row.myIndex].displayDependentInAdmisssibles();
                                 let pointingPair = new PointingPair(
-                                    pointingPairInfo.pVector.myBlock.myIndex, 
-                                    pointingPairInfo.row.myIndex, 
+                                    pointingPairInfo.pVector.myBlock.myIndex,
+                                    pointingPairInfo.row.myIndex,
                                     -1
                                 )
                                 sudoApp.mySolver.myCurrentSearch.pointingPairs.add(pointingPair);
                             }
                             if (pointingPairInfo.col !== undefined) {
                                 sudoApp.mySolverView.myGridView.sudoColViews[pointingPairInfo.col.myIndex].displayDependentInAdmisssibles();
-                                 let pointingPair = new PointingPair(
-                                    pointingPairInfo.pVector.myBlock.myIndex, 
+                                let pointingPair = new PointingPair(
+                                    pointingPairInfo.pVector.myBlock.myIndex,
                                     -1,
                                     pointingPairInfo.col.myIndex
                                 )
