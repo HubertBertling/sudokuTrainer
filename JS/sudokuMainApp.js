@@ -2153,9 +2153,9 @@ class SudokuCellView {
                             if (inAdmissibleSubPairInfo.collection instanceof SudokuBlock) {
                                 sudoApp.mySolverView.myGridView.sudoBlockViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissibleSubPairInfo.collection instanceof SudokuRow) {
-                                sudoApp.mySolverView.myGridView.sudoRowkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
+                                sudoApp.mySolverView.myGridView.sudoRowViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             } else if (inAdmissibleSubPairInfo.collection instanceof SudokuCol) {
-                                sudoApp.mySolverView.myGridView.sudoColkViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
+                                sudoApp.mySolverView.myGridView.sudoColViews[inAdmissibleSubPairInfo.collection.myIndex].displayDependentInAdmisssibles();
                             }
                         }
                     }
