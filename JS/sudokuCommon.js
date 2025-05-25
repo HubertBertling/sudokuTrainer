@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 851;
+let VERSION = 852;
 
 // ==========================================
 // Basic classes
@@ -1351,7 +1351,26 @@ class SudokuGroup {
         this.myIndex = index;
         // When elimminations active, they are shown red
         this.inAdmissibleDisplayActive = false;
+        this.hsDependent_inAdmisssiblesCalculated = false;
     }
+
+    calculateHiddenSingleDependentInAdmisssibles() {
+        if (!this.hsDependent_inAdmisssiblesCalculated) {
+            this.hsDependent_inAdmisssiblesCalculated = true;
+            this.myCells.forEach(myCell => {
+                myCell.calculateHiddenSingleDependentInAdmisssibles();
+            })
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    initialze_HSDependent_variables() {
+        this.hsDependent_inAdmisssiblesCalculated = false;
+    }
+
+    /*
 
     markInAdmissibleDisplayStatus() {
         if (!this.inAdmissibleDisplayActive) {
@@ -1360,6 +1379,8 @@ class SudokuGroup {
             })
         }
     }
+
+    */
 
     getMyIndex() {
         return this.myIndex();
@@ -1590,18 +1611,6 @@ class SudokuGroup {
                             subPairCell1: this.myCells[hiddenPair.pos1],
                             subPairCell2: this.myCells[hiddenPair.pos2]
                         }
-                        /*
-                                                if (sudoApp.mySolver.isSearching()) {
-                                                    let hiddenPairRule = new HiddenPair(
-                                                        hiddenPair.nr1,
-                                                        hiddenPair.nr2,
-                                                        hiddenPair.pos1,
-                                                        hiddenPair.pos21,
-                                                        this.myIndex);
-                                                    sudoApp.mySolver.myCurrentSearch.hiddenPairs.add(hiddenPairRule);
-                                                }
-                                                // console.log('Hidden Pair - {' + hiddenPairRule.nr1 + ', ' + hiddenPairRule.nr2 + '}');
-                        */
                         cell1.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, inAdmissibleSubPairInfo);
                     })
                     inAdmissiblesAdded = true;
@@ -3075,18 +3084,22 @@ class SudokuGrid {
         this.clearEvaluations();
         this.calculateInAdmissibles();
         if (this.calculateNextNecessary()) {
-            // sudoApp.mySolver.notify();      
             return;
         }
         let inAdmissiblesAdded = true;
 
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
-            // if (this.markInAdmissibleDisplayStatus()) return;
-            if (this.isWithSingle()) return;
+            let tmpSingle = this.isWithSingle();
+            if (tmpSingle !== undefined) {
+                if (tmpSingle.getCandidates().size > 1) {
+                    // tmpSingle is a hidden single
+                    tmpSingle.startCalculation_HSDependent_InAdmisssibles();
+                }
+                return;
+            }
             inAdmissiblesAdded = this.derive_inAdmissibles();
         }
     }
-
 
     evaluateGridStrict() {
         this.clearEvaluations();
@@ -3120,6 +3133,28 @@ class SudokuGrid {
         }
         return false;
     }
+
+    initialze_HSDependent_variables() {
+        // Iteriere über die Blöcke
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            tmpBlock.initialze_HSDependent_variables();
+        }
+        // Iteriere über die Reihen
+        for (let i = 0; i < 9; i++) {
+            let tmpRow = this.sudoRows[i];
+            tmpRow.initialze_HSDependent_variables();
+        }
+        // Iteriere über die Spalten
+        for (let i = 0; i < 9; i++) {
+            let tmpCol = this.sudoCols[i];
+            tmpCol.initialze_HSDependent_variables();
+        }
+        for (let i = 0; i < 81; i++) {
+            this.sudoCells[i].initialze_HSDependent_variables();
+        }
+    }
+
 
 
     clearEvaluations() {
@@ -3387,8 +3422,14 @@ class SudokuCell {
         // 'manual' oder 'auto'
         this.myValueType = 'manual';
 
-        // Speichert die aktuell unzulässigen Zahlen für diese Zelle
+        // (directly) inadmissible numbers
+        // deleted in the stadard view
         this.inAdmissibles = new MatheSet();
+
+        // Candidates are the numbers that are not (directly) inadmissible.
+        // Note the function getCandidates() 
+
+        // indirectly inAdMissible candidates presented in red color
         this.inAdmissibleCandidates = new MatheSet();
 
         this.inAdmissibleCandidatesFromPairs = new Map();
@@ -3405,6 +3446,132 @@ class SudokuCell {
         // Außer bei widerspruchsvollen Sudokus einelementig
         this.myNecessarys = new MatheSet();
         this.myNecessaryGroups = new Map();
+
+        this.hsDependent_inAdmissiblesCalculated = false;
+        this.hsDependent_inAdmissibles = new MatheSet();
+    }
+
+    startCalculation_HSDependent_InAdmisssibles() {
+        sudoApp.mySolver.myGrid.initialze_HSDependent_variables();
+        this.calculateHiddenSingleDependentInAdmisssibles();
+    }
+
+    initialze_HSDependent_variables() {
+        this.hsDependent_inAdmissiblesCalculated = false;
+        this.hsDependent_inAdmissibles = new MatheSet();
+    }
+
+    collectDependentInAdmissibles() {
+        for (let candidate of this.getCandidates()) {
+            if (this.inAdmissibleCandidates.has(candidate)) {
+                // In der Menge der unzulässigen Nummern gibt es die Knotennummer
+                // if (!this.myNecessarys.has(candidate)) {
+                // Die Knotennummer wird als unzulässig markiert, aber
+                // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
+                // Diese widersprüchliche Situation wird schon an anderer Stelle
+                // aufgefangen.
+                this.hsDependent_inAdmissibles.add(candidate);
+                // }
+            }
+        }
+    }
+
+    calculateHiddenSingleDependentInAdmisssibles() {
+        if (!this.hsDependent_inAdmissiblesCalculated) {
+            this.hsDependent_inAdmissiblesCalculated = true;
+            if (this.myValue == '0' && this.inAdmissibleCandidates.size > 0) {
+                this.collectDependentInAdmissibles();
+                this.inAdmissibleCandidates.forEach(candidate => {
+                    if (this.inAdmissibleCandidatesFromPairs.has(candidate)) {
+                        let inAdmissiblePairInfo = this.inAdmissibleCandidatesFromPairs.get(candidate);
+
+                        if (sudoApp.mySolver.isSearching()) {
+                            let nakedPair = new NakedPair(
+                                inAdmissiblePairInfo.pairCell1.myIndex,
+                                inAdmissiblePairInfo.pairCell2.myIndex,
+                                inAdmissiblePairInfo.collection.myIndex);
+                            sudoApp.mySolver.myCurrentSearch.nakedPairs.add(nakedPair);
+
+                            if (inAdmissiblePairInfo.collection instanceof SudokuBlock) {
+                                sudoApp.mySolver.myGrid.sudoBlocks[inAdmissiblePairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            } else if (inAdmissiblePairInfo.collection instanceof SudokuRow) {
+                                sudoApp.mySolver.myGrid.sudoRows[inAdmissiblePairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            } else if (inAdmissiblePairInfo.collection instanceof SudokuCol) {
+                                sudoApp.mySolver.myGrid.sudoCols[inAdmissiblePairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            }
+                        }
+                    }
+                    if (this.inAdmissibleCandidatesFromHiddenPairs.has(candidate)) {
+                        let inAdmissibleSubPairInfo = this.inAdmissibleCandidatesFromHiddenPairs.get(candidate);
+
+                        if (sudoApp.mySolver.isSearching()) {
+                            let hiddenPairRule = new HiddenPair(
+                                inAdmissibleSubPairInfo.subPairCell1.myIndex,
+                                inAdmissibleSubPairInfo.subPairCell2.myIndex,
+                                inAdmissibleSubPairInfo.collection.myIndex);
+                            sudoApp.mySolver.myCurrentSearch.hiddenPairs.add(hiddenPairRule);
+
+                            if (inAdmissibleSubPairInfo.collection instanceof SudokuBlock) {
+                                sudoApp.mySolver.myGrid.sudoBlocks[inAdmissibleSubPairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            } else if (inAdmissibleSubPairInfo.collection instanceof SudokuRow) {
+                                sudoApp.mySolver.myGrid.sudoRows[inAdmissibleSubPairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            } else if (inAdmissibleSubPairInfo.collection instanceof SudokuCol) {
+                                sudoApp.mySolver.myGrid.sudoCols[inAdmissibleSubPairInfo.collection.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            }
+                        }
+                    }
+                    if (this.inAdmissibleCandidatesFromIntersectionInfo.has(candidate)) {
+                        let overlapInfo = this.inAdmissibleCandidatesFromIntersectionInfo.get(candidate);
+                        if (sudoApp.mySolver.isSearching()) {
+                            sudoApp.mySolver.myGrid.sudoBlocks[overlapInfo.block.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                            if (overlapInfo.row !== undefined) {
+                                // let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
+                                sudoApp.mySolver.myGrid.sudoRows[overlapInfo.row.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                let intersection = new Intersection(
+                                    overlapInfo.block.myIndex,
+                                    overlapInfo.row.myIndex,
+                                    -1
+                                )
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                            }
+                            if (overlapInfo.col !== undefined) {
+                                // let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
+                                sudoApp.mySolver.myGrid.sudoCols[overlapInfo.col.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                let intersection = new Intersection(
+                                    overlapInfo.block.myIndex,
+                                    -1,
+                                    overlapInfo.col.myIndex,
+                                )
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                            }
+                        }
+                    }
+                    if (this.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
+                        let pointingPairInfo = this.inAdmissibleCandidatesFromPointingPairsInfo.get(candidate);
+                        if (sudoApp.mySolver.isSearching()) {
+                            if (pointingPairInfo.row !== undefined) {
+                                sudoApp.mySolver.myGrid.sudoRows[pointingPairInfo.row.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                let pointingPair = new PointingPair(
+                                    pointingPairInfo.pVector.myBlock.myIndex,
+                                    pointingPairInfo.row.myIndex,
+                                    -1
+                                )
+                                sudoApp.mySolver.myCurrentSearch.pointingPairs.add(pointingPair);
+                            }
+                            if (pointingPairInfo.col !== undefined) {
+                                sudoApp.mySolver.myGrid.sudoCols[pointingPairInfo.col.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                let pointingPair = new PointingPair(
+                                    pointingPairInfo.pVector.myBlock.myIndex,
+                                    -1,
+                                    pointingPairInfo.col.myIndex
+                                )
+                                sudoApp.mySolver.myCurrentSearch.pointingPairs.add(pointingPair);
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
 
     // ===================================================================
@@ -4065,6 +4232,13 @@ class SudokuSolver {
         this.mySolverViews.push(solverView);
     }
 
+    calculate_HSdependent_inAdmisssibles() {
+        let tmpHiddenSingle = sudoApp.mySolver.myGrid.isWithHiddenSingle();
+        if (tmpHiddenSingle !== undefined) {
+            tmpHiddenSingle.calculateHiddenSingleDependentInAdmisssibles();
+        }
+    }
+
     notify() {
         this.mySolverViews.forEach(view => {
             view.upDate();
@@ -4072,10 +4246,10 @@ class SudokuSolver {
     }
 
     notifyAspect(aspect, aspectValue) {
-        // Die eigene View anzeigen
         this.mySolverViews.forEach(view => {
             view.upDateAspect(aspect, aspectValue);
         });
+
     }
 
     unsetCurrentPuzzle() {
