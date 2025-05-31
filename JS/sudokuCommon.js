@@ -1677,26 +1677,36 @@ class SudokuGroup {
                         if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
                             this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[1]) {
                             // Zelle der Gruppe, die nicht Paar-Zelle ist
-                            let tmpCandidates = this.myCells[j].getTotalCandidates();
+                            // let tmpCandidates = this.myCells[j].getTotalCandidates();
+                            let tmpCandidates = this.myCells[j].getCandidates();
                             let tmpIntersection = tmpCandidates.intersection(pair);
-                            let oldInAdmissibles = new MatheSet(this.myCells[j].inAdmissibleCandidates);
-                            this.myCells[j].inAdmissibleCandidates =
-                                this.myCells[j].inAdmissibleCandidates.union(tmpIntersection);
+                            // let oldInAdmissibles = new MatheSet(this.myCells[j].inAdmissibleCandidates);
+                            // this.myCells[j].inAdmissibleCandidates =
+                            // this.myCells[j].inAdmissibleCandidates.union(tmpIntersection);
+                            // let localAdded = !oldInAdmissibles.equals(this.myCells[j].inAdmissibleCandidates);
+                            // inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+                            // if (localAdded) {
+                            // let newInAdmissibles =
+                            //    this.myCells[j].inAdmissibleCandidates.difference(oldInAdmissibles);
+                            // newInAdmissibles.forEach(inAdNr => {
+                            tmpIntersection.forEach(inAdNr => {
+                                // If an inadmissible candidate is caused by several criteria, 
+                                // including 'Naked pair', the 'Naked pair' is documented 
+                                // and the other warriors are deleted.
+                                if (pair.has(inAdNr)) {
+                                    this.myCells[j].inAdmissibleCandidatesFromHiddenPairs.delete(inAdNr);
+                                    this.myCells[j].inAdmissibleCandidatesFromIntersectionInfo.delete(inAdNr);
+                                    this.myCells[j].inAdmissibleCandidatesFromPointingPairsInfo.delete(inAdNr);
+                                }
+                                let inAdmissiblePairInfo = {
+                                    collection: this,
+                                    pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
+                                    pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]
+                                }
+                                this.myCells[j].inAdmissibleCandidatesFromPairs.set(inAdNr, inAdmissiblePairInfo);
 
-                            let localAdded = !oldInAdmissibles.equals(this.myCells[j].inAdmissibleCandidates);
-                            inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-                            if (localAdded) {
-                                let newInAdmissibles =
-                                    this.myCells[j].inAdmissibleCandidates.difference(oldInAdmissibles);
-                                newInAdmissibles.forEach(inAdNr => {
-                                    let inAdmissiblePairInfo = {
-                                        collection: this,
-                                        pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
-                                        pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]
-                                    }
-                                    this.myCells[j].inAdmissibleCandidatesFromPairs.set(inAdNr, inAdmissiblePairInfo);
-                                })
-                            }
+                            })
+                            //  }
                         }
                     }
                 }
@@ -3527,25 +3537,26 @@ class SudokuCell {
                             if (overlapInfo.row !== undefined) {
                                 // let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
                                 sudoApp.mySolver.myGrid.sudoRows[overlapInfo.row.myIndex].calculateHiddenSingleDependentInAdmisssibles();
-                                let intersection = new Intersection(
+                                let tmpIntersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     overlapInfo.row.myIndex,
                                     -1
                                 )
-                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(tmpIntersection);
                             }
                             if (overlapInfo.col !== undefined) {
                                 // let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
                                 sudoApp.mySolver.myGrid.sudoCols[overlapInfo.col.myIndex].calculateHiddenSingleDependentInAdmisssibles();
-                                let intersection = new Intersection(
+                                let tmpIntersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     -1,
                                     overlapInfo.col.myIndex,
                                 )
-                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(tmpIntersection);
                             }
                         }
                     }
+
                     if (this.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
                         let pointingPairInfo = this.inAdmissibleCandidatesFromPointingPairsInfo.get(candidate);
                         if (sudoApp.mySolver.isSearching()) {
@@ -4688,6 +4699,7 @@ class SudokuSolver {
     reset() {
         this.cleanUpAndDeleteCurrentSearch();
         this.myGrid.reset();
+        this.myGrid.initialze_HSDependent_variables();
     }
 }
 
