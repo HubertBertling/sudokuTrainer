@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 852;
+let VERSION = 853;
 
 // ==========================================
 // Basic classes
@@ -4688,6 +4688,7 @@ class SudokuSolver {
     reset() {
         this.cleanUpAndDeleteCurrentSearch();
         this.myGrid.reset();
+        this.myGrid.initialze_HSDependent_variables();
     }
 }
 
