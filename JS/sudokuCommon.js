@@ -3097,7 +3097,7 @@ class SudokuGrid {
                 }
                 return;
             }
-            inAdmissiblesAdded = this.derive_inAdmissibles();
+            inAdmissiblesAdded = this.derive_inAdmissiblesNew();
         }
     }
 
@@ -3110,26 +3110,92 @@ class SudokuGrid {
         let c2 = false;
         while (inAdmissiblesAdded && !this.isUnsolvable()) {
             c1 = this.derive_inAdmissiblesFromSingles();
-            c2 = this.derive_inAdmissibles();
+            c2 = this.derive_inAdmissiblesNew();
             inAdmissiblesAdded = c1 || c2;
         }
     }
 
-    derive_inAdmissibles() {
+    derive_inAdmissiblesNew() {
+        if (this.derive_inAdmissiblesFromNakedPairs()) return true;
+        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
+        if (this.derive_inAdmissiblesFromPointingPairs()) return true;
+        if (this.derive_inAdmissiblesFromIntersection()) return true;
+        return false;
+    }
+
+    // Vormalige Iteration, braucht mehr 'rote' Kandidaten
+    /*  derive_inAdmissibles() {
+            // Iteriere über die Blockn
+            for (let i = 0; i < 9; i++) {
+                let tmpBlock = this.sudoBlocks[i];
+                if (tmpBlock.derive_inAdmissibles()) return true;
+            }
+            // Iteriere über die Reihen
+            for (let i = 0; i < 9; i++) {
+                let tmpRow = this.sudoRows[i];
+                if (tmpRow.derive_inAdmissibles()) return true;
+            }
+            // Iteriere über die Spalten
+            for (let i = 0; i < 9; i++) {
+                let tmpCol = this.sudoCols[i];
+                if (tmpCol.derive_inAdmissibles()) return true;
+            }
+            return false;
+        }
+    */
+
+
+    derive_inAdmissiblesFromNakedPairs() {
         // Iteriere über die Blockn
         for (let i = 0; i < 9; i++) {
             let tmpBlock = this.sudoBlocks[i];
-            if (tmpBlock.derive_inAdmissibles()) return true;
+            if (tmpBlock.derive_inAdmissiblesFromNakedPairs()) return true;
         }
         // Iteriere über die Reihen
         for (let i = 0; i < 9; i++) {
             let tmpRow = this.sudoRows[i];
-            if (tmpRow.derive_inAdmissibles()) return true;
+            if (tmpRow.derive_inAdmissiblesFromNakedPairs()) return true;
         }
         // Iteriere über die Spalten
         for (let i = 0; i < 9; i++) {
             let tmpCol = this.sudoCols[i];
-            if (tmpCol.derive_inAdmissibles()) return true;
+            if (tmpCol.derive_inAdmissiblesFromNakedPairs()) return true;
+        }
+        return false;
+    }
+
+    derive_inAdmissiblesFromHiddenPairs() {
+        // Iteriere über die Blockn
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            if (tmpBlock.derive_inAdmissiblesFromHiddenPairs()) return true;
+        }
+        // Iteriere über die Reihen
+        for (let i = 0; i < 9; i++) {
+            let tmpRow = this.sudoRows[i];
+            if (tmpRow.derive_inAdmissiblesFromHiddenPairs()) return true;
+        }
+        // Iteriere über die Spalten
+        for (let i = 0; i < 9; i++) {
+            let tmpCol = this.sudoCols[i];
+            if (tmpCol.derive_inAdmissiblesFromHiddenPairs()) return true;
+        }
+        return false;
+    }
+
+    derive_inAdmissiblesFromIntersection() {
+        // Iteriere über die Blockn
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            if (tmpBlock.derive_inAdmissiblesFromIntersection()) return true;
+        }
+    }
+
+    derive_inAdmissiblesFromPointingPairs() {
+        // Iteriere über die Blockn
+        for (let i = 0; i < 9; i++) {
+            let tmpBlock = this.sudoBlocks[i];
+            if (tmpBlock.derive_inAdmissiblesFromPointingPairs()) return true;
         }
         return false;
     }
@@ -3527,25 +3593,26 @@ class SudokuCell {
                             if (overlapInfo.row !== undefined) {
                                 // let log = 'FromIntersection in Row: ' + overlapInfo.row.myIndex;
                                 sudoApp.mySolver.myGrid.sudoRows[overlapInfo.row.myIndex].calculateHiddenSingleDependentInAdmisssibles();
-                                let intersection = new Intersection(
+                                let tmpIntersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     overlapInfo.row.myIndex,
                                     -1
                                 )
-                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(tmpIntersection);
                             }
                             if (overlapInfo.col !== undefined) {
                                 // let log = 'FromIntersection in Col: ' + overlapInfo.col.myIndex;
                                 sudoApp.mySolver.myGrid.sudoCols[overlapInfo.col.myIndex].calculateHiddenSingleDependentInAdmisssibles();
-                                let intersection = new Intersection(
+                                let tmpIntersection = new Intersection(
                                     overlapInfo.block.myIndex,
                                     -1,
                                     overlapInfo.col.myIndex,
                                 )
-                                sudoApp.mySolver.myCurrentSearch.intersections.add(intersection);
+                                sudoApp.mySolver.myCurrentSearch.intersections.add(tmpIntersection);
                             }
                         }
                     }
+
                     if (this.inAdmissibleCandidatesFromPointingPairsInfo.has(candidate)) {
                         let pointingPairInfo = this.inAdmissibleCandidatesFromPointingPairsInfo.get(candidate);
                         if (sudoApp.mySolver.isSearching()) {
