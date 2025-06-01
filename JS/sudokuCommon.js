@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 854;
+let VERSION = 855;
 
 // ==========================================
 // Basic classes
@@ -3618,6 +3618,7 @@ class SudokuCell {
                         if (sudoApp.mySolver.isSearching()) {
                             if (pointingPairInfo.row !== undefined) {
                                 sudoApp.mySolver.myGrid.sudoRows[pointingPairInfo.row.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                pointingPairInfo.pVector.myBlock.calculateHiddenSingleDependentInAdmisssibles();
                                 let pointingPair = new PointingPair(
                                     pointingPairInfo.pVector.myBlock.myIndex,
                                     pointingPairInfo.row.myIndex,
@@ -3627,6 +3628,7 @@ class SudokuCell {
                             }
                             if (pointingPairInfo.col !== undefined) {
                                 sudoApp.mySolver.myGrid.sudoCols[pointingPairInfo.col.myIndex].calculateHiddenSingleDependentInAdmisssibles();
+                                pointingPairInfo.pVector.myBlock.calculateHiddenSingleDependentInAdmisssibles();
                                 let pointingPair = new PointingPair(
                                     pointingPairInfo.pVector.myBlock.myIndex,
                                     -1,
