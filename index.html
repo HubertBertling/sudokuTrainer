@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
     <meta name="theme-color" content="#fff">
+    -->
     <title>Sudoku</title>
     <meta name="google-site-verification" content="LH0Rw7nrbXxB3_gDB3adJ9jzVcKCcY3e1BNSr1SjqF4" />
     <link rel="shortcut icon" href="./images/sudoku.png" type="image/x-icon">
@@ -41,7 +43,7 @@
                 <div id="appVersion" class="navbar-element">
 
                 </div>
-                <button id="share-app-btn" class="btn navbar-element"> <img src="images/share.png"
+                <button id="share-app-btn" class="btn navbar-element"> <img title="share" src="images/share.png"
                         class="share-image">Sudoku-Trainer URL</button>
                 <div class="result navbar-element"></div>
             </div>
@@ -53,7 +55,7 @@
                     <div class="menu-icon-line"></div>
                 </div>
                 <div class="share-icon btn" id="share-button">
-                    <img src="images/share.png" class="share-imageURL">
+                    <img title="share" src="images/share.png" class="share-imageURL">
                 </div>
                 <span class="title"> Sudoku Trainer </span>
                 <button class="help-button btn" id="help-button"> ? </button>
@@ -95,10 +97,11 @@
                             </div>
                             <div class="autoMode-radio-btns" id="autoMode-radio-btns">
                                 <div class="backward" id="radio-backward">
-                                    <img src="images/pfeilrueckwaerts.png" class="forward-backward-image">
+                                    <img title="backware" src="images/pfeilrueckwaerts.png"
+                                        class="forward-backward-image">
                                 </div>
                                 <div class="forward" id="radio-forward">
-                                    <img src="images/pfeilvorwaerts.png" class="forward-backward-image">
+                                    <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
                                 </div>
                             </div>
                             <div class="progress-bar" id="myProgress">
@@ -114,7 +117,7 @@
                 <div class="orientation">
                     <div class="mobile-btn-container dropdown" id="mobile-btn-container">
                         <button class="mobile-interface mobile-btn btn-with-image btn-save" id="btn-save-mobile"><img
-                                src="images/save.png" class="btn-image">Speichern
+                              title="save"  src="images/save.png" class="btn-image">Speichern
                         </button>
                         <button class="mobile-interface mobile-btn btn-delete-cell">X</button>
                         <button class="mobile-interface mobile-btn mobile-number" value="7">7</button>
@@ -123,7 +126,7 @@
 
                         <button class="mobile-interface mobile-btn btn-define">Phase: Definition</button>
                         <button class="mobile-interface mobile-btn btn-undo" id="btn-undo">
-                            <img src="images/undo.png" class="btn-image">
+                            <img title="undo" src="images/undo.png" class="btn-image">
                             Undo
                         </button>
                         <button class="mobile-interface mobile-btn mobile-number" value="4">4</button>
@@ -132,28 +135,28 @@
 
                         <button class="mobile-interface mobile-btn btn-play">Phase: Lösen</button>
                         <button class="mobile-interface mobile-btn btn-redo" id="btn-redo">
-                            <img src="images/redo.png" class="btn-image">
+                            <img title="redo" src="images/redo.png" class="btn-image">
                             Redo
                         </button>
                         <button class="mobile-interface mobile-btn mobile-number" value="1">1</button>
                         <button class="mobile-interface mobile-btn mobile-number" value="2">2</button>
                         <button class="mobile-interface mobile-btn mobile-number" value="3">3</button>
 
-                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img src="images/reset.png"
+                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img title="reset" src="images/reset.png"
                                 class="btn-image">Reset</button>
                         <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                            <img src="images/lupe.png" class="btn-image">
+                            <img title="magnifying glass" src="images/lupe.png" class="btn-image">
                             Prüfen
                         </button>
 
                         <button class="mobile-interface mobile-btn btn-tip" id="btn-tip">
-                            <img src="images/tip.png" class="btn-image">
+                            <img title="tip" src="images/tip.png" class="btn-image">
                             Tipp
                         </button>
 
 
                         <button class="mobile-interface mobile-btn btn-with-image btn-run" id="btn-run">
-                            <img src="images/play-96.png" class="btn-image">
+                            <img title="play" src="images/play-96.png" class="btn-image">
                             Starte Suche
                         </button>
                     </div>
@@ -167,41 +170,42 @@
                             <div class="tracker-body">
                                 <div class="backtrack-options" id="backtrack-options">
                                     <button class="tracker-dlg-btn btn" id="btn-backtrack-step">
-                                        <img src="images/step.png" class="tracker-dlg-btn-image" id="image-autostep">
+                                        <img title="autoStep" src="images/step.png" class="tracker-dlg-btn-image"
+                                            id="image-autostep">
                                         Nächster Suchschritt
                                     </button>
                                     <button class="tracker-dlg-btn btn" id="btn-backtrack-continue">
-                                        <img src="images/stepsequence.png" class="tracker-dlg-btn-image"
-                                            id="tracker-dlg-btn-step-sequence-image">
+                                        <img title="stepSequence" src="images/stepsequence.png"
+                                            class="tracker-dlg-btn-image" id="tracker-dlg-btn-step-sequence-image">
                                         Suchlauf mit Haltepunkten
                                     </button>
                                     <button class="tracker-dlg-btn btn" id="btn-breakpoint-settings">
-                                        <img src="images/zahnrad.png" class="tracker-dlg-btn-image">
+                                        <img title="gearwheal" src="images/zahnrad.png" class="tracker-dlg-btn-image">
                                         Haltepunkte setzen
                                     </button>
                                     <button class="tracker-dlg-btn btn" id="btn-backtrack-fast-step">
-                                        <img src="images/solution.png" class="tracker-dlg-btn-image">
+                                        <img title="solution" src="images/solution.png" class="tracker-dlg-btn-image">
                                         Weitere Lösung anzeigen
                                     </button>
                                     <button class="tracker-dlg-btn btn" id="btn-backtrack-fast">
-                                        <img src="images/solutionsequence.png" class="tracker-dlg-btn-image"
-                                            id="tracker-dlg-btn-solution-sequence-image">
+                                        <img title="solutionSequence" src="images/solutionsequence.png"
+                                            class="tracker-dlg-btn-image" id="tracker-dlg-btn-solution-sequence-image">
                                         Lösungen zählen ...
                                     </button>
                                     <button class="tracker-dlg-btn btn" id="btn-backtrack-stop">
-                                        <img src="images/stop-96.png" class="tracker-dlg-btn-image">
+                                        <img title="stop" src="images/stop-96.png" class="tracker-dlg-btn-image">
                                         Schließen
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </dialog>
+                </div>
+            </div>
+            <div class="app-empty-footer pc-element">
+                <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
             </div>
         </div>
-        <div class="app-empty-footer pc-element">
-            <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
-        </div>
-    </div>
     </div>
 
     <!--Ausblendbare Elemente -->
@@ -329,39 +333,42 @@
             <div class="container-puzzle-buttons">
                 <div class="db-puzzle-btns ">
                     <!--Die buttons unterhalb der Puzzle-Datenbanktabelle -->
-                    <button class="db-puzzle-button noprint" id="pz-btn-load"><img src="images/upload.png"
-                            class="btn-image">Laden</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-rename"><img src="images/rename.png"
-                            class="btn-image">Umbenennen</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-previous"><img src="images/pfeilrueckwaerts.png"
-                            class="btn-image"></button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-next"><img src="images/pfeilvorwaerts.png"
-                            class="btn-image"></button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-delete"><img src="images/times200.png"
-                            class="btn-image">
+                    <button class="db-puzzle-button noprint" id="pz-btn-load"><img title="upload"
+                            src="images/upload.png" class="btn-image">Laden</button>
+                    <button class="db-puzzle-button noprint" id="pz-btn-rename"><img title="rename"
+                            src="images/rename.png" class="btn-image">Umbenennen</button>
+                    <button class="db-puzzle-button noprint" id="pz-btn-previous"><img title="backward"
+                            src="images/pfeilrueckwaerts.png" class="btn-image">Zurück</button>
+                    <button class="db-puzzle-button noprint" id="pz-btn-next"><img title="forward"
+                            src="images/pfeilvorwaerts.png" class="btn-image">Vor</button>
+                    <button class="db-puzzle-button noprint" id="pz-btn-delete"><img title="delete"
+                            src="images/times200.png" class="btn-image">
                         <div>Puzzle löschen</div>
                     </button>
-                    <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img src="images/times200.png"
-                            class="btn-image">
+                    <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img title="db-delete"
+                            src="images/times200.png" class="btn-image">
                         <div>DB löschen</div>
                     </button>
-                    <button class="db-puzzle-button" id="db-puzzle-btn-print"><img src="images/drucker.png"
-                            class="btn-image">Drucken
+                    <button class="db-puzzle-button" id="db-puzzle-btn-print"><img title="printer"
+                            src="images/drucker.png" class="btn-image">Drucken
                     </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-pz"><img
+                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-pz"><img title="pz-download"
                             src="images/download.png" class="btn-image">
                         <div>Download Puzzle</div>
                     </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img
+                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img title="db-download"
                             src="images/download.png" class="btn-image">
                         <div>Download Puzzle-DB</div>
                     </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img src="images/import.png"
-                            class="btn-image">
+                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img title="import"
+                            src="images/import.png" class="btn-image">
                         <div>Import Puzzle(s)</div>
                     </button>
-                    <input type="file" style="display:none" id="asText">
-                    <button class="db-puzzle-button noprint" id="pz-btn-ok">Schließen</button>
+                    <input title="file-input" type="file" style="display:none" id="asText">
+                    <button class="db-puzzle-button noprint" id="pz-btn-ok"><img title="stop" src="images/stop-96.png"
+                            class="btn-image">
+                        <div>Schließen</div>
+                    </button>
                 </div>
             </div>
 
@@ -373,7 +380,7 @@
 
         </div>
         <div class="infoDlgBodyRow">
-            <img src="images/questionMark.png" class="confirm-icon" id="comfirm-icon">
+            <img title="questionmark" src="images/questionMark.png" class="confirm-icon" id="comfirm-icon">
             <div class="confirm-dlg-body" id="confirm-dlg-body">
 
             </div>
@@ -405,7 +412,8 @@
         </div>
 
         <label for="puzzle-name" class="label-dlg">Neuer Puzzle-Name:</label>
-        <input type="text" class="puzzle-name-input-dlg" id="puzzle-name-renamed" name="puzzle-name" maxlength="30">
+        <input title="puzzle-name-renamed" class="puzzle-name-input-dlg" id="puzzle-name-renamed" name="puzzle-name"
+            maxlength="30">
 
         <div class="ok-cancel-btns">
             <input type="button" class="main-btn ok-cancel-btn" id="pz-rename-ok-btn" name="OK" value="OK" />
@@ -419,7 +427,7 @@
             Information
         </div>
         <div class="infoDlgBodyRow">
-            <img src="" class="infoIcon" id="infoIcon">
+            <img title="info" src="" class="infoIcon" id="infoIcon">
             <div class="infoDlgBody" id="infoDlgBody">
                 Information
             </div>
@@ -429,7 +437,7 @@
 
     <dialog class="copyFeedback-dlg noprint" id="copyFeedback-dlg">
         <div class="copyFeedback-dlg-body">
-                Puzzle kopiert.
+            Puzzle kopiert.
         </div>
     </dialog>
 
@@ -479,7 +487,7 @@
                     </label>
                 </fieldset>
             </div>
-           
+
             <div class="breakpoint-settings" id="breakpoint-settings">
                 <fieldset class="breakpoint-fieldset">
                     <legend class="play-mode-legend">
@@ -488,7 +496,8 @@
 
                     <label class="label-container first-label-container">
                         <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem einzigen Kandidaten (Single)
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Zelle mit einem einzigen Kandidaten
+                            (Single)
                         </div>
                         <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit einem
                             einzigen Kandidaten

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 855;
+let VERSION = 856;
 
 // ==========================================
 // Basic classes
@@ -1369,18 +1369,6 @@ class SudokuGroup {
     initialze_HSDependent_variables() {
         this.hsDependent_inAdmisssiblesCalculated = false;
     }
-
-    /*
-
-    markInAdmissibleDisplayStatus() {
-        if (!this.inAdmissibleDisplayActive) {
-            this.myCells.forEach(myCell => {
-                myCell.markInAdmissibleDisplayStatus();
-            })
-        }
-    }
-
-    */
 
     getMyIndex() {
         return this.myIndex();
@@ -4735,7 +4723,7 @@ class SudokuSolver {
                 sudoApp.mySolverController.resetConfirmed,
                 sudoApp.mySolverController.resetRejected,
                 "Puzzle zurücksetzen?",
-                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver die Vollständigkeit berechneter Lösungen nicht garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
+                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver die Korrektheit statistischer Auswertungen berechneter Lösungen nicht garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
     }
 
