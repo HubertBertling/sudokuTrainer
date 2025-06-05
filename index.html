@@ -117,7 +117,7 @@
                 <div class="orientation">
                     <div class="mobile-btn-container dropdown" id="mobile-btn-container">
                         <button class="mobile-interface mobile-btn btn-with-image btn-save" id="btn-save-mobile"><img
-                              title="save"  src="images/save.png" class="btn-image">Speichern
+                                title="save" src="images/save.png" class="btn-image">Speichern
                         </button>
                         <button class="mobile-interface mobile-btn btn-delete-cell">X</button>
                         <button class="mobile-interface mobile-btn mobile-number" value="7">7</button>
@@ -142,8 +142,9 @@
                         <button class="mobile-interface mobile-btn mobile-number" value="2">2</button>
                         <button class="mobile-interface mobile-btn mobile-number" value="3">3</button>
 
-                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img title="reset" src="images/reset.png"
-                                class="btn-image">Reset</button>
+                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img title="reset"
+                                src="images/reset.png" class="btn-image">Reset</button>
+
                         <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
                             <img title="magnifying glass" src="images/lupe.png" class="btn-image">
                             Prüfen
@@ -162,7 +163,15 @@
                     </div>
                     <dialog class="trackerDlg noprint" id="trackerDlg">
                         <div class="tracker-dialog-area">
-                            <div class="tracker-dlg-header">Mit dem Solver Lösungen suchen</div>
+                            <div class="tracker-dlg-header">
+                                <span> Mit dem Solver Lösungen suchen </span>
+                                <button class="search-reset-btn" id="search-reset">
+                                    <img title="reset" src="images/resetIconSchwarz.png" 
+                                    class="tracker-dlg-reset-btn-image">
+                                    <span> Reset </span>
+                                </button>
+                            </div>
+
                             <div class="tracker-dlg-solution" id="tracker-dlg-solution">
                                 <div class="label-solution"><b>Lösungen gefunden: </b></div>
                                 <div class="number-of-solutions" id="number-of-solutions">0</div>

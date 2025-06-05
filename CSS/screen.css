@@ -294,13 +294,15 @@ html {
     right: 1.2rem;
 }
 
+
+
 .menu-icon-line {
     width: 2.2rem;
     height: 0.3rem;
     background-color: white;
     margin: 0.3rem 0;
 }
-
+.search-reset-btn:active,
 .menu-icon:active,
 .share-icon:active {
     transform: translate(0.2rem, 0.2rem);
@@ -928,6 +930,11 @@ label {
 }
 
 .tracker-dlg-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    height:2.6rem;
     width: 100%;
     font-size: 1.4rem;
     font-weight: bold;
@@ -935,8 +942,6 @@ label {
     padding: 0.5rem;
     background-color: DimGray;
     color: white;
-  
-
 }
 
 .tracker-dlg-solution {
@@ -976,6 +981,27 @@ label {
     width: 1.2rem;
     height: 1.2rem;
     margin: 0.2rem;
+}
+
+.tracker-dlg-reset-btn-image {
+    padding: 0.4rem;
+    width: 1.8rem;
+}
+
+.search-reset-btn {
+    display: block;
+    position: absolute;
+    right: 1.8%;
+    border-radius: 0.4rem; 
+    
+    font-size: 1rem;
+    padding: 0.1rem;
+    padding-right: 0.4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.1rem;
+
 }
 
 #tracker-dlg-btn-step-sequence-image,

@@ -1673,7 +1673,7 @@ class SudokuGroupView {
         // this.hsDependent_inAdmissiblesDisplayed = false;
     }
 
-getMyGroup() {
+    getMyGroup() {
         return this.myGroup;
     }
 
@@ -1919,14 +1919,14 @@ class SudokuGridView {
             sudoBlockView.upDate();
         });
 
-        
+
         if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
             sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
             this.sudoCellViews.forEach(sudoCellView => {
                 sudoCellView.classifyCandidateNodesInAdmissible();
             });
         } else {
-             this.sudoCellViews.forEach(sudoCellView => {
+            this.sudoCellViews.forEach(sudoCellView => {
                 sudoCellView.classifyCandidateNodesDependantInAdmissible();
             });
         }
@@ -2310,7 +2310,7 @@ class SudokuCellView {
             }
         }
     }
-     classifyCandidateNodesDependantInAdmissible() {
+    classifyCandidateNodesDependantInAdmissible() {
         // let dependant_inAdmissibleCandidates = this.myCell.hsDependent_inAdmissibles;
         let myNecessarys = this.myCell.myNecessarys;
         let candidateNodes = this.myNode.children;
@@ -2644,7 +2644,7 @@ class SudokuCellView {
                     }
                 })
                 sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
-                    + ' unzulässig wegen Pointing Pair');
+                    + ' unzulässig wegen Zeiger-Paar');
                 return;
             }
         }
@@ -3309,6 +3309,12 @@ class SudokuSolverController {
             })
         });
 
+        let resetButton = document.getElementById('search-reset');
+        resetButton.addEventListener('click', () => {
+            this.searchResetBtnPressed();
+        });
+
+
         this.btns = document.querySelectorAll('.btn-tip');
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -3617,6 +3623,11 @@ class SudokuSolverController {
         this.mySolver.notifyAspect('puzzleLoading', undefined);
     }
 
+    searchResetBtnPressed(){
+        this.trackerDlgStopPressed();
+        this.resetBtnPressed();
+        this.startBtnPressed();
+    }
     resetBtnPressed() {
         sudoApp.myNavBar.closeNav();
         sudoApp.mySolverView.hidePuzzleSolutionInfo();
