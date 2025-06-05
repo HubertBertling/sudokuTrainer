@@ -864,6 +864,12 @@ html {
     margin: 0.5rem;
     text-align: center;
 }
+.info-dlg-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0.5rem;
+    text-align: center;
+}
 
 label {
     font-size: var(--font-size-lg);
