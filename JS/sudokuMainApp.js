@@ -1932,13 +1932,17 @@ class SudokuGridView {
         }
 
         if (sudoApp.mySolver.isSearching()) {
-            new_Node.style.border = "3px dashed white";
-            if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-                // Candidates are not displayed in the matrix
-                // except for the cell of the next step
-                this.displayCandidateInvisibleMatrix();
+            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
+                new_Node.style.border = "3px solid grey";
+            } else {
+                new_Node.style.border = "3px dashed white";
             }
-        } else {
+                if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+                    // Candidates are not displayed in the matrix
+                    // except for the cell of the next step
+                    this.displayCandidateInvisibleMatrix();
+                }
+                   } else {
             new_Node.style.border = "3px solid grey";
         }
 
@@ -3102,10 +3106,10 @@ class SudokuSolverView {
 
     displayReasonUnsolvability(reason) {
         let reasonNode = document.getElementById("reasonUnsolvability");
-        let evalNode = document.getElementById("technique");
+        let evalNode = document.getElementById("technique-row");
         if (reason == '') {
             reasonNode.style.display = "none";
-            evalNode.style.display = "block";
+            evalNode.style.display = "flex";
         } else {
             reasonNode.style.display = "block";
             evalNode.style.display = "none";
@@ -3128,6 +3132,16 @@ class SudokuSolverView {
         } else if (this.mySolver.getActualEvalType() == 'lazy-invisible') {
             evalNode.style.color = 'darkgreen';
             evalNode.innerHTML = tech;
+        }
+        let tippOkBtn = document.getElementById("tipp-accept-btn");
+        if (sudoApp.mySolver.isSearching()) {
+            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
+                tippOkBtn.style.display = "flex";
+            } else {
+                tippOkBtn.style.display = "none";
+            }
+        } else {
+            tippOkBtn.style.display = "none";
         }
     }
 
@@ -3322,7 +3336,10 @@ class SudokuSolverController {
             })
         });
 
-
+        let tippOkBtn = document.getElementById("tipp-accept-btn");
+        tippOkBtn.addEventListener('click', () => {
+            this.tippOkBtnPressed();
+        });
     }
 
     // ===============================================================
@@ -3623,7 +3640,12 @@ class SudokuSolverController {
         this.mySolver.notifyAspect('puzzleLoading', undefined);
     }
 
-    searchResetBtnPressed(){
+    tippOkBtnPressed() {
+        this.trackerDlgStepPressed();
+        this.trackerDlgStopPressed();
+    }
+
+    searchResetBtnPressed() {
         this.trackerDlgStopPressed();
         this.resetBtnPressed();
         this.startBtnPressed();
