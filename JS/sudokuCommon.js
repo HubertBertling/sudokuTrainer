@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 872;
+let VERSION = 873;
 
 // ==========================================
 // Basic classes
@@ -514,7 +514,9 @@ class Search {
             sudoApp.mySolver.myGrid.select(this.myStepper.indexSelected);
         }
         // perform the next automated step
-        this.searchStepResult = this.myStepper.autoStep().processResult;
+        
+        let autoStepResult = this.myStepper.autoStep();
+        this.searchStepResult = autoStepResult.processResult;
         if (this.searchStepResult == 'solutionDiscovered') {
             this.incrementNumberOfSolutions();
             if (this.getNumberOfSolutions() == 1) {
@@ -536,6 +538,7 @@ class Search {
             sudoApp.mySolver.notifyAspect('searchIsCompleted',
                 this.getNumberOfSolutions());
         }
+        return autoStepResult.action;
     }
 
     cleanUp() {
@@ -697,6 +700,7 @@ class StepperOnGrid {
             // Action:
             // Set the unique number
             let tmpAction = this.atCurrentSelectionSetAutoNumber(currentStep);
+            
             // If a hidden single has been set in this cell, 
             // switch the evaluation mode back to 'No evaluation'.
             sudoApp.mySolver.myGrid.unsetStepLazy();
@@ -4502,7 +4506,7 @@ class SudokuSolver {
         this.myCurrentSearch = new Search();
     }
     performSearchStep() {
-        this.myCurrentSearch.performStep();
+        return this.myCurrentSearch.performStep();
     }
 
     searchInfos2PuzzleRecord() {

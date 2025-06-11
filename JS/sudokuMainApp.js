@@ -4175,7 +4175,12 @@ class SudokuSolverController {
                 // Not able to start
                 sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
-                sudoApp.mySolver.performSearchStep();
+                let action = sudoApp.mySolver.performSearchStep();
+                if (action !== undefined){
+                    if (action.operation == 'setNr'){
+                        this.myUndoActionStack.push(action);
+                    }
+                }
                 sudoApp.mySolver.notify();
             }
         }
