@@ -1937,12 +1937,12 @@ class SudokuGridView {
             } else {
                 new_Node.style.border = "3px dashed white";
             }
-                if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-                    // Candidates are not displayed in the matrix
-                    // except for the cell of the next step
-                    this.displayCandidateInvisibleMatrix();
-                }
-                   } else {
+            if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+                // Candidates are not displayed in the matrix
+                // except for the cell of the next step
+                this.displayCandidateInvisibleMatrix();
+            }
+        } else {
             new_Node.style.border = "3px solid grey";
         }
 
@@ -3641,7 +3641,12 @@ class SudokuSolverController {
     }
 
     tippOkBtnPressed() {
-        this.trackerDlgStepPressed();
+        let action = this.trackerDlgStepPressed();
+        if (action !== undefined) {
+            if (action.operation == 'setNr') {
+                this.myUndoActionStack.push(action);
+            }
+        }
         this.trackerDlgStopPressed();
     }
 
@@ -4165,6 +4170,7 @@ class SudokuSolverController {
 
 
     trackerDlgStepPressed() {
+        let action = undefined;
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4175,15 +4181,11 @@ class SudokuSolverController {
                 // Not able to start
                 sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
-                let action = sudoApp.mySolver.performSearchStep();
-                if (action !== undefined){
-                    if (action.operation == 'setNr'){
-                        this.myUndoActionStack.push(action);
-                    }
-                }
+                action = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
             }
         }
+        return action;
     }
 
     trackerDlgFastStepPressed() {
