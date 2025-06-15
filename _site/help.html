@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Sudoku-Trainer | Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt. Viel Spaß damit.</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Sudoku-Trainer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt. Viel Spaß damit." />
+<meta property="og:description" content="Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt. Viel Spaß damit." />
+<link rel="canonical" href="http://localhost:4000/help.html" />
+<meta property="og:url" content="http://localhost:4000/help.html" />
+<meta property="og:site_name" content="Sudoku-Trainer" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Sudoku-Trainer" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt. Viel Spaß damit.","headline":"Sudoku-Trainer","url":"http://localhost:4000/help.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Sudoku-Trainer</h1>
+      <h2 class="project-tagline">Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust!  Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel,  wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung  Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er jeden Lösungsschritt erklärt.  Viel Spaß damit. 
+</h2>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <ol>
+  <li><a href="#sudoku-trainer">Sudoku-Trainer</a>
+    <ol>
+      <li><a href="#sudoku-trainer-installation">Sudoku-Trainer Installation</a></li>
+      <li><a href="#einführung-in-die-app">Einführung in die App</a>
+        <ol>
+          <li><a href="#trainer-für-klassisches-sudoku">Trainer für klassisches Sudoku</a></li>
+          <li><a href="#sudoku-puzzle">Sudoku-Puzzle</a></li>
+          <li><a href="#die-möglichen-inhalte-einer-sudoku-zelle">Die möglichen Inhalte einer Sudoku-Zelle</a></li>
+          <li><a href="#zwei-spielphasen">Zwei Spielphasen</a></li>
+          <li><a href="#jeder-lösungsschritt-mit-zwei-subschritten">Jeder Lösungsschritt mit zwei Subschritten</a></li>
+          <li><a href="#trainer-operationen">Trainer-Operationen</a></li>
+          <li><a href="#solver-einstellungen">Solver-Einstellungen</a></li>
+        </ol>
+      </li>
+      <li><a href="#der-automatische-solver">Der automatische Solver</a>
+        <ol>
+          <li><a href="#wie-wählt-der-solver-die-nächste-zelle-und-die-in-ihr-zu-setzende-nummer">Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?</a></li>
+          <li><a href="#wie-prüft-der-solver-die-neu-gesetzte-nummer">Wie prüft der Solver die neu gesetzte Nummer?</a></li>
+          <li><a href="#vorwärts-und-rückwärts-backtracking">Vorwärts und Rückwärts (Backtracking)</a></li>
+        </ol>
+      </li>
+      <li><a href="#nutzungsformen-des-sudoku-trainers">Nutzungsformen des Sudoku-Trainers</a>
+        <ol>
+          <li><a href="#manuelles-lösen">Manuelles Lösen</a></li>
+          <li><a href="#automatisches-lösen">Automatisches Lösen</a></li>
+        </ol>
+      </li>
+      <li><a href="#die-puzzle-datenbank">Die Puzzle-Datenbank</a>
+        <ol>
+          <li><a href="#operationen-der-datenbank">Operationen der Datenbank</a></li>
+          <li><a href="#importexport-und-teilen-von-puzzles">Import/Export und Teilen von Puzzles</a>
+            <ol>
+              <li><a href="#teilen-der-sudoku-trainer-app-url">Teilen der Sudoku-Trainer-App URL</a></li>
+              <li><a href="#puzzle-von-smartphone-zu-smartphone">Puzzle von SmartPhone zu SmartPhone</a></li>
+              <li><a href="#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen">Puzzle Datenbank vom PC auf das Smartphone übertragen</a></li>
+            </ol>
+          </li>
+          <li><a href="#die-initiale-datenbank-ist-nicht-leer">Die initiale Datenbank ist nicht leer</a></li>
+        </ol>
+      </li>
+      <li><a href="#sudoku-theorie">Sudoku-Theorie</a>
+        <ol>
+          <li><a href="#unzulässige-nummern-und-kandidaten">Unzulässige Nummern und Kandidaten</a></li>
+          <li><a href="#notwendige-kandidaten">Notwendige Kandidaten</a></li>
+          <li><a href="#einzige-kandidaten-singles">Einzige Kandidaten (Singles)</a></li>
+          <li><a href="#unzulässige-kandidaten-und-versteckt-einzige-kandidaten">Unzulässige Kandidaten und versteckt einzige Kandidaten</a></li>
+          <li><a href="#kriterien-für-die-erkennung-unzulässiger-kandidaten">Kriterien für die Erkennung unzulässiger Kandidaten</a>
+            <ol>
+              <li><a href="#kriterium-notwendige-nummer">Kriterium “Notwendige Nummer”</a></li>
+              <li><a href="#kriterium-nacktes-paar">Kriterium “Nacktes Paar”</a></li>
+              <li><a href="#kriterium-verstecktes-paar">Kriterium: “Verstecktes Paar”</a></li>
+              <li><a href="#kriterium-überschneidung">Kriterium: Überschneidung</a></li>
+              <li><a href="#kriterium-pointing-pair-pointing-triple">Kriterium: Pointing Pair, Pointing Triple</a></li>
+            </ol>
+          </li>
+          <li><a href="#methoden-der-kandidatenauswertung">Methoden der Kandidatenauswertung</a></li>
+          <li><a href="#vergleich-der-auswertungsmodi-lazy-und-strikt">Vergleich der Auswertungsmodi Lazy und Strikt</a></li>
+          <li><a href="#widerspruchsvolle-puzzles">Widerspruchsvolle Puzzles</a>
+            <ol>
+              <li><a href="#widerspruchsvolle-zellen">Widerspruchsvolle Zellen</a></li>
+              <li><a href="#widerspruchsvolle-gruppen">Widerspruchsvolle Gruppen</a></li>
+            </ol>
+          </li>
+          <li><a href="#schwierigkeitsgrade-levels">Schwierigkeitsgrade (Levels)</a></li>
+          <li><a href="#übersicht-über-die-bedeutung-der-schwierigkeitsgrade">Übersicht über die Bedeutung der Schwierigkeitsgrade</a></li>
+          <li><a href="#welcher-schwierigkeitsgrad-für-welchen-spielertyp">Welcher Schwierigkeitsgrad für welchen Spielertyp?</a></li>
+          <li><a href="#faire-puzzles">Faire Puzzles</a></li>
+        </ol>
+      </li>
+      <li><a href="#sudoku-im-internet">Sudoku im Internet</a></li>
+    </ol>
+  </li>
+</ol>
+
+<h1 id="sudoku-trainer">Sudoku-Trainer</h1>
+
+<h2 id="sudoku-trainer-installation">Sudoku-Trainer Installation</h2>
+
+<p>Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser is</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Installation</th>
+      <th>Installation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/install.png" alt="Installation Chrome" width="250px" /></td>
+      <td><img src="./imagesHelp/install2.png" alt="Installation Chrome" width="250px" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.</p>
+
+<h2 id="einführung-in-die-app">Einführung in die App</h2>
+
+<h3 id="trainer-für-klassisches-sudoku">Trainer für klassisches Sudoku</h3>
+
+<p>Diese App ist ein Trainer für klassisches Sudoku. Der <a href="https://hubertbertling.github.io/sudokuTrainer/">Sudoku-Trainer</a> kann manuell oder automatisch genutzt werden. Seine Besonderheit: man kann ihm bei der automatischen Suche nach der Lösung zuschauen und damit seine eigene Lösungskompetenz trainieren. Bei jeder automatischen Setzung einer Nummer zeigt der Solver den logischen Grund für die Setzung. Der Anwender kann ein Puzzle manuell lösen, oder Schritt für Schritt automatisch oder vollautomatisch. In der Schritt für Schritt automatischen Vorgehensweise zeigt der Solver den Grund für seine Nummernsetzung an. Vollautomatisch löst der Solver jedes Puzzle in wenigen Sekunden oder erkennt es als nicht lösbar, weil es widersprüchlich ist.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/Architektur.png" alt="Architektur" width="300px" /></p>
+
+<p>Der Sudoku-Trainer besteht aus drei Komponenten, dem Solver, dem Generator und der Puzzle-Datenbank. Mit Hilfe des Solvers kann man beliebige Sudoku-Puzzles manuell oder automatisch lösen.</p>
+
+<p>Der Generator generiert Puzzles für jeden definierten Schwierigkeitsgrad. Praktisch interessant sind besonders die fairen Schwierigkeitsgrade. ‘Sehr leicht’, ‘Leicht’, ‘Mittel’ und ‘Schwer’. Puzzle mit diesen Schwierigkeitsgraden können allein durch logisches Schließen gelöst werden. Ohne Backtracking. Mehr dazu weiter unten.</p>
+
+<p>Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeichert werden. Die Tabelle (Datenbank) der gespeicherten Puzzles kann nach ihren Spalten sortiert werden.</p>
+
+<h3 id="sudoku-puzzle">Sudoku-Puzzle</h3>
+
+<p>Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses Trainers entstanden. Sie unterstützen primär das Verständnis dieses Trainers. Dennoch haben wir uns bemüht, Standardbegriffe zu verwenden, wie man sie im Internet findet, beispielsweise in <a href="https://en.wikipedia.org/wiki/Glossary_of_Sudoku">Wikipedia</a>. Eine großartige Seite für Sudoku-Interessierte ist die Seite von <a href="https://www.sudokuwiki.org/Main_Page">Andrew Stuart</a>.</p>
+
+<p><img src="./imagesHelp/AppView.png" alt="Anwendungsansicht" /></p>
+
+<p>Ein <strong>Sudoku-Puzzle</strong> ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 <strong>Reihen</strong>, 9 <strong>Spalten</strong> und 9 <strong>Blöcke</strong>. Die initial gesetzten Nummern heißen <strong>Givens</strong>. Sie werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden. Die Tabelle besitzt Reihen, Spalten und Blöcke. Eine Reihe, eine Spalte oder ein Block wird auch als Gruppe bezeichnet.</p>
+
+<p>Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen <a href="#unzulässige-nummern-und-kandidaten">Kandidatennummern</a> anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in der <a href="#einstellung-kandidatenauswertung">Werkzeugseinstellung</a> der  Parameter ‘Kandidatenauswertung’auf ‘Lazy’ gesetzt sein.</p>
+
+<p><img src="./imagesHelp/AppView2.png" alt="Anwendungsansicht" /></p>
+
+<h3 id="die-möglichen-inhalte-einer-sudoku-zelle">Die möglichen Inhalte einer Sudoku-Zelle</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Zelle</th>
+      <th>Bedeutung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/definedCell.png" alt="Given" width="100px" /></td>
+      <td><strong>Eine gegebene Nummer (Given):</strong> In der Definitionsphase gesetzte Nummer.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/playedCell.png" alt="Solved" width="100px" /></td>
+      <td><strong>Eine Lösungsnummer:</strong> In der Lösungsphase gesetzte Nummer. In dieser Zelle wurde in der Lösungsphase manuell oder automatisch die Nummer 1 gesetzt.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/optionCell.png" alt="Candiates" width="100px" /></td>
+      <td><strong>Kandidaten:</strong> Für diese Zelle wurde noch keine Nummer gesetzt. Nur noch eine der Nummern 1, 2, 4 und 5 kann gewählt werden. Das sind die Kandidaten der Zelle. Die nicht aufgeführten Nummern sind unzulässig, weil sie bereits in einer anderen Zelle des Blocks, der Reihe oder Spalte gesetzt sind.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/neccessary.png" alt="Necessary" /></td>
+      <td><strong>Notwendiger Kandidat:</strong> Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind die Nummern 2, 5, 6 und 7. Jedoch hat der Solver ermittelt, dass der Kandidat 5 notwendig ist, damit das Sudoku lösbar bleibt. 5 ist eine notwendige Nummer für diese Zelle. Ein Kandidat in einer Zelle ist notwendig, wenn die Kandidatnummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur noch hier gesetzt werden. Hinweis: Im Wikipedia-Artikel <a href="https://en.wikipedia.org/wiki/Glossary_of_Sudoku">Wikipedia</a> werden notwendige Kandidaten als “Hidden Singles” bezeichnet. Wir wollen diese Bezeichnung hier nicht übernehmen, weil wir diese Bezeichnung schon anderweitig benutzen: siehe nachfolgende Definition ‘Hidden Single’.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/indirect.png" alt="Inadmissible candidates" /></td>
+      <td><strong>Unzulässiger Kandidat:</strong> Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 <a href="#unzulässige-nummern-und-kandidaten">unzulässig</a> ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/direkterSingle.png" alt="Single" width="100px" /></td>
+      <td><strong>Einziger Kandidat (Single):</strong> Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/indirekterSingle.png" alt="Hidden single" width="100px" /></td>
+      <td><strong>Versteckt einziger Kandidat (Hidden Single):</strong> im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, unzulässige Kandidaten sind.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/nochoice.png" alt="No selectable candidates" width="100px" /> <img src="./imagesHelp/nochoice2.png" alt="No candidates at all" width="100px" /></td>
+      <td><strong>Widerspruch - Kein Kandidat:</strong> Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/twoNeccessary.png" alt="MoreThanOneNecessary" width="100px" /></td>
+      <td><strong>Widerspruch - Gleichzeitig mehrere notwendige Kandidaten:</strong> Für diese Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind 1, 2 und 4. Jedoch hat der Solver zwei verschiedene notwendige Kandidaten für diese Zelle ermittelt: 1 und 2. Das geht natürlich nicht. Es können in einer Zelle nicht zwei Kandidaten gleichzeitig gesetzt werden. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/conflct.png" alt="NumberConflict" width="100px" /></td>
+      <td><strong>Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:</strong> Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/autoSelectted.png" alt="Automatische Selektion" width="100px" /></td>
+      <td><strong>Automatisch selektierte Zelle:</strong> mit einem Hidden Single. Etwas hellerer Hintergrund.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/manualSelected.png" alt="Manuelle Selektion" width="100px" /></td>
+      <td><strong>Manuell selektierte Zelle:</strong> mit zwei Kandidaten. Etwas dunklerer Hintergrund.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="zwei-spielphasen">Zwei Spielphasen</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th>Bedeutung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/define.png" alt="Eingeben" width="100px" /></td>
+      <td>Die Taste <strong>Phase: Definition</strong>. Das Drücken dieser Taste versetzt den Solver in die Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Trainer. Nach der Initialisierung ist diese Taste automatisch gesetzt.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/play.png" alt="Lösen" width="100px" /></td>
+      <td>Die Taste <strong>Phase: Lösen</strong>. Das Drücken dieser Taste versetzt den Trainer in die Lösungsphase. Gleichzeitig ermittelt der Trainer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Taste automatisch gesetzt.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor die Phase-Definition-Taste drücken.</p>
+
+<h3 id="jeder-lösungsschritt-mit-zwei-subschritten">Jeder Lösungsschritt mit zwei Subschritten</h3>
+
+<p>Beim Eingeben wie auch beim Lösen besteht ein <strong>Lösungsschritt</strong> aus zwei Subschritten:</p>
+
+<ol>
+  <li><strong>Sudoku-Zelle selektieren</strong>.</li>
+  <li><strong>Nummer setzen</strong>: D.h. eine Nummer im rechten Tastenblock wählen. Es kann auch einfach nur eine Nummerntaste auf der Tastatur für die Eingabe einer Nummer benutzt werden.</li>
+</ol>
+
+<p>Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle selektiert werden und dann die rote Lösch-Taste gedrückt werden.</p>
+
+<h3 id="trainer-operationen">Trainer-Operationen</h3>
+
+<p>Die Operationen des Sudoku-Trainers werden über die Tasten und die seitliche Navigationsbar angeboten.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Navigationsbar</th>
+      <th>Tastenfeld</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/initialsieren.png" alt="Initialisieren" width="150px" /></td>
+      <td><img src="./imagesHelp/tastenauswahlAutomatik.png" alt="ButtonsAutomatic" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Menü-Option: Initialisieren.</strong> Jederzeit kann der Trainer initialisiert werden. Dabei wird das aktuell gespielte Puzzle gelöscht und der Solver initialisert. Die bereits gespeicherten Puzzles bleiben unverändert erhalten.</p>
+
+<p><strong>Menü-Option: Zurücksetzen</strong> oder <strong>Taste Reset.</strong> Das aktuelle Puzzle wird zurückgesetzt auf die Aufgabenstellung. D.h. alle in der Lösungsphase gesetzten Zellen, die grünen Zellen, werden gelöscht. Die Givens bleiben erhalten. Per Undo kann diese Operation zurückgenommen werden.</p>
+
+<p><strong>Taste: Undo.</strong> Durch das Drücken dieser Taste wird die letzte Zellenoperation zurückgenommen.</p>
+
+<p><strong>Taste: Redo.</strong> Rücknahme des Undo.</p>
+
+<p><strong>Taste: Prüfen.</strong> Die gesetzten Lösungsnummern werden geprüft. Wenn sie falsch gesetzt sind, werden sie als fehlerhaft gekennzeichnet. Diese Funktion ist dann nützlich, wenn man das Puzzle manuell lösen will und man vermutet, dass man bereits einen Fehler gemacht hat.</p>
+
+<p><strong>Taste: Tipp.</strong> Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. Durch das Drücken dieser Taste wird automatisch die Zelle in der Matrix selektiert, die der Solver bei der automatischen Lösung als nächste Zelle selektieren würde. Der Spieler hat dann zwei Möglichkeiten:</p>
+
+<ol>
+  <li>Die vorgeschlagene Nummer in der Zelle setzen, durch Drücken der Ok-Taste unten rechts an der Tabelle, oder</li>
+  <li>Die Tipp-Taste erneut drücken. Dann wird die Selektion zurückgenommen.</li>
+</ol>
+
+<p><strong>Taste: Puzzle speichern.</strong> Der Spielstand des aktuellen Puzzles wird in der Datenbank gespeichert. Gegebenenfalls wird das Puzzle in der DB neu angelegt und erhält dabei einen generierten Namen: ‘PZ (»Datum«)’. Falls es schon in der Datenbank ist, wird es mit dem aktuellen Spielstand überschrieben. Der Name des Puzzles kann jederzeit umbenannt werden.</p>
+
+<p><strong>Menü-Option: Neu.</strong></p>
+
+<p>Mittels der Option <strong>Neu</strong> im Menu kann der Dialog “Neue Puzzles” geöffnet werden. Der Trainer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeizsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vorrat neuer Puzzles wird generiert</th>
+      <th>Der Generator wurde gestoppt.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/generieren.png" alt="Generieren" width="300px" /></td>
+      <td><img src="./imagesHelp/generierenStop.png" alt="GenerierenStopp" width="300px" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Die App startet im Hintergrund einen Puzzle-Generator, der solange neue Puzzles erzeugt, bis für jeden Schwierigkeitsgrad mindestens ein neues Puzzle existiert.</p>
+
+<p>Hinweis: der Generator kann nicht gezielt ein Puzzle für einen vorgegebenen Schwierigkeitsgrad erzeugen. Vielmehr generiert er ein neues Puzzle und bestimmt dann, welchen Schwierigkeitsgrad das erzeugte Puzzle hat.</p>
+
+<p>Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und ein entsprechendes Puzzle laden. Er braucht nicht auf den Stop des Generators warten.</p>
+
+<p><strong>Menü-Option: Drucken.</strong> Das aktuelle Puzzle wird ausgedruckt. Falls es noch nicht gespeichert wurde wird es zuvor mit einem Default-Namen ‘Druck-»Datum«’ in der Datenbank gespeichert.</p>
+
+<h3 id="solver-einstellungen">Solver-Einstellungen</h3>
+
+<p style="text-align:center"><img src="./imagesHelp/menuEinstellung.png" alt="Menue" width="150px" /></p>
+
+<p><strong>Menü-Option: Einstellungen.</strong> Aktuell kennt der Sudoku-Trainer 2 Einstellungsparameter</p>
+
+<ol>
+  <li>Kandidatenauswertung</li>
+  <li>Haltepunkte der automatischen Lösungssuche</li>
+</ol>
+
+<p style="text-align:center"><img src="./imagesHelp/einstellungKandidatenAuswertung.png" alt="KandidatenAuswertung" max-width="75%" /></p>
+
+<p style="text-align:center"><img src="./imagesHelp/breakpointSettings.png" alt="Haltepunkte" max-width="75%" /></p>
+
+<p>Die Taste “Starte Suche” startet den automatischen Solver der App.</p>
+
+<h2 id="der-automatische-solver">Der automatische Solver</h2>
+
+<p>Der Solver besitzt einen eigenen Tastenblock.
+<img src="./imagesHelp/AppView3.png" alt="Anwendungsansicht" /></p>
+
+<p>Die Tasten des automatischen Solvers haben folgende Bedeutung:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Taste</th>
+      <th>Bedeutung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/naechsterSchritt.png" alt="NextStep" width="100px" /></td>
+      <td><strong>Nächster Suchschritt</strong>. Der Solver führt den nächsten automatischen Suchschritt aus. Wenn bereits ein automatischer Suchlauf aktiv ist, wird dieser pausiert. Mit dieser Taste kann man den Solver Schritt für Schritt arbeiten lassen und so jeden einzelnen seiner Schritte beobachten und verstehen.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/schrittSequenz.png" alt="stepSequence" width="100px" /></td>
+      <td><strong>Suchlauf mit Haltepunkten.</strong> Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte anstößt. Wenn der automatische Suchprozess bereits läuft, wird er pausiert. Wenn er pausiert ist, wird er wieder gestartet. Dieser automatische Suchlauf traversiert den gesamten Suchraum bis er schließlich sein Ende erreicht. Er kann aber jederzeit zuvor manuell unterbrochen werden oder durch gesetzte Haltepunkte. Der markanteste Haltepunkt ist wohl “Haltepunkt bei Lösung”.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/haltePunkteTaste.png" alt="haltePunkte" width="100px" /></td>
+      <td><strong>Haltepunkte setzen.</strong> Der Haltepunktedialog zur Einstellung von Haltepunkten wird geöffnet. Er ist Teil des Einstellungsdialogs der App.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/nextSolution.png" alt="NextSolution" width="100px" /></td>
+      <td><strong>Weitere Lösung anzeigen</strong>. Beim Drücken dieser Taste führt der Solver im Hintergrund eine Sequenz von Suchschritten durch bis er zur nächsten Lösung gelangt.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/solutionSequenceBtn.png" alt="solutionSequence" width="100px" /></td>
+      <td><strong>Lösungen zählen …</strong> Ein Timer wird gestartet, der die Ausführung automatischer Suchschritte im Hintergrund anstößt. Für den Anwender sichtbar ist das Zählen der Lösungen. Interessant ist diese Funktion für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen. Diese Operation ist sehr schnell, sodass für viele extrem schwere Puzzles die Anzahl möglicher Lösungen berechnet werden kann.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/closeSolver.png" alt="Close" width="100px" /></td>
+      <td><strong>Schließen.</strong> Die automatische Suche wird abgebrochen bzw. beendet.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="wie-wählt-der-solver-die-nächste-zelle-und-die-in-ihr-zu-setzende-nummer">Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?</h3>
+
+<p>Der Solver sucht gemäß der folgenden Priorität die nächste offene Zelle und die zu setzende Nummer:</p>
+
+<ol>
+  <li><strong>Zelle mit notwendigem Kandidat:</strong> Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt.</li>
+  <li><strong>Zelle mit einzigem Kandidat (Single)</strong>: Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.</li>
+  <li><strong>Zelle mit versteckt einzigem Kandidat (Hidden Single)</strong>: Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt wählt der Solver eine Zelle mit versteckt einzigem Kandidat.</li>
+  <li><strong>Zelle mit minimaler Optionenmenge</strong>. Sind keine Zellen mit notwendigem Kandidat oder mit einem einzigen Kandidat mehr verfügbar, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten <strong>Optionen der Zelle</strong>. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle und setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden. Hinweis: mit den mehrfachen Optionen beginnt der eigentliche Backtrack-Prozess.</li>
+</ol>
+
+<h3 id="wie-prüft-der-solver-die-neu-gesetzte-nummer">Wie prüft der Solver die neu gesetzte Nummer?</h3>
+
+<p>Der Solver prüft nach der Setzung einer neuen Nummer, ob das Sudoku mit dieser gesetzten Nummer widersprüchlich geworden ist. Falls ja, wird der Solver in den Rückwärts-Modus geschaltet und geht zurück bis zu einer Zelle, die mehrere Optionen für eine Nummernsetzung hatte.</p>
+
+<h3 id="vorwärts-und-rückwärts-backtracking">Vorwärts und Rückwärts (Backtracking)</h3>
+
+<p>Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Im Fachjargon: Der Solver realisiert einen Backtracking-Algorithmus. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. Rückwärtsgehen bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung.</p>
+
+<p>Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der Rückwärtsläufe an.</p>
+
+<h2 id="nutzungsformen-des-sudoku-trainers">Nutzungsformen des Sudoku-Trainers</h2>
+
+<h3 id="manuelles-lösen">Manuelles Lösen</h3>
+
+<p>Werkzeugeinstellung:</p>
+
+<ul>
+  <li><strong>Kandidatenauswertung:</strong> Keine Kandidatenanzeige</li>
+</ul>
+
+<p>Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Zellen setzt. Will der Spieler sich der Herausforderung einer manuellen Lösungssuche ernsthaft stellen, verzichtet er auf jede Hilfe durch den Solver. Keine Kandidatenanzeige: denn sie würde ja die notwendigen Kandidaten anzeigen.</p>
+
+<p>Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr, ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/pruefungfehler.png" alt="Prüfen" width="400px" /></p>
+
+<h3 id="automatisches-lösen">Automatisches Lösen</h3>
+
+<p>Werkzeugeinstellung:</p>
+
+<ul>
+  <li><strong>Kandidatenauswertung:</strong> Keine Kandidatenanzeige oder Lazy.</li>
+  <li><strong>Haltepunkte:</strong> Haltepunkte nach Bedarf zu- und abschalten.</li>
+</ul>
+
+<p>In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. Sie ist damit besonders lehrreich. Der Spieler beobachtet die Lösungssuche anstatt selber die Lösung zu suchen, indem er automatische Lösungsschritte ausführen lässt. Deshalb an dieser Stelle eine Übersicht über die Arten automatischer Schritte. Die folgenden Darstellungen nehmen Bezug auf das Puzzle “Backtrack_10”. Es ist in jeder Puzzle-Datenbank vorhanden. Dies ist ein Puzzle mit dem Schwierigkeitsgrad “Sehr schwer”.</p>
+
+<p>Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/naechsterSchritt.png" alt="NextStep" width="100px" /></p>
+
+<p style="text-align:center"><img src="./imagesHelp/schrittSequenz.png" alt="stepSequence" width="100px" /></p>
+
+<p><em>==&gt; Schritttaste gedrückt:</em></p>
+
+<p><strong>Schritt 1: Zelle mit mehreren Optionen.</strong> Schon im ersten Schritt erweist sich dieses Puzzle als sehr schwer, da der Solver keine Zelle mit eindeutiger Nummernbelegung findet und stattdessen eine Zelle mit 2 Optionen selektiert: 1 und 8. Der Solver versucht zuerst die 1.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep1.png" alt="Schritt 1" max-width="75%" /></p>
+
+<p><em>==&gt; Schritttaste 2-mal gedrückt:</em></p>
+
+<p><strong>Schritt 2: Zelle mit notwendiger Nummer.</strong> Im zweiten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 1. Sie ist notwendig, weil in dem Block in allen freien Zellen, grün gestrichelte Rahmen, keine 1 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 1.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep2.png" alt="Schritt 2" max-width="75%" /></p>
+
+<p><em>==&gt; Haltepunkt “Bei Widerspruch” gesetzt”. Suchlauftaste gedrückt:</em></p>
+
+<p><strong>Schritt 30: Zelle mit Widerspruch.</strong> Im Schritt 30 entdeckt der Solver eine widerspruchsvolle Zelle: kein Kandidat mehr. Deshalb wurde der Solver in den Rückwärts-Modus gesetzt (grüner Pfeil links).</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep30.png" alt="Schritt 30" max-width="75%" /></p>
+
+<p><em>==&gt; Haltepunkt “Bei Selektionsoptionen” gesetzt und “Bei Widerspruch” zurückgenommen. Suchlauftaste gedrückt:</em></p>
+
+<p><strong>Schritt 60: Zweiter Besuch in der Zelle.</strong> Im Schritt 60 kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 1 gewählt hatte. Zu sehen an der unterstrichenen 1. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 8.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep60.png" alt="Schritt 60" max-width="75%" /></p>
+
+<p><em>==&gt; Haltepunkt “Bei Single” gesetzt und “Bei Selektionsoptionen” zurückgenommen. Suchlauftaste gedrückt:</em></p>
+
+<p><strong>Schritt 65: Zelle mit Single.</strong> Im Schritt 65 selektiert der Solver eine Zelle mit nur einem Kandidaten, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl 1…8 gibt es eine solche Zelle.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep65.png" alt="Schritt 65" max-width="75%" /></p>
+
+<p><em>==&gt; Schritttaste gedrückt:</em></p>
+
+<p><strong>Schritt 66: Zelle mit Hidden Single.</strong> Im Schritt 66 selektiert der Solver eine Zelle mit einem Hidden Single, die 4. Die 3 und die 6 sind unzulässige Kandidaten wegen dem “Nackten Paar” {3, 6}.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep66.png" alt="Schritt 66" max-width="75%" /></p>
+
+<p><em>==&gt; Haltepunkt “Bei Hidden Single” gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:</em></p>
+
+<p><strong>Schritt 285: Zelle mit Hidden Single.</strong> Im Schritt 285 selektiert der Solver eine Zelle mit einem Hidden Single, die 7.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep285_1.png" alt="Schritt 285_1" max-width="75%" /></p>
+
+<p>Die 5 und die 9 sind unzulässige Kandidaten wegen dem “Nackten Paar” {5, 9}. Durch Kicken auf die Zelle wird das sichtbar.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep285_2.png" alt="Schritt 285_2" max-width="75%" /></p>
+
+<p>Es stellt sich vielleicht die Frage, warum in dem einen Paar die rote 3 und die rote 7 unzulässig sind. Durch Klicken in dieser Zelle wird auch dies deutlich.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep285_3.png" alt="Schritt 285_3" max-width="75%" /></p>
+
+<p>Die 3 ist unzulässig wegen Überschneidung mit der Zeile 6. Und nach einem erneuten Klick auf die Zelle erfährt man, dass die 7 unzulässig ist wegen der Überschneidung mit der Zeile 5.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep285_4.png" alt="Schritt 285_4" max-width="75%" /></p>
+
+<p><em>==&gt; Haltepunkt “Bei Lösung” gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:</em></p>
+
+<p><strong>Schritt 482: Alle Zellen belegt.</strong> Im Schritt 482 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.</p>
+
+<p style="text-align:center"><img src="./imagesHelp/exampleStep410.png" alt="Schritt 482" max-width="75%" /></p>
+
+<h2 id="die-puzzle-datenbank">Die Puzzle-Datenbank</h2>
+
+<p>Sudoku-Puzzles und ihre Lösungen können im lokalen Speicher des Browsers gespeichert werden, aber nur mit Einschränkungen auf dem Computer selbst. D.h. Man kann seine gespeicherten Puzzles nur in dem Browser wiederfinden, in dem sie gespeichert wurden.</p>
+
+<p><img src="./imagesHelp/PuzzleDB.png" alt="PuzzleDB" /></p>
+
+<p>Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das aktuelle Datum. Bei Bedarf kann der Name umbenannt werden. Bezüglich der Namen gibt es keine Einschränkungen.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribut</th>
+      <th>Bedeutung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Laufende Nr.</td>
+      <td>Laufende Nr. in der Tabelle. Sie ist keine ID für Puzzles</td>
+    </tr>
+    <tr>
+      <td>Puzzle-Name</td>
+      <td>Name des gespeicherten Puzzles. Muss nicht eindeutig sein.</td>
+    </tr>
+    <tr>
+      <td>#Givens</td>
+      <td>Die Zahl der Givens des Puzzles.</td>
+    </tr>
+    <tr>
+      <td>#Gelöste</td>
+      <td>Die Zahl der gelösten Zellen des Puzzles.</td>
+    </tr>
+    <tr>
+      <td>#Offene</td>
+      <td>Die Zahl der offenen, ungelösten Zellen des Puzzles.</td>
+    </tr>
+    <tr>
+      <td>Level</td>
+      <td>Der ermittelte Schwierigkeitsgrad des gespeicherten Puzzles.</td>
+    </tr>
+    <tr>
+      <td>#RL</td>
+      <td>Die Anzahl der Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. Hinweis: Diese Information hat nur für sehr schwere Puzzles Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles ist dieser Wert nicht sinnvoll definiert. Rückwärtsläufe für welche der vielen Lösungen?</td>
+    </tr>
+    <tr>
+      <td>Datum</td>
+      <td>Datum, an dem das Puzzle angelegt wurde.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="operationen-der-datenbank">Operationen der Datenbank</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Taste</th>
+      <th>Bedeutung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Spaltenkopf</td>
+      <td><strong>Sortieren.</strong> Die Puzzles der Datenbank können sortiert werden nach jeder Spalte. Dazu einfach den Spaltenkopf klicken. Wiederholtes Klicken wechselt zwischen der aufsteigenden und der absteigenden Sortierung.</td>
+    </tr>
+    <tr>
+      <td>Pfeiltasten</td>
+      <td><strong>Navigieren.</strong> Mit den Pfeiltasten kann in der Tabelle vorwärts und rückwärts navigiert werden. Durch Klicken auf eine Reihe der Tabelle kann ein Puzzle direkt selektiert werden.</td>
+    </tr>
+    <tr>
+      <td>Laden</td>
+      <td><strong>Puzzle laden.</strong> Durch Drücken der Lade-Taste wird das selektierte Puzzle in den Sudoku-Solver geladen.</td>
+    </tr>
+    <tr>
+      <td>Puzzle löschen</td>
+      <td><strong>Puzzle löschen.</strong> Gespeicherte Puzzles können auch wieder gelöscht werden.</td>
+    </tr>
+    <tr>
+      <td>DB löschen</td>
+      <td><strong>DB löschen.</strong> Die ganze DB kann gelöscht werden. Nützlich, wenn man die DB von einem anderen Gerät übernehmen will und die Übernahme nicht mit der aktuellen DB mischen will.</td>
+    </tr>
+    <tr>
+      <td>Drucken</td>
+      <td><strong>Puzzle drucken.</strong> Mittels der Taste Drucken kann das aktuell selektierte Puzzle gedruckt werden. Dabei wird nur die Aufgabe, nicht aber die Lösung ausgedruckt. Dies ist besonders dann nützlich wenn man ein generiertes Puzzle von Hand auf dem Papier lösen möchte.</td>
+    </tr>
+    <tr>
+      <td>Download Puzzle-DB</td>
+      <td><strong>Puzzle-Datenbank exportieren.</strong> Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File ‘Puzzle-DB.text’ ausgegeben. Es befindet sich im Download-Ordner.</td>
+    </tr>
+    <tr>
+      <td>Download Puzzle</td>
+      <td><strong>Puzzle exportieren.</strong> Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen »PuzzleName«  in ein txt-File ‘»PuzzleName«.text’ ausgegeben. Es befindet sich im Download-Ordner.</td>
+    </tr>
+    <tr>
+      <td>Import Puzzle(s)</td>
+      <td><strong>Puzzle(s) importieren.</strong> Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.</td>
+    </tr>
+    <tr>
+      <td><img src="./imagesHelp/shareButton.png" alt="ShareTaste" width="50px" /></td>
+      <td><strong>Puzzle teilen.</strong> Die Sudoku-Trainer-App ist Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="importexport-und-teilen-von-puzzles">Import/Export und Teilen von Puzzles</h3>
+
+<p>Die Operationen Import/Export und Teilen sind sehr abhängig von der vorliegenden Betriebssystem- und Browser-Version. Konkret von den verfügbaren APIs. Es kann also vorkommen, dass manche der nachfolgend gezeigten Beispiele auf dem System des interessierten Anwenders nicht funktionieren.</p>
+
+<p>Nachfolgend einige Beispiele für den Austausch von Puzzles zwischen Sudoku-Trainer-Apps.</p>
+
+<h4 id="teilen-der-sudoku-trainer-app-url">Teilen der Sudoku-Trainer-App URL</h4>
+
+<p>In der Sudoku-Trainer-App kann die URL der App geteilt werden. Dies ist dann besonders nützlich, wenn man die App weitergeben will.</p>
+
+<p><strong>Absender-Smartphone</strong></p>
+
+<ol>
+  <li>Teile-Taste</li>
+  <li>WhatsApp selektieren</li>
+  <li>Kontakt selektieren und senden</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>Teile Taste</th>
+      <th>WhatsApp selektieren</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="./imagesHelp/teilenURLApp.png" alt="Teilen Taste" width="200px" /></td>
+      <td><img src="./imagesHelp/teilenURLApp2.png" alt="TeilenURL" width="200px" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Ziel-Smartphone</strong></p>
+
+<ol>
+  <li>In WhatsApp in der empfangenen Nachricht auf den Link klicken.</li>
+  <li>In der geöffneten Web-Seite die PWAP-App installieren.</li>
+</ol>
+
+<p>Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Browser als Installationsbasis gewählt. Z.B. der Samsung-Internet-Browser oder der Firefox-Browser. Besser ist es, Google-Chrome als Installationsbasis zu wählen. Wenn Chrome nicht als Standard-Browser eingestellt ist, kann man den Link aus der WhatsApp-Nachricht kopieren, den Chrome-Browser öffnen und den kopierten Link in das URL-Feld einfügen. Danach läuft alles wie beschrieben.</p>
+
+<h4 id="puzzle-von-smartphone-zu-smartphone">Puzzle von SmartPhone zu SmartPhone</h4>
+
+<p>In diesem Beispiel wird das aktuelle Puzzle »DemoPuzzle« verschickt.</p>
+
+<p><strong>Absender-Smartphone</strong></p>
+
+<ol>
+  <li>Teile-Taste in der Hauptansicht klicken.</li>
+  <li>WhatsApp selektieren (oder eine MAIL App).</li>
+  <li>Kontakt selektieren und senden.</li>
+</ol>
+
+<p><strong>Ziel-SmartPhone</strong></p>
+
+<ol>
+  <li>WhatsApp starten.</li>
+  <li>Die in der empfangenen Nachricht enthaltene Datei »sharedPuzzle.text« downloaden.</li>
+  <li>Die App Soduku-Trainer starten.</li>
+  <li>In der App den Datenbank-Dialog öffnen (Menü Datenbank).</li>
+  <li>Die Taste Import-Puzzle klicken.</li>
+  <li><img src="./imagesHelp/aktionDateien.png" alt="Aktion Dateien" width="auto" /></li>
+  <li>Die Aktion Dateien auswählen.</li>
+  <li>Die im Download-Ordner abgelegte Datei »sharedPuzzle.text« selektieren.</li>
+</ol>
+
+<h4 id="puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen">Puzzle Datenbank vom PC auf das Smartphone übertragen</h4>
+
+<p><strong>Absender-PC</strong></p>
+
+<ol>
+  <li>Sudoku-Trainer starten</li>
+  <li>In den Datenbank-Dialog wechseln</li>
+  <li><img src="./imagesHelp/downloadDB.png" alt="DownloadDB" width="auto" /></li>
+  <li>Download-Puzzle-DB-Taste in der Hauptansicht klicken.</li>
+  <li>WhatsApp starten (oder eine MAIL App).</li>
+  <li>Datei »downloadedPuzzleDB.text« in den Anhang laden.</li>
+  <li>Kontakt selektieren und senden.</li>
+</ol>
+
+<p><strong>Ziel-SmartPhone</strong></p>
+
+<ol>
+  <li>WhatsApp starten.</li>
+  <li>Die in der empfangenen Nachricht enthaltene Datei downloaden.</li>
+  <li>Die App Soduku-Trainer starten.</li>
+  <li>In der App den Datenbank-Dialog öffnen (Menü Datenbank).</li>
+  <li>Die Taste Import-Puzzle klicken.</li>
+  <li><img src="./imagesHelp/aktionDateien.png" alt="Aktion Dateien" width="auto" /></li>
+  <li>Die Aktion Dateien auswählen.</li>
+  <li>Die im Download-Ordner abgelegte Datei »downloadedPuzzleDB.text« selektieren.</li>
+</ol>
+
+<h3 id="die-initiale-datenbank-ist-nicht-leer">Die initiale Datenbank ist nicht leer</h3>
+
+<p>Sie enthält zwei sehr schwere Puzzles, ‘Backtrack_10’ und ‘Backtrack_23’. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. Hinweis: dieser Solver hat nur eine Teilmenge der bekannten logischen Kriterien für die Lösung von Puzzles implementiert. Das ist aber nicht weiter problematisch, da sich die Kriterien überschneiden. D.h. in einer gegebenen Lösungssituation eines Puzzles sind mehrere Kriterien gleichzeitig anwendbar. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Dieser Trainer kann sehr schwere Puzzles generieren. Im Internet kann zum Beispiel bei dieser bekannte Adresse <a href="https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php">SoEinDing</a> sehr schwere Puzzles finden.</p>
+
+<h2 id="sudoku-theorie">Sudoku-Theorie</h2>
+<h3 id="unzulässige-nummern-und-kandidaten">Unzulässige Nummern und Kandidaten</h3>
+
+<p><strong>Unzulässige Nummern:</strong> Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz Kandidaten. Für eine unbelegte Zelle ist eine <strong>Nummer unzulässig</strong>, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. Alle anderen Nummern heißen <strong>Kandidatnummern</strong> oder einfach <strong>Kandidaten</strong> dieser Zelle. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter “Kandidatenauswertung” nicht der Wert “Keine Kandidatenanzeige” gesetzt ist.</p>
+
+<p><strong>Unzulässige Kandidaten.</strong> Auch Kandidaten können unzulässig sein. Eine Kandidatennummer ist unzulässig, wenn sie das Puzzle widersprüchlich macht. Der Solver würde das sofort oder einige Schritte später aufdecken. Unzulässige Kandidaten werden in roter Farbe angezeigt.</p>
+
+<h3 id="notwendige-kandidaten">Notwendige Kandidaten</h3>
+
+<p><img src="./imagesHelp/lazynotwendig.png" alt="Lazy notwendig" />
+Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Im Lazy-Auswertungsmodus zeigt der Solver den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn man die Zelle mit der notwendigen Nummer selektiert hat. Die Zellen des Blocks besitzen einen grün gestrichelten Rahmen. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den grün gestrichelten Rahmen keine 1 mehr gesetzt werden kann.</p>
+
+<h3 id="einzige-kandidaten-singles">Einzige Kandidaten (Singles)</h3>
+
+<p><img src="./imagesHelp/single.png" alt="Single" />
+Eine Kandidatnummer in einer Zelle heißt einziger Kandidat, wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 9 ein einzinger Kandidat. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer.</p>
+
+<h3 id="unzulässige-kandidaten-und-versteckt-einzige-kandidaten">Unzulässige Kandidaten und versteckt einzige Kandidaten</h3>
+
+<p><strong>Unzulässige Nummern</strong> sind Nummern, die in einem Block, in einer Spalte oder Reihe bereits einmal existieren. Unzulässige Nummern können keine Kandidaten sein. Es gibt jedoch auch unzulässige Kandidaten. <strong>Unzulässige Kandidaten</strong> werden in roter Schrift angezeigt. Eine Kandidatennummer ist unzulässig, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll macht. In manchen Fällen wird das erst nach einigen weiteren Lösungsschritten offenbar.</p>
+
+<p>Warum interessieren wir uns für unzulässige Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (versteckt einzinger Kandidat) unzulässig sind, dann kann der versteckt einzige Kandidat in der Zelle gesetzt werden.</p>
+
+<p>In fairen Puzzles kann man unzulässige Kandidaten allein durch logisches Schließen unter Anwendung definierter Kriterien ohne Backtracking erkennen. In der Literatur werden zahlreiche Kriterien genannt. Grundsätzlich ist die rein logische Erkennung der Unzulässigkeit von Kandidaten unvollständig. D.h. es gibt so schwere Puzzles, dass nicht alle unzulässigen Kandidaten mittels der Anwendung von logischen Kriterien erkannt werden können. Solche Sudokus können nur durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Unzulässigkeit von Kandidaten. Falls diese für das Lösen eines konkreten Puzzles nicht ausreichen, löst der Solver das Puzzle durch Backtracking.</p>
+
+<h3 id="kriterien-für-die-erkennung-unzulässiger-kandidaten">Kriterien für die Erkennung unzulässiger Kandidaten</h3>
+
+<h4 id="kriterium-notwendige-nummer">Kriterium “Notwendige Nummer”</h4>
+
+<p>Eine Kandidatnummer ist unzulässig wegen einer notwendigen Nummer, wenn sie in ihrer Spalte, Reihe oder ihrem Block auch als notwendige Nummer auftritt. Im nachfolgenden Beispiel sind die roten Nummern 1 wegen der grünen 1 unzulässig. Die grüne 1 ist notwendig, weil sie in ihrem Block einzig ist, also in dem Block kein weiteres mal zulässig ist.<img src="./imagesHelp/indirektwgnotwendig.png" alt="Indirekt wegen notwendig" /></p>
+
+<h4 id="kriterium-nacktes-paar">Kriterium “Nacktes Paar”</h4>
+
+<p>Eine Kandidatnummer ist unzulässig, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 2-8-Paar ein nacktes Paar. Das 2-8-Paar macht in seiner Spalte alle 2 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 2 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 2 oder die 8 oben ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Spalte keine 2 oder 8 mehr vorkommen können. Die 2 und 8 sind hier unzulässig. Diese Spaltendarstellung mit den gestrichelten Kanten zeigt der Solver nur im Lazy-Auswertungsmodus, wenn man eine Zelle mit unzulässigen Nummern selektiert hat.<img src="./imagesHelp/indirektWegenPairing.png" alt="Indirekt unzulässig" /></p>
+
+<h4 id="kriterium-verstecktes-paar">Kriterium: “Verstecktes Paar”</h4>
+
+<p>In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 8, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 8 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
+<img src="./imagesHelp/hiddenpair.png" alt="Verstecktes Paar" /></p>
+
+<h4 id="kriterium-überschneidung">Kriterium: Überschneidung</h4>
+
+<p>Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 7. Damit es am Ende in der Reihe überhaupt eine 7 gibt, muss eine 7 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 7 in dem Block jenseits der Reihe gestrichen werden müssen.
+<img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" /></p>
+
+<h4 id="kriterium-pointing-pair-pointing-triple">Kriterium: Pointing Pair, Pointing Triple</h4>
+
+<p>Die “Pointing Pairs”-Technik kommt zur Anwendung, wenn ein Paar zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den mittleren oberen Block. Alle Zellen, die die Zahl 2 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 2 in diesem Block mindestens einmal vorkommen sollte, wird eine der hervorgehobenen Zellen sicher die Zahl 2 enthalten. In den übrigen Zellen der Zeile kann daher die 2 gestrichen werden.</p>
+
+<p><img src="./imagesHelp/pointingPair.png" alt="PointingPair" /></p>
+
+<h3 id="methoden-der-kandidatenauswertung">Methoden der Kandidatenauswertung</h3>
+
+<p>Unter Kandidatenauswertung verstehen wir die Anwendung der Kriterien, die im vorigen Abschnitt eingeführt wurden. Es müssen nicht immer alle Kriterien angewandt werden. Der Solver unterscheidet mehrere Methoden der Kandidatenauswertung.</p>
+
+<ol>
+  <li>
+    <p><strong>Keine Kandidatenanzeige</strong> Kandidatenauswertung. Der Solver zeigt keine Kandidaten an, wenngleich er im Hintergrund weiter mit Kandidaten arbeitet. Diese Option ist wünschenswert, wenn der Spieler ohne Hilfe des Solvers eine manuelle Lösung des Puzzles suchen will.</p>
+  </li>
+  <li>
+    <p><strong>Lazy</strong> Kandidatenauswertung. Wenn die Anzahl unzulässiger Kandidaten (die roten Nummern) groß wird, wird es immer schwieriger, nackte Paare oder versteckte Paare zu erkennen. Die Lazy-Auswertungsmethode praktiziert eine verzögerte Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer oder die nächste Single-Nummer oder die nächste versteckte Single-Nummer bestimmt ist. Nur im Lazy-Modus, können in den oben gezeigten Beispielen die Erläuterungen der Kandidatennummern angezeigt werden.</p>
+  </li>
+  <li>
+    <p><strong>Strikt +</strong>: Diese Auswertungsmethode führt eine vollständige Auswertung durch. Alle aktuell unzulässigen Kandidaten, alle notwendigen Nummern, alle Singles und versteckten Singles werden ermittelt und angezeigt.</p>
+  </li>
+  <li>
+    <p><strong>Strikt -</strong> : Wie Strikt +. Jedoch werden die errechneten unzulässigen Kandidaten ausgeblendet.</p>
+  </li>
+</ol>
+
+<p>Das nachfolgende Bild zeigt ein Puzzle im Strikt-Plus-Auswertungsmodus. Bei genauerer Betrachtung dieses Beispiels fällt auf, dass in allen Zellen nur noch eine Nummer zulässig ist.</p>
+
+<p><img src="./imagesHelp/strictplus.png" alt="Strict Plus" /></p>
+
+<p>Das nachfolgende Bild zeigt die vorige Tabelle im Strikt-Minus-Modus. Im Strikt-Minus-Modus ist unmittelbar sichtbar, dass alle Zellen dieses Beispiels nur noch genau eine zulässige Nummer haben. Alle Nummern sind Singles. Mit anderen Worten: wir sehen hier die Lösung des Sudokus. Der Solver präsentiert hier eine Lösung ohne Backtracking. Nur die zuvor erläuterten Kriterien für unzulässige Kandidaten wurden angewandt.</p>
+
+<p><img src="./imagesHelp/striktminus.png" alt="Strict Minus" /></p>
+
+<h3 id="vergleich-der-auswertungsmodi-lazy-und-strikt">Vergleich der Auswertungsmodi Lazy und Strikt</h3>
+
+<p>Wir vergleichen die jeweiligen Vorteile der Auswertungsmodi.</p>
+
+<p><strong>Vorteil der Lazy-Auswertung: Nachvollziehbarkeit des Lösungsweges.</strong> Die Lazy-Auswertung ist vorteilhaft, wenn man den Lösungsweg im Einzelnen nachvollziehen will. Es werden nur unzulässige Kandidaten berechnet und angezeigt, die für den nächsten Schritt relevant sind. Für diese wenigen unzulässigen Kandidaten ist ihre Verursachung leicht visuell darstellbar und damit verstehbar.</p>
+
+<p>Im Lazy-Modus wird die Verursachung notwendiger Nummern oder unzulässiger Kandidaten angezeigt durch gestrichelte Border, wenn die Zelle der notwendigen Nummer oder unzulässigen Nummer selektiert ist. Durch erneutes Klicken der selektierten Zelle können die Ursachen der notwendigen und unzulässigen Kandidaten der Reihe nach jeweils angezeigt werden. Wenn alle Kandidaten angezeigt wurden, führt das erneute Klicken der Zelle zur Deselektion der Zelle.</p>
+
+<p><strong>Vorteil der strikten Auswertung: Lösung des Puzzles mit weniger Schritten.</strong> Im Auswertungsmodus Strikt benötigt der Solver im Allgemeinen weniger Schritte bis zur Lösung des Puzzles als im Ausführungsmodus Lazy. Im Lazy-Modus braucht der Solver für die Lösung des Puzzles ‘Backtrack_10’ 482 Schritte und 10 Rückwärtsläufe. Im Strikt-Modus dagegen nur 118 Schritte.</p>
+
+<p>Woran liegt das? Es liegt daran, dass der Solver im Ausführungsmodus Strikt sehr viel früher die Widersprüchlichkeit, falls vorhanden, der aktuellen Nummernbelegungen feststellt. Dies wiederum führt dazu, dass die Anzahl der Vorwärts- und Rückwärtsschritte entsprechend geringer wird und damit die Anzahl der Schritte insgesamt. Die Anzahl der Rückwärtsläufe bleibt in beiden Ausführungsmodi gleich. Der Solver untersucht in beiden Auswertungsmodi dieselben möglchen Nummernsetzungen.</p>
+
+<p>Dieser Sudoku-Trainer zeichnet sich in erster Linie durch seine nachvollziehbare Lösungssuche aus. Die Schrittminimierung ist kein Ziel. Daher ist die Einstellung “Keine Kandidatenanzeige” mit der Lazy-Auswertung im Hintergrund der Default-Auswertungsmodus.</p>
+
+<h3 id="widerspruchsvolle-puzzles">Widerspruchsvolle Puzzles</h3>
+
+<p>Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku bei der aktuellen Befüllung widerspruchsvoll ist. Ein Sudoku-Puzzle ist widerspruchsvoll, wenn es</p>
+
+<ol>
+  <li>eine widerspruchsvolle Zelle besitzt, oder</li>
+  <li>eine widerspruchsvollen Gruppe.</li>
+</ol>
+
+<p>Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.</p>
+
+<h4 id="widerspruchsvolle-zellen">Widerspruchsvolle Zellen</h4>
+
+<p>Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.</p>
+
+<p><img src="./imagesHelp/nochoice.png" alt="No selectable candidates" />
+<img src="./imagesHelp/nochoice2.png" alt="No candidates at all" />
+<img src="./imagesHelp/twoNeccessary.png" alt="MoreThanOneNecessary" />
+<img src="./imagesHelp/conflct.png" alt="NumberConflict" /></p>
+
+<h4 id="widerspruchsvolle-gruppen">Widerspruchsvolle Gruppen</h4>
+
+<p>Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entweder eine Reihe oder eine Spalte oder ein Block. So wie es widerspruchsvolle Zellen geben kann - erkennbar an ihrem roten Rand - kann es auch widerspruchsvolle Gruppen geben. Eine Gruppe ist widerspruchsvoll, wenn eine der folgenden Bedingungen vorliegt:</p>
+
+<ol>
+  <li>
+    <p><strong>Widerspruch - Zwei gleiche Singles:</strong> Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch.</p>
+  </li>
+  <li>
+    <p><strong>Widerspruch - Zwei gleiche notwendige Nummern:</strong> In der Gruppe tritt dieselbe Nummer in verschiedenen Zellen als notwendig auf.</p>
+  </li>
+  <li>
+    <p><strong>Widerspruch - Fehlende Nummer:</strong> In der Gruppe kommt eine Nummer überhaupt nicht vor.</p>
+  </li>
+</ol>
+
+<p>Wir sehen, dass gleichzeitig mehrere Bedingungen für einen Gruppenwiderspruch vorliegen können. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.</p>
+
+<h3 id="schwierigkeitsgrade-levels">Schwierigkeitsgrade (Levels)</h3>
+
+<p>Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:</p>
+<ol>
+  <li><strong>Sehr Leicht:</strong> Allein durch die Bestimmung <a href="#notwendige-nummern">notwendiger Nummern</a> kann die Lösung des Sudokus erreicht werden.</li>
+  <li><strong>Leicht:</strong> Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.</li>
+  <li><strong>Mittel:</strong> Durch die Bestimmung notwendiger Nummern und mindestens eines <a href="#die-möglichen-inhalte-einer-sudoku-zelle">Singles</a> kann die Lösung des Sudokus erreicht werden.</li>
+  <li><strong>Schwer:</strong> Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens die Bestimmung eines <a href="#die-möglichen-inhalte-einer-sudoku-zelle">Hidden Single</a>. Für die Bestimmung des Hidden Singles müssen unzulässige Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der <a href="#kriterien-für-die-erkennung-unzulässiger-kandidaten">Kriterien für die Erkennung unzulässiger Kandidaten</a>. Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad ‘Mittel’. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.</li>
+  <li><strong>Sehr Schwer:</strong> Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle eine Nummer raten und ausprobieren. “Backtracking” ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Rückwärtsläufe durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe ‘#RL’ wird in der Datenbanktabelle angezeigt.</li>
+  <li><strong>Extrem Schwer</strong>: ‘Extrem schwer’ sind Puzzles, die <strong>mehrere Lösungen</strong> haben. Mit der Taste ‘Lösungen zählen …’ kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. <a href="https://de.wikipedia.org/wiki/Sudoku">https://de.wikipedia.org/wiki/Sudoku</a>.
+Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.</li>
+</ol>
+
+<h3 id="übersicht-über-die-bedeutung-der-schwierigkeitsgrade">Übersicht über die Bedeutung der Schwierigkeitsgrade</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Lösungen</th>
+      <th>Methode</th>
+      <th>Angewandte Regeln und Kommentare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sehr Leicht</td>
+      <td>Eindeutig</td>
+      <td>Logisches Schließen</td>
+      <td>Allein R1: “Notwendige Kandidaten”</td>
+    </tr>
+    <tr>
+      <td>Leicht</td>
+      <td>Eindeutig</td>
+      <td>Logisches Schließen</td>
+      <td>Allein R1: “Notwendige Kandidaten”</td>
+    </tr>
+    <tr>
+      <td>Mittel</td>
+      <td>Eindeutig</td>
+      <td>Logisches Schließen</td>
+      <td>R1: “Notwendige Kandidaten” und mindestens einmal R2: “Einziger Kandidat”</td>
+    </tr>
+    <tr>
+      <td>Schwer</td>
+      <td>Eindeutig</td>
+      <td>Logisches Schließen</td>
+      <td>R1: “Notwendige Kandidaten”, R2: “Einziger Kandidat” und mindestens einmal R3: “Versteckt einziger Kandidat”. Hinter R3 verbergen sich die bekannten Eliminationsregeln wie “Überschneidung”, “Nacktes Paar”, etc.</td>
+    </tr>
+    <tr>
+      <td>Sehr schwer</td>
+      <td>Eindeutig</td>
+      <td>Backtracking</td>
+      <td>Es gibt Puzzles, die nicht allein mit logischen Schlussregeln gelöst werden können.</td>
+    </tr>
+    <tr>
+      <td>Extrem schwer</td>
+      <td>Mehrere Lösungen</td>
+      <td>Backtracking</td>
+      <td>Mittels Backtracking können prinzipiell alle Lösungen eines extrem schweren Puzzles angezeigt werden. Das können sehr viele sein. Dass leere Puzzle hat über eine Trilliarde Lösungen. Pragmatisch wird der Spieler eine solche Auflistung der Lösungen abbrechen.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="welcher-schwierigkeitsgrad-für-welchen-spielertyp">Welcher Schwierigkeitsgrad für welchen Spielertyp?</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Spielertyp</th>
+      <th>Quelle der Puzzles</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sehr leicht, Leicht, Mittel</td>
+      <td><strong>Gelegenheitsspieler</strong>, die Puzzles in Zeitungen und Zeitschriften lösen wollen.  Die beiden einfachen Regeln, R1: “Notwendige Kandidaten” und R2: “Einziger Kandidat”, sind ohne Notizen anwendbar.</td>
+      <td>Puzzles in <strong>Zeitungen und Zeitschriften</strong> sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition. Meist werden die Schwierigkeitsgrade mit einer abweichenden Definition genutzt.</td>
+    </tr>
+    <tr>
+      <td>Schwer</td>
+      <td><strong>Hochleistungsbereite Spieler</strong>, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den <strong>Freaks</strong> in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten.</td>
+      <td>Bei <a href="https://www.sudokuwiki.org/Main_Page">Andrew Stuart</a> gibt es eine Rubrik „<strong>The weekly unsolvable</strong>“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde.</td>
+    </tr>
+    <tr>
+      <td>Alle Schwierig-keitsgrade</td>
+      <td><strong>Alle Spieler und Interessierte</strong>, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines <strong>beobachtbaren Backtrackers</strong>.</td>
+      <td>Der vorliegende Sudoku-Trainer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von <strong>benutzersetzbaren Haltepunkten</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="faire-puzzles">Faire Puzzles</h3>
+
+<p>Extrem oder sehr schwere Sudokus eignen sich nicht für die manuelle Lösungssuche, da das notwendige Backtracking mit Papier und Bleistift durchgeführt werden müsste. Die in den Zeitungen oder Zeitschriften als ‘Leicht’, ‘Mittel’ oder ‘Schwer’ klassifizierten Sudoku-Puzzles sind meistens in dem hier dargestellten Sinn ‘Sehr leicht’, ‘Leicht’ oder ‘Mittel’. Selten auch einmal ‘Schwer’. D.h. die Zeitungs-Sudokus sind in der Regel fair. Sie können ohne Backtracking gelöst werden.</p>
+
+<p>Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe <a href="#unterstützung-der-manuellen-lösung-von-puzzles">Unterstützung der manuellen Lösung von Puzzles</a>.</p>
+
+<h2 id="sudoku-im-internet">Sudoku im Internet</h2>
+
+<p>Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann.</p>
+
+<p>Dem gegenüber gibt es aber auch “Sudoku-Freaks”, die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche der oben genannten Kriterien für unzulässige Kandidaten (es gibt noch weitere, die in dieser App gar nicht implementiert sind) anwendbar sind. Eine herausragende Seite für Sudoku-Interessierte ist die Seite von <a href="https://www.sudokuwiki.org/Main_Page">Andrew Stuart</a>. Dort findest Du einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.</p>
+
+<p>Stuarts Sudoku-Solver will wie der Sudoku-Trainer nicht einfach nur ein Solver sein. Er stellt die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Das kann die Elimination von unzulässigen Kandidaten in mehreren Zellen sein aufgrund eines ‘nackten Paares’ oder die Setzung von ‘versteckten Singles’ (notwendigen Nummern) in mehreren Zellen gleichzeitig. Puzzles, die keine Lösung per logischem Schließen haben, löst der Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.</p>
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
