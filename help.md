@@ -144,7 +144,7 @@ Die Operationen des Sudoku-Trainers werden über die Tasten und die seitliche Na
 
 **Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. Durch das Drücken dieser Taste wird automatisch die Zelle in der Matrix selektiert, die der Solver bei der automatischen Lösung als nächste Zelle selektieren würde. Der Spieler hat dann zwei Möglichkeiten:
 
-1. Die vorgeschlagene Nummer in der Zelle setzen, oder
+1. Die vorgeschlagene Nummer in der Zelle setzen, durch Drücken der Ok-Taste unten rechts an der Tabelle, oder
 1. Die Tipp-Taste erneut drücken. Dann wird die Selektion zurückgenommen.
 
 **Taste: Puzzle speichern.** Der Spielstand des aktuellen Puzzles wird in der Datenbank gespeichert. Gegebenenfalls wird das Puzzle in der DB neu angelegt und erhält dabei einen generierten Namen: 'PZ (>>Datum<<)'. Falls es schon in der Datenbank ist, wird es mit dem aktuellen Spielstand überschrieben. Der Name des Puzzles kann jederzeit umbenannt werden.
