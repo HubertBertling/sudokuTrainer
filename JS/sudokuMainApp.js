@@ -2861,58 +2861,36 @@ class SudokuSolverView {
                     sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Keine Angabe' ||
                     sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Unlösbar') {
                     // nothing to do  
-                } else if (sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Sehr leicht' ||
-                    sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Leicht' ||
-                    sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Mittel' ||
-                    sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Schwer') {
-
+                } else {
                     if (sudoApp.mySolver.currentEvalType == 'lazy-invisible' ||
                         sudoApp.mySolver.currentEvalType == 'lazy') {
-                        sudoApp.myInfoDialog.open(
-                            'Lösung gefunden',
-                            'info',
+                        let infoString =
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Angewandte Techniken</b> <br>' +
-                            'Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + ', davon <br>' +
-                            ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                            ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
-                            '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
-                            ,
-                            this,
-                            () => { }
-                        );
-                    }
-                } else if (sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Sehr schwer') {
+                            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + ', davon <br>' +
+                            ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
+                            ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
+                            ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
 
-                    if (sudoApp.mySolver.currentEvalType == 'lazy-invisible' ||
-                        sudoApp.mySolver.currentEvalType == 'lazy') {
-
+                        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
+                            infoString = infoString + '<br>' +
+                                ' * mit mehreren Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + ', davon <br>' +
+                                ' &nbsp;&nbsp; * mit Versuch der ersten Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
+                                ' &nbsp;&nbsp; * mit Versuch der zweiten Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
+                                ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
+                        }
+                        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
+                            infoString = infoString + '<br>' +
+                                '<b>Kandidaten eliminiert mittels</b><br>' +
+                                ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
+                                ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
+                                ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
+                                ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
+                        }
 
                         sudoApp.myInfoDialog.open(
                             'Lösung gefunden',
                             'info',
-                            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Angewandte Techniken</b> <br>' +
-                            'Schritte: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + ', davon <br>' +
-                            ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps + '<br>' +
-                            ' * Mehroptionen-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
-                            ' * Notwendige: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                            ' * Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                            ' * Versteckte Singles: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles + '<br>' +
-                            '<b>Kandidaten eliminiert mittels</b><br>' +
-                            ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
-                            ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
-                            ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
-                            ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size() + '<br>' +
-                            '<b>Backtracking</b><br>' +
-                            ' * Erster Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                            ' * Zweiter Versuch: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore
-                            ,
+                            infoString,
                             this,
                             () => { }
                         );
