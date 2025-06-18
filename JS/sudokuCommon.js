@@ -455,8 +455,7 @@ class Search {
             countBackwardSteps: 0,
             countMultipleOptionSteps: 0,
             countMultipleOptionsFirstTry: 0,
-            countMultipleOptionsSecondTryAndMore: 0,
-            countOptionTry: [0, 0, 0, 0]
+            countMultipleOptionsSecondTryAndMore: 0
         }
 
         this.nakedPairs = new RuleSet();
@@ -515,7 +514,7 @@ class Search {
             sudoApp.mySolver.myGrid.select(this.myStepper.indexSelected);
         }
         // perform the next automated step
-
+        
         let autoStepResult = this.myStepper.autoStep();
         this.searchStepResult = autoStepResult.processResult;
         if (this.searchStepResult == 'solutionDiscovered') {
