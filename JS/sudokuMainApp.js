@@ -2866,16 +2866,18 @@ class SudokuSolverView {
                         sudoApp.mySolver.currentEvalType == 'lazy') {
                         let infoString =
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + ', davon <br>' +
+                            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
+                            'davon <br>' + 
                             ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
 
                         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
                             infoString = infoString + '<br>' +
-                                ' * mit mehreren Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + ', davon <br>' +
-                                ' &nbsp;&nbsp; * mit Versuch der ersten Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                                ' &nbsp;&nbsp; * mit Versuch der zweiten Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
+                                ' * mit zwei Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
+                                ' &nbsp;&nbsp;davon <br>' +
+                                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 1. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
+                                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 2. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
                                 ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
                         }
                         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
