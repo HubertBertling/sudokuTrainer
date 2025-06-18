@@ -4005,10 +4005,12 @@ class SudokuSolverController {
         this.initLinkPressed();
         sudoApp.myNavBar.closeNav();
         try {
-            const text = await navigator.clipboard.readText();
+            let text1 = await navigator.clipboard.readText();
             // console.log(text);
-            let numberRegex = /^\d+$/;
+            let text = text1.replace(/(\r\n|\n|\r)/gm,"")
+            let numberRegex = /^(\d|.)+$/;
             if (numberRegex.test(text)) {
+                
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 this.defineBtnPressed();
