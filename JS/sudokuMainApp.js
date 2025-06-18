@@ -2865,7 +2865,10 @@ class SudokuSolverView {
                     if (sudoApp.mySolver.currentEvalType == 'lazy-invisible' ||
                         sudoApp.mySolver.currentEvalType == 'lazy') {
                         let infoString =
-                            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
+                        '<div class="parameter" style=";">' + 
+                            '<span class="param-name" style="left:0.6rem;"><b>Gegeben: </b></span>' + 
+                            '<span class="param-value" style="right:0.6rem;">' + sudoApp.mySolver.myGrid.numberOfGivens() + '</span>' +    
+                        '</div>' +
                             '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + ', davon <br>' +
                             ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
@@ -2878,6 +2881,7 @@ class SudokuSolverView {
                                 ' &nbsp;&nbsp; * mit Versuch der zweiten Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
                                 ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
                         }
+
                         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
                             infoString = infoString + '<br>' +
                                 '<b>Kandidaten eliminiert mittels</b><br>' +
@@ -3021,7 +3025,7 @@ class SudokuSolverView {
         let lazyNode = document.getElementById('pc-lazy');
         let strictPlusNode = document.getElementById('pc-strict-plus');
         let strictMinusNode = document.getElementById('pc-strict-minus');
-    
+     
         switch (et) {
             case 'lazy-invisible': {
                 noEvalNode.checked = true;
@@ -3044,7 +3048,7 @@ class SudokuSolverView {
             }
         }
     }
-    
+     
     */
 
     /*
