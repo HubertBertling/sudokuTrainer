@@ -514,7 +514,7 @@ class Search {
             sudoApp.mySolver.myGrid.select(this.myStepper.indexSelected);
         }
         // perform the next automated step
-        
+
         let autoStepResult = this.myStepper.autoStep();
         this.searchStepResult = autoStepResult.processResult;
         if (this.searchStepResult == 'solutionDiscovered') {
@@ -700,7 +700,7 @@ class StepperOnGrid {
             // Action:
             // Set the unique number
             let tmpAction = this.atCurrentSelectionSetAutoNumber(currentStep);
-            
+
             // If a hidden single has been set in this cell, 
             // switch the evaluation mode back to 'No evaluation'.
             sudoApp.mySolver.myGrid.unsetStepLazy();
@@ -2885,8 +2885,8 @@ class SudokuGrid {
 
     loadPuzzleString(puzzleStr) {
         for (let i = 0; i < 81; i++) {
-            if (puzzleStr[i] == '0') {
-                this.sudoCells[i].manualSetValue(puzzleStr[i], '');
+            if (puzzleStr[i] == '0' || puzzleStr[i] == '.') {
+                this.sudoCells[i].manualSetValue('0', '');
             } else {
                 this.sudoCells[i].manualSetValue(puzzleStr[i], 'define');
             }
