@@ -223,12 +223,12 @@ class ClockedRunner {
         this.myBreakpoints = BreakpointsRecord.nullBreakpointsRecord();
     }
 
-    start(thisPointer, step) {
+    start(thisPointer, step, thousandthOfASecond) {
         if (!this.isRunning()) {
             this.myStoppingBreakpoint = undefined;
             this.timer = window.setInterval(() => {
                 step.call(thisPointer);
-            }, 75);
+            }, thousandthOfASecond);
         }
     }
     setBreakpoints(bps) {
@@ -4523,9 +4523,6 @@ class SudokuSolver {
         let puzzle = this.myCurrentPuzzle;
         puzzle.setNumberOfSolutions(search.getNumberOfSolutions());
     }
-
-
-
 
     performSolutionStep() {
         // Repeat the execution of the step 'performSearchStep()'

@@ -4005,12 +4005,23 @@ class SudokuSolverController {
         this.initLinkPressed();
         sudoApp.myNavBar.closeNav();
         try {
-            let text1 = await navigator.clipboard.readText();
-            // console.log(text);
-            let text = text1.replace(/(\r\n|\n|\r)/gm,"")
-            let numberRegex = /^(\d|.)+$/;
-            if (numberRegex.test(text)) {
-                
+            let text0 = await navigator.clipboard.readText();
+            // Delete ---- horizontal border lines
+            let text1 = text0.replace(/^--.-*\r?\n?/gm, "");
+            // Delete carriage return and newlines
+            let text2 = text1.replace(/(\r\n|\n|\r)/gm,"");
+            // normalize empty cell representations to '0'
+            let text3 = text2.replaceAll('.', '0');
+            let text4 = text3.replaceAll('X', '0');
+            let text5 = text4.replaceAll('x', '0');
+            let text6 = text5.replaceAll('_', '0');
+            let text7 = text6.replaceAll('*', '0');
+            // Delete vertical border lines
+            let text = text7.replaceAll('|', '');
+         
+            // text should now consist of digits only
+            let numberRegex = /^\d+$/;
+            if (numberRegex.test(text) && text.length == 81) {
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 this.defineBtnPressed();
@@ -4145,7 +4156,7 @@ class SudokuSolverController {
                     () => {
                         sudoApp.mySolver.performSearchStep();
                         sudoApp.mySolver.notify();
-                    });
+                    }, 75);
             }
         }
     }
@@ -4234,8 +4245,7 @@ class SudokuSolverController {
                         if (bp == 'searchCompleted') {
                             sudoApp.mySolverView.stopLoaderAnimation();
                         }
-                    });
-
+                    }, 0);
             }
         }
 
