@@ -4156,7 +4156,7 @@ class SudokuSolverController {
                     () => {
                         sudoApp.mySolver.performSearchStep();
                         sudoApp.mySolver.notify();
-                    });
+                    }, 75);
             }
         }
     }
@@ -4245,8 +4245,7 @@ class SudokuSolverController {
                         if (bp == 'searchCompleted') {
                             sudoApp.mySolverView.stopLoaderAnimation();
                         }
-                    });
-
+                    }, 0);
             }
         }
 
