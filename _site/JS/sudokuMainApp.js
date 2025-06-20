@@ -2867,7 +2867,7 @@ class SudokuSolverView {
                         let infoString =
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                             '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            'davon <br>' + 
+                            'davon <br>' +
                             ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
@@ -4001,16 +4001,38 @@ class SudokuSolverController {
         }
     }
 
+    async copyMatrixLinkPressed() {
+      sudoApp.myNavBar.closeNav();
+        try {
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getReadablePuzzleString());
+                sudoApp.myCopyFeedbackDialog.open();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
     async pasteLinkPressed() {
         this.initLinkPressed();
         sudoApp.myNavBar.closeNav();
         try {
-            let text1 = await navigator.clipboard.readText();
-            // console.log(text);
-            let text = text1.replace(/(\r\n|\n|\r)/gm,"")
-            let numberRegex = /^(\d|.)+$/;
-            if (numberRegex.test(text)) {
-                
+            let text0 = await navigator.clipboard.readText();
+            // Delete ---- horizontal border lines
+            let text1 = text0.replace(/^--.-*\r?\n?/gm, "");
+            // Delete carriage return and newlines
+            let text2 = text1.replace(/(\r\n|\n|\r)/gm, "");
+            // normalize empty cell representations to '0'
+            let text3 = text2.replaceAll('.', '0');
+            let text4 = text3.replaceAll('X', '0');
+            let text5 = text4.replaceAll('x', '0');
+            let text6 = text5.replaceAll('_', '0');
+            let text7 = text6.replaceAll('*', '0');
+            // Delete vertical border lines
+            let text = text7.replaceAll('|', '');
+
+            // text should now consist of digits only
+            let numberRegex = /^\d+$/;
+            if (numberRegex.test(text) && text.length == 81) {
                 sudoApp.mySolver.myGrid.loadPuzzleString(text);
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 this.defineBtnPressed();
@@ -4145,7 +4167,7 @@ class SudokuSolverController {
                     () => {
                         sudoApp.mySolver.performSearchStep();
                         sudoApp.mySolver.notify();
-                    });
+                    }, 75);
             }
         }
     }
@@ -4234,8 +4256,7 @@ class SudokuSolverController {
                         if (bp == 'searchCompleted') {
                             sudoApp.mySolverView.stopLoaderAnimation();
                         }
-                    });
-
+                    }, 0);
             }
         }
 

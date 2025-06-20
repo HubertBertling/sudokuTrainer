@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 876;
+let VERSION = 880;
 
 // ==========================================
 // Basic classes
@@ -223,12 +223,12 @@ class ClockedRunner {
         this.myBreakpoints = BreakpointsRecord.nullBreakpointsRecord();
     }
 
-    start(thisPointer, step) {
+    start(thisPointer, step, thousandthOfASecond) {
         if (!this.isRunning()) {
             this.myStoppingBreakpoint = undefined;
             this.timer = window.setInterval(() => {
                 step.call(thisPointer);
-            }, 75);
+            }, thousandthOfASecond);
         }
     }
     setBreakpoints(bps) {
@@ -2883,6 +2883,28 @@ class SudokuGrid {
         return tmpStr;
     }
 
+    getReadablePuzzleString() {
+        let tmpStr = "...|...|...\n...|...|...\n...|...|...\n-----------\n...|...|...\n...|...|...\n...|...|...\n-----------\n...|...|...\n...|...|...\n...|...|...";
+        let j = -1;
+        let outStr = "";
+        for (let i = 0; i < tmpStr.length; i++) {
+            let char = tmpStr.at(i);
+            if (char == '.') {
+                j++;
+                let nr = this.sudoCells[j].getValue();
+                if (nr == "0") {
+                    outStr += ".";
+                } else {
+                    outStr += nr;
+                }
+            } else {
+                outStr += char;
+            }
+        }
+        return outStr;
+    }
+
+
     loadPuzzleString(puzzleStr) {
         for (let i = 0; i < 81; i++) {
             if (puzzleStr[i] == '0' || puzzleStr[i] == '.') {
@@ -4523,9 +4545,6 @@ class SudokuSolver {
         let puzzle = this.myCurrentPuzzle;
         puzzle.setNumberOfSolutions(search.getNumberOfSolutions());
     }
-
-
-
 
     performSolutionStep() {
         // Repeat the execution of the step 'performSearchStep()'

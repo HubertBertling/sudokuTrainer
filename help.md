@@ -46,7 +46,9 @@ layout: default
       10. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#übersicht-über-die-bedeutung-der-schwierigkeitsgrade)
       11. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
       12. [Faire Puzzles](#faire-puzzles)
-   7. [Sudoku im Internet](#sudoku-im-internet)
+   7. [Überraschende Eigenschaften von Sudokus](#überraschende-eigenschaften-von-sudokus)
+      1. [Falsche Vermutungen über die Schwierigkeitsgrad von Sudokus](#falsche-vermutungen-über-die-schwierigkeitsgrad-von-sudokus)
+   8. [Sudoku im Internet](#sudoku-im-internet)
 
 
 # Sudoku-Trainer
@@ -582,6 +584,14 @@ Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen
 Extrem oder sehr schwere Sudokus eignen sich nicht für die manuelle Lösungssuche, da das notwendige Backtracking mit Papier und Bleistift durchgeführt werden müsste. Die in den Zeitungen oder Zeitschriften als 'Leicht', 'Mittel' oder 'Schwer' klassifizierten Sudoku-Puzzles sind meistens in dem hier dargestellten Sinn 'Sehr leicht', 'Leicht' oder 'Mittel'. Selten auch einmal 'Schwer'. D.h. die Zeitungs-Sudokus sind in der Regel fair. Sie können ohne Backtracking gelöst werden.
 
 Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe [Unterstützung der manuellen Lösung von Puzzles](#unterstützung-der-manuellen-lösung-von-puzzles). 
+
+## Überraschende Eigenschaften von Sudokus
+
+### Falsche Vermutungen über die Schwierigkeitsgrad von Sudokus
+
+**Falsche Vermutung 1**: Je weniger Givens, um so schwieriger das Sudoku. 
+
+
 
 ## Sudoku im Internet
 

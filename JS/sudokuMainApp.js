@@ -2867,7 +2867,7 @@ class SudokuSolverView {
                         let infoString =
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                             '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            'davon <br>' + 
+                            'davon <br>' +
                             ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
@@ -4001,6 +4001,17 @@ class SudokuSolverController {
         }
     }
 
+    async copyMatrixLinkPressed() {
+      sudoApp.myNavBar.closeNav();
+        try {
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getReadablePuzzleString());
+                sudoApp.myCopyFeedbackDialog.open();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
     async pasteLinkPressed() {
         this.initLinkPressed();
         sudoApp.myNavBar.closeNav();
@@ -4009,7 +4020,7 @@ class SudokuSolverController {
             // Delete ---- horizontal border lines
             let text1 = text0.replace(/^--.-*\r?\n?/gm, "");
             // Delete carriage return and newlines
-            let text2 = text1.replace(/(\r\n|\n|\r)/gm,"");
+            let text2 = text1.replace(/(\r\n|\n|\r)/gm, "");
             // normalize empty cell representations to '0'
             let text3 = text2.replaceAll('.', '0');
             let text4 = text3.replaceAll('X', '0');
@@ -4018,7 +4029,7 @@ class SudokuSolverController {
             let text7 = text6.replaceAll('*', '0');
             // Delete vertical border lines
             let text = text7.replaceAll('|', '');
-         
+
             // text should now consist of digits only
             let numberRegex = /^\d+$/;
             if (numberRegex.test(text) && text.length == 81) {
