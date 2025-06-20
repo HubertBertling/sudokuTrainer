@@ -4001,6 +4001,17 @@ class SudokuSolverController {
         }
     }
 
+    async copyMatrixLinkPressed() {
+      sudoApp.myNavBar.closeNav();
+        try {
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getReadablePuzzleString());
+                sudoApp.myCopyFeedbackDialog.open();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
     async pasteLinkPressed() {
         this.initLinkPressed();
         sudoApp.myNavBar.closeNav();
