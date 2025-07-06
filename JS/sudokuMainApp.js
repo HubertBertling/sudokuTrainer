@@ -837,33 +837,7 @@ class SudokuPuzzleDB {
         let update_str_puzzleMap = JSON.stringify(Array.from(puzzleMap.entries()));
         localStorage.setItem("localSudokuDB", update_str_puzzleMap);
 
-        // Example puzzle with 23 back tracks
-        const back23 = ["0", "3", "0", "0", "1", "0", "0", "0", "9",
-            "0", "0", "6", "0", "0", "0", "5", "0", "0",
-            "1", "0", "0", "0", "0", "0", "0", "4", "0",
-            "4", "0", "0", "0", "0", "3", "2", "0", "0",
-            "0", "9", "0", "0", "7", "0", "0", "0", "8",
-            "0", "0", "5", "6", "0", "0", "0", "0", "0",
-            "8", "0", "0", "0", "0", "2", "0", "0", "3",
-            "0", "0", "0", "0", "9", "0", "0", "7", "0",
-            "0", "0", "0", "4", "0", "0", "1", "0", "0"];
-
-        const back10 = ["1", "4", "0", "0", "0", "6", "8", "0", "0",
-            "0", "0", "0", "0", "5", "0", "0", "0", "2",
-            "0", "0", "0", "0", "9", "4", "0", "6", "0",
-            "0", "0", "4", "0", "0", "0", "0", "0", "0",
-            "0", "0", "0", "0", "0", "8", "0", "3", "6",
-            "7", "5", "0", "0", "0", "1", "9", "0", "0",
-            "0", "0", "0", "3", "0", "0", "0", "1", "0",
-            "0", "9", "0", "0", "0", "0", "0", "0", "5",
-            "8", "0", "0", "0", "0", "0", "7", "0", "0"];
-
         this.init
-        console.log('------>  initDB vor: ------back23');
-        await this.importBackRunPuzzle(back23, 'Backtrack_23', 'lqwgzcback23g2ak');
-        console.log('------>  initDB nach: -------back23');
-        await this.importBackRunPuzzle(back10, 'Backtrack_10', 'lqgwgzcback9hpfg2ak');
-        console.log('------>  initDB nach: -------back10');
         sudoApp.mySolver.init();
         sudoApp.mySolver.notify()
         this.notify();
@@ -2271,23 +2245,6 @@ class SudokuCellView {
         });
     }
 
-    /*
-        displayCandidatesInDetailV2(tmpCandidates, allOptions, openOptions) {
-            this.myNode.classList.add('nested');
-            // Übertrage die berechneten Möglchen in das DOM
-            tmpCandidates.forEach(nr => {
-                let candidateNode = document.createElement('div');
-                candidateNode.setAttribute('data-value', nr);
-                candidateNode.innerHTML = nr;
-                if (allOptions.has(nr)
-                    && !openOptions.has(nr)) {
-                    candidateNode.style = "text-decoration: underline";
-                }
-                this.myNode.appendChild(candidateNode);
-            });
-        }
-            */
-
     displayNecessary(myNecessarys) {
         let candidateNodes = this.myNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
@@ -2536,41 +2493,6 @@ class SudokuCellView {
         }
 
         if (this.myCell.inAdmissibleCandidates.size > 0 &&
-            this.myCell.inAdmissibleCandidatesFromNecessarys.size > 0) {
-            if (this.myCell.inAdmissibleCandidatesFromNecessarys.has(adMissibleNrSelected)) {
-                // Wenn die selektierte Zelle eine rote Nummer enthält, die durch eine notwendige
-                // Nummer verursacht ist, wird dies angezeigt.
-                let necessaryCell = undefined;
-                // Bestimme die Zelle der notwendigen Nummer
-                this.myCell.myInfluencers.forEach(cell => {
-                    if (cell.getNecessarys().has(adMissibleNrSelected)) {
-                        necessaryCell = cell;
-                    }
-                })
-                // Bestimme die gemeinsame Gruppe der Zelle mit der roten Nummer
-                // und der Zelle mit der notwendigen Nummer
-                let tmpGroup = undefined;
-                if (this.myCell.myBlock == necessaryCell.myBlock) {
-                    tmpGroup = this.myCell.myBlock;
-                } else if (this.myCell.myRow == necessaryCell.myRow) {
-                    tmpGroup = this.myCell.myRow;
-                } else if (this.myCell.myCol == necessaryCell.myCol) {
-                    tmpGroup = this.myCell.myCol;
-                }
-                // Gebe die Gruppe aus
-                tmpGroup.myCells.forEach(cell => {
-                    sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
-                    if (cell.getNecessarys().has(adMissibleNrSelected)) {
-                        sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderRedSelected();
-                    }
-                })
-                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
-                    + ' unzulässig wegen notwendiger Nummer: '
-                    + adMissibleNrSelected);
-                return;
-            }
-        }
-        if (this.myCell.inAdmissibleCandidates.size > 0 &&
             this.myCell.inAdmissibleCandidatesFromPairs.size > 0) {
             if (this.myCell.inAdmissibleCandidatesFromPairs.has(adMissibleNrSelected)) {
                 // Wenn für die selektierte Zelle kritische Paare gespeichert sind,
@@ -2590,7 +2512,7 @@ class SudokuCellView {
                 pairArray = Array.from(pairInfo.pairCell1.getTotalCandidates());
                 sudoApp.mySolverView.displayTechnique(
                     adMissibleNrSelected
-                    + ' unzulässig wegen "Nacktem Paar" {'
+                    + ' eliminierbar wegen "Nacktem Paar" {'
                     + pairArray[0]
                     + ', '
                     + pairArray[1] + '}');
@@ -2619,7 +2541,7 @@ class SudokuCellView {
                     });
                 }
 
-                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected + ' unzulässig wegen Überschneidung');
+                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
                 return;
             }
         }
@@ -2648,7 +2570,7 @@ class SudokuCellView {
                     }
                 })
                 sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
-                    + ' unzulässig wegen Zeiger-Paar');
+                    + ' eliminierbar wegen Zeiger-Paar');
                 return;
             }
         }
@@ -2672,7 +2594,7 @@ class SudokuCellView {
                 });
                 sudoApp.mySolverView.displayTechnique(
                     adMissibleNrSelected
-                    + ' unzulässig wegen "Verstecktem Paar" {'
+                    + ' eliminierbar wegen "Verstecktem Paar" {'
                     + pairArray[0]
                     + ', '
                     + pairArray[1] + '}');
@@ -2799,12 +2721,8 @@ class SudokuSolverView {
         this.myGridView.upDate();
         // Indication that the puzzle cannot be solved, if this is the case
         this.displayProgress();
-        // this.displayEvalType(this.mySolver.getActualEvalType());
-        // this.displayBreakpoints(sudoApp.myClockedRunner.myBreakpoints);
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
-        // this.displayPuzzleIOTechniqueBtns();
-        // this.setSolvingButtons();
         this.displayGamePhase();
     }
 
@@ -2867,7 +2785,7 @@ class SudokuSolverView {
                         let infoString =
                             'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
                             '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            'davon <br>' + 
+                            'davon <br>' +
                             ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
                             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
                             ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
@@ -3018,51 +2936,6 @@ class SudokuSolverView {
         }
     }
 
-    /* displayEvalType(et) {
-        let noEvalNode = document.getElementById('pc-no-eval');
-        let lazyNode = document.getElementById('pc-lazy');
-        let strictPlusNode = document.getElementById('pc-strict-plus');
-        let strictMinusNode = document.getElementById('pc-strict-minus');
-    
-        switch (et) {
-            case 'lazy-invisible': {
-                noEvalNode.checked = true;
-                break;
-            }
-            case 'lazy': {
-                lazyNode.checked = true;
-                break;
-            }
-            case 'strict-plus': {
-                strictPlusNode.checked = true;
-                break;
-            }
-            case 'strict-minus': {
-                strictMinusNode.checked = true;
-                break;
-            }
-            default: {
-                throw new Error('Unknown eval type: ' + et);
-            }
-        }
-    }
-    
-    */
-
-    /*
-    displayBreakpoints(breakpoints) {
-        let singleNode = document.getElementById('breakpoint-single');
-        let hiddenSingleNode = document.getElementById('breakpoint-hidden-single');
-        let multipleNode = document.getElementById('breakpoint-multiple-candidates');
-        let contradictionNode = document.getElementById('breakpoint-contradiction');
-        let solutionNode = document.getElementById('breakpoint-solution');
-        singleNode.checked = breakpoints.single;
-        hiddenSingleNode.checked = breakpoints.hiddenSingle;
-        multipleNode.checked = breakpoints.multipleOption;
-        contradictionNode.checked = breakpoints.contradiction;
-        solutionNode.checked = breakpoints.solutionDiscovered;
-    }
-    */
     displayPuzzleIOTechniqueBtns() {
         let shareBtn = document.getElementById('share-button');
         let initDBButton = document.getElementById('db-pz-btn-init');
@@ -3234,6 +3107,19 @@ class SudokuSolverController {
                 default:
             }
         });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && (event.key === 'v' || event.key === 'V')) {
+                sudoApp.mySolverController.pasteLinkPressed();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C')) {
+                sudoApp.mySolverController.copyLinkPressed();
+            }
+        });
+
 
         // Click-Events for both define buttons, desktop and mobile
         this.btns = document.querySelectorAll('.btn-define');
@@ -4002,7 +3888,7 @@ class SudokuSolverController {
     }
 
     async copyMatrixLinkPressed() {
-      sudoApp.myNavBar.closeNav();
+        sudoApp.myNavBar.closeNav();
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getReadablePuzzleString());
@@ -4020,7 +3906,7 @@ class SudokuSolverController {
             // Delete ---- horizontal border lines
             let text1 = text0.replace(/^--.-*\r?\n?/gm, "");
             // Delete carriage return and newlines
-            let text2 = text1.replace(/(\r\n|\n|\r)/gm,"");
+            let text2 = text1.replace(/(\r\n|\n|\r)/gm, "");
             // normalize empty cell representations to '0'
             let text3 = text2.replaceAll('.', '0');
             let text4 = text3.replaceAll('X', '0');
@@ -4029,7 +3915,7 @@ class SudokuSolverController {
             let text7 = text6.replaceAll('*', '0');
             // Delete vertical border lines
             let text = text7.replaceAll('|', '');
-         
+
             // text should now consist of digits only
             let numberRegex = /^\d+$/;
             if (numberRegex.test(text) && text.length == 81) {

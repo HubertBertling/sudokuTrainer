@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 880;
+let VERSION = 900;
 
 // ==========================================
 // Basic classes
@@ -1635,27 +1635,6 @@ class SudokuGroup {
         return inAdmissiblesAdded;
     }
 
-    derive_inAdmissiblesFromNecessarys(necessaryCell, necessaryNr) {
-        let inAdmissiblesAdded = false;
-        this.myCells.forEach(cell => {
-            if (cell.getValue() == '0' && cell !== necessaryCell) {
-                let oldInAdmissibles = new MatheSet(cell.inAdmissibleCandidates);
-                if (cell.getCandidates().has(necessaryNr)) {
-                    // Only admissible ones can become inadmissible.
-                    cell.inAdmissibleCandidates =
-                        cell.inAdmissibleCandidates.add(necessaryNr);
-                    let localAdded = !oldInAdmissibles.equals(cell.inAdmissibleCandidates);
-                    if (localAdded) {
-                        // Die Liste der indirekt unzulässigen verursacht von necessarys wird gesetzt
-                        cell.inAdmissibleCandidatesFromNecessarys.add(necessaryNr);
-                        inAdmissiblesAdded = true;
-                    }
-                }
-            }
-        })
-        return inAdmissiblesAdded;
-    }
-
     derive_inAdmissiblesFromNakedPairs() {
         this.calculateEqualPairs();
         let inAdmissiblesAdded = false;
@@ -2092,9 +2071,9 @@ class SudokuBlock extends SudokuGroup {
 
     derive_inAdmissibles() {
         let inAdmissiblesAdded = false;
-        if (this.derive_inAdmissiblesFromHiddenPairs()) {
+        if (this.derive_inAdmissiblesFromNakedPairs()) {
             inAdmissiblesAdded = true;
-        } else if (this.derive_inAdmissiblesFromNakedPairs()) {
+        } else if (this.derive_inAdmissiblesFromHiddenPairs()) {
             inAdmissiblesAdded = true;
         } else if (this.derive_inAdmissiblesFromIntersection()) {
             inAdmissiblesAdded = true;
@@ -2598,17 +2577,6 @@ class SudokuGrid {
     getCellAt(row, col) {
         return this.sudoCells[9 * row + col];
     }
-
-    /*
-    puzzleSolved() {
-        for (let i = 0; i < 81; i++) {
-            if (this.sudoCells[i].getValue() == '0') {
-                return false;
-            }
-        }
-        return true;
-    }
-        */
 
     numberOfNonEmptyCells() {
         let tmp = 0;
@@ -3136,28 +3104,6 @@ class SudokuGrid {
         if (this.derive_inAdmissiblesFromIntersection()) return true;
         return false;
     }
-
-    // Vormalige Iteration, braucht mehr 'rote' Kandidaten
-    /*  derive_inAdmissibles() {
-            // Iteriere über die Blockn
-            for (let i = 0; i < 9; i++) {
-                let tmpBlock = this.sudoBlocks[i];
-                if (tmpBlock.derive_inAdmissibles()) return true;
-            }
-            // Iteriere über die Reihen
-            for (let i = 0; i < 9; i++) {
-                let tmpRow = this.sudoRows[i];
-                if (tmpRow.derive_inAdmissibles()) return true;
-            }
-            // Iteriere über die Spalten
-            for (let i = 0; i < 9; i++) {
-                let tmpCol = this.sudoCols[i];
-                if (tmpCol.derive_inAdmissibles()) return true;
-            }
-            return false;
-        }
-    */
-
 
     derive_inAdmissiblesFromNakedPairs() {
         // Iteriere über die Blockn
@@ -3923,7 +3869,7 @@ class SudokuCell {
             if (influencer.getValue() == '0') {
                 // Paare, die vollständig in Influenz-Zellen enthalten sind
                 // werden bevorzugt
-                let influenceCandidates = influencer.getTotalCandidates();
+                let influenceCandidates = influencer.getCandidates();
                 summand = 0;
                 if (tmpCandidates.size == 2) {
                     if (influenceCandidates.equals(tmpCandidates)) {
