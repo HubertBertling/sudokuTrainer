@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 910;
+let VERSION = 911;
 
 // ==========================================
 // Basic classes
@@ -4841,7 +4841,6 @@ class SudokuMainApp {
     }
 
     helpFunktion() {
-        // window.open('./help.html');
-        window.open('./_site/help.html');
+        window.open('./help.html');
     }
 }
