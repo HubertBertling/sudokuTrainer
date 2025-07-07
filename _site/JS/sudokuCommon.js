@@ -4841,6 +4841,7 @@ class SudokuMainApp {
     }
 
     helpFunktion() {
-        window.open('./help.html');
+        // window.open('./help.html');
+        window.open('./_site/help.html');
     }
 }
