@@ -10,7 +10,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_913';
+var VERSION = 'version_914';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -62,6 +62,7 @@ var URLS = [
   `${GHPATH}/images/undo.png`,
   `${GHPATH}/images/upload.png`,
   `${GHPATH}/images/zahnrad.png`,
+  `${GHPATH}/imagesHelp/actionFiles.png`, 
   `${GHPATH}/imagesHelp/appView1.png`, 
   `${GHPATH}/imagesHelp/appView2.png`, 
   `${GHPATH}/imagesHelp/appView3.png`, 

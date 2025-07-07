@@ -204,6 +204,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 
 ## Der automatische Solver
 
+
 <figure >
    <img src="./imagesHelp/appView3.png" alt="Eigener Tastenblock" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Solver mit eigenem Tasteblock</figcaption>
