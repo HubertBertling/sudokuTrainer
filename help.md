@@ -9,8 +9,6 @@ layout: default
       1. [Sudoku-Puzzles und Darstellungsformen](#sudoku-puzzles-und-darstellungsformen)
       2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
       3. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
-         1. [Widerspruchsvolle Zellen](#widerspruchsvolle-zellen)
-         2. [Widerspruchsvolle Gruppen](#widerspruchsvolle-gruppen)
       4. [Zwei Spielphasen](#zwei-spielphasen)
       5. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
       6. [Trainer-Operationen](#trainer-operationen)
@@ -67,7 +65,7 @@ Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome ode
 Diese App ist ein Trainer für klassisches Sudoku. Der [Sudoku-Trainer](https://hubertbertling.github.io/sudokuTrainer/) unterstützt das manuelle und automatische Lösen von Puzzles. Für Puzzles mit mehreren Lösungen liefert er eine Aufzählung aller Lösungen. Die Besonderheit dieses Trainers: man kann ihm bei der automatischen Suche nach der Lösung zuschauen und damit seine eigene Lösungskompetenz trainieren. Bei jeder automatischen Setzung einer Nummer zeigt der Solver den logischen Grund für die Setzung. Der Anwender kann ein Puzzle manuell lösen, oder Schritt für Schritt automatisch oder vollautomatisch. In der Schritt für Schritt automatischen Vorgehensweise zeigt der Solver den Grund für seine Nummernsetzung an. Vollautomatisch löst der Solver jedes Puzzle in wenigen Sekunden oder erkennt es als nicht lösbar, weil es widersprüchlich ist.
 
 <figure >
-   <img src="./imagesHelp/architecture.png" alt="Architektur" style="max-width:100%">
+   <img src="/imagesHelp/architecture.png" alt="Architektur" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Architektur des Trainers</figcaption>
 </figure>
 
@@ -85,7 +83,7 @@ Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses T
 ### Sudoku-Puzzles und Darstellungsformen
 
 <figure >
-   <img src="./imagesHelp/puzzlePrintDisplay.png" alt="Printdarstellung eines Puzzles" style="max-width:100%">
+   <img src="/imagesHelp/puzzlePrintDisplay.png" alt="Printdarstellung eines Puzzles" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Printdarstellung eines Puzzles</figcaption>
 </figure>
 Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als Gruppe bezeichnet.
@@ -115,14 +113,14 @@ Die Textdarstellungen eignen sich für den Austausch von Puzzles zwischen Spiele
 Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden. 
 
 <figure >
-   <img src="./imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
+   <img src="/imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic">App-Darstellung eines Puzzles</figcaption>
 </figure>
 
 Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen [Kandidatennummern](#unzulässige-nummern-und-kandidaten) anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in der [Werkzeugseinstellung](#einstellung-kandidatenauswertung) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
 
 <figure >
-   <img src="./imagesHelp/appView2.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
+   <img src="/imagesHelp/appView2.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">App-Darstellung eines Puzzles, lazy</figcaption>
 </figure>
 
@@ -153,7 +151,7 @@ Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er ent
 
 Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.
 
-#### Widerspruchsvolle Zellen
+**Widerspruchsvolle Zellen**
 
 Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
 
@@ -162,7 +160,7 @@ Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zelle
 ![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png)
 ![NumberConflict](./imagesHelp/conflct.png)
 
-#### Widerspruchsvolle Gruppen
+**Widerspruchsvolle Gruppen**
 
 Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entweder eine Reihe oder eine Spalte oder ein Block. So wie es widerspruchsvolle Zellen geben kann - erkennbar an ihrem roten Rand - kann es auch widerspruchsvolle Gruppen geben. Eine Gruppe ist widerspruchsvoll, wenn eine der folgenden Bedingungen vorliegt:
 
@@ -236,7 +234,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 ## Der automatische Solver
 
 <figure >
-   <img src="./imagesHelp/appView3.png" alt="Eigener Tastenblock" style="width:100%">
+   <img src="/imagesHelp/appView3.png" alt="Eigener Tastenblock" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Solver mit eigenem Tasteblock</figcaption>
 </figure>
 
@@ -409,7 +407,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 ### Notwendige Kandidaten
 
 <figure>
-   <img src="./imagesHelp/lazynotwendig.png" alt="Notwendig" style="width:100%">
+   <img src="/imagesHelp/lazynotwendig.png" alt="Notwendig" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Notwendiger Kandidat 1</figcaption>
 </figure>
 
@@ -418,7 +416,7 @@ Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block
 ### Einzige Kandidaten (Singles bzw. Naked Singles)
 
 <figure>
-   <img src="./imagesHelp/single.png" alt="Single" style="width:100%">
+   <img src="/imagesHelp/single.png" alt="Single" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Einziger Kandidat 9</figcaption>
 </figure>
 
@@ -429,7 +427,7 @@ Eine Kandidatnummer in einer Zelle heißt "Einziger Kandidat" bzw. "Single" oder
 **Eliminierbare Kandidaten** werden in roter Schrift angezeigt. Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. In manchen Fällen wird das erst nach einigen weiteren Lösungsschritten offenbar.
 
 <figure>
-   <img src="./imagesHelp/versteckterSingle.png" alt="Single" style="width:100%">
+   <img src="/imagesHelp/versteckterSingle.png" alt="Single" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Versteckt Einziger Kandidat 4</figcaption>
 </figure>
 
@@ -443,7 +441,7 @@ Im Sudoku-Internet werden zahlreiche Kriterien genannt. Siehe z.B. die teilweise
 #### E1: Kriterium "Nacktes Paar"
 
 <figure >
-   <img src="./imagesHelp/indirektWegenPairing.png" alt="Nacktes Paar" style="width:100%">
+   <img src="/imagesHelp/indirektWegenPairing.png" alt="Nacktes Paar" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Nacktes Paar</figcaption>
 </figure>
 
@@ -452,7 +450,7 @@ Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder S
 #### E2: Kriterium: "Verstecktes Paar"
 
 <figure >
-   <img src="./imagesHelp/hiddenpair.png" alt="Versteckztes Paar" style="width:100%">
+   <img src="/imagesHelp/hiddenpair.png" alt="Versteckztes Paar" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Verstecktes Paar</figcaption>
 </figure>
 
@@ -461,7 +459,7 @@ Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder S
 #### E3 Kriterium: "Überschneidung"
 
 <figure >
-   <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
+   <img src="/imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Überschneidung</figcaption>
 </figure>
 
@@ -470,7 +468,7 @@ Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es N
 #### E4 Kriterium: "Zeiger-Paar", "Zeiger-Triple"
 
 <figure >
-   <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
+   <img src="/imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Zeiger-Paar, Zeiger-Tripel</figcaption>
 </figure>
 
@@ -507,14 +505,14 @@ Unter Kandidatenauswertung verstehen wir die Anwendung der Scan-und Eliminations
 Das nachfolgende Bild zeigt ein Puzzle im Strikt-Plus-Auswertungsmodus. Bei genauerer Betrachtung dieses Beispiels fällt auf, dass in allen Zellen nur noch eine Nummer zulässig ist.
 
 <figure >
-   <img src="./imagesHelp/strictplus.png" alt="striktplus" style="width:100%">
+   <img src="/imagesHelp/strictplus.png" alt="striktplus" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Strikt-Plus</figcaption>
 </figure>
 
 Das nachfolgende Bild zeigt die vorige Tabelle im Strikt-Minus-Modus. Im Strikt-Minus-Modus ist unmittelbar sichtbar, dass alle Zellen dieses Beispiels nur noch genau eine zulässige Nummer haben. Alle Nummern sind Singles. Mit anderen Worten: wir sehen hier die Lösung des Sudokus. Der Solver präsentiert hier eine Lösung ohne Backtracking. Nur die zuvor erläuterten Kriterien für eliminierbare Kandidaten wurden angewandt.
 
 <figure >
-   <img src="./imagesHelp/striktminus.png" alt="striktminus" style="width:100%">
+   <img src="/imagesHelp/striktminus.png" alt="striktminus" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Strikt-Minus</figcaption>
 </figure>
 
@@ -566,7 +564,7 @@ Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. V
 Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man die Taste "Tipp" nutzen. Durch das Drücken dieser Taste wird automatisch die Zelle in der Matrix selektiert, die der Solver bei der automatischen Lösung als nächste Zelle selektieren würde. 
 
 <figure >
-   <img src="./imagesHelp/tippOk.png" alt="Tipp Ok" style="width:100%">
+   <img src="/imagesHelp/tippOk.png" alt="Tipp Ok" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Tipp Ok Taste</figcaption>
 </figure>
 
@@ -597,84 +595,84 @@ Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer". Die im Folgenden d
 {: style="text-align:center"}
 ![stepSequence](./imagesHelp/schrittSequenz.png){:width="200px"}
 
-*==> Schritttaste einmal gedrückt:*
+<h3> ==> Schritttaste einmal gedrückt:</h3>
 
 **Schritt 1: Zelle mit mehreren Optionen.** Schon im ersten Schritt erweist sich dieses Puzzle als sehr schwer, da der Solver keine Zelle mit eindeutiger Nummernbelegung findet und stattdessen eine Zelle mit 2 Optionen selektiert: 2 und 7. Der Solver versucht zuerst die 2.
 
 <figure>
-   <img src="./imagesHelp/exampleStep1_a.png" alt="Schritt 1" style="max-width:100%">
+   <img src="/imagesHelp/exampleStep1_a.png" alt="Schritt 1" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 1.a: Zelle mit Optionen {2, 7}</figcaption>
 </figure>
 
 Nach der Setzung der ersten Option.
 <figure>
-   <img src="./imagesHelp/exampleStep1_b.png" alt="Schritt 1_1" style="max-width:100%">
+   <img src="/imagesHelp/exampleStep1_b.png" alt="Schritt 1_1" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 1.b: Kandidat 2 gesetzt.</figcaption>
 </figure>
 
-*==> Schritttaste mehrmals drücken bis Schritt 4.a:*
+<h3> ==> Schritttaste mehrmals drücken bis Schritt 4.a: </h3>
 
 <figure>
-   <img src="./imagesHelp/schritt4_1.png" alt="Schritt 4_1" style="max-width:100%">
+   <img src="/imagesHelp/schritt4_1.png" alt="Schritt 4_1" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 4.a</figcaption>
 </figure>
 
 **Schritt 4: Zelle mit notwendiger Nummer.** Im vierten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 3. Sie ist notwendig, weil in dem Block in allen freien Zellen, grün gestrichelte Rahmen haben und keine 3 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 3.
 
 <figure>
-   <img src="./imagesHelp/schritt4_2.png" alt="Schritt 4_2" style="max-width:100%">
+   <img src="/imagesHelp/schritt4_2.png" alt="Schritt 4_2" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 4.b: Notwendiger Kandidat 3 gesetzt.</figcaption>
 </figure>
 
-*==> Haltepunkt "Bei Single gesetzt". Suchlauftaste gedrückt:*
+<h3> ==> Haltepunkt "Bei Single gesetzt". Suchlauftaste gedrückt: </h3>
 
 **Schritt 13: Zelle mit Single.** Im Schritt 13.a selektiert der Solver eine Zelle mit nur einem Kandidaten, die 7, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl außer 7 gibt es eine solche Zelle.
 
 <figure>
-   <img src="./imagesHelp/schritt13_a.png" alt="Schritt 13_a" style="max-width:100%">
+   <img src="/imagesHelp/schritt13_a.png" alt="Schritt 13_a" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 13.a: Single</figcaption>
 </figure>
 
-*==> Haltepunkt "Bei Widerspruch" gesetzt". Suchlauftaste gedrückt:*
+<h3> ==> Haltepunkt "Bei Widerspruch" gesetzt". Suchlauftaste gedrückt: </h3>
 
 **Schritt 23: Block mit Widerspruch.** Im Schritt 23.a entdeckt der Solver einen widerspruchsvollen Block. Deshalb wurde der Solver in den Rückwärts-Modus gesetzt (grüner Pfeil links).
 
 <figure>
-   <img src="./imagesHelp/schritt22_b.png" alt="Schritt 22_b" style="max-width:100%">
+   <img src="/imagesHelp/schritt22_b.png" alt="Schritt 22_b" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 22.b: Widerspruch</figcaption>
 </figure>
 
-*==> Schritttaste einmal gedrückt:*
+<h3> ==> Schritttaste einmal gedrückt</h3>
 
 **Schritt 23: Zelle im Rückwärts-Modus zurücksetzen (Rückwärtsschritt)**
 
 <figure>
-   <img src="./imagesHelp/schritt23_a.png" alt="Schritt 23_a" style="max-width:100%">
+   <img src="/imagesHelp/schritt23_a.png" alt="Schritt 23_a" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 23.a: Zurückzusetzende Zelle mit der Nummer 4 selektiert</figcaption>
 </figure>
 
-*==> Haltepunkt "Bei Selektionsoptionen" gesetzt und "Bei Widerspruch" zurückgenommen. Suchlauftaste gedrückt:*
+<h3> ==> Haltepunkt "Bei Selektionsoptionen" gesetzt und "Bei Widerspruch" zurückgenommen. Suchlauftaste gedrückt:</h3>
 
 **Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7.
 
 <figure>
-   <img src="./imagesHelp/schritt43_a.png" alt="Schritt 43_a" style="max-width:100%">
+   <img src="/imagesHelp/schritt43_a.png" alt="Schritt 43_a" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 43.a: Zweiter Besuch in der Zelle</figcaption>
 </figure>
 
-*==> Schritttaste gedrückt:*
+<h3> ==> Schritttaste gedrückt:</h3>
 
 <figure>
-   <img src="./imagesHelp/schritt43_b.png" alt="Schritt 43_b" style="max-width:100%">
+   <img src="/imagesHelp/schritt43_b.png" alt="Schritt 43_b" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 43.b: Zweite Option in der Zelle, die 7,  gesetzt.</figcaption>
 </figure>
 
-*==> Haltepunkt "Bei Lösung" gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:*
+<h3> ==> Haltepunkt "Bei Lösung" gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:</h3>
 
 **Schritt 224: Alle Zellen belegt.** Im Schritt 224 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.
 
 <figure>
-   <img src="./imagesHelp/schritt224_b.png" alt="Schritt 224_b" style="max-width:100%">
+   <img src="/imagesHelp/schritt224_b.png" alt="Schritt 224_b" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 224.b: Alle Zellen belegt.</figcaption>
 </figure>
 
@@ -732,7 +730,7 @@ Zusätzlich gibt es noch Begriffe, die sich auf Strategien beziehen, um Sudoku z
 Wir betrachten das folgende Puzzle und kopieren die Textdarstellung des Puzzle in die Zwischenablage. D.h. wir selektieren die Textdarstellung vollständig und kopieren mit der Kopier-Operation in der Navgationsbar oder mit Strg+C. Dann öffnen wir die App und fügen die Kopie mit der Einfüge-Operation der Navigationsbar in den Sudoku-Trainer ein. 
 
 <figure >
-   <img src="./imagesHelp/given17leicht.png" alt="Given 17" style="max-width:100%">
+   <img src="/imagesHelp/given17leicht.png" alt="Given 17" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">17 Givens, kleinstes Puzzle. 
     Puzzle = 040000080007000060000010000410000200000005000030000000006007003005806000000000001</figcaption>
 </figure>
@@ -740,7 +738,7 @@ Wir betrachten das folgende Puzzle und kopieren die Textdarstellung des Puzzle i
 Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgrad, in diesem Fall Leicht, siehe oben rechts. Das Puzzle hat nur 17 Givens.  Lassen wir das Puzzle lösen: Taste "Starte Suche", dann Taste "Weitere Lösung anzeigen".
 
 <figure>
-   <img src="./imagesHelp/given17geloest.png" alt="Given 17 gelöst" style="width:100%">
+   <img src="/imagesHelp/given17geloest.png" alt="Given 17 gelöst" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Puzzle gelöst</figcaption>
 </figure>
 
@@ -751,7 +749,7 @@ Das Puzzle ist gelöst. Für seine Lösung brauchten nur Notwendig-Schritte ange
 
 Wir kopieren die Textdarstellung des Puzzle in die Zwischenablage und in den Sudoku-Trainer ein. 
 <figure >
-   <img src="./imagesHelp/given77extremSchwer.png" alt="Given 77" style="max-width:100%">
+   <img src="/imagesHelp/given77extremSchwer.png" alt="Given 77" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">77 Givens
     Puzzle = 123748569597612438468539217986157342314286795752394681879465123241073056635021074</figcaption>
 </figure>
@@ -759,17 +757,17 @@ Wir kopieren die Textdarstellung des Puzzle in die Zwischenablage und in den Sud
 Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgrad, in diesem Fall "Extrem schwer", siehe oben rechts. Extrem schwer bedeutet, dass das Puzzle mehrere Lösungen hat. Dieses Puzzle hat genau zwei Lösungen. Schauen wir uns die Lösungen an: Taste “Starte Suche”, dann Taste “Weitere Lösung anzeigen”.
 
 <figure >
-   <img src="./imagesHelp/given77loesung1.png" alt="Given 77, Lösung1" style="max-width:100%">
+   <img src="/imagesHelp/given77loesung1.png" alt="Given 77, Lösung1" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">77 Givens, Lösung 1</figcaption>
 </figure>
 
 <figure >
-   <img src="./imagesHelp/given77loesung2.png" alt="Given 77, Lösung 2" style="max-width:100%">
+   <img src="/imagesHelp/given77loesung2.png" alt="Given 77, Lösung 2" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">77 Givens, Lösung 2</figcaption>
 </figure>
 
 <figure >
-   <img src="./imagesHelp/given77keineWeitereLoesung.png" alt="Given 77, keine weitere Lösung" style="max-width:100%">
+   <img src="/imagesHelp/given77keineWeitereLoesung.png" alt="Given 77, keine weitere Lösung" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">77 Givens, Keine weitere Lösung</figcaption>
 </figure>
 
@@ -781,18 +779,18 @@ Im Allgemeinen lassen sich Puzzles, die mehrere Lösungen besitzen, nicht durch 
 Betrachten wir das folgende Beispiel.
 
 <figure >
-   <img src="./imagesHelp/logischUnloesbar.png" alt="LogischUnloesbar" style="max-width:100%">
+   <img src="/imagesHelp/logischUnloesbar.png" alt="LogischUnloesbar" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Logisch unlösbar. Puzzle = 030010009006000500100000040400003200090070008005600000800002003000090070000400100
 </figcaption>
 </figure>
 
 <figure >
-   <img src="./imagesHelp/logischUnloesbarEindeutig.png" alt="LogischUnloesbarEindeutig" style="max-width:100%">
+   <img src="/imagesHelp/logischUnloesbarEindeutig.png" alt="LogischUnloesbarEindeutig" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Logisch unlösbar, per Backtracking lösbar</figcaption>
 </figure>
 
 <figure >
-   <img src="./imagesHelp/logischUnloesbarKeineWeitereLoesung.png" alt="KeineWeitereLösung" style="max-width:100%">
+   <img src="/imagesHelp/logischUnloesbarKeineWeitereLoesung.png" alt="KeineWeitereLösung" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Keine weitere Lösung</figcaption>
 </figure>
 
@@ -814,11 +812,11 @@ Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schw
 **9. Tatsache: Es gibt unlösbare Sudokus.**
 Es gibt unlösbare Sudokus. Das ist erstmal eine triviale Aussage.
 <figure >
-   <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
+   <img src="/imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Unlösbar wegen offfensichtlichem Widerspruch</figcaption>
 </figure>
 <figure >
-   <img src="./imagesHelp/unloesbar_Widerspruch.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
+   <img src="/imagesHelp/unloesbar_Widerspruch.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Widerspruch sichtbar bei Wechsel in den Suchmodus</figcaption>
 </figure>
 
@@ -826,12 +824,12 @@ Es gibt aber auch nicht triviale Unlösbarkeiten. Sie werden erst erst nach viel
 Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
 
 <figure >
-   <img src="./imagesHelp/unloesbar24Schritte.png" alt="verborgen unloesbar" style="max-width:100%">
+   <img src="/imagesHelp/unloesbar24Schritte.png" alt="verborgen unloesbar" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
 </figure>
 
 <figure >
-   <img src="./imagesHelp/keineLoesung.png" alt="verborgen unloesbar" style="max-width:100%">
+   <img src="/imagesHelp/keineLoesung.png" alt="verborgen unloesbar" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Nach abgeschlossener Suche: Keine Lösung</figcaption>
 </figure>
 
