@@ -219,10 +219,6 @@ Die Taste "Starte Suche" startet den automatischen Solver der App.
 
 Mittels der Option **Neu** im Menu kann der Dialog "Neue Puzzles" geöffnet werden. Der Trainer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeitsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.
 
-|Vorrat neuer Puzzles wird generiert | Der Generator wurde gestoppt.|
-|---------------|------------|
-|![Generieren](./imagesHelp/generatingOngoing.png){:width="300px"}|![GenerierenStopp](./imagesHelp/generatingStopped.png){:width="300px"}|
-
 Die App startet im Hintergrund einen Puzzle-Generator, der solange neue Puzzles erzeugt, bis für jeden Schwierigkeitsgrad mindestens ein neues Puzzle existiert. 
 
 Hinweis: der Generator kann nicht gezielt ein Puzzle für einen vorgegebenen Schwierigkeitsgrad erzeugen. Vielmehr generiert er ein neues Puzzle und bestimmt dann, welchen Schwierigkeitsgrad das erzeugte Puzzle hat.
@@ -232,11 +228,6 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 **Menü-Option: Drucken.** Das aktuelle Puzzle wird ausgedruckt. Falls es noch nicht gespeichert wurde wird es zuvor mit einem Default-Namen 'Druck->>Datum<<' in der Datenbank gespeichert.
 
 ## Der automatische Solver
-
-<figure >
-   <img src="./imagesHelp/appView3.png" alt="Eigener Tastenblock" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Solver mit eigenem Tasteblock</figcaption>
-</figure>
 
 ### Der Tastenblock des automatischen Solvers
 
