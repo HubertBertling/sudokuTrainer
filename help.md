@@ -120,7 +120,7 @@ Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden
 Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen [Kandidatennummern](#unzulässige-nummern-und-kandidaten) anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in der [Werkzeugseinstellung](#einstellung-kandidatenauswertung) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
 
 <figure >
-   <img src="./imagesHelp/appView2.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
+   <img src="./imagesHelp/appViewLazy.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">App-Darstellung eines Puzzles, lazy</figcaption>
 </figure>
 
@@ -217,6 +217,11 @@ Die Taste "Starte Suche" startet den automatischen Solver der App.
 
 **Menü-Option: Neu.**
 
+<figure >
+   <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Neue Puzzles generieren</figcaption>
+</figure>
+
 Mittels der Option **Neu** im Menu kann der Dialog "Neue Puzzles" geöffnet werden. Der Trainer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeitsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.
 
 Die App startet im Hintergrund einen Puzzle-Generator, der solange neue Puzzles erzeugt, bis für jeden Schwierigkeitsgrad mindestens ein neues Puzzle existiert. 
@@ -228,6 +233,11 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 **Menü-Option: Drucken.** Das aktuelle Puzzle wird ausgedruckt. Falls es noch nicht gespeichert wurde wird es zuvor mit einem Default-Namen 'Druck->>Datum<<' in der Datenbank gespeichert.
 
 ## Der automatische Solver
+
+<figure >
+   <img src="./imagesHelp/appViewTastenblock.png" alt="Eigener Tastenblock" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Solver mit eigenem Tasteblock</figcaption>
+</figure>
 
 ### Der Tastenblock des automatischen Solvers
 
@@ -647,7 +657,7 @@ Nach der Setzung der ersten Option.
 **Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7.
 
 <figure>
-   <img src="./imagesHelp/schritt43_a.png" alt="Schritt 43_a" style="max-width:100%">
+   <img src="./imagesHelp/Schritt43_aNew.png" alt="Schritt 43_a" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 43.a: Zweiter Besuch in der Zelle</figcaption>
 </figure>
 
