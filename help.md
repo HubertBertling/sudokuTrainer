@@ -12,10 +12,8 @@ layout: default
       4. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
       5. [Trainer-Operationen](#trainer-operationen)
    4. [Der automatische Solver](#der-automatische-solver)
-      1. [Solver-Einstellungen](#solver-einstellungen)
-      2. [Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?](#wie-wählt-der-solver-die-nächste-zelle-und-die-in-ihr-zu-setzende-nummer)
-      3. [Wie prüft der Solver die neu gesetzte Nummer?](#wie-prüft-der-solver-die-neu-gesetzte-nummer)
-      4. [Vorwärts und Rückwärts (Backtracking)](#vorwärts-und-rückwärts-backtracking)
+      1. [Der Tastenblock des automatischen Solvers](#der-tastenblock-des-automatischen-solvers)
+      2. [Solver-Einstellungen](#solver-einstellungen)
    5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
       1. [Operationen der Datenbank](#operationen-der-datenbank)
       2. [Import/Export und Teilen von Puzzles](#importexport-und-teilen-von-puzzles)
@@ -23,16 +21,16 @@ layout: default
          2. [Puzzle von SmartPhone zu SmartPhone](#puzzle-von-smartphone-zu-smartphone)
          3. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
    6. [Sudoku-Theorie](#sudoku-theorie)
-      1. [Puzzle lösen durch Scannen, Eliminieren und Trial \& Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial--error)
-      2. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
-      3. [Notwendige Kandidaten](#notwendige-kandidaten)
-      4. [Einzige Kandidaten (Singles bzw. Naked Singles)](#einzige-kandidaten-singles-bzw-naked-singles)
-      5. [Eliminierbare Kandidaten und versteckt einzige Kandidaten (Hidden Singles)](#eliminierbare-kandidaten-und-versteckt-einzige-kandidaten-hidden-singles)
-      6. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
+      1. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
+      2. [Notwendige Kandidaten](#notwendige-kandidaten)
+      3. [Einzige Kandidaten (Singles bzw. Naked Singles)](#einzige-kandidaten-singles-bzw-naked-singles)
+      4. [Eliminierbare Kandidaten und versteckt einzige Kandidaten (Hidden Singles)](#eliminierbare-kandidaten-und-versteckt-einzige-kandidaten-hidden-singles)
+      5. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
          1. [E1: Kriterium "Nacktes Paar"](#e1-kriterium-nacktes-paar)
          2. [E2: Kriterium: "Verstecktes Paar"](#e2-kriterium-verstecktes-paar)
          3. [E3 Kriterium: "Überschneidung"](#e3-kriterium-überschneidung)
          4. [E4 Kriterium: "Zeiger-Paar", "Zeiger-Triple"](#e4-kriterium-zeiger-paar-zeiger-triple)
+      6. [Puzzle lösen durch Scannen, Eliminieren und Trial \& Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial--error)
       7. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
       8. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
       9. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
@@ -67,9 +65,11 @@ Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome ode
 ## Manueller und automatischer Solver für klassisches Sudoku
 
 Diese App ist ein Trainer für klassisches Sudoku. Der [Sudoku-Trainer](https://hubertbertling.github.io/sudokuTrainer/) unterstützt das manuelle und automatische Lösen von Puzzles. Für Puzzles mit mehreren Lösungen liefert er eine Aufzählung aller Lösungen. Die Besonderheit dieses Trainers: man kann ihm bei der automatischen Suche nach der Lösung zuschauen und damit seine eigene Lösungskompetenz trainieren. Bei jeder automatischen Setzung einer Nummer zeigt der Solver den logischen Grund für die Setzung. Der Anwender kann ein Puzzle manuell lösen, oder Schritt für Schritt automatisch oder vollautomatisch. In der Schritt für Schritt automatischen Vorgehensweise zeigt der Solver den Grund für seine Nummernsetzung an. Vollautomatisch löst der Solver jedes Puzzle in wenigen Sekunden oder erkennt es als nicht lösbar, weil es widersprüchlich ist.
-  
-{: style="text-align:center"}
-![Architektur](./imagesHelp/architecture.png){: width="100%"}
+
+<figure >
+   <img src="./imagesHelp/architecture.png" alt="Architektur" style="max-width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Architektur des Trainers</figcaption>
+</figure>
 
 Der Sudoku-Trainer besteht aus drei Komponenten, dem Solver, dem Generator und der Puzzle-Datenbank. Mit Hilfe des Solvers kann man beliebige Sudoku-Puzzles manuell oder automatisch lösen.
 
@@ -116,7 +116,7 @@ Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden
 
 <figure >
    <img src="./imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">App-Darstellung eines Puzzles</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic">App-Darstellung eines Puzzles</figcaption>
 </figure>
 
 Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen [Kandidatennummern](#unzulässige-nummern-und-kandidaten) anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in der [Werkzeugseinstellung](#einstellung-kandidatenauswertung) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
@@ -204,11 +204,12 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 
 ## Der automatische Solver
 
-
 <figure >
    <img src="./imagesHelp/appView3.png" alt="Eigener Tastenblock" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Solver mit eigenem Tasteblock</figcaption>
 </figure>
+
+### Der Tastenblock des automatischen Solvers
 
 Die Tasten des automatischen Solvers haben folgende Bedeutung:
 
@@ -259,26 +260,6 @@ Reset Puzzle, ohne den Solver zu verlassen.
 
 {: style="text-align:center"}
 ![Haltepunkte](./imagesHelp/breakpointSettings.png){:max-width="75%"}
-
-
-### Wie wählt der Solver die nächste Zelle und die in ihr zu setzende Nummer?
-
-Der Solver sucht gemäß der folgenden Priorität die nächste offene Zelle und die zu setzende Nummer:
-
-1. **Zelle mit notwendigem Kandidat:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt.
-1. **Zelle mit einzigem Kandidat (Single)**: Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
-1. **Zelle mit versteckt einzigem Kandidat (Hidden Single)**: Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt wählt der Solver eine Zelle mit versteckt einzigem Kandidat.
-1. **Zelle mit minimaler Optionenmenge**. Sind keine Zellen mit notwendigem Kandidat oder mit einem einzigen Kandidat mehr verfügbar, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle und setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden. Hinweis: mit den mehrfachen Optionen beginnt der eigentliche Backtrack-Prozess.
-
-### Wie prüft der Solver die neu gesetzte Nummer?
-
-Der Solver prüft nach der Setzung einer neuen Nummer, ob das Sudoku mit dieser gesetzten Nummer widersprüchlich geworden ist. Falls ja, wird der Solver in den Rückwärts-Modus geschaltet und geht zurück bis zu einer Zelle, die mehrere Optionen für eine Nummernsetzung hatte.
-
-### Vorwärts und Rückwärts (Backtracking)
-
-Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Im Fachjargon: Der Solver realisiert einen Backtracking-Algorithmus. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. Rückwärtsgehen bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung.
-
-Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der Rückwärtsläufe an.
 
 ## Die Puzzle-Datenbank
 
@@ -381,24 +362,11 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Die App Soduku-Trainer starten.
 1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
 1. Die Taste Import-Puzzle klicken.
-1. ![Aktion Dateien](./imagesHelp/aktionDateien.png){:width="auto"}
+1. ![Aktion Dateien](./imagesHelp/actionFiles.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
 1. Die im Download-Ordner abgelegte Datei >>downloadedPuzzleDB.text<< selektieren.
 
 ## Sudoku-Theorie
-
-### Puzzle lösen durch Scannen, Eliminieren und Trial & Error
-
-Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial & Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
-
-1. **Scan-Necessary:** Scanne Grid nach notwendigen Kandidaten und setze diese.
-2. **Scan-Singles:** Scanne Grid nach Singles und setze diese.
-3. **Eliminiere Kandidaten** solange bis ein **Hidden Single** übrig geblieben ist und setze es. Dabei wende folgende Eliminationsregeln an:
-   1. **Nacktes Paar**
-   2. **Verstecktes Paar**
-   3. **Überschneidung**
-   4. **Zeiger-Paar, Zeiger-Tripel** 
-4. **Trial & Error:** Falls es keine notwendigen Kandidaten, keine Singles und keine Hidden Singles mehr gibt, verwende Trial & Error zur Lösung des Puzzles.
 
 
 ### Unzulässige Nummern und Kandidaten
@@ -476,6 +444,22 @@ Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es N
 </figure>
 
 Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den mittleren oberen Block. Alle Zellen, die die Zahl 2 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 2 in diesem Block mindestens einmal vorkommen sollte, wird eine der hervorgehobenen Zellen sicher die Zahl 2 enthalten. In den übrigen Zellen der Zeile kann daher die 2 gestrichen werden.
+
+### Puzzle lösen durch Scannen, Eliminieren und Trial & Error
+
+Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial & Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
+
+1. **Scan Necessary Candidates:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt. 
+2. **Scan (Naked) Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
+3. **Scan Hidden Singles** Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt, eliminiert der Solver Kandidaten, solange bis ein **Hidden Single** übrig geblieben ist und setzt es. Dabei wendet er folgende Eliminationsregeln an:
+   1. **Nacktes Paar**
+   2. **Verstecktes Paar**
+   3. **Überschneidung**
+   4. **Zeiger-Paar, Zeiger-Tripel** 
+4. **Trial & Error**
+   1. **Scan Candidate Options:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat (Hidden Sngle), wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
+   2. **Trial and error of the options** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.  
+   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung.    Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der Rückwärtsläufe an.
 
 ### Lazy und strikte Kandidatenauswertung
 
