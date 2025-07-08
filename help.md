@@ -8,9 +8,12 @@ layout: default
    3. [Grundlegende Begriffe und Operationen des Sudoku-Trainers](#grundlegende-begriffe-und-operationen-des-sudoku-trainers)
       1. [Sudoku-Puzzles und Darstellungsformen](#sudoku-puzzles-und-darstellungsformen)
       2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
-      3. [Zwei Spielphasen](#zwei-spielphasen)
-      4. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
-      5. [Trainer-Operationen](#trainer-operationen)
+      3. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
+         1. [Widerspruchsvolle Zellen](#widerspruchsvolle-zellen)
+         2. [Widerspruchsvolle Gruppen](#widerspruchsvolle-gruppen)
+      4. [Zwei Spielphasen](#zwei-spielphasen)
+      5. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
+      6. [Trainer-Operationen](#trainer-operationen)
    4. [Der automatische Solver](#der-automatische-solver)
       1. [Der Tastenblock des automatischen Solvers](#der-tastenblock-des-automatischen-solvers)
       2. [Solver-Einstellungen](#solver-einstellungen)
@@ -33,10 +36,7 @@ layout: default
       6. [Puzzle lösen durch Scannen, Eliminieren und Trial \& Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial--error)
       7. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
       8. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
-      9. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
-         1. [Widerspruchsvolle Zellen](#widerspruchsvolle-zellen)
-         2. [Widerspruchsvolle Gruppen](#widerspruchsvolle-gruppen)
-      10. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
+      9. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
    7. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
       1. [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung)
       2. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
@@ -126,6 +126,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
     <figcaption style="font-size: 16px; font-style: italic;">App-Darstellung eines Puzzles, lazy</figcaption>
 </figure>
 
+
 ### Die möglichen Inhalte einer Sudoku-Zelle
 
 |Zelle  |Bedeutung  |
@@ -142,6 +143,36 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 |![NumberConflict](./imagesHelp/conflct.png){:width="100px"}|**Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.|
 |![Automatische Selektion](./imagesHelp/autoSelected.png){:width="100px"}|**Automatisch selektierte Zelle:** mit einem Hidden Single. Etwas hellerer Hintergrund.|
 |![Manuelle Selektion](./imagesHelp/manualSelected.png){:width="100px"}|**Manuell selektierte Zelle:** mit zwei Kandidaten. Etwas dunklerer Hintergrund.|
+
+### Widerspruchsvolle Puzzles
+
+Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku bei der aktuellen Befüllung widerspruchsvoll ist. Ein Sudoku-Puzzle ist widerspruchsvoll, wenn es
+
+1. eine widerspruchsvolle Zelle besitzt, oder
+1. eine widerspruchsvollen Gruppe.
+
+Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.
+
+#### Widerspruchsvolle Zellen
+
+Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
+
+![No selectable candidates](./imagesHelp/nochoice.png)
+![No candidates at all](./imagesHelp/nochoice2.png)
+![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png)
+![NumberConflict](./imagesHelp/conflct.png)
+
+#### Widerspruchsvolle Gruppen
+
+Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entweder eine Reihe oder eine Spalte oder ein Block. So wie es widerspruchsvolle Zellen geben kann - erkennbar an ihrem roten Rand - kann es auch widerspruchsvolle Gruppen geben. Eine Gruppe ist widerspruchsvoll, wenn eine der folgenden Bedingungen vorliegt:
+
+1. **Widerspruch - Zwei gleiche Singles:** Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch.
+
+1. **Widerspruch - Zwei gleiche notwendige Nummern:** In der Gruppe tritt dieselbe Nummer in verschiedenen Zellen als notwendig auf.
+
+1. **Widerspruch - Fehlende Nummer:** In der Gruppe kommt eine Nummer überhaupt nicht vor.
+
+Wir sehen, dass gleichzeitig mehrere Bedingungen für einen Gruppenwiderspruch vorliegen können. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.
 
 ### Zwei Spielphasen
 
@@ -501,35 +532,6 @@ Woran liegt das? Es liegt daran, dass der Solver im Ausführungsmodus Strikt seh
 
 Dieser Sudoku-Trainer zeichnet sich in erster Linie durch seine nachvollziehbare Lösungssuche aus. Die Schrittminimierung ist kein Ziel. Daher ist die Einstellung "Keine Kandidatenanzeige" mit der Lazy-Auswertung im Hintergrund der Default-Auswertungsmodus.
 
-### Widerspruchsvolle Puzzles
-
-Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku bei der aktuellen Befüllung widerspruchsvoll ist. Ein Sudoku-Puzzle ist widerspruchsvoll, wenn es
-
-1. eine widerspruchsvolle Zelle besitzt, oder
-1. eine widerspruchsvollen Gruppe.
-
-Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.
-
-#### Widerspruchsvolle Zellen
-
-Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
-
-![No selectable candidates](./imagesHelp/nochoice.png)
-![No candidates at all](./imagesHelp/nochoice2.png)
-![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png)
-![NumberConflict](./imagesHelp/conflct.png)
-
-#### Widerspruchsvolle Gruppen
-
-Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entweder eine Reihe oder eine Spalte oder ein Block. So wie es widerspruchsvolle Zellen geben kann - erkennbar an ihrem roten Rand - kann es auch widerspruchsvolle Gruppen geben. Eine Gruppe ist widerspruchsvoll, wenn eine der folgenden Bedingungen vorliegt:
-
-1. **Widerspruch - Zwei gleiche Singles:** Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch.
-
-1. **Widerspruch - Zwei gleiche notwendige Nummern:** In der Gruppe tritt dieselbe Nummer in verschiedenen Zellen als notwendig auf.
-
-1. **Widerspruch - Fehlende Nummer:** In der Gruppe kommt eine Nummer überhaupt nicht vor.
-
-Wir sehen, dass gleichzeitig mehrere Bedingungen für einen Gruppenwiderspruch vorliegen können. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.
 
 ### Schwierigkeitsgrade (Levels)
 
