@@ -684,7 +684,7 @@ Nach der Setzung der ersten Option.
 
 <style scoped>
 table {
-  font-size: 10px;
+  font-size: clamp(0.6rem, 2.5vw, 2.5rem);
 }
 </style>
 
