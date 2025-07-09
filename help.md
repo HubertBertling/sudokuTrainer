@@ -218,7 +218,7 @@ Die Taste "Starte Suche" startet den automatischen Solver der App.
 **Menü-Option: Neu.**
 
 <figure >
-   <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" style="width:100%">
+   <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" style="width:33%">
     <figcaption style="font-size: 16px; font-style: italic;">Neue Puzzles generieren</figcaption>
 </figure>
 
@@ -682,19 +682,25 @@ Nach der Setzung der ersten Option.
 
 ### Übersicht über die Bedeutung der Schwierigkeitsgrade
 
-|Level|Lösungen|Methode|Angewandte Regeln und Kommentare|
+<style scoped>
+table {
+  font-size: 10px;
+}
+</style>
+
+|Level|Lösung/Methode|Angewandte Regeln und Kommentare|
 |---------|---------|---------|---------|
-|Sehr Leicht|Eindeutig|Logisches Schließen|Allein Scan-1: "Notwendige Kandidaten"|
-|Leicht|Eindeutig|Logisches Schließen|Allein Scan-1: "Notwendige Kandidaten"|
-|Mittel|Eindeutig|Logisches Schließen|Scan-1: "Notwendige Kandidaten" und mindestens einmal Scan-2: "Einziger Kandidat"|
-|Schwer|Eindeutig|Logisches Schließen|Scan-1: "Notwendige Kandidaten", Scan-2: "Einziger Kandidat" und mindestens ein "Versteckt einziger Kandidat", gewonnen durch Elimination.|
-|Sehr schwer|Eindeutig|Backtracking|Es gibt Puzzles, die nicht allein mit logischen Schlussregeln gelöst werden können.|
-|Extrem schwer|Mehrere Lösungen|Backtracking|Mittels Backtracking können prinzipiell alle Lösungen eines extrem schweren Puzzles angezeigt werden. Das können sehr viele sein. Dass leere Puzzle hat über eine Trilliarde Lösungen. Pragmatisch wird der Spieler eine solche Auflistung der Lösungen abbrechen.|
+|Sehr Leicht|Eindeutig / Logik|Allein Scan-1: "Notwendige Kandidaten"|
+|Leicht|Eindeutig / Logik|Allein Scan-1: "Notwendige Kandidaten"|
+|Mittel|Eindeutig / Logik|Scan-1: "Notwendige Kandidaten" und mindestens einmal Scan-2: "Einziger Kandidat"|
+|Schwer|Eindeutig / Logik|Scan-1: "Notwendige Kandidaten", Scan-2: "Einziger Kandidat" und mindestens ein "Versteckt einziger Kandidat", gewonnen durch Elimination.|
+|Sehr schwer|Eindeutig / Backtracking|Es gibt Puzzles, die nicht allein mit logischen Schlussregeln gelöst werden können.|
+|Extrem schwer|Mehrere Lösungen / Backtracking|Mittels Backtracking können prinzipiell alle Lösungen eines extrem schweren Puzzles angezeigt werden. Das können sehr viele sein. Dass leere Puzzle hat über eine Trilliarde Lösungen. Pragmatisch wird der Spieler eine solche Auflistung der Lösungen abbrechen.|
 
 ### Welcher Schwierigkeitsgrad für welchen Spielertyp?
 
 |Level|Spielertyp|Quelle der Puzzles|
-|---------|---------|---------|
+|-----|-----|---------|
 |Sehr leicht, Leicht, Mittel|**Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen.  Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.|Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition. Meist werden die Schwierigkeitsgrade mit einer abweichenden Definition genutzt.|
 |Schwer|**Hochleistungsbereite Spieler**, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den **Freaks** in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten.| Bei [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) gibt es eine Rubrik „**The weekly unsolvable**“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde.|
 |Alle Schwierig-keitsgrade|**Alle Spieler und Interessierte**, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines **beobachtbaren Backtrackers**.| Der vorliegende Sudoku-Trainer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von **benutzersetzbaren Haltepunkten**.|
