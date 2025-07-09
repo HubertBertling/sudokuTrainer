@@ -218,8 +218,12 @@ Die Taste "Starte Suche" startet den automatischen Solver der App.
 **Menü-Option: Neu.**
 
 <figure >
-   <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" style="width:33%">
-    <figcaption style="font-size: 16px; font-style: italic;">Neue Puzzles generieren</figcaption>
+   <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" style="display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;">
+    <figcaption style="font-size: 16px; font-style: italic;" 
+>Neues Puzzle selektieren noch während weitere Puzzles generiert werden.</figcaption>
 </figure>
 
 Mittels der Option **Neu** im Menu kann der Dialog "Neue Puzzles" geöffnet werden. Der Trainer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeitsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.

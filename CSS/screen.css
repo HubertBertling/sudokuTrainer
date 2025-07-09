@@ -25,7 +25,7 @@
     --selected-cell-color: white;
     --selected-cell-border-color: Magenta;
 
-    --error-cell-bg-color: #e91e63;
+    --error-cell-bg-color: hsl(340, 82%, 52%);
     --error-cell-color: white;
 
     /* Other definitions */
