@@ -684,12 +684,12 @@ Nach der Setzung der ersten Option.
 
 <style scoped>
 table {
-  font-size: 10px;
+  font-size: 11px;
 }
 </style>
 
-|Level|Lösung/Methode|Angewandte Regeln und Kommentare|
-|---------|---------|---------|---------|
+|Level|Lösung / Methode|Angewandte Regeln und Kommentare|
+|---------|----------------|---------|
 |Sehr Leicht|Eindeutig / Logik|Allein Scan-1: "Notwendige Kandidaten"|
 |Leicht|Eindeutig / Logik|Allein Scan-1: "Notwendige Kandidaten"|
 |Mittel|Eindeutig / Logik|Scan-1: "Notwendige Kandidaten" und mindestens einmal Scan-2: "Einziger Kandidat"|
