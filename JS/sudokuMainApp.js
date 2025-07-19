@@ -541,7 +541,7 @@ class TrackerDialog {
             sudoApp.mySolverController.trackerDlgFastStepPressed();
         });
         this.btnFastNode.addEventListener('click', () => {
-            sudoApp.mySolverController.trackerDlgFastPressed();
+            sudoApp.mySolverController.trackerDlgCountSolutionsPressed();
         });
     }
     open() {
@@ -627,6 +627,7 @@ class InfoDialog {
             this.dlgNode.close();
             this.myOpen = false;
             this.iconNode.src = "";
+
         }
     }
 }
@@ -2754,7 +2755,7 @@ class SudokuSolverView {
         }
         this.displayProgressBar();
     }
-
+    /*
     displayPuzzleSolutionInfo() {
         let puzzle = this.mySolver.myCurrentPuzzle;
         if (puzzle !== undefined) {
@@ -2769,53 +2770,53 @@ class SudokuSolverView {
             }
         }
     }
+    */
+    getSolutionInfo() {
+        let infoString =
+            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
+            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
+            'davon <br>' +
+            ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
+            ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
+            ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
 
+        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
+            infoString = infoString + '<br>' +
+                ' * mit zwei Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
+                ' &nbsp;&nbsp;davon <br>' +
+                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 1. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
+                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 2. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
+                ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
+        }
+        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
+            infoString = infoString + '<br>' +
+                '<b>Kandidaten eliminiert mittels</b><br>' +
+                ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
+                ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
+                ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
+                ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
+        }
+        return infoString;
+    }
 
     upDateAspect(aspect, aspectValue) {
         switch (aspect) {
+            case 'solutionDiscovered': {
+                if (sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall == 'trackerDlgStepSequencePressed') {
+                    let header = 'Laufende Lösung: ' + aspectValue;
+                    let infoString = sudoApp.mySolver.getSolutionInfo();
+                    sudoApp.myInfoDialog.open(
+                        header,
+                        'info',
+                        infoString,
+                        this,
+                        () => { }
+                    );
+                }
+                break;
+            }
             case 'nrOfSolutions': {
                 sudoApp.myTrackerDialog.setNumberOfSolutions(aspectValue);
-                if (sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Extrem schwer' ||
-                    sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Keine Angabe' ||
-                    sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Unlösbar') {
-                    // nothing to do  
-                } else {
-                    if (sudoApp.mySolver.currentEvalType == 'lazy-invisible' ||
-                        sudoApp.mySolver.currentEvalType == 'lazy') {
-                        let infoString =
-                            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-                            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-                            'davon <br>' +
-                            ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-                            ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-                            ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
-
-                        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
-                            infoString = infoString + '<br>' +
-                                ' * mit zwei Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
-                                ' &nbsp;&nbsp;davon <br>' +
-                                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 1. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 2. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
-                                ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
-                        }
-                        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
-                            infoString = infoString + '<br>' +
-                                '<b>Kandidaten eliminiert mittels</b><br>' +
-                                ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
-                                ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
-                                ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
-                                ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
-                        }
-
-                        sudoApp.myInfoDialog.open(
-                            'Lösung gefunden',
-                            'info',
-                            infoString,
-                            this,
-                            () => { }
-                        );
-                    }
-                }
                 break;
             }
             case 'searchIsCompleted': {
@@ -2868,6 +2869,7 @@ class SudokuSolverView {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
             // sudoApp.mySolverView.showPuzzleSolutionInfo('Keine Lösung');
         } else {
+
             if (nrSol == 1) {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösung');
             } else {
@@ -3056,6 +3058,8 @@ class SudokuSolverController {
         // The solver model
         this.mySolver = solver;
         this.initUndoActionStack();
+
+        this.myCurrentTrackerBtnPressed = undefined;
 
         // =============================================================
         // The events of the solver are set
@@ -4037,10 +4041,12 @@ class SudokuSolverController {
 
     trackerDlgStepSequencePressed() {
         // Suchlauf mit Haltepunkten
+        sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepSequencePressed';
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
             sudoApp.mySolverView.stopLoaderAnimation();
             sudoApp.mySolver.notify();
+
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
@@ -4053,13 +4059,16 @@ class SudokuSolverController {
                     () => {
                         sudoApp.mySolver.performSearchStep();
                         sudoApp.mySolver.notify();
-                    }, 75);
+                    },
+                    75);
+
             }
         }
     }
 
 
     trackerDlgStepPressed() {
+        sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
         let action = undefined;
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
@@ -4073,12 +4082,14 @@ class SudokuSolverController {
             } else {
                 action = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
+
             }
         }
         return action;
     }
 
     trackerDlgFastStepPressed() {
+        sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgFastStepPressed';
         // Weitere Lösung
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4100,31 +4111,54 @@ class SudokuSolverController {
     }
 
     trackerDlgFastStep() {
-        // Weitere Lösung
+        // 
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
             sudoApp.mySolverView.stopLoaderAnimation();
             sudoApp.mySolver.notify();
         }
-        sudoApp.mySolver.performSolutionStep();
+        let stoppingBP = sudoApp.mySolver.performSolutionStep();
         sudoApp.mySolver.notify();
+
+        if (stoppingBP == 'solutionDiscovered') {
+            let header = 'Laufende Lösung: ' + sudoApp.mySolver.myCurrentSearch.myNumberOfSolutions;
+            let infoString = sudoApp.mySolver.getSolutionInfo();
+            sudoApp.myInfoDialog.open(
+                header,
+                'info',
+                infoString,
+                this,
+                () => { }
+            );
+        }
+
     }
 
 
-    trackerDlgFastPressed() {
-        // Weitere Lösungen ...
-        this.trackerDlgFast();
-    }
-    trackerDlgFast() {
+    trackerDlgCountSolutionsPressed() {
+        // Lösungen zählen ...
+        sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgCountSolutionsPressed';
+
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
             sudoApp.mySolverView.stopLoaderAnimation();
             sudoApp.mySolver.notify();
+            let header = 'Laufende Lösung: ' + sudoApp.mySolver.myCurrentSearch.myNumberOfSolutions;
+            let infoString = sudoApp.mySolver.getSolutionInfo();
+            sudoApp.myInfoDialog.open(
+                header,
+                'info',
+                infoString,
+                this,
+                () => { }
+            );
+
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
                 sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
+                // this.trackerDlgFast();
                 // Repeat the execution of the step 'performSolutionStep()'
                 // until the 'searchCompleted'-BreakPoint is reached.
                 let breakPts = {
@@ -4143,11 +4177,31 @@ class SudokuSolverController {
                             sudoApp.mySolverView.stopLoaderAnimation();
                         }
                     }, 0);
+
             }
         }
+    }
+    trackerDlgFast() {
+        // Repeat the execution of the step 'performSolutionStep()'
+        // until the 'searchCompleted'-BreakPoint is reached.
+        let breakPts = {
+            contradiction: false,
+            multipleOption: false,
+            single: false,
+            hiddenSingle: false,
+            solutionDiscovered: false
+        }
+        sudoApp.myClockedRunner.setBreakpoints(breakPts);
+        sudoApp.mySolverView.startLoaderAnimation('Lösungen zählen ...');
+        sudoApp.myClockedRunner.start(sudoApp.mySolver,
+            () => {
+                let bp = sudoApp.mySolver.performSolutionStep();
+                if (bp == 'searchCompleted') {
+                    sudoApp.mySolverView.stopLoaderAnimation();
+                }
+            }, 0);
 
     }
-
 
     trackerDlgStopPressed() {
         sudoApp.mySolverView.stopLoaderAnimation();
