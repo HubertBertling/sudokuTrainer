@@ -2755,50 +2755,7 @@ class SudokuSolverView {
         }
         this.displayProgressBar();
     }
-    /*
-    displayPuzzleSolutionInfo() {
-        let puzzle = this.mySolver.myCurrentPuzzle;
-        if (puzzle !== undefined) {
-            if (puzzle.getNumberOfSolutions() == 0) {
-                this.showPuzzleSolutionInfo('Keine Lösung!');
-            } else {
-                if (puzzle.getNumberOfSolutions() == 1) {
-                    this.showPuzzleSolutionInfo('1 Lösung');
-                } else {
-                    this.showPuzzleSolutionInfo(puzzle.getNumberOfSolutions() + ' Lösungen');
-                }
-            }
-        }
-    }
-    */
-    getSolutionInfo() {
-        let infoString =
-            'Gegeben: ' + sudoApp.mySolver.myGrid.numberOfGivens() + '<br>' +
-            '<b>Lösungsschritte</b>: ' + sudoApp.mySolver.myCurrentSearch.getNumberOfSteps() + '<br>' +
-            'davon <br>' +
-            ' * mit notwendiger Nr.: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countNecessaryCandidates + '<br>' +
-            ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
-            ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
-
-        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
-            infoString = infoString + '<br>' +
-                ' * mit zwei Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
-                ' &nbsp;&nbsp;davon <br>' +
-                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 1. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 2. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
-                ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
-        }
-        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
-            infoString = infoString + '<br>' +
-                '<b>Kandidaten eliminiert mittels</b><br>' +
-                ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
-                ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
-                ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
-                ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
-        }
-        return infoString;
-    }
-
+  
     upDateAspect(aspect, aspectValue) {
         switch (aspect) {
             case 'solutionDiscovered': {

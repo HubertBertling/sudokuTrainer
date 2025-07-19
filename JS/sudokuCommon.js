@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 930;
+let VERSION = 931;
 
 // ==========================================
 // Basic classes
@@ -4304,8 +4304,8 @@ class SudokuSolver {
         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
             infoString = infoString + '<br>' +
                 '<b>Kandidaten eliminiert mittels</b><br>' +
-                ' * Nackte Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
-                ' * Versteckte Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
+                ' * Nackter Paare: ' + sudoApp.mySolver.myCurrentSearch.nakedPairs.size() + '<br>' +
+                ' * Versteckter Paare: ' + sudoApp.mySolver.myCurrentSearch.hiddenPairs.size() + '<br>' +
                 ' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.pointingPairs.size() + '<br>' +
                 ' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.intersections.size()
         }
