@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 933;
+let VERSION = 934;
 
 // ==========================================
 // Basic classes
@@ -4725,7 +4725,7 @@ class SudokuSolver {
                 sudoApp.mySolverController.resetConfirmed,
                 sudoApp.mySolverController.resetRejected,
                 "Puzzle zurücksetzen?",
-                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver die Korrektheit statistischer Auswertungen berechneter Lösungen nicht garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
+                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver zwar die Korrektheit berechneter Lösungen nicht aber die Korrektheit der Auswertungen der Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
     }
 
