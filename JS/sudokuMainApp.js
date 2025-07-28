@@ -3522,7 +3522,7 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.getGamePhase() == 'define') {
                 sudoApp.myInfoDialog.open("Tipp", "negativ",
-                    "Das Puzzle ist noch in der Definition. Für das unfertige Puzzle kann kein Tipp gegeben werden.", this, () => { });
+                    "Das Puzzle ist noch in der Definition.<br> Für unfertige Puzzles kann kein Tipp gegeben werden.", this, () => { });
             } else if (sudoApp.mySolver.myCurrentPuzzle.getLevel() == 'Extrem schwer') {
                 sudoApp.myInfoDialog.open("Tipp", "negativ",
                     "Für extrem schwere Puzzles kann kein Tipp gegeben werden.", this, () => { });
@@ -3945,7 +3945,7 @@ class SudokuSolverController {
 
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Prüfen", "negativ",
-                "Das Puzzle ist noch in der Definition. Für unfertige Puzzles gibt es keine sinnvollen Prüfungen.",
+                "Das Puzzle ist noch in der Definition.<br> Für unfertige Puzzles gibt es keine sinnvollen Prüfungen.",
                 this, setFocusBack
             );
         } else {
@@ -3961,7 +3961,7 @@ class SudokuSolverController {
                     );
                 } else {
                     sudoApp.myInfoDialog.open('Prüfergebnis', 'info', 'Schwierigkeitsgrad: ' + level +
-                        '. <br><br> Der aktuelle Puzzle-Status zeigt noch keinen Widerspruch. Im weiteren Verlauf der Lösungssuche mit dem automatischen Solver wird ein Widerspruch aufgedeckt werden, der dazu führt, dass das Puzzle unlösbar ist.',
+                        '. <br><br> Der aktuelle Puzzle-Status zeigt noch keinen Widerspruch.<br> Im weiteren Verlauf der automatischen Lösungssuche wird ein expliziter Widerspruch aufgedeckt werden.',
                         this, setFocusBack);
                 }
             } else if (level == 'Extrem schwer') {
