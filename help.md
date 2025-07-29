@@ -4,24 +4,25 @@ layout: default
 
 1. [Sudoku-Trainer](#sudoku-trainer)
    1. [Sudoku-Trainer Installation](#sudoku-trainer-installation)
-   2. [Manueller und automatischer Solver für klassisches Sudoku](#manueller-und-automatischer-solver-für-klassisches-sudoku)
-   3. [Grundlegende Begriffe und Operationen des Sudoku-Trainers](#grundlegende-begriffe-und-operationen-des-sudoku-trainers)
+   2. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
+   3. [Manueller und automatischer Solver für klassisches Sudoku](#manueller-und-automatischer-solver-für-klassisches-sudoku)
+   4. [Grundlegende Begriffe und Operationen des Sudoku-Trainers](#grundlegende-begriffe-und-operationen-des-sudoku-trainers)
       1. [Sudoku-Puzzles und Darstellungsformen](#sudoku-puzzles-und-darstellungsformen)
       2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
       3. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
       4. [Zwei Spielphasen](#zwei-spielphasen)
       5. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
       6. [Trainer-Operationen](#trainer-operationen)
-   4. [Der automatische Solver](#der-automatische-solver)
+   5. [Der automatische Solver](#der-automatische-solver)
       1. [Der Tastenblock des automatischen Solvers](#der-tastenblock-des-automatischen-solvers)
       2. [Solver-Einstellungen](#solver-einstellungen)
-   5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
+   6. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
       1. [Operationen der Datenbank](#operationen-der-datenbank)
-      2. [Import/Export und Teilen von Puzzles](#importexport-und-teilen-von-puzzles)
-         1. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
-         2. [Puzzle von SmartPhone zu SmartPhone](#puzzle-von-smartphone-zu-smartphone)
-         3. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
-   6. [Sudoku-Theorie](#sudoku-theorie)
+      2. [Import/Export](#importexport)
+         1. [Puzzle teilen von SmartPhone zu SmartPhone](#puzzle-teilen-von-smartphone-zu-smartphone)
+         2. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
+         3. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
+   7. [Sudoku-Theorie](#sudoku-theorie)
       1. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
       2. [Notwendige Kandidaten](#notwendige-kandidaten)
       3. [Einzige Kandidaten (Singles bzw. Naked Singles)](#einzige-kandidaten-singles-bzw-naked-singles)
@@ -35,16 +36,16 @@ layout: default
       7. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
       8. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
       9. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
-   7. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
+   8. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
       1. [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung)
       2. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
-   8. [Mit Hilfe des Sudoku-Trainers gewonnene Erfahrungen und Einsichten](#mit-hilfe-des-sudoku-trainers-gewonnene-erfahrungen-und-einsichten)
+   9. [Mit Hilfe des Sudoku-Trainers gewonnene Erfahrungen und Einsichten](#mit-hilfe-des-sudoku-trainers-gewonnene-erfahrungen-und-einsichten)
       1. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#übersicht-über-die-bedeutung-der-schwierigkeitsgrade)
       2. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
       3. [Faire Puzzles](#faire-puzzles)
       4. [Einsichten und Tatsachen über Sudokus](#einsichten-und-tatsachen-über-sudokus)
-   9. [Schlussbemerkungen](#schlussbemerkungen)
-   10. [Beispiel-Puzzles](#beispiel-puzzles)
+   10. [Schlussbemerkungen](#schlussbemerkungen)
+   11. [Beispiel-Puzzles](#beispiel-puzzles)
 
 
 # Sudoku-Trainer
@@ -59,6 +60,27 @@ Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als
 |![Installation Chrome](./imagesHelp/install.png){:width="250px"}| ![Installation Chrome](./imagesHelp/install2.png){:width="250px"}|
 
 Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
+
+## Teilen der Sudoku-Trainer-App URL
+
+In der Sudoku-Trainer-App kann die URL der App geteilt werden. Dies ist dann besonders nützlich, wenn man die App weitergeben will.
+
+**Absender-Smartphone**
+
+1. Teile-Taste
+1. WhatsApp selektieren
+1. Kontakt selektieren und senden
+
+|Teile Taste  |WhatsApp selektieren |
+|---------|---------|
+|![Teilen Taste](./imagesHelp/teilenURLApp.png){: width="200px"}|![TeilenURL](./imagesHelp/teilenURLApp2.png){: width="200px"}|
+
+**Ziel-Smartphone**
+
+1. In WhatsApp in der empfangenen Nachricht auf den Link klicken.
+1. In der geöffneten Web-Seite die PWAP-App installieren.
+
+Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Browser als Installationsbasis gewählt. Z.B. der Samsung-Internet-Browser oder der Firefox-Browser. Besser ist es, Google-Chrome als Installationsbasis zu wählen. Wenn Chrome nicht als Standard-Browser eingestellt ist, kann man den Link aus der WhatsApp-Nachricht kopieren, den Chrome-Browser öffnen und den kopierten Link in das URL-Feld einfügen. Danach läuft alles wie beschrieben.  
 
 ## Manueller und automatischer Solver für klassisches Sudoku
 
@@ -86,7 +108,7 @@ Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses T
    <img src="./imagesHelp/puzzlePrintDisplay.png" alt="Printdarstellung eines Puzzles" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Printdarstellung eines Puzzles</figcaption>
 </figure>
-Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als Gruppe bezeichnet.
+Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
 
 Es gibt verschiedene Darstellungsformen eines Puzzles. Oben ist die Druckdarstellung eines Puzzles zu sehen. Nachfolgend sind zwei reine Textdarstellungen des Puzzles angezeigt:
 
@@ -108,7 +130,7 @@ Textdarstellung 2
 
     140006800000050002000094060004000000000008036750001900000300010090000005800000700
 
-Die Textdarstellungen eignen sich für den Austausch von Puzzles zwischen Spielern und zwischen Sudoku-Apps. Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Trainer geladen. Beide Textformate funktionieren.
+Die Textdarstellungen eignen sich für den Austausch von Puzzles zwischen Spielern und zwischen Sudoku-Apps. Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Trainer geladen. Beide Textformate sind anwendbar.
 
 Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden. 
 
@@ -185,8 +207,8 @@ Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der
 
 Beim Eingeben wie auch beim Lösen besteht ein **Lösungsschritt** aus zwei Subschritten:
 
-1. **(a) Sudoku-Zelle selektieren**.
-2. **(b) Nummer setzen bzw. löschen**: D.h. eine Nummer im rechten Tastenblock wählen. Es kann auch einfach nur eine Nummerntaste auf der Tastatur für die Eingabe einer Nummer benutzt werden.
+1. **Sudoku-Zelle selektieren.**
+2. **Nummer setzen bzw. löschen:** D.h. eine Nummer im rechten Tastenblock wählen. Es kann auch einfach nur eine Nummerntaste auf der Tastatur für die Eingabe einer Nummer benutzt werden.
 
 Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle selektiert werden und dann die rote Lösch-Taste gedrückt werden.
 
@@ -311,7 +333,7 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 |#Gelöste|Die Zahl der gelösten Zellen des Puzzles.|
 |#Offene|Die Zahl der offenen, ungelösten Zellen des Puzzles.|
 |Level|Der ermittelte Schwierigkeitsgrad des gespeicherten Puzzles.|
-|#RL|Die Anzahl der Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. Hinweis: Diese Information hat nur für sehr schwere Puzzles Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles ist dieser Wert nicht sinnvoll definiert. Rückwärtsläufe für welche der vielen Lösungen?|
+|#Error-RL|Die Anzahl der Error-Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. **Error-Rückwärtsläufe** erfolgen nach Auftreten eines Widerspruchs. Hinweis: Error-Rückwärtsläufe sind nur für sehr schwere Puzzles von Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe** nach dem Auftreten einer Lösung. Auf eine entsprechende Auswertung wird verzichtet.|
 |Datum|Datum, an dem das Puzzle angelegt wurde.|
 
 ### Operationen der Datenbank
@@ -329,34 +351,13 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 |Import Puzzle(s)|**Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.|
 |![ShareTaste](./imagesHelp/shareButton.png){:width="50px"}|**Puzzle teilen.** Die Sudoku-Trainer-App ist Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.|
 
-### Import/Export und Teilen von Puzzles
+### Import/Export
 
 Die Operationen Import/Export und Teilen sind sehr abhängig von der vorliegenden Betriebssystem- und Browser-Version. Konkret von den verfügbaren APIs. Es kann also vorkommen, dass manche der nachfolgend gezeigten Beispiele auf dem System des interessierten Anwenders nicht funktionieren.
 
 Nachfolgend einige Beispiele für den Austausch von Puzzles zwischen Sudoku-Trainer-Apps.
 
-#### Teilen der Sudoku-Trainer-App URL
-
-In der Sudoku-Trainer-App kann die URL der App geteilt werden. Dies ist dann besonders nützlich, wenn man die App weitergeben will.
-
-**Absender-Smartphone**
-
-1. Teile-Taste
-1. WhatsApp selektieren
-1. Kontakt selektieren und senden
-
-|Teile Taste  |WhatsApp selektieren |
-|---------|---------|
-|![Teilen Taste](./imagesHelp/teilenURLApp.png){: width="200px"}|![TeilenURL](./imagesHelp/teilenURLApp2.png){: width="200px"}|
-
-**Ziel-Smartphone**
-
-1. In WhatsApp in der empfangenen Nachricht auf den Link klicken.
-1. In der geöffneten Web-Seite die PWAP-App installieren.
-
-Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Browser als Installationsbasis gewählt. Z.B. der Samsung-Internet-Browser oder der Firefox-Browser. Besser ist es, Google-Chrome als Installationsbasis zu wählen. Wenn Chrome nicht als Standard-Browser eingestellt ist, kann man den Link aus der WhatsApp-Nachricht kopieren, den Chrome-Browser öffnen und den kopierten Link in das URL-Feld einfügen. Danach läuft alles wie beschrieben.  
-
-#### Puzzle von SmartPhone zu SmartPhone
+#### Puzzle teilen von SmartPhone zu SmartPhone
 
 In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 
@@ -376,6 +377,7 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. ![Aktion Dateien](./imagesHelp/actionFiles.png){:width="auto"}
 1. Die Aktion Dateien auswählen.
 1. Die im Download-Ordner abgelegte Datei >>sharedPuzzle.text<< selektieren.
+
 
 #### Puzzle Datenbank vom PC auf das Smartphone übertragen
 
@@ -400,8 +402,31 @@ In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
 1. Die Aktion Dateien auswählen.
 1. Die im Download-Ordner abgelegte Datei >>downloadedPuzzleDB.text<< selektieren.
 
-## Sudoku-Theorie
+#### Puzzle kopieren und einfügen via Clipboard
 
+Die Textdarstellungen eignen sich für den sehr einfachen Austausch von Puzzles zwischen Spielern und zwischen Sudoku-Apps. 
+
+Textdarstellung 1: 
+
+    14.|..6|8..
+    ...|.5.|..2
+    ...|.94|.6.
+    -----------
+    ..4|...|...
+    ...|..8|.36
+    75.|..1|9..
+    -----------
+    ...|3..|.1.
+    .9.|...|..5
+    8..|...|7..
+
+Textdarstellung 2 
+
+    140006800000050002000094060004000000000008036750001900000300010090000005800000700
+
+Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Trainer geladen. Beide Textformate sind anwendbar.
+
+## Sudoku-Theorie
 
 ### Unzulässige Nummern und Kandidaten
 
@@ -483,17 +508,17 @@ Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in 
 
 Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial & Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
 
-1. **Scan Necessary Candidates:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt. 
-2. **Scan (Naked) Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
-3. **Scan Hidden Singles** Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt, eliminiert der Solver Kandidaten, solange bis ein **Hidden Single** übrig geblieben ist und setzt es. Dabei wendet er folgende Eliminationsregeln an:
+1. **Scanne notwendige Kandidaten:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt. 
+2. **Scanne Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
+3. **Scanne versteckte Singles** Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt, eliminiert der Solver Kandidaten, solange bis ein **verstecktes Single** übrig geblieben ist und setzt es. Dabei wendet er folgende Eliminationsregeln an:
    1. **Nacktes Paar**
    2. **Verstecktes Paar**
    3. **Überschneidung**
    4. **Zeiger-Paar, Zeiger-Tripel** 
 4. **Trial & Error**
-   1. **Scan Candidate Options:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat (Hidden Sngle), wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
-   2. **Trial and error of the options** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.  
-   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung.    Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der Rückwärtsläufe an.
+   1. **Scanne Kandidaten-Optionen:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
+   2. **Trial and Error der Optionen** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.  
+   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung. Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der **Error-Rückwärtsläufe** an. Hinweis: Error-Rückwärtsläufe erfolgen nach Auftreten eines Widerspruchs. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe**.
 
 ### Lazy und strikte Kandidatenauswertung
 

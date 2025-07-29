@@ -2966,7 +2966,7 @@ class SudokuSolverView {
         } else {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-                + '<b>Rückwärtsläufe:</b> &nbsp' + countBackwards;
+                + '<b>Error-RL:</b> &nbsp' + countBackwards;
         }
     }
 
@@ -2976,7 +2976,7 @@ class SudokuSolverView {
             evalNode.innerHTML = '';
         } else {
             evalNode.innerHTML =
-                '&nbsp <b>Zurück:</b> &nbsp' + countBackwards;
+                '&nbsp <b>Error-RL:</b> &nbsp' + countBackwards;
         }
     }
 
