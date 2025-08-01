@@ -25,8 +25,8 @@ layout: default
    7. [Sudoku-Theorie](#sudoku-theorie)
       1. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
       2. [Notwendige Kandidaten](#notwendige-kandidaten)
-      3. [Einzige Kandidaten (Singles bzw. Naked Singles)](#einzige-kandidaten-singles-bzw-naked-singles)
-      4. [Eliminierbare Kandidaten und versteckt einzige Kandidaten (Hidden Singles)](#eliminierbare-kandidaten-und-versteckt-einzige-kandidaten-hidden-singles)
+      3. [Singles (Einzige Kandidaten)](#singles-einzige-kandidaten)
+      4. [Eliminierbare Kandidaten und versteckte Singles](#eliminierbare-kandidaten-und-versteckte-singles)
       5. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
          1. [E1: Kriterium "Nacktes Paar"](#e1-kriterium-nacktes-paar)
          2. [E2: Kriterium: "Verstecktes Paar"](#e2-kriterium-verstecktes-paar)
@@ -458,25 +458,25 @@ Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell gelade
 
 Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Stuart spricht von _der letzten verbleibenden Zelle für die 1 im dritten Block_. Im Lazy-Auswertungsmodus zeigt der Solver den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn man die Zelle mit der notwendigen Nummer selektiert hat. Die Zellen des Blocks besitzen einen grün gestrichelten Rahmen. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den grün gestrichelten Rahmen keine 1 mehr gesetzt werden kann.
 
-### Einzige Kandidaten (Singles bzw. Naked Singles)
+### Singles (Einzige Kandidaten)
 
 <figure>
    <img src="./imagesHelp/single.png" alt="Single" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Einziger Kandidat 9</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Single 9</figcaption>
 </figure>
 
-Eine Kandidatnummer in einer Zelle heißt "Einziger Kandidat" bzw. "Single" oder "Naked Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 9 ein einziger Kandidat. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
+Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 9 ein einziger Kandidat. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
 
-### Eliminierbare Kandidaten und versteckt einzige Kandidaten (Hidden Singles)
+### Eliminierbare Kandidaten und versteckte Singles
 
-**Eliminierbare Kandidaten** werden in roter Schrift angezeigt. Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. In manchen Fällen wird das erst nach einigen weiteren Lösungsschritten offenbar.
+Eliminierbare Kandidaten werden in roter Schrift angezeigt. Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde.
 
 <figure>
    <img src="./imagesHelp/versteckterSingle.png" alt="Single" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Versteckt Einziger Kandidat 4</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Versteckter Single 4</figcaption>
 </figure>
 
-Warum interessieren wir uns für eliminierbare Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (**ein versteckt einziger Kandidat**) eliminierbar sind, dann kann der versteckt einzige Kandidat, hier die 4, in der Zelle gesetzt werden.
+Warum interessieren wir uns für eliminierbare Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (ein **versteckter Single**) eliminierbar sind, dann kann der versteckt einzige Kandidat, hier die 4, in der Zelle gesetzt werden.
 
 ### Kriterien für die Erkennung eliminierbarer Kandidaten
 

@@ -698,7 +698,7 @@ html {
 .play-mode,
 .breakpoint-settings,
 .io-technique {
-    margin-top: 0.2rem;
+    margin-top: 0.4rem;
     margin-left: 2rem;
     margin-right: 2rem;
 }
@@ -725,7 +725,7 @@ html {
 .play-mode-legend,
 .breakpoints-legend,
 .puzzle-io-legend {
-    margin-top: 1.2rem;
+    margin-top: 1.4rem;
     margin-left: 1.2rem;
     font-weight: bold;
     font-size: var(--font-size-lg);

@@ -489,10 +489,9 @@
                         <input type="radio" id="pc-strict-plus" class="radio-eval-type" value="strict-plus"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Strikt + (Strikt-Plus)</div>
-                        <div class="label-text text-spacing">Diese
-                            Auswertungsmethode führt eine vollständige Auswertung durch. Alle aktuell unzulässigen
-                            Kandidaten, alle notwendigen Nummern, alle Singles und versteckten Singles werden ermittelt
-                            und angezeigt.
+                        <div class="label-text text-spacing">Diese Auswertungsmethode führt eine vollständige Auswertung durch. 
+                            Alle notwendigen Nummern, alle Singles und alle aktuell eliminierbaren
+                            Kandidaten werden ermittelt und angezeigt.
                         </div>
                     </label>
                     <label class="label-container">
@@ -500,7 +499,7 @@
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Strikt - (Strikt-Minus)</div>
                         <div class="label-text text-spacing">Wie
-                            Strikt +. Jedoch werden die errechneten unzulässigen Kandidaten ausgeblendet.
+                            Strikt +. Jedoch werden die errechneten eliminierbaren Kandidaten ausgeblendet.
                         </div>
                     </label>
                 </fieldset>
@@ -516,27 +515,27 @@
                         <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Single.
                         </div>
-                        <div class="label-text text-spacing">Wenn im Lösungslauf mindestens ein Schritt mit einem
+                        <div class="label-text text-spacing">Wenn im Lösungslauf ein Schritt mit einem
                             einzigen Kandidaten auftritt, hat das Puzzle den Schwierigkeitsgrad 'Mittel'.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-hidden-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Hidden Single. </div>
-                        <div class="label-text text-spacing"> Zelle mit einem versteckten einzigen Kandidaten. Durch Klicken auf die selektierte Zelle wird das Eliminations-kriterium für den ersten roten Kandidaten der Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch erneutes Klicken nach und nach besucht.
+                        <div class="label-text text-spacing prefix">Haltepunkt bei verstecktem Single. </div>
+                        <div class="label-text text-spacing"> Zelle mit einem versteckten Single. Durch Klicken auf die selektierte Zelle wird das Eliminationskriterium für den ersten roten Kandidaten der Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch erneutes Klicken nach und nach besucht.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Mehroptionszelle.
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Mehroptionszelle (trial).
                         </div>
                         <div class="label-text text-spacing">Haltepunkt ohne eindeutigen nächsten Kandidaten. Schon erprobte Kandidaten werden mit Unterstrich angezeigt.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-contradiction" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch</div>
-                        <div class="label-text text-spacing">Hinweis: die Zelle mit der Widerspruchsursache ist in der Regel ungleich der Zelle oder Gruppe, die den Widerspruch anzeigt.
+                        <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch (error)</div>
+                        <div class="label-text text-spacing">Zelle oder Gruppe, die einen Widerspruch anzeigt. Die Widerspruchsursache kann eine gewählte Option (trial) in einer Mehroptionszelle sein oder ein unlösbares Ausgangspuzzle. 
                         </div>
                     </label>
                     <label class="label-container">
