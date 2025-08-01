@@ -766,13 +766,13 @@ Im Kontext von Sudoku werden verschiedene Begriffe verwendet, die das Spielfeld,
 - **Kandidat**: Eine Zahl, die potentiell in ein bestimmtes Feld eingetragen werden könnte, basierend auf den Regeln, aber noch nicht endgültig entschieden ist.
 - **Lösung**: Die vollständige, korrekte Belegung aller Felder mit den Zahlen 1 bis 9, wobei jede Zahl in jeder Reihe, Spalte und jedem Block nur einmal vorkommt.
 
-Die Begriffe rund um genutzte und definierte Eliminationsregeln sind ähnlich, variieren aber im Detail von Werkzeug zu Werkzeug. So auch im vorliegenden Werkzeug. Daher kommt es zur nächsten Beobachtung.
+Die Begriffe rund um genutzte und definierte Eliminationsregeln sind ähnlich, variieren aber im Detail von Werkzeug zu Werkzeug. So auch im vorliegenden Werkzeug. Daher kommt es zur folgenden Beobachtung.
 
-**2. Beobachtung: Die Definitionen der Schwierigkeitsgrade von Sudoku-Puzzles sind in der Regel nicht direkt vergleichbar.**
+**2. Beobachtung: Die Schwierigkeitsgrade von Sudoku-Puzzles sind in der Regel werkzeugabhängig definiert.**
 
-Das hat seine Ursache darin, dass diese von den Definitionen und Implementierungen der Kandidaten-Eliminationsregeln abhängig sind. Somit sind die Schwierigkeitsgrade der Sudoku-Solver werkzeugabhängig.
+Das trifft für den vorliegenden Sudoku-Trainer zu, aber auch für den Sudoku-Coach von [Jan Feldmann](https://sudoku.coach/) und dem Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page). Das hat seine Ursache darin, dass die Definition der Schwierigkeitsgrade von den Definitionen und Implementierungen der Kandidaten-Eliminationsregeln abhängig sind. Letztere sind werkzeugabhängig definiert.
 
-**3. Sudokus in Zeitschriften häufig Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'.**
+**3. Sudokus in Zeitschriften sind häufig 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'.**
 
 Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht'
 'Mittel' oder selten auch einmal 'Schwer'. Die Schwierigkeitsgrade gemäß der Definition dieser App. D.h. für die Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln.
@@ -810,7 +810,7 @@ Wir kopieren die Textdarstellung des Puzzle in die Zwischenablage und in den Sud
     Puzzle = 123748569597612438468539217986157342314286795752394681879465123241073056635021074</figcaption>
 </figure>
 
-Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgrad, in diesem Fall "Extrem schwer", siehe oben rechts. Extrem schwer bedeutet, dass das Puzzle mehrere Lösungen hat. Dieses Puzzle hat genau zwei Lösungen. Schauen wir uns die Lösungen an: Taste “Starte Suche”, dann Taste “Weitere Lösung anzeigen”.
+Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgrad, in diesem Fall "Extrem schwer", siehe oben rechts. Extrem schwer bedeutet, dass das Puzzle mehrere Lösungen hat. Schauen wir uns die Lösungen an: Taste “Starte Suche”, dann Taste “Weitere Lösung anzeigen”.
 
 <figure >
    <img src="./imagesHelp/given77loesung1.png" alt="Given 77, Lösung1" style="max-width:100%">
@@ -827,9 +827,11 @@ Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgr
     <figcaption style="font-size: 16px; font-style: italic;">77 Givens, Keine weitere Lösung</figcaption>
 </figure>
 
-**7. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht durch logisches Schließen lösen.**
+Dieses Puzzle hat genau zwei Lösungen.
 
-Im Allgemeinen lassen sich Puzzles, die mehrere Lösungen besitzen, nicht durch logisches Schließen lösen. Die Lösungen können jedoch durch Backtracking aufgezählt werden. In diesem besonders einfachen Fall gibt es nur zwei Lösungen, die unmittelbar ersichtlich. Es kann sehr viele Lösungen eines Puzzles geben. Es gibt ca. 6,7 Trilliarden oder 6,7 ⋅ 1021) verschiedene (vollständig ausgefüllte) 9×9-Standard-Sudokus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#Die_Anzahl_der_Sudokus).
+**7. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen.**
+
+Puzzles, die mehrere Lösungen besitzen, lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen. In dem besonders einfachen Fall des vorigen Beispiels gibt es nur zwei Lösungen, die unmittelbar ersichtlich sind. Es kann aber sehr viel mehr Lösungen eines Puzzles geben. So gibt es ca. 6,7 Trilliarden verschiedene, vollständig ausgefüllte 9×9-Standard-Sudokus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#Die_Anzahl_der_Sudokus). D.h. die Lösungen mehrdeutiger Puzzles lassen sich prinzipiell aufzählen. Pragmatisch stößt diese Aufzählung bei großen Lösungsmengen an ihre Grenzen.
 
 **8. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
 Betrachten wir das folgende Beispiel.
@@ -850,13 +852,14 @@ Betrachten wir das folgende Beispiel.
     <figcaption style="font-size: 16px; font-style: italic;">Keine weitere Lösung</figcaption>
 </figure>
 
-Genauer gesagt bedeutet dieses Ergebnis, dass dieser Sudoku-Trainer für dieses Puzzle eine Backtrack-Lösung hat, und dass diese Lösung die einzige Lösung ist. Das Eindeutigkeit der Lösung gilt werkzeugunabhängig für dieses Puzzle. Der vorliegende Trainer hat aber keine rein logische Herleitung gefunden. Deshalb bewertet er das Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".
+Genauer gesagt bedeutet dieses Ergebnis, dass dieser Sudoku-Trainer für dieses Puzzle eine Backtrack-Lösung gefunden hat, und dass diese Lösung die einzige ist. Der vorliegende Trainer hat keine rein logische Herleitung gefunden. Deshalb bewertet er das Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".
 
-Hinweis: Dieser Solver findet deutlich weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Trainer nur sehr wenige Schlussregeln implementiert hat, verglichen mit den Solvern von Andrew Stuart und Jan Feldmann. Beide haben einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
+Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Trainer nur sehr wenige Schlussregeln implementiert hat, verglichen mit den Solvern von Andrew Stuart und Jan Feldmann. Beide haben einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
 
 Zurück zu unserer Vermutung: "Es gibt Puzzles, die eine eindeutige Lösung haben, die aber vermutlich nicht durch logisches Schließen hergeleitet werden kann." Für unser Beispiel-Puzzle kann die vorliegende App keine logische Herleitung finden. Aber auch die Solver von Stuart und Feldmann können es nicht. Dies legt die Vermutung nahe, dass es derart schwierige Puzzles gibt, sodass sie prinzipiell nicht durch logisches Schließen gelöst werden können. Aber ein Beispiel ist kein Beweis. Deswegen können wir nur von einer Vermutung sprechen.
 
 **9. Tatsache: Es gibt unlösbare Sudokus.**
+
 Es gibt unlösbare Sudokus. Das ist erstmal eine triviale Aussage.
 
 <figure >
@@ -883,7 +886,7 @@ Puzzle = 05060030771030005636005002950900600000720400543689570000356004000100000
 
 ## Schlussbemerkungen
 
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer bei Bedarf Logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer bei Bedarf Logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass bei der Lösungssuche die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
 
 Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche der oben genannten Eliminationsregeln für eliminierbare Kandidaten (es gibt noch weitere, die in dieser App gar nicht implementiert sind) anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest Du einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
 
