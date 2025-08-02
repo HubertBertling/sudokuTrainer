@@ -23,19 +23,19 @@ layout: default
          2. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
          3. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
    7. [Sudoku-Theorie](#sudoku-theorie)
-      1. [Unzulässige Nummern und Kandidaten](#unzulässige-nummern-und-kandidaten)
-      2. [Notwendige Kandidaten](#notwendige-kandidaten)
-      3. [Singles (Einzige Kandidaten)](#singles-einzige-kandidaten)
-      4. [Eliminierbare Kandidaten und versteckte Singles](#eliminierbare-kandidaten-und-versteckte-singles)
-      5. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
-         1. [E1: Kriterium "Nacktes Paar"](#e1-kriterium-nacktes-paar)
-         2. [E2: Kriterium: "Verstecktes Paar"](#e2-kriterium-verstecktes-paar)
-         3. [E3 Kriterium: "Überschneidung"](#e3-kriterium-überschneidung)
-         4. [E4 Kriterium: "Zeiger-Paar", "Zeiger-Triple"](#e4-kriterium-zeiger-paar-zeiger-triple)
-      6. [Puzzle lösen durch Scannen, Eliminieren und Trial \& Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial--error)
-      7. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
-      8. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
-      9. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
+      1. [Standardbegriffe und Lösetechniken](#standardbegriffe-und-lösetechniken)
+         1. [Standard-Grundbegriffe](#standard-grundbegriffe)
+         2. [Standard Sudoku-Lösetechniken](#standard-sudoku-lösetechniken)
+      2. [Definitionen](#definitionen)
+      3. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
+         1. [Eliminationskriterium "Nacktes Paar"](#eliminationskriterium-nacktes-paar)
+         2. [Eliminationskriterium: "Verstecktes Paar"](#eliminationskriterium-verstecktes-paar)
+         3. [Eliminationskriterium: "Überschneidung"](#eliminationskriterium-überschneidung)
+         4. [Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"](#eliminationskriterium-zeiger-paar-zeiger-triple)
+      4. [Puzzle lösen durch Scannen, Eliminieren und Trial and Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial-and-error)
+      5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
+      6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
+      7. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
    8. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
       1. [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung)
       2. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
@@ -137,7 +137,7 @@ Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden
     <figcaption style="font-size: 16px; font-style: italic">App-Darstellung eines Puzzles</figcaption>
 </figure>
 
-Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen [Kandidatennummern](#unzulässige-nummern-und-kandidaten) anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in den [Solver-Einstellungen](#solver-einstellungen) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
+Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen Kandidatennummern anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in den [Solver-Einstellungen](#solver-einstellungen) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
 
 <figure >
    <img src="./imagesHelp/appViewLazy.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
@@ -152,7 +152,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 | ![Solved](./imagesHelp/playedCell.png){:width="100px"}                                                                                      | **Eine Lösungsnummer:** In der Lösungsphase gesetzte Nummer. In dieser Zelle wurde in der Lösungsphase manuell oder automatisch die Nummer 1 gesetzt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ![Candiates](./imagesHelp/optionCell.png){:width="100px"}                                                                                   | **Kandidaten:** Für diese Zelle wurde noch keine Nummer gesetzt. Nur noch eine der Nummern 1, 2, 4 und 5 kann gewählt werden. Das sind die Kandidaten der Zelle. Die nicht aufgeführten Nummern sind unzulässig, weil sie bereits in einer anderen Zelle des Blocks, der Reihe oder Spalte gesetzt sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ![Necessary](./imagesHelp/neccessary.png){:width="100px}                                                                                    | **Notwendiger Kandidat:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind die Nummern 2, 5, 6 und 7. Jedoch hat der Solver ermittelt, dass der Kandidat 5 notwendig ist, damit das Sudoku lösbar bleibt. 5 ist eine notwendige Nummer für diese Zelle. Ein Kandidat in einer Zelle ist notwendig, wenn die Kandidatnummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur noch hier gesetzt werden. Hinweis: Im Wikipedia-Artikel [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku) werden notwendige Kandidaten als "Hidden Singles" bezeichnet. Wir wollen diese Bezeichnung hier nicht übernehmen, weil wir diese Bezeichnung schon anderweitig benutzen: siehe nachfolgende Definition 'Hidden Single'. |
-| ![Inadmissible candidates](./imagesHelp/indirect.png){:width="100px}                                                                        | **Eliminierbarer Kandidat:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 [unzulässig](#unzulässige-nummern-und-kandidaten) ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.                                                                                                                                                                                                                                                                                                                                                                              |
+| ![Inadmissible candidates](./imagesHelp/indirect.png){:width="100px}                                                                        | **Eliminierbarer Kandidat:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 unzulässig ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.                                                                                                                                                                                                                                                                                                                                                                              |
 | ![Single](./imagesHelp/nakedSingle.png){:width="100px"}                                                                                     | **Einziger Kandidat (Single):** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ![Hidden single](./imagesHelp/indirekterSingle.png){:width="100px"}                                                                         | **Versteckt einziger Kandidat (Hidden Single):** im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, unzulässige Kandidaten sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ![No selectable candidates](./imagesHelp/nochoice.png){: width="100px"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="100px"} | **Widerspruch - Kein Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.                                                                                                                                                                                                            |
@@ -443,13 +443,49 @@ Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell gelade
 
 ## Sudoku-Theorie
 
-### Unzulässige Nummern und Kandidaten
+### Standardbegriffe und Lösetechniken
+
+Es gibt eine Reihe von weitgehend akzeptierten Standardbegriffen im Bereich Sudoku – insbesondere unter Rätsellösern, Softwareentwicklern, Turnierspielern und Autoren von Sudoku-Literatur. Diese Begriffe stammen vor allem aus der englischsprachigen Community, werden aber auch im deutschsprachigen Raum verwendet, oft in eingedeutschter oder direkt übersetzter Form.
+
+#### Standard-Grundbegriffe
+
+Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Originalbegriff, deutscher Entsprechung, Trainer-Begriff und kurzer Erklärung
+
+|Englisch  |Deutsch  |Trainer  |Erklärung|
+|---------|---------|---------|---------|
+|Cell      |Zelle   |Zelle     |Feld im 9x9-Raster|
+|Row      |Reihe         |Reihe         |         |
+|Column   |Spalte  |Spalte  |         |
+|Box/Block     |Block (auch: Region)  | Block |Eines der neun 3x3-Quadrate         |
+|Unit     |Einheit   |Gruppe  |Jede Gruppe von 9 Zellen: Zeile, Spalte oder Block          |
+|Candidate	|Kandidat	| Kandidat | Eine mögliche Zahl in einer Zelle|
+| | |Unzulässige Nummer |In dem Block, in der Reihe oder Spalte der Zelle existiert eine andere Zelle, in der diese Nummer bereits gesetzt ist |
+|Grid	| Raster / Gitter	| Grid / Matrix |Die gesamte Sudoku-Matrix|
+|Given|Vorgabe|Given|	Eine Zahl des eingegebenen Puzzles|
+
+
+#### Standard Sudoku-Lösetechniken
+
+|Englisch  |Deutsch | Trainer  |Erklärung |
+|---------|---------|---------|---------|
+|Naked Single |Nackter Einziger |Single (auch: Einziger Kandidat) | Nur 1 Kandidat in der Zelle |
+|Hidden Single |         | Notwendiger Kandidat  |Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden       |
+| | |Eliminierbarer (auch: unzulässiger) Kandidat | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde.|
+| | |Versteckter Single (auch: Versteckt einziger Kandidat)| Alle Kandidatennummern bis auf eine (ein **versteckter Single**)  sind eliminierbar|
+|Naked Pair/Triple     |Nacktes Paar/Trio|Nacktes Paar/Trio |Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten    |
+|Hidden Pair/Triple     |Verstecktes Paar/Trio         |Verstecktes Paar/Trio         |Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor         |
+|Pointing Pair/Triple     |Zeigendes Paar/Trio         |Zeigendes Paar/Trio         |Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor         |
+|Box-Line Reduction     |Block-Zeilen-/Spaltenausschluss         | Überschneidung            |Umkehrung Pointing Pair/Tripel         |
+|Trial and Error     |         |         |Backtracking         |
+
+
+### Definitionen
 
 **Unzulässige Nummern:** Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz Kandidaten. Für eine unbelegte Zelle ist eine **Nummer unzulässig**, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. Alle anderen Nummern heißen **Kandidatnummern** oder einfach **Kandidaten** dieser Zelle. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter "Kandidatenauswertung" nicht der Wert "Keine Kandidatenanzeige" gesetzt ist.
 
 **Eliminierbare Kandidaten.** Auch Kandidaten können unzulässig sein. Eine Kandidatennummer ist unzulässig bzw. eliminierbar, wenn sie das Puzzle widersprüchlich macht. Der Solver würde das sofort oder einige Schritte später aufdecken. Eliminierbare Kandidaten werden in roter Farbe angezeigt.
 
-### Notwendige Kandidaten
+**Notwendige Kandidaten**
 
 <figure>
    <img src="./imagesHelp/lazynotwendig.png" alt="Notwendig" style="width:100%">
@@ -458,7 +494,7 @@ Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell gelade
 
 Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Stuart spricht von _der letzten verbleibenden Zelle für die 1 im dritten Block_. Im Lazy-Auswertungsmodus zeigt der Solver den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn man die Zelle mit der notwendigen Nummer selektiert hat. Die Zellen des Blocks besitzen einen grün gestrichelten Rahmen. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den grün gestrichelten Rahmen keine 1 mehr gesetzt werden kann.
 
-### Singles (Einzige Kandidaten)
+**Singles (Einzige Kandidaten)**
 
 <figure>
    <img src="./imagesHelp/single.png" alt="Single" style="width:100%">
@@ -467,7 +503,7 @@ Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block
 
 Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 9 ein einziger Kandidat. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
 
-### Eliminierbare Kandidaten und versteckte Singles
+**Eliminierbare Kandidaten**
 
 Eliminierbare Kandidaten werden in roter Schrift angezeigt. Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde.
 
@@ -476,13 +512,15 @@ Eliminierbare Kandidaten werden in roter Schrift angezeigt. Eine Kandidatennumme
     <figcaption style="font-size: 16px; font-style: italic;">Versteckter Single 4</figcaption>
 </figure>
 
+**Versteckte Singles**
+
 Warum interessieren wir uns für eliminierbare Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (ein **versteckter Single**) eliminierbar sind, dann kann der versteckt einzige Kandidat, hier die 4, in der Zelle gesetzt werden.
 
 ### Kriterien für die Erkennung eliminierbarer Kandidaten
 
-Im Sudoku-Internet werden zahlreiche Kriterien genannt. Siehe z.B. die teilweise bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page), von [Jan Feldmann](https://sudoku.coach/) oder die von [Christoph Lauble](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php). Man achte auf die in den Details unterschiedlichen Begriffe und Definitionen. Grundsätzlich ist die rein logische Erkennung der Eliminierbarkeit von Kandidaten unvollständig. D.h. es gibt so schwere Puzzles, dass nicht alle eliminierbaren Kandidaten mittels der Anwendung von logischen Kriterien erkannt werden können. Egal, ob nur die 4 in diesem Trainer implementierten Kriterien zur Anwendung kommen, oder alle in der Community bekannten Kriterien. Sudokus, für die es bisher keine rein logische Lösung gibt, können immer noch durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Eliminierbarkeit von Kandidaten.
+Grundsätzlich ist die rein logische Erkennung der Eliminierbarkeit von Kandidaten unvollständig. D.h. es gibt so schwere Puzzles, dass nicht alle eliminierbaren Kandidaten mittels der Anwendung von logischen Kriterien erkannt werden können. Egal, ob nur die 4 in diesem Trainer implementierten Kriterien zur Anwendung kommen, oder alle in der Community bekannten Kriterien. Sudokus, für die es bisher keine rein logische Lösung gibt, können immer noch durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Eliminierbarkeit von Kandidaten.
 
-#### E1: Kriterium "Nacktes Paar"
+#### Eliminationskriterium "Nacktes Paar"
 
 <figure >
    <img src="./imagesHelp/indirektWegenPairing.png" alt="Nacktes Paar" style="width:100%">
@@ -491,7 +529,7 @@ Im Sudoku-Internet werden zahlreiche Kriterien genannt. Siehe z.B. die teilweise
 
 Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 6-8-Paar ein nacktes Paar. Das 6-8-Paar macht in seiner Reihe alle 6 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 6 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 6 oder die 8 links ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Reihe keine 6 oder 8 mehr vorkommen können. Die 6 und 8 sind hier eliminierbar. Diese Reihendarstellung mit den gestrichelten Kanten zeigt der Solver nur im Lazy-Auswertungsmodus, wenn man eine Zelle mit eliminierbaren Nummern selektiert hat.
 
-#### E2: Kriterium: "Verstecktes Paar"
+#### Eliminationskriterium: "Verstecktes Paar"
 
 <figure >
    <img src="./imagesHelp/hiddenpair.png" alt="Versteckztes Paar" style="width:100%">
@@ -500,7 +538,7 @@ Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder S
 
 In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 8, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 8 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
 
-#### E3 Kriterium: "Überschneidung"
+#### Eliminationskriterium: "Überschneidung"
 
 <figure >
    <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
@@ -509,7 +547,7 @@ In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein 
 
 Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 7. Damit es am Ende in der Reihe überhaupt eine 7 gibt, muss eine 7 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 7 in dem Block jenseits der Reihe gestrichen werden müssen.
 
-#### E4 Kriterium: "Zeiger-Paar", "Zeiger-Triple"
+#### Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"
 
 <figure >
    <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
@@ -518,21 +556,21 @@ Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es N
 
 Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den mittleren oberen Block. Alle Zellen, die die Zahl 2 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 2 in diesem Block mindestens einmal vorkommen sollte, wird eine der hervorgehobenen Zellen sicher die Zahl 2 enthalten. In den übrigen Zellen der Zeile kann daher die 2 gestrichen werden.
 
-### Puzzle lösen durch Scannen, Eliminieren und Trial & Error
+### Puzzle lösen durch Scannen, Eliminieren und Trial and Error
 
 Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial & Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
 
 1. **Scanne notwendige Kandidaten:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt.
 2. **Scanne Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
-3. **Scanne versteckte Singles** Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt, eliminiert der Solver Kandidaten, solange bis ein **verstecktes Single** übrig bleibt und setzt es. Dabei wendet er Regeln aus der Menge der folgenden 4 Eliminationsregeln an:
+3. **Scanne versteckte Singles** Wenn es keine Zelle mit notwendiger Nummer oder mit Single mehr gibt, eliminiert der Solver Kandidaten, solange bis ein **verstecktes Single** übrig bleibt und setzt es. Dabei wendet er Kriterien aus der Menge der folgenden 4 Eliminationskriterien an:
    1. **Nacktes Paar**
    2. **Verstecktes Paar**
    3. **Überschneidung**
    4. **Zeiger-Paar, Zeiger-Tripel**
-4. **Trial & Error**
+4. **Trial and Error**
    1. **Scanne Kandidaten-Optionen:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
    2. **Trial and Error der Optionen** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.
-   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung. Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der **Error-Rückwärtsläufe** an. Hinweis: Error-Rückwärtsläufe erfolgen nach Auftreten eines Widerspruchs. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe**.
+   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung. Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der **Error-Rückwärtsläufe** an. Hinweis: Error-Rückwärtsläufe erfolgen nach Auftreten eines Widerspruchs. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe**. Lösungs-Rückwärtsläufe erfolgen nach Aufdeckung einer Lösung.
 
 ### Lazy und strikte Kandidatenauswertung
 
@@ -578,7 +616,7 @@ Dieser Sudoku-Trainer zeichnet sich in erster Linie durch seine nachvollziehbare
 
 Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:
 
-1. **Sehr Leicht:** Allein durch das Scannen [Notwendiger Kandidaten](#notwendige-kandidaten) kann die Lösung des Sudokus erreicht werden.
+1. **Sehr Leicht:** Allein durch das Scannen Notwendiger Kandidaten kann die Lösung des Sudokus erreicht werden.
 1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.
 1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Scann-Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
@@ -727,12 +765,12 @@ table {
 }
 </style>
 
-| Level         | Lösung / Methode                | Angewandte Regeln und Kommentare                                                                                                                                                                                                                                   |
+| Level         | Lösung / Methode                | Angewandte Lösungstechnik und Kommentare                                                                                                                                                                                                                                   |
 | ------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Sehr Leicht   | Eindeutig / Logik               | Allein Scan-1: "Notwendige Kandidaten"                                                                                                                                                                                                                             |
-| Leicht        | Eindeutig / Logik               | Allein Scan-1: "Notwendige Kandidaten"                                                                                                                                                                                                                             |
-| Mittel        | Eindeutig / Logik               | Scan-1: "Notwendige Kandidaten" und mindestens einmal Scan-2: "Einziger Kandidat"                                                                                                                                                                                  |
-| Schwer        | Eindeutig / Logik               | Scan-1: "Notwendige Kandidaten", Scan-2: "Einziger Kandidat" und mindestens ein "Versteckt einziger Kandidat", gewonnen durch Elimination.                                                                                                                         |
+| Sehr Leicht   | Eindeutig / Logik               | Allein Scannen: "Notwendige Kandidaten"                                                                                                                                                                                                                             |
+| Leicht        | Eindeutig / Logik               | Allein Scannen: "Notwendige Kandidaten"                                                                                                                                                                                                                             |
+| Mittel        | Eindeutig / Logik               | Scannen: "Notwendige Kandidaten" und mindestens einmal Scannen: "Einziger Kandidat"                                                                                                                                                                                  |
+| Schwer        | Eindeutig / Logik               | Scannen: "Notwendige Kandidaten", Scannen: "Einziger Kandidat" und mindestens ein "Versteckt einziger Kandidat", gewonnen durch Elimination.                                                                                                                         |
 | Sehr schwer   | Eindeutig / Backtracking        | Es gibt Puzzles, die nicht allein mit logischen Schlussregeln gelöst werden können.                                                                                                                                                                                |
 | Extrem schwer | Mehrere Lösungen / Backtracking | Mittels Backtracking können prinzipiell alle Lösungen eines extrem schweren Puzzles angezeigt werden. Das können sehr viele sein. Dass leere Puzzle hat über eine Trilliarde Lösungen. Pragmatisch wird der Spieler eine solche Auflistung der Lösungen abbrechen. |
 
@@ -755,33 +793,20 @@ Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig 
 
 Im Laufe der Entwicklung dieser App ergaben sich für den Autor zahlreiche neue Einsichten und Tatsachen über klassische 9x9-Sudokus. Viele davon stammen von Recherchen im Internet. Nicht wenige aber auch aus den Erfahrungen mit der vorliegenden App. Diese sollen in diesem Abschnitt vorgetragen werden.
 
-**1. Die Standardisierung von Sudoku-Begriffen und Sudoku-Regeln ist (nur) ansatzweise vorhanden.**
-
-Im Kontext von Sudoku werden verschiedene Begriffe verwendet, die das Spielfeld, die Zahlen und die Lösungsstrategien beschreiben. Die zum Spielfeld gehörenden Begriffe sind weitestgehend standardisiert. Dazu gehören die Begriffe: Feld/Zelle, Reihe, Spalte, Block/Box, Kandidat und Lösung. Die nachfolgenden Begriffe stammen aus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#L%C3%B6sungsmethoden).
-
-- **Feld/Zelle**: Die einzelnen Quadrate im Sudoku-Gitter, in die Zahlen eingetragen werden.
-- **Reihe**: Horizontale Linien im Sudoku-Gitter, die aus neun Feldern bestehen.
-- **Spalte**: Vertikale Linien im Sudoku-Gitter, die ebenfalls aus neun Feldern bestehen.
-- **Block/Box**: Ein 3x3-Quadrat innerhalb des 9x9-Gitters, das ebenfalls neun Felder enthält.
-- **Kandidat**: Eine Zahl, die potentiell in ein bestimmtes Feld eingetragen werden könnte, basierend auf den Regeln, aber noch nicht endgültig entschieden ist.
-- **Lösung**: Die vollständige, korrekte Belegung aller Felder mit den Zahlen 1 bis 9, wobei jede Zahl in jeder Reihe, Spalte und jedem Block nur einmal vorkommt.
-
-Die Begriffe rund um genutzte und definierte Eliminationsregeln sind ähnlich, variieren aber im Detail von Werkzeug zu Werkzeug. So auch im vorliegenden Werkzeug. Daher kommt es zur folgenden Beobachtung.
-
-**2. Beobachtung: Die Schwierigkeitsgrade von Sudoku-Puzzles sind in der Regel werkzeugabhängig definiert.**
+**1. Beobachtung: Die Schwierigkeitsgrade von Sudoku-Puzzles sind in der Regel werkzeugabhängig definiert.**
 
 Das trifft für den vorliegenden Sudoku-Trainer zu, aber auch für den Sudoku-Coach von [Jan Feldmann](https://sudoku.coach/) und dem Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page). Das hat seine Ursache darin, dass die Definition der Schwierigkeitsgrade von den Definitionen und Implementierungen der Kandidaten-Eliminationsregeln abhängig sind. Letztere sind werkzeugabhängig definiert.
 
-**3. Sudokus in Zeitschriften sind häufig 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'.**
+**2. Sudokus in Zeitschriften sind häufig 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'.**
 
 Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht'
-'Mittel' oder selten auch einmal 'Schwer'. Die Schwierigkeitsgrade gemäß der Definition dieser App. D.h. für die Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln.
+'Mittel' oder selten auch einmal 'Schwer'. Die Schwierigkeitsgrade gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln.
 
-**4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
+**3. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
 
-2012 haben Mathematiker bewiesen, dass 17 die kleinste Anzahl von Givens ist, die noch eine eindeutige Lösung garantieren können. [FAZ 2012](https://www.faz.net/aktuell/wissen/physik-mehr/mathematik-der-heilige-gral-der-sudokus-11682905.html).
+2012 haben Mathematiker bewiesen, dass 17 die kleinste Anzahl von Givens ist, die noch eine eindeutige Lösung garantieren kann. [FAZ 2012](https://www.faz.net/aktuell/wissen/physik-mehr/mathematik-der-heilige-gral-der-sudokus-11682905.html).
 
-**5. Falsche Vermutung: Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle.**
+**4. Falsche Vermutung: Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle.**
 
 Wir betrachten das folgende Puzzle und kopieren die Textdarstellung des Puzzle in die Zwischenablage. D.h. wir selektieren die Textdarstellung vollständig und kopieren mit der Kopier-Operation in der Navgationsbar oder mit Strg+C. Dann öffnen wir die App und fügen die Kopie mit der Einfüge-Operation der Navigationsbar in den Sudoku-Trainer ein.
 
@@ -800,7 +825,7 @@ Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgr
 
 Das Puzzle ist gelöst. Für seine Lösung brauchten nur Notwendig-Schritte angewendet zu werden. D.h. das Puzzle hat den Schwierigkeitsgrad Leicht. Die Vermutung "Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle." ist also falsch.
 
-**6. Falsche Vermutung: Je mehr Givens ein Puzzle hat, um so einfacher ist das Puzzle.**
+**5. Falsche Vermutung: Je mehr Givens ein Puzzle hat, um so einfacher ist das Puzzle.**
 
 Wir kopieren die Textdarstellung des Puzzle in die Zwischenablage und in den Sudoku-Trainer ein.
 
@@ -829,11 +854,11 @@ Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgr
 
 Dieses Puzzle hat genau zwei Lösungen.
 
-**7. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen.**
+**6. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen.**
 
 Puzzles, die mehrere Lösungen besitzen, lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen. In dem besonders einfachen Fall des vorigen Beispiels gibt es nur zwei Lösungen, die unmittelbar ersichtlich sind. Es kann aber sehr viel mehr Lösungen eines Puzzles geben. So gibt es ca. 6,7 Trilliarden verschiedene, vollständig ausgefüllte 9×9-Standard-Sudokus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#Die_Anzahl_der_Sudokus). D.h. die Lösungen mehrdeutiger Puzzles lassen sich prinzipiell aufzählen. Pragmatisch stößt diese Aufzählung bei großen Lösungsmengen an ihre Grenzen.
 
-**8. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
+**7. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
 Betrachten wir das folgende Beispiel.
 
 <figure >
@@ -854,11 +879,11 @@ Betrachten wir das folgende Beispiel.
 
 Genauer gesagt bedeutet dieses Ergebnis, dass dieser Sudoku-Trainer für dieses Puzzle eine Backtrack-Lösung gefunden hat, und dass diese Lösung die einzige ist. Der vorliegende Trainer hat keine rein logische Herleitung gefunden. Deshalb bewertet er das Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".
 
-Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Trainer nur sehr wenige Schlussregeln implementiert hat, verglichen mit den Solvern von Andrew Stuart und Jan Feldmann. Beide haben einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
+Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Trainer nur vier grundlegende Eliminationsregeln implementiert hat. Hingegen haben Andrew Stuart und Jan Feldmann einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
 
 Zurück zu unserer Vermutung: "Es gibt Puzzles, die eine eindeutige Lösung haben, die aber vermutlich nicht durch logisches Schließen hergeleitet werden kann." Für unser Beispiel-Puzzle kann die vorliegende App keine logische Herleitung finden. Aber auch die Solver von Stuart und Feldmann können es nicht. Dies legt die Vermutung nahe, dass es derart schwierige Puzzles gibt, sodass sie prinzipiell nicht durch logisches Schließen gelöst werden können. Aber ein Beispiel ist kein Beweis. Deswegen können wir nur von einer Vermutung sprechen.
 
-**9. Tatsache: Es gibt unlösbare Sudokus.**
+**8. Tatsache: Es gibt unlösbare Sudokus.**
 
 Es gibt unlösbare Sudokus. Das ist erstmal eine triviale Aussage.
 
@@ -888,15 +913,15 @@ Puzzle = 05060030771030005636005002950900600000720400543689570000356004000100000
 
 Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer bei Bedarf Logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass bei der Lösungssuche die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
 
-Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche der oben genannten Eliminationsregeln für eliminierbare Kandidaten (es gibt noch weitere, die in dieser App gar nicht implementiert sind) anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest Du einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
+Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche Eliminationsregeln für Kandidaten anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest Du einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
 
-Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Sie stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Das kann die Elimination von unzulässigen Kandidaten in mehreren Zellen sein aufgrund eines 'nackten Paares' oder die Setzung von 'versteckten Singles' (notwendigen Nummern) in mehreren Zellen gleichzeitig. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
+Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Sie stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
 
 ## Beispiel-Puzzles
 
 **Sehr schwere Puzzles mit langen Backtracks**
 
-Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_8'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. Hinweis: dieser Solver hat nur eine Teilmenge der bekannten logischen Kriterien für die Lösung von Puzzles implementiert. Das ist aber nicht weiter problematisch, da sich die Kriterien überschneiden. D.h. in einer gegebenen Lösungssituation eines Puzzles sind mehrere Kriterien gleichzeitig anwendbar. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
+Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_8'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
 
 1. Dieser Trainer kann sehr schwere Puzzles generieren.
 2. Im Internet kann man zum Beispiel bei [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
