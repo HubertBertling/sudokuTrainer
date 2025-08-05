@@ -2755,7 +2755,7 @@ class SudokuSolverView {
         }
         this.displayProgressBar();
     }
-  
+
     upDateAspect(aspect, aspectValue) {
         switch (aspect) {
             case 'solutionDiscovered': {
@@ -3366,22 +3366,13 @@ class SudokuSolverController {
     }
 
     defineBtnPressed() {
-        if (this.mySolver.getMyCurrentPuzzle() !== undefined) {
-            let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
-            let action = {
-                operation: 'define',
-                pzRecord: puzzleRec,
-                pzArray: this.mySolver.myGrid.getPuzzleArray()
-            }
-            this.myUndoActionStack.push(action);
-            this.mySolver.cleanUpAndDeleteCurrentSearch();
-            this.mySolver.unsetStepLazy();
-            this.mySolver.unsetCurrentPuzzle();
-            this.mySolver.myGrid.setSolvedToGiven();
-            this.mySolver.setGamePhase('define');
-            this.mySolver.notify();
-            sudoApp.mySolverView.hidePuzzleSolutionInfo();
-        }
+        this.mySolver.cleanUpAndDeleteCurrentSearch();
+        this.mySolver.unsetStepLazy();
+        this.mySolver.unsetCurrentPuzzle();
+        this.mySolver.myGrid.setSolvedToGiven();
+        this.mySolver.setGamePhase('define');
+        this.mySolver.notify();
+        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
 
     async playBtnPressed() {
@@ -3405,7 +3396,7 @@ class SudokuSolverController {
             this.mySolver.myCurrentPuzzle.setIdentity(previousPuzzle.getIdentity());
         } else {
             this.mySolver.setGamePhase('play');
-            this.initUndoActionStack();
+            // this.initUndoActionStack();
             this.mySolver.notify();
             let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
             this.mySolver.setCurrentPuzzle(puzzleRecord);
@@ -3608,6 +3599,7 @@ class SudokuSolverController {
     undo(action) {
         switch (action.operation) {
             case 'init':
+            case 'paste':
             case 'reset':
             case 'define': {
                 this.mySolver.setCurrentPuzzle(action.pzRecord);
@@ -3633,8 +3625,12 @@ class SudokuSolverController {
         }
     }
 
-    redo(action) {
+    async redo(action) {
         switch (action.operation) {
+            case 'paste': {
+                await this.pasteLinkPressed();
+                break;
+            }
             case 'init': {
                 this.initLinkPressed();
                 break;
@@ -3861,8 +3857,23 @@ class SudokuSolverController {
         }
     }
     async pasteLinkPressed() {
-        this.initLinkPressed();
+
         sudoApp.myNavBar.closeNav();
+        sudoApp.mySolverView.hidePuzzleSolutionInfo();
+
+        let puzzleRec;
+        if (this.mySolver.myCurrentPuzzle == undefined) {
+            puzzleRec = undefined;
+        } else {
+            puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+        }
+        let action = {
+            operation: 'paste',
+            pzRecord: puzzleRec,
+            pzArray: this.mySolver.myGrid.getPuzzleArray()
+        }
+        this.myUndoActionStack.push(action);
+
         try {
             let text0 = await navigator.clipboard.readText();
             // Delete ---- horizontal border lines
@@ -3894,6 +3905,11 @@ class SudokuSolverController {
         } catch (error) {
             console.log('Failed to read clipboard puzzle');
         }
+
+        this.mySolver.notify();
+        // Zoom in the new initiated grid
+        this.mySolver.notifyAspect('puzzleLoading', undefined);
+
     }
 
     printLinkPressed() {
@@ -4000,7 +4016,7 @@ class SudokuSolverController {
     // ===============================================================================================
     // Solver buttons
     // ===============================================================================================
-    
+
     // Button Nächster Suchschritt
     trackerDlgStepPressed() {
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
@@ -4144,7 +4160,7 @@ class SudokuSolverController {
             }
         }
     }
-  
+
     // Button Schließen
     trackerDlgStopPressed() {
         sudoApp.mySolverView.stopLoaderAnimation();
