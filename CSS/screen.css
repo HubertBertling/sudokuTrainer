@@ -29,7 +29,7 @@
     --error-cell-color: white;
 
     /* Other definitions */
-    --sudoku-cell-size: calc((100vw - 3.8rem)/9);
+   /* --sudoku-cell-size: calc((100vw - 3.8rem)/9);
     --border-radius: 0.5rem;
 
     --font-size-cell: 1.6rem;
@@ -64,6 +64,7 @@ html {
     /* justify-content: center; */
     align-items: center;
 }
+
 /*======================================*/
 /* Global definitions */
 /*======================================*/
@@ -314,28 +315,164 @@ html {
 
 .sudoku-solver-container {
     display: block;
-    /* gap: 0.5rem; */
+
 }
 
+body {
+    background: #f7f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.main-sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.4em;
+    width: min(98vw, 40em);
+    aspect-ratio: 1 / 1;
+    background: #646566;
+    /* box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10); */
+    padding: 0.4em;
+    /* Ermöglicht Zoom auf das gesamte Grid */
+    touch-action: pinch-zoom;
+}
+
+.sudoku-block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.06em;
+    font-size: clamp(1vw, 4.6vh, 3.4em);
+    line-height: 1;
+    text-align: center;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    /* box-shadow: 0 2px 8px rgba(38,51,77,0.07);*/
+
+}
+
+.sudoku-block.necessary {
+    background-color: grey;
+    opacity: 0.5;
+}
+
+.overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.6); /* Weiß, 60% Deckkraft */
+    backdrop-filter: blur(6px);        /* Milchiger Effekt */
+    z-index: 10;
+    pointer-events: none;              /* Klicks gehen durch */
+    border-radius: inherit;
+}
+
+
+.sudoku-grid-cell {
+    /* background-color: #fff;*/
+    position: relative;
+
+    background-color: #dadedf;
+    /* sehr helles Grau, fast weiß */
+
+    color: #222;
+    font-size: inherit;
+    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+    /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); */
+    user-select: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: 100%;
+}
+.sudoku-grid-cell.empty {
+     background-color: var(--nested-cell-bg-color);
+    /* sanftes, leicht bläuliches Grau */
+    color: var(--nested-cell-color);
+    /*text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd;*/
+}
+
+.sudoku-grid-cell.solved {
+    background-color: var(--played-cell-bg-color);
+    /* sanftes, leicht bläuliches Grau */
+    color: var(--played-cell-color);
+    font-size: inherit;
+    /*text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd;*/
+}
+
+.sudoku-grid-cell.given {
+    background-color: var(--defined-cell-bg-color);
+    /* sehr helles Blau, dezent */
+    color: var(--defined-cell-color);
+    font-size: inherit;
+    /* text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd; */
+
+}
+
+.candidates {
+    background-color: var(--nested-cell-bg-color);
+    /* fast weiß, aber leicht abgesetzt */
+    /* background: none; */
+    font-size: 0.8em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.inAdmissible {
+    color: red;
+}
+
+
+.sudoku-grid-cell.selected {
+   /* font-size: inherit; */
+    background: #e3f2fd;
+}
+
+.sudoku-grid-cell.row-selected,
+.sudoku-grid-cell.col-selected,
+.sudoku-grid-cell.block-selected {
+    background: #f5faff;
+}
+
+.sudoku-grid-cell.error {
+    color: #d32f2f;
+    border: 2px solid #d32f2f;
+    background: #fff5f5;
+}
+
+/*
+ @media (max-width: 600px) {
+            .main-sudoku-grid {
+                font-size: 2vw;
+
+                font-size: clamp(1vw, 1.0vh, 1rem);
+
+                padding: 2px;
+            }
+
+        }
+        */
 /*======================================*/
 /* Sudoku grid block */
 /*======================================*/
 
 .gridArea {
-    /* display: grid;
-    grid-template-columns: repeat(1, auto);*/
-    display: block;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    padding-bottom: 0.5rem;
-    /* border-bottom: 0.2rem solid gray; */
-}
-
-.main-sudoku-grid {
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    background-color: black;
-    margin: 0.1rem;
+    grid-template-columns: repeat(1, auto);
+    display: block;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    padding-bottom: 0.5em;
+    /* border-bottom: 0.2rem solid gray; */
 }
 
 .mainLoading {
@@ -344,111 +481,17 @@ html {
 
 .grid-plus-explainer {
     position: relative;
-    border: 0.1rem solid black;
+    /* border: 0.1rem solid black;*/
     height: fit-content;
 }
 
-.sudoku-block {
-    margin: 0.2rem;
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    place-items: center;
-}
-
-.sudoku-grid-cell {
-    position: relative;
-    height: var(--sudoku-cell-size);
-    width: var(--sudoku-cell-size);
-    display: grid;
-    font-size: 2rem;
-    place-items: center;
-    margin: 0.05rem;
-}
-
-.sudoku-grid-cell.define {
-    background-color: var(--defined-cell-bg-color);
-    color: var(--defined-cell-color);
-}
-
-.sudoku-grid-cell.play {
-    background-color: var(--played-cell-bg-color);
-    color: var(--played-cell-color);
-}
-
-.sudoku-grid-cell.nested {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    place-items: center;
-    font-size: 1.0rem;
-    background-color: var(--nested-cell-bg-color);
-    color: var(--nested-cell-color);
-}
-
-
 .sudoku-grid-cell.selected {
     background-color: #f39795fb;
-    border: 0.2rem solid white;
 }
 
 .sudoku-grid-cell.auto-selected {
     /*  background-image: url("../images/selectBG1.png");*/
     background-color: hsl(0, 67%, 84%);
-    border: 0.2rem solid white;
-}
-
-.nested>div.single {
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.nested>div.neccessary {
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-
-    border-radius: 0.3rem;
-    font-size: 1.2rem;
-    background-color: #56c7aa;
-    color: #0d1117;
-    border: 0.1rem solid white;
-}
-
-.nested>div.neccessary-big {
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
-
-    border-radius: 0.3rem;
-    font-size: 1.4rem;
-    background-color: #56c7aa;
-    color: #0d1117;
-    border: 0.1rem solid white;
-}
-
-
-.nested>div.indirect-neccessary {
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-
-    border-radius: 0.3rem;
-    font-size: 1.2rem;
-    background-color: #56c7aa;
-    color: #0d1117;
-    border: 0.1rem solid white;
-}
-
-.nested>div.inAdmissible {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: Crimson;
-}
-
-.nested.err>div.neccessary.inAdmissible {
-    background-color: #56c7aa;
 }
 
 
@@ -504,6 +547,38 @@ html {
     background-color: black;
 }
 
+
+.necessary-big {
+   background-color: rgb(175, 237, 175);
+    font-size: inherit;
+    font-weight: bold;
+    color: rgb(0, 57, 0);
+    width: 50%;
+}
+.candidates-big {
+ background-color: var(--nested-cell-bg-color);
+    /* fast weiß, aber leicht abgesetzt */
+    /* background: none; */
+    font-size: 1em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.single {
+   background-color: white;
+    font-size: inherit;
+    font-weight: bold;
+    color: rgb(0, 57, 0);
+    width: 50%;
+}
+
+
 .loaded-evaluations {
     font-size: var(--font-size);
     display: flex;
@@ -526,9 +601,9 @@ html {
     width: 100%;
     font-size: var(--font-size);
     display: flex;
-    padding-top: 0.3rem;
-    padding-left: 0.2rem;
-    padding-bottom: 0.3rem;
+    padding-top: 0.3em;
+    padding-left: 0.2em;
+    padding-bottom: 0.3em;
     /* border: 0.1rem solid black; */
     background-color: lightgrey;
 }
@@ -930,7 +1005,7 @@ label {
 
 .technique-row {
     height: 2.2rem;
-  
+
     display: flex;
     flex-direction: row;
     position: relative;
@@ -992,9 +1067,10 @@ label {
 
 .tipp-accept-btn-image {
     padding-right: 0.4rem;
-    width: 2.0rem; 
-    height:1.4rem;  
+    width: 2.0rem;
+    height: 1.4rem;
 }
+
 .tracker-dlg-reset-btn-image {
     padding: 0.4rem;
     width: 1.8rem;
@@ -1584,63 +1660,24 @@ label {
     padding: 0.3rem;
 }
 
-@media screen and (orientation: portrait) and (width < 480px) {
 
-    /* case 1 */
-    /* Portrait */
-    /* Galaxy S10: 360px * 760px */
-    /* Galaxy S20 Ultra: 412px x 915px*/
-    /* iPhone 14: 380 x 844 */
-    :root {
-        font-size: 65.3%;
-        --sudoku-cell-size: calc(87vw/9);
-
-    }
-
-    .sidenav a,
-    .dropdown-btn {
-        padding: 0.8rem 0.8rem 0.8rem 2.4rem;
-        font-size: 2.6rem;
-    }
-
-    #puzzle-info {
-        font-size: 4rem;
-    }
-
-    .trackerDlg {
-        width: 95vw;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .mobile-btn-container {
-        width: 95vw;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .mobile-btn {
-        font-size: 1.4rem;
-    }
-
-    .tracker-dlg-btn {
-        font-size: 1.2rem;
-    }
+    
 
     .tableFixHead {
-        /* make the table scrollable if height is more than 200 px  */
+        /* make the table scrollable if height is more than 200 px */ 
         height: 40rem;
     }
-}
+
+
 
 @media screen and (orientation: portrait) and (width < 480px) and (height <=700px) {
 
     /* case 2 */
-    /* Portrait */
-    /* iPhone SE (2022): 375 x 667*/
+/* Portrait */
+/* iPhone SE (2022): 375 x 667 */
     :root {
         font-size: 45%;
-        --sudoku-cell-size: calc(85vw/9);
+        /* --sudoku-cell-size: calc(85vw/9); */
     }
 
     .sidenav a,
@@ -1678,10 +1715,10 @@ label {
 @media screen and (orientation: portrait) and (width >=480px) {
 
     /* case 3*/
-    /* portrait */
+/* portrait */
     :root {
         font-size: 65%;
-        --sudoku-cell-size: calc(70vw / 9);
+        /* --sudoku-cell-size: calc(70vw / 9); */
     }
 
     #puzzle-info {
@@ -1717,15 +1754,16 @@ label {
 
 }
 
+
 @media screen and (width >=480px) and (height < 500px) {
 
     /* Case 4 */
-    /* Landscape */
-    /* Galaxy S10: 360px * 760px */
-    /* iPhone SE (2022): 375 x 667 */
+/* Landscape */
+/* Galaxy S10: 360px * 760px */
+/* iPhone SE (2022): 375 x 667 */
     :root {
         font-size: 38%;
-        --sudoku-cell-size: calc(70vw / 2 / 9);
+        /* --sudoku-cell-size: calc(70vw / 2 / 9); */
     }
 
     .sudoku-solver-container {
@@ -1764,15 +1802,16 @@ label {
     }
 }
 
+
 @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) {
     /* case 5 */
-    /* Landscape */
-    /* Galaxy S20 Ultra: 412px * 915px */
-    /* iPhone 14: 380 x 844 */
+/* Landscape */
+/* Galaxy S20 Ultra: 412px * 915px */
+/* iPhone 14: 380 x 844 */
 
     :root {
         font-size: 75%;
-        --sudoku-cell-size: calc(min(90vw, 880px) / 2 / 9);
+        /* --sudoku-cell-size: calc(min(90vw, 880px) / 2 / 9); */
     }
 
     .mobile-btn {
@@ -1809,5 +1848,4 @@ label {
         /* make the table scrollable if height is more than 200 px  */
         height: 30rem;
     }
-
 }
