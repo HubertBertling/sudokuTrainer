@@ -508,7 +508,7 @@ class PuzzleSaveRenameDialog {
 
 class TrackerDialog {
     constructor() {
-        this.btnContainer = document.getElementById("mobile-btn-container");
+        this.automaticBtnBlock = document.getElementById("automatic-btn-block");
         this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
         this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
         this.trackerDlgNode = document.getElementById("trackerDlg");
@@ -523,7 +523,7 @@ class TrackerDialog {
         this.btnFastNode = document.getElementById("btn-backtrack-fast");
         this.trackerDlgNode.close();
         this.myOpen = false;
-        this.btnContainer.style.visibility = "visible";
+        this.automaticBtnBlock.style.visibility = "visible";
 
         this.btnContinueNode.addEventListener('click', () => {
             sudoApp.mySolverController.trackerDlgStepSequencePressed();
@@ -545,7 +545,9 @@ class TrackerDialog {
         });
     }
     open() {
-        this.btnContainer.style.visibility = "hidden";
+        this.manualBtnBlock.style.display = "none";
+        this.automaticBtnBlock.style.display = "grid";
+        this.myOpen = false; this.myOpen = false;
         this.reSetNumberOfSolutions();
         sudoApp.mySolver.notify();
         this.myOpen = true;
@@ -562,7 +564,8 @@ class TrackerDialog {
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
             this.reSetNumberOfSolutions();
             this.trackerDlgNode.close();
-            this.btnContainer.style.visibility = "visible";
+            this.manualBtnBlock.style.display = "grid";
+            this.automaticBtnBlock.style.display = "none";
             this.myOpen = false;
         }
     }
@@ -2157,7 +2160,7 @@ class SudokuCellView {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
-             
+
                 if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                     candidateNode.classList.add('necessary-big');
                 } else {
@@ -2210,7 +2213,7 @@ class SudokuCellView {
             redAdmissibles.forEach(redAdmissible => {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', redAdmissible);
-                
+
                 candidateNode.innerHTML = redAdmissible;
                 candidateNode.classList.add('inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
@@ -3052,7 +3055,7 @@ class SudokuSolverController {
         // =============================================================
 
         // Set click event for the number buttons
-        this.number_inputs = document.querySelectorAll('.mobile-number');
+        this.number_inputs = document.querySelectorAll('.number-btn');
         this.number_inputs.forEach((e, index) => {
             e.addEventListener('click', () => {
                 let btnNumber = this.number_inputs[index].value.toString();
@@ -3231,7 +3234,7 @@ class SudokuSolverController {
     }
 
     clickNrBtn(nr) {
-        let nrBtns = document.querySelectorAll(".mobile-number");
+        let nrBtns = document.querySelectorAll("number-btn");
         nrBtns.forEach(btn => {
             if (btn.innerHTML == nr) {
                 btn.click();

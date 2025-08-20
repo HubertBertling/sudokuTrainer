@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="canonical" href="https://hubertbertling.github.io/sudokuTrainer/" />
     <!--<link rel="canonical" href="http://localhost:8080/sudokuTrainer/" /> -->
     <link rel="manifest" href="manifest.json">
@@ -27,151 +28,153 @@
 
 
 <body>
-    <div class="app-container">
-        <div class="app-content noprint">
 
-            <div id="mySidenav" class="sidenav">
-                <div class="closebtn btn" onclick="sudoApp.myNavBar.closeNav()">&times;</div>
-                <a href="#" onclick="sudoApp.mySolverController.initLinkPressed()">Initialisieren</a>
-                <!-- <a href="#" onclick="sudoApp.mySolverController.resetLinkPressed()">Zurücksetzen</a> -->
-
-                <a href="#" onclick="sudoApp.mySolverController.newLinkPressed()">Neu</a>
-                <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
-                <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
-                <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
-                <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
-                <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
-                <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
-                <a href="#" onclick="sudoApp.myNavBar.closeNav()">Schließen</a>
-
-                <div id="appVersion" class="navbar-element">
-
+    <div class="app-content noprint">
+        <div class="app-name-header" id="app-name-header">
+            <span>Sudoku-Trainer</span>
+            <button class="modern-btn btn-menu" id="btn-menu">
+                <span class="material-icons">menu</span>
+                Menü
+            </button>
+            <button class="modern-btn btn-share" id="btn-share" onclick="sudoApp.myNavBar.openNav()">
+                <span class="material-icons">share</span>
+                Teilen
+            </button>
+            <button class="modern-btn btn-help" id="btn-help">
+                <span class="material-icons">help</span>
+                Hilfe
+            </button>
+        </div>
+        <div class="sudoku-solver-container">
+            <div class="gridArea" id="gridArea">
+                <div class="loaded-evaluations" id="loaded-evaluations">
                 </div>
-                <button id="share-app-btn" class="btn navbar-element"> <img title="share" src="images/share.png"
-                        class="share-image">Sudoku-Trainer URL</button>
-                <div class="result navbar-element"></div>
+
+                <div class="grid-plus-explainer" id="grid-plus-explainer">
+                    <div id="puzzle-info">
+                    </div>
+                    <div id="loader">
+                        <div id="search-level"></div>
+                    </div>
+                    <div id="loader-db">
+                        <div id="loader-db-info"></div>
+                    </div>
+
+                    <div class="main-sudoku-grid" id="main-sudoku-grid">
+                        <!-- block 0 -->
+                    </div>
+
+                    <div class="reasonUnsolvability" id="reasonUnsolvability">
+
+                    </div>
+                    <div class="technique-row" id="technique-row">
+                        <div class="technique" id="technique">
+
+                        </div>
+                        <button class="tipp-accept-btn btn" id="tipp-accept-btn">
+                            <img title="tipp-accept" src="images/ok.png" class="tipp-accept-btn-image">
+                            <span> Ok </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="progress-box" id="progress-box">
+                    <div class="progress-block" id="progress-block">
+                        <div class="step-count-box" id="step-count-box">
+                            <div class="step-count" id="step-count">
+                            </div>
+                            <div class="backward-count" id="backward-count">
+
+                            </div>
+                        </div>
+                        <div class="autoMode-radio-btns" id="autoMode-radio-btns">
+                            <div class="backward" id="radio-backward">
+                                <img title="backware" src="images/pfeilrueckwaerts.png" class="forward-backward-image">
+                            </div>
+                            <div class="forward" id="radio-forward">
+                                <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
+                            </div>
+                        </div>
+                        <div class="progress-bar" id="myProgress">
+                            <div id="myBarDef">20%</div>
+                            <div id="myBarPlay">70%</div>
+                            <div class="total-bar-value" id="total-bar-value">
+                                81
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="btn-block">
+                <div class="manual-btn-block" id="manual-btn-block">
+                    <button class="modern-btn btn-save" id="btn-save">
+                        <span class="material-icons">Save</span>
+                        Speichern
+                    </button>
+                    <button class="modern-btn btn-delete-cell" id="btn-delete-cell">Löschen</button>
+                    <button class="modern-btn number-btn" value="7">7</button>
+                    <button class="modern-btn number-btn" value="8">8</button>
+                    <button class="modern-btn number-btn" value="9">9</button>
 
-            <div class="app-name-header pc-element" id="app-name-header">
-                <div class="menu-icon btn" onclick="sudoApp.myNavBar.openNav()">
-                    <div class="menu-icon-line"></div>
-                    <div class="menu-icon-line"></div>
-                    <div class="menu-icon-line"></div>
+                    <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
+                    <button class="modern-btn btn-undo" id="btn-undo">
+                        <span class="material-icons">Undo</span>
+                        Undo
+                    </button>
+                    <button class="modern-btn number-btn" value="4">4</button>
+                    <button class="modern-btn number-btn" value="5">5</button>
+                    <button class="modern-btn number-btn" value="6">6</button>
+
+                    <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
+                    <button class="modern-btn btn-redo" id="btn-redo">
+                        <span class="material-icons">Redo</span>
+                    </button>
+                    <button class="modern-btn number-btn" value="1">1</button>
+                    <button class="modern-btn number-btn" value="2">2</button>
+                    <button class="modern-btn number-btn" value="3">3</button>
+
+                    <button class="modern-btn btn-reset" id="btn-reset">
+                        <span class="material-icons">Reopen Window</span>
+                        Reset
+                    </button>
+                    <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                        <span class="material-icons">refresh</span>
+                        Prüfen
+                    </button>
+
+                    <button class="modern-btn btn-tip" id="btn-tip">
+                        <span class="material-icons">Lightbulb</span>
+                        Tipp
+                    </button>
+                    <button class="modern-btn btn-run" id="btn-run">
+                        <span class="material-icons">Manage Search</span>
+                        Starte Suche
+                    </button>
                 </div>
-                <div class="share-icon btn" id="share-button">
-                    <img title="share" src="images/share.png" class="share-imageURL">
-                </div>
-                <span class="title"> Sudoku-Trainer </span>
-                <button class="help-button btn" id="help-button"> ? </button>
-            </div>
-            <div class="sudoku-solver-container">
-                <div class="gridArea" id="gridArea">
-                    <div class="loaded-evaluations" id="loaded-evaluations">
-                    </div>
-
-                    <div class="grid-plus-explainer" id="grid-plus-explainer">
-                        <div id="puzzle-info">
-                        </div>
-                        <div id="loader">
-                            <div id="search-level"></div>
-                        </div>
-                        <div id="loader-db">
-                            <div id="loader-db-info"></div>
-                        </div>
-
-                        <div class="main-sudoku-grid" id="main-sudoku-grid">
-                            <!-- block 0 -->
-                        </div>
-
-                        <div class="reasonUnsolvability" id="reasonUnsolvability">
-
-                        </div>
-                        <div class="technique-row" id="technique-row">
-                            <div class="technique" id="technique">
-
-                            </div>
-                            <button class="tipp-accept-btn btn" id="tipp-accept-btn">
-                                <img title="tipp-accept" src="images/ok.png"
-                                    class="tipp-accept-btn-image">
-                                <span> Ok </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="progress-box" id="progress-box">
-                        <div class="progress-block" id="progress-block">
-                            <div class="step-count-box" id="step-count-box">
-                                <div class="step-count" id="step-count">
-                                </div>
-                                <div class="backward-count" id="backward-count">
-
-                                </div>
-                            </div>
-                            <div class="autoMode-radio-btns" id="autoMode-radio-btns">
-                                <div class="backward" id="radio-backward">
-                                    <img title="backware" src="images/pfeilrueckwaerts.png"
-                                        class="forward-backward-image">
-                                </div>
-                                <div class="forward" id="radio-forward">
-                                    <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
-                                </div>
-                            </div>
-                            <div class="progress-bar" id="myProgress">
-                                <div id="myBarDef">20%</div>
-                                <div id="myBarPlay">70%</div>
-                                <div class="total-bar-value" id="total-bar-value">
-                                    81
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="orientation">
-                    <div class="mobile-btn-container dropdown" id="mobile-btn-container">
-                        <button class="mobile-interface mobile-btn btn-with-image btn-save" id="btn-save-mobile"><img
-                                title="save" src="images/save.png" class="btn-image">Speichern
-                        </button>
-                        <button class="mobile-interface mobile-btn btn-delete-cell">X</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="7">7</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="8">8</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="9">9</button>
-
-                        <button class="mobile-interface mobile-btn btn-define">Phase: Definition</button>
-                        <button class="mobile-interface mobile-btn btn-undo" id="btn-undo">
-                            <img title="undo" src="images/undo.png" class="btn-image">
-                            Undo
-                        </button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="4">4</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="5">5</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="6">6</button>
-
-                        <button class="mobile-interface mobile-btn btn-play">Phase: Lösen</button>
-                        <button class="mobile-interface mobile-btn btn-redo" id="btn-redo">
-                            <img title="redo" src="images/redo.png" class="btn-image">
-                            Redo
-                        </button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="1">1</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="2">2</button>
-                        <button class="mobile-interface mobile-btn mobile-number" value="3">3</button>
-
-                        <button class="mobile-interface mobile-btn btn-reset" id="btn-reset"><img title="reset"
-                                src="images/reset.png" class="btn-image">Reset</button>
-
-                        <button class="mobile-interface mobile-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                            <img title="magnifying glass" src="images/lupe.png" class="btn-image">
-                            Prüfen
-                        </button>
-
-                        <button class="mobile-interface mobile-btn btn-tip" id="btn-tip">
-                            <img title="tip" src="images/tip.png" class="btn-image">
-                            Tipp
-                        </button>
-
-
-                        <button class="mobile-interface mobile-btn btn-with-image btn-run" id="btn-run">
-                            <img title="play" src="images/play-96.png" class="btn-image">
-                            Starte Suche
-                        </button>
-                    </div>
+                <div class="automatic-btn-block" id="automatic-btn-block">
+                    <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
+                        <span class="material-icons">Auto Step</span>
+                        Nächster Suchschritt
+                    </button>
+                    <button class="modern-btn btn-backtrack-continue" id="btn-backtrack-continue">
+                        <span class="material-icons">Step Sequence</span>
+                        Suchlauf mit Haltepunkten
+                    </button>
+                    <button class="modern-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
+                        <span class="material-icons">Settings</span>
+                        Haltepunkte setzen
+                    </button>
+                    <button class="modern-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
+                        <span class="material-icons">Fast Step</span>
+                        Weitere Lösung anzeigen
+                    </button>
+                    <button class="modern-btn btn-backtrack-fast" id="btn-backtrack-fast">
+                        <span class="material-icons">Solution Sequence</span>
+                        Lösungen zählen ...
+                    </button>
+                    <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
+                        <span class="material-icons">Stop</span>
+                        Schließen
+                    </button>
                     <dialog class="trackerDlg noprint" id="trackerDlg">
                         <div class="tracker-dialog-area">
                             <div class="tracker-dlg-header">
@@ -222,15 +225,35 @@
                     </dialog>
                 </div>
             </div>
-            <div class="app-empty-footer pc-element">
-                <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
-            </div>
+
+        </div>
+        <div class="app-name-footer">
+            <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
         </div>
     </div>
-
     <!--Ausblendbare Elemente -->
 
+    <div id="mySidenav" class="sidenav">
+        <div class="closebtn btn" onclick="sudoApp.myNavBar.closeNav()">&times;</div>
+        <a href="#" onclick="sudoApp.mySolverController.initLinkPressed()">Initialisieren</a>
+        <!-- <a href="#" onclick="sudoApp.mySolverController.resetLinkPressed()">Zurücksetzen</a> -->
 
+        <a href="#" onclick="sudoApp.mySolverController.newLinkPressed()">Neu</a>
+        <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
+        <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
+        <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
+        <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
+        <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
+        <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
+        <a href="#" onclick="sudoApp.myNavBar.closeNav()">Schließen</a>
+
+        <div id="appVersion" class="navbar-element">
+
+        </div>
+        <button id="share-app-btn" class="btn navbar-element"> <img title="share" src="images/share.png"
+                class="share-image">Sudoku-Trainer URL</button>
+        <div class="result navbar-element"></div>
+    </div>
 
     <!--Dialoge -->
 
@@ -475,15 +498,19 @@
                         <input type="radio" id="pc-no-eval" class="radio-eval-type" value="lazy-invisible"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Keine Kandidatenanzeige</div>
-                        <div class="label-text text-spacing">Im Hintergrund erfolgt die Kandidatenauswertung im
+                        <div class="label-text text-spacing">Im Hintergrund erfolgt die Kandidatenauswertung
+                            im
                             Lazy-Modus.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Lazy</div>
-                        <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine verzögerte
-                            Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer oder die
+                        <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine
+                            verzögerte
+                            Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer
+                            oder
+                            die
                             nächste Single-Nummer oder die nächste versteckte Single-Nummer bestimmt ist.
                         </div>
                     </label>
@@ -491,7 +518,9 @@
                         <input type="radio" id="pc-strict-plus" class="radio-eval-type" value="strict-plus"
                             name="pc-auswertung">
                         <div class="label-text text-spacing prefix">Strikt + (Strikt-Plus)</div>
-                        <div class="label-text text-spacing">Diese Auswertungsmethode führt eine vollständige Auswertung durch. 
+                        <div class="label-text text-spacing">Diese Auswertungsmethode führt eine
+                            vollständige
+                            Auswertung durch.
                             Alle notwendigen Nummern, alle Singles und alle aktuell eliminierbaren
                             Kandidaten werden ermittelt und angezeigt.
                         </div>
@@ -523,21 +552,34 @@
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-hidden-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei verstecktem Single. </div>
-                        <div class="label-text text-spacing"> Zelle mit einem versteckten Single. Durch Klicken auf die selektierte Zelle wird das Eliminationskriterium für den ersten roten Kandidaten der Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch erneutes Klicken nach und nach besucht.
+                        <div class="label-text text-spacing prefix">Haltepunkt bei verstecktem Single.
+                        </div>
+                        <div class="label-text text-spacing"> Zelle mit einem versteckten Single. Durch
+                            Klicken auf
+                            die selektierte Zelle wird das Eliminationskriterium für den ersten roten
+                            Kandidaten der
+                            Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch
+                            erneutes
+                            Klicken nach und nach besucht.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Mehroptionszelle (trial).
                         </div>
-                        <div class="label-text text-spacing">Haltepunkt ohne eindeutigen nächsten Kandidaten. Schon erprobte Kandidaten werden mit Unterstrich angezeigt.
+                        <div class="label-text text-spacing">Haltepunkt ohne eindeutigen nächsten
+                            Kandidaten. Schon
+                            erprobte Kandidaten werden mit Unterstrich angezeigt.
                         </div>
                     </label>
                     <label class="label-container">
                         <input type="checkbox" id="breakpoint-contradiction" class="breakpoint" name="breakpoint">
                         <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch (error)</div>
-                        <div class="label-text text-spacing">Zelle oder Gruppe, die einen Widerspruch anzeigt. Die Widerspruchsursache kann eine gewählte Option (trial) in einer Mehroptionszelle sein oder ein unlösbares Ausgangspuzzle. 
+                        <div class="label-text text-spacing">Zelle oder Gruppe, die einen Widerspruch
+                            anzeigt. Die
+                            Widerspruchsursache kann eine gewählte Option (trial) in einer Mehroptionszelle
+                            sein
+                            oder ein unlösbares Ausgangspuzzle.
                         </div>
                     </label>
                     <label class="label-container">
