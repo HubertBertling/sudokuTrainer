@@ -46,26 +46,24 @@
             </button>
         </div>
         <div class="sudoku-solver-container">
-            <div class="gridArea" id="gridArea">
+            <div class="grid-area" id="grid-area">
                 <div class="loaded-evaluations" id="loaded-evaluations">
                 </div>
 
+                <div id="puzzle-info">
+                </div>
+                <div id="loader">
+                    <div id="search-level"></div>
+                </div>
+                <div id="loader-db">
+                    <div id="loader-db-info"></div>
+                </div>
+
+                <div class="main-sudoku-grid" id="main-sudoku-grid">
+                    <!-- block 0 -->
+                </div>
                 <div class="grid-plus-explainer" id="grid-plus-explainer">
-                    <div id="puzzle-info">
-                    </div>
-                    <div id="loader">
-                        <div id="search-level"></div>
-                    </div>
-                    <div id="loader-db">
-                        <div id="loader-db-info"></div>
-                    </div>
-
-                    <div class="main-sudoku-grid" id="main-sudoku-grid">
-                        <!-- block 0 -->
-                    </div>
-
                     <div class="reasonUnsolvability" id="reasonUnsolvability">
-
                     </div>
                     <div class="technique-row" id="technique-row">
                         <div class="technique" id="technique">
@@ -104,132 +102,134 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-block">
-                <div class="manual-btn-block" id="manual-btn-block">
-                    <button class="modern-btn btn-save" id="btn-save">
-                        <span class="material-icons">Save</span>
-                        Speichern
-                    </button>
-                    <button class="modern-btn btn-delete-cell" id="btn-delete-cell">Löschen</button>
-                    <button class="modern-btn number-btn" value="7">7</button>
-                    <button class="modern-btn number-btn" value="8">8</button>
-                    <button class="modern-btn number-btn" value="9">9</button>
+            <!-- <div class="btn-block"> -->
+            <div class="manual-btn-block" id="manual-btn-block">
+                <button class="modern-btn btn-save" id="btn-save">
+                    <span class="material-icons">Save</span>
+                    Speichern
+                </button>
+                <button class="modern-btn btn-delete-cell" id="btn-delete-cell">Löschen</button>
+                <button class="modern-btn number-btn" value="7">7</button>
+                <button class="modern-btn number-btn" value="8">8</button>
+                <button class="modern-btn number-btn" value="9">9</button>
 
-                    <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
-                    <button class="modern-btn btn-undo" id="btn-undo">
-                        <span class="material-icons">Undo</span>
-                        Undo
-                    </button>
-                    <button class="modern-btn number-btn" value="4">4</button>
-                    <button class="modern-btn number-btn" value="5">5</button>
-                    <button class="modern-btn number-btn" value="6">6</button>
+                <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
+                <button class="modern-btn btn-undo" id="btn-undo">
+                    <span class="material-icons">Undo</span>
+                    Undo
+                </button>
+                <button class="modern-btn number-btn" value="4">4</button>
+                <button class="modern-btn number-btn" value="5">5</button>
+                <button class="modern-btn number-btn" value="6">6</button>
 
-                    <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
-                    <button class="modern-btn btn-redo" id="btn-redo">
-                        <span class="material-icons">Redo</span>
-                    </button>
-                    <button class="modern-btn number-btn" value="1">1</button>
-                    <button class="modern-btn number-btn" value="2">2</button>
-                    <button class="modern-btn number-btn" value="3">3</button>
+                <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
+                <button class="modern-btn btn-redo" id="btn-redo">
+                    <span class="material-icons">Redo</span>
+                </button>
+                <button class="modern-btn number-btn" value="1">1</button>
+                <button class="modern-btn number-btn" value="2">2</button>
+                <button class="modern-btn number-btn" value="3">3</button>
 
-                    <button class="modern-btn btn-reset" id="btn-reset">
-                        <span class="material-icons">Reopen Window</span>
-                        Reset
-                    </button>
-                    <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                        <span class="material-icons">refresh</span>
-                        Prüfen
-                    </button>
+                <button class="modern-btn btn-reset" id="btn-reset">
+                    <span class="material-icons">Reopen Window</span>
+                    Reset
+                </button>
+                <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                    <span class="material-icons">refresh</span>
+                    Prüfen
+                </button>
 
-                    <button class="modern-btn btn-tip" id="btn-tip">
-                        <span class="material-icons">Lightbulb</span>
-                        Tipp
-                    </button>
-                    <button class="modern-btn btn-run" id="btn-run">
-                        <span class="material-icons">Manage Search</span>
-                        Starte Suche
-                    </button>
-                </div>
-                <div class="automatic-btn-block" id="automatic-btn-block">
-                    <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
-                        <span class="material-icons">Auto Step</span>
-                        Nächster Suchschritt
-                    </button>
-                    <button class="modern-btn btn-backtrack-continue" id="btn-backtrack-continue">
-                        <span class="material-icons">Step Sequence</span>
-                        Suchlauf mit Haltepunkten
-                    </button>
-                    <button class="modern-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
-                        <span class="material-icons">Settings</span>
-                        Haltepunkte setzen
-                    </button>
-                    <button class="modern-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
-                        <span class="material-icons">Fast Step</span>
-                        Weitere Lösung anzeigen
-                    </button>
-                    <button class="modern-btn btn-backtrack-fast" id="btn-backtrack-fast">
-                        <span class="material-icons">Solution Sequence</span>
-                        Lösungen zählen ...
-                    </button>
-                    <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
-                        <span class="material-icons">Stop</span>
-                        Schließen
-                    </button>
-                    <dialog class="trackerDlg noprint" id="trackerDlg">
-                        <div class="tracker-dialog-area">
-                            <div class="tracker-dlg-header">
-                                <span> Mit dem Solver Lösungen suchen </span>
-                                <button class="search-reset-btn" id="search-reset">
-                                    <img title="reset" src="images/resetIconSchwarz.png"
-                                        class="tracker-dlg-reset-btn-image">
-                                    <span> Reset </span>
+                <button class="modern-btn btn-tip" id="btn-tip">
+                    <span class="material-icons">Lightbulb</span>
+                    Tipp
+                </button>
+                <button class="modern-btn btn-run" id="btn-run">
+                    <span class="material-icons">Manage Search</span>
+                    Starte Suche
+                </button>
+            </div>
+            <dialog class="trackerDlg noprint" id="trackerDlg">
+                <div class="tracker-dialog-area">
+                    <div class="tracker-dlg-header">
+                        <span> Mit dem Solver Lösungen suchen </span>
+                        <button class="search-reset-btn" id="search-reset">
+                            <img title="reset" src="images/resetIconSchwarz.png" class="tracker-dlg-reset-btn-image">
+                            <span> Reset </span>
+                        </button>
+                    </div>
+
+                    <div class="tracker-dlg-solution" id="tracker-dlg-solution">
+                        <div class="label-solution"><b>Lösungen gefunden: </b></div>
+                        <div class="number-of-solutions" id="number-of-solutions">0</div>
+                    </div>
+                    <div class="tracker-body">
+                        <div class="automatic-btn-block" id="automatic-btn-block">
+                            <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
+                                <span class="material-icons">step</span>
+                                Nächster Suchschritt
+                            </button>
+                            <button class="modern-btn btn-backtrack-continue" id="btn-backtrack-continue">
+                                <span class="material-icons">StepSequence</span>
+                                Suchlauf mit Haltepunkten
+                            </button>
+                            <button class="modern-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
+                                <span class="material-icons">Settings</span>
+                                Haltepunkte setzen
+                            </button>
+                            <button class="modern-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
+                                <span class="material-icons">FastStep</span>
+                                Weitere Lösung anzeigen
+                            </button>
+                            <button class="modern-btn btn-backtrack-fast" id="btn-backtrack-fast">
+                                <span class="material-icons">SolutionSequence</span>
+                                Lösungen zählen ...
+                            </button>
+                            <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
+                                <span class="material-icons">Stop</span>
+                                Schließen
+                            </button>
+                            <!--
+                            <div class="backtrack-options" id="backtrack-options">
+                                <button class="tracker-dlg-btn btn" id="btn-backtrack-step">
+                                    <img title="autoStep" src="images/step.png" class="tracker-dlg-btn-image"
+                                        id="image-autostep">
+                                    Nächster Suchschritt
+                                </button>
+                                <button class="tracker-dlg-btn btn" id="btn-backtrack-continue">
+                                    <img title="stepSequence" src="images/stepsequence.png"
+                                        class="tracker-dlg-btn-image" id="tracker-dlg-btn-step-sequence-image">
+                                    Suchlauf mit Haltepunkten
+                                </button>
+                                <button class="tracker-dlg-btn btn" id="btn-breakpoint-settings">
+                                    <img title="gearwheal" src="images/zahnrad.png" class="tracker-dlg-btn-image">
+                                    Haltepunkte setzen
+                                </button>
+                                <button class="tracker-dlg-btn btn" id="btn-backtrack-fast-step">
+                                    <img title="solution" src="images/solution.png" class="tracker-dlg-btn-image">
+                                    Weitere Lösung anzeigen
+                                </button>
+                                <button class="tracker-dlg-btn btn" id="btn-backtrack-fast">
+                                    <img title="solutionSequence" src="images/solutionsequence.png"
+                                        class="tracker-dlg-btn-image" id="tracker-dlg-btn-solution-sequence-image">
+                                    Lösungen zählen ...
+                                </button>
+                                <button class="tracker-dlg-btn btn" id="btn-backtrack-stop">
+                                    <img title="stop" src="images/stop-96.png" class="tracker-dlg-btn-image">
+                                    Schließen
                                 </button>
                             </div>
-
-                            <div class="tracker-dlg-solution" id="tracker-dlg-solution">
-                                <div class="label-solution"><b>Lösungen gefunden: </b></div>
-                                <div class="number-of-solutions" id="number-of-solutions">0</div>
-                            </div>
-                            <div class="tracker-body">
-                                <div class="backtrack-options" id="backtrack-options">
-                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-step">
-                                        <img title="autoStep" src="images/step.png" class="tracker-dlg-btn-image"
-                                            id="image-autostep">
-                                        Nächster Suchschritt
-                                    </button>
-                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-continue">
-                                        <img title="stepSequence" src="images/stepsequence.png"
-                                            class="tracker-dlg-btn-image" id="tracker-dlg-btn-step-sequence-image">
-                                        Suchlauf mit Haltepunkten
-                                    </button>
-                                    <button class="tracker-dlg-btn btn" id="btn-breakpoint-settings">
-                                        <img title="gearwheal" src="images/zahnrad.png" class="tracker-dlg-btn-image">
-                                        Haltepunkte setzen
-                                    </button>
-                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast-step">
-                                        <img title="solution" src="images/solution.png" class="tracker-dlg-btn-image">
-                                        Weitere Lösung anzeigen
-                                    </button>
-                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-fast">
-                                        <img title="solutionSequence" src="images/solutionsequence.png"
-                                            class="tracker-dlg-btn-image" id="tracker-dlg-btn-solution-sequence-image">
-                                        Lösungen zählen ...
-                                    </button>
-                                    <button class="tracker-dlg-btn btn" id="btn-backtrack-stop">
-                                        <img title="stop" src="images/stop-96.png" class="tracker-dlg-btn-image">
-                                        Schließen
-                                    </button>
-                                </div>
-                            </div>
+                            --->
                         </div>
-                    </dialog>
-                </div>
-            </div>
-
+                    </div>
+            </dialog>
         </div>
         <div class="app-name-footer">
             <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
         </div>
+
+        <!-- </div> -->
+
+    </div>
     </div>
     <!--Ausblendbare Elemente -->
 

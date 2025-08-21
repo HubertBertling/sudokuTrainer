@@ -1835,7 +1835,7 @@ class SudokuGridView {
     constructor(grid) {
         this.myGrid = grid;
         this.myNode = undefined;
-        this.domExplainer = document.getElementById("grid-plus-explainer");
+        this.gridArea = document.getElementById("grid-area");
         this.sudoCellViews = [];
         this.sudoBlockViews = [];
         this.sudoRowViews = [];
@@ -1891,7 +1891,7 @@ class SudokuGridView {
         let new_Node = document.createElement('div');
         new_Node.setAttribute('id', 'main-sudoku-grid');
         new_Node.classList.add('main-sudoku-grid');
-        this.domExplainer.replaceChild(new_Node, old_Node);
+        this.gridArea.replaceChild(new_Node, old_Node);
         this.myNode = new_Node;
 
         // Add 9 new DOM blocks to the DOM-grid
