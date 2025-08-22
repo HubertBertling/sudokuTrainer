@@ -136,13 +136,21 @@ Für Text: color: #222; oder color: #424242;
 
 }
 
-.modern-btn:hover,
-.modern-btn:focus {
+.modern-btn:hover {
     background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
     box-shadow: 0 4px 16px rgba(120, 120, 120, 0.18);
     transform: translateY(-2px) scale(1.03);
     outline: none;
 }
+
+.modern-btn:focus {
+    outline: none;
+}
+
+.modern-btn:active {
+    transform: translate(0.2rem, 0.2rem);
+}
+
 
 .btn-help {
     background: DimGray;
@@ -693,10 +701,6 @@ Für Text: color: #222; oder color: #424242;
     border: 0.3rem solid darkgreen;
 }
 
-
-.modern-btn:active {
-    transform: translate(0.2rem, 0.2rem);
-}
 
 .btn-delete-cell {
     background: var(--delete-btn-bg-color);
@@ -1703,7 +1707,7 @@ label {
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        font-size: 1.4rem;
+        font-size: 2.4rem;
     }
 
     .grid-area {
@@ -1711,7 +1715,7 @@ label {
     }
 
     .btn-block {
-        font-size: 1.4rem;
+        font-size: 2.4rem;
         width: 100%;
     }
 

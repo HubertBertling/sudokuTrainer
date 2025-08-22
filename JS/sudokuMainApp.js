@@ -3060,6 +3060,7 @@ class SudokuSolverController {
             e.addEventListener('click', () => {
                 let btnNumber = this.number_inputs[index].value.toString();
                 this.handleNumberPressed(btnNumber);
+                this.number_inputs[index].blur();
             })
         });
 
@@ -3143,7 +3144,7 @@ class SudokuSolverController {
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
                 this.saveBtnPressed();
-            })
+          })
         });
 
         // Click-Events for both init buttons, desktop and mobile
