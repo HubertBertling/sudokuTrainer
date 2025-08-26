@@ -86,9 +86,28 @@ body {
     font-weight: bold;
     background-color: DimGray;
     color: white;
-    border-radius: 0.6em;
-    margin-top: 0.6em;
     margin-bottom: 0.6em;
+}
+
+.tracker-dlg-header {
+    width: 100%;
+    /* height: 1.8rem; */
+    display: grid;
+    place-items: center;
+    position: relative;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    vertical-align: center;
+    
+    font-weight: bold;
+    background-color: DimGray;
+    color: white;
+}
+
+.tracker-dlg-header>span {
+    width: 100%;
+    font-size: 0.8em;
+    padding-left: 0.4rem;
 }
 
 .app-name-header>span,
@@ -542,18 +561,31 @@ Für Text: color: #222; oder color: #424242;
 
 .material-icons,
 .material-symbols-outlined {
-    font-size: 0.8rem;
-    color: #e0e0e0;
+    font-size: 1.2rem;
+    color: black;
     /* Google-grey 300 */
     /* color: #9e9e9e; /* Google-grey 500 */
     vertical-align: middle;
+}
+
+#search-reset .material-icons,
+#btn-help .material-icons,
+#btn-menu .material-icons,
+#btn-share .material-icons
+
+/*
+.material-symbols-outlined #btn-backtrack-step,
+.material-symbols-outlined #btn-backtrack-continue,
+.material-symbols-outlined #btn-backtrack-fast-step*/
+ {
+    color: white;
 }
 
 .modern-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.2em;
-    background: linear-gradient(95deg, #888b90 0%, #b0b3b8 100%);
+    background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
     color: #222;
     border: none;
     border-radius: 0.3em;
@@ -566,7 +598,9 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .modern-btn:hover {
-    background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
+    background: linear-gradient(95deg, #888b90 0%, #b0b3b8 100%);
+    color: white;
+
     box-shadow: 0 4px 16px rgba(120, 120, 120, 0.18);
     transform: translateY(-2px) scale(1.03);
     outline: none;
@@ -604,6 +638,15 @@ Für Text: color: #222; oder color: #424242;
     font-size: 0.8rem;
 }
 
+#search-reset {
+    background: DimGray;
+    color: white;
+    position: absolute;
+    right: 1rem;
+    font-size: 0.8rem;
+}
+
+
 #manual-btn-block {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -613,7 +656,6 @@ Für Text: color: #222; oder color: #424242;
     align-items: stretch;
     width: 100%;
 }
-
 
 #automatic-btn-block {
     margin-top: 0.4em;
@@ -642,7 +684,7 @@ Für Text: color: #222; oder color: #424242;
     height: 100%;
     box-sizing: border-box;
     text-align: center;
-    white-space: normal; 
+    white-space: normal;
 }
 
 .number-btn {
@@ -962,29 +1004,27 @@ label {
 /*=======================================*/
 
 
-
 .trackerDlg {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 1;
     background-color: #f5f5f5;
     border: none;
-    width: 100%;
+
 }
-
-
-.tracker-dialog-area {
-    /*  border: 0.2rem solid grey; */
-    display: grid;
-    place-items: center;
-}
-
-
 
 .trackerDlg::backdrop {
     background: hsl(201 50% 40% /.1);
 }
+
+
+
+.tracker-dialog-area {
+    /*  border: 0.2rem solid grey; */
+    width: 100%;
+}
+
 
 .technique-row {
     height: 2.2em;
@@ -994,34 +1034,20 @@ label {
     position: relative;
 }
 
-.tracker-dlg-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-    height: 2.6em;
-    width: 100%;
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-    padding: 0.2em;
-    background-color: DimGray;
-    color: white;
-}
 
 .tracker-dlg-solution {
     width: 100%;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: flex;
     flex-direction: row;
     place-items: center;
-    border: 0.4rem solid DimGrey;
+    border: 0.2rem solid DimGrey;
     background-color: var(--played-cell-bg-color);
 }
 
 .label-solution {
-    font-size:0.8em;
+    font-size: 0.8em;
     padding: 0.4em;
 }
 
@@ -1044,11 +1070,6 @@ label {
     height: 1em;
 }
 
-.tracker-dlg-reset-btn-image {
-    padding: 0.4em;
-    width: 1.8em;
-}
-
 .tipp-accept-btn,
 .search-reset-btn {
     position: absolute;
@@ -1065,11 +1086,6 @@ label {
 
 }
 
-
-#tracker-dlg-btn-step-sequence-image,
-#tracker-dlg-btn-solution-sequence-image {
-    width: 1.2em;
-}
 
 
 /*================
@@ -1638,12 +1654,13 @@ label {
     }
 
     .grid-area {
+        font-size: 1.5em;
         width: 50%;
     }
 
     .btn-block {
         width: 50%;
-        font-size: 0.8em;
+        position: relative;
     }
 }
 
@@ -1664,7 +1681,7 @@ label {
     }
 
     .btn-block {
-        font-size: 1.5em;
+        position: relative;
         width: 100%;
     }
 

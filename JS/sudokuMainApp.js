@@ -510,7 +510,7 @@ class TrackerDialog {
     constructor() {
         this.manualBtnBlock = document.getElementById("manual-btn-block");
         // this.manualBtnBlock.style.visibility = "hidden";
-        this.automaticBtnBlock = document.getElementById("automatic-btn-block");
+        // this.automaticBtnBlock = document.getElementById("automatic-btn-block");
         this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
         this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
         this.trackerDlgNode = document.getElementById("trackerDlg");
@@ -525,9 +525,8 @@ class TrackerDialog {
         this.btnFastNode = document.getElementById("btn-backtrack-fast");
         this.trackerDlgNode.close();
         this.myOpen = false;
-        this.automaticBtnBlock.style.visibility = "visible";
+        // this.automaticBtnBlock.style.visibility = "visible";
      
-
         this.btnContinueNode.addEventListener('click', () => {
             sudoApp.mySolverController.trackerDlgStepSequencePressed();
         });
@@ -549,7 +548,7 @@ class TrackerDialog {
     }
     open() {
         this.manualBtnBlock.style.visibility = "hidden";
-        this.automaticBtnBlock.style.display = "grid";
+        // this.automaticBtnBlock.style.display = "grid";
         this.myOpen = false; this.myOpen = false;
         this.reSetNumberOfSolutions();
         sudoApp.mySolver.notify();
@@ -568,7 +567,7 @@ class TrackerDialog {
             this.reSetNumberOfSolutions();
             this.trackerDlgNode.close();
             this.manualBtnBlock.style.visibility = "visible";
-            this.automaticBtnBlock.style.visibility = "hidden";
+            // this.automaticBtnBlock.style.visibility = "hidden";
             this.myOpen = false;
         }
     }
