@@ -41,7 +41,7 @@
     /* Setting the global font size */
     /* Prozent von der Browser Font-Einstellung */
     /* font-size: 62.5%; */
-    font-size: clamp(12px, 2.2vw, 20px);
+    /* font-size: clamp(12px, 2.2vw, 20px);
 
     /* Effekt: 1rem = 10px */
 }
@@ -55,21 +55,13 @@
 
 /* Set height of body and the document to 100% */
 html {
-    font-size: clamp(12px, 2.2vw, 20px);
-    height: 100%;
-    width: 100%;
+    font-size: 16px;
 }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: #f5f5f5;
     /* Grey 100 */
-}
-
-
-.app-content {
-    width: calc(min(95vw, 820px));
-    margin: 0 auto;
 }
 
 /* ********** App-header and footer ***************************/
@@ -81,12 +73,11 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 1.8em;
-    font-size: 1.2em;
+    height: 1.4rem;
+    font-size: 1rem;
     font-weight: bold;
     background-color: DimGray;
     color: white;
-    margin-bottom: 0.6em;
 }
 
 .tracker-dlg-header {
@@ -98,7 +89,7 @@ body {
     height: 1.6rem;
     line-height: 1.6rem;
     vertical-align: center;
-    
+
     font-weight: bold;
     background-color: DimGray;
     color: white;
@@ -106,17 +97,17 @@ body {
 
 .tracker-dlg-header>span {
     width: 100%;
-    font-size: 0.8em;
     padding-left: 0.4rem;
 }
 
+/*
 .app-name-header>span,
 .app-name-footer>span,
 .db-puzzle-header>span {
     font-size: 0.8em;
 }
 
-
+*/
 
 /*======================================*/
 /* Global definitions */
@@ -259,7 +250,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.2em;
+    gap: 0.2rem;
     aspect-ratio: 1 / 1;
     background: #646566;
     touch-action: pinch-zoom;
@@ -269,8 +260,8 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.06em;
-    font-size: 1em;
+    gap: 0.06rem;
+    font-size: 1.8rem;
     line-height: 1;
     text-align: center;
 
@@ -516,9 +507,8 @@ body {
 
 .loaded-evaluations,
 .grid-plus-explainer {
-    font-size: 0.5em;
     display: flex;
-    padding: 0.3em 0.3em;
+    padding: 0.3rem 0.3rem;
     background-color: lightgrey;
 }
 
@@ -535,7 +525,7 @@ body {
 .technique,
 .reasonUnsolvability {
     width: 100%;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     display: flex;
     background-color: lightgrey;
 }
@@ -577,20 +567,19 @@ Für Text: color: #222; oder color: #424242;
 .material-symbols-outlined #btn-backtrack-step,
 .material-symbols-outlined #btn-backtrack-continue,
 .material-symbols-outlined #btn-backtrack-fast-step*/
- {
+    {
     color: white;
 }
 
 .modern-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.2em;
+    gap: 0.2rem;
     background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
     color: #222;
     border: none;
-    border-radius: 0.3em;
+    border-radius: 0.3rem;
     font-weight: 600;
-    font-size: 0.2em;
     box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
@@ -619,7 +608,6 @@ Für Text: color: #222; oder color: #424242;
     color: white;
     position: absolute;
     right: 0.6rem;
-    font-size: 0.8rem
 }
 
 #btn-menu {
@@ -627,15 +615,13 @@ Für Text: color: #222; oder color: #424242;
     color: white;
     position: absolute;
     left: 0.6rem;
-    font-size: 0.8rem;
 }
 
 #btn-share {
     background: DimGray;
     color: white;
     position: absolute;
-    right: 6rem;
-    font-size: 0.8rem;
+    right: 4rem;
 }
 
 #search-reset {
@@ -643,7 +629,6 @@ Für Text: color: #222; oder color: #424242;
     color: white;
     position: absolute;
     right: 1rem;
-    font-size: 0.8rem;
 }
 
 
@@ -651,21 +636,20 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 0.2em;
+    gap: 0.4rem;
     justify-items: stretch;
     align-items: stretch;
-    width: 100%;
+    margin: 0 0.4rem;
 }
 
 #automatic-btn-block {
-    margin-top: 0.4em;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.4em;
+    gap: 0.4rem;
     justify-items: stretch;
     align-items: stretch;
-    width: 100%;
+    margin: 0 0.4rem;
 }
 
 
@@ -676,7 +660,7 @@ Für Text: color: #222; oder color: #424242;
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
-    font-size: 0.6rem;
+    /* font-size: 0.6rem; */
     padding: 0.2rem 0.2rem;
     min-width: 0;
     min-height: 0;
@@ -688,7 +672,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
-    font-size: 1.2em;
+    /* font-size: 1.2rem; */
 }
 
 #btn-define {
@@ -736,15 +720,6 @@ Für Text: color: #222; oder color: #424242;
     grid-row-end: 4;
 }
 
-.btn-image {
-    width: 1.8em;
-    height: 1.8em;
-}
-
-.breakpoint-setting-image {
-    width: 2.4em;
-    height: 2.4em;
-}
 
 /*======================================*/
 /* Evaluation radio buttons             */
@@ -845,45 +820,39 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 
 .progress-box {
-    /* border-bottom: 0.3rem solid #0d1117; */
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
     background-color: #f5f5f5;
-    font-size: 0.4em;
+
 }
 
 .progress-block {
-    margin-top: 0.2em;
-    line-height: 1.2em;
+    margin-top: 0.4rem;
+    line-height: 1.4rem;
     display: grid;
     grid-template-columns: 1.2fr 0.2fr 0.8fr;
-    gap: 0.2em;
+    gap: 0.4rem;
+    
 }
-
-.checkbox {
-    margin-left: 0.3em;
-    background-color: grey;
-}
-
 .step-count-box {
-    line-height: 1.2em;
-    height: 1.2em;
+    line-height: 1.4rem;
+    height: 1.4rem;
     display: flex;
-    margin-right: 0.2em;
-    /*  width: 14.5em; */
+    margin-right: 0.4rem;
     width: 100%;
+    background-color: lightgray;
 }
 
 .forward-backward-image {
-    width: 1em;
-    height: 1em;
+    width: 1rem;
+    height: 1rem;
 }
 
 .forward,
 .backward {
-    height: 1.2em;
-    padding-left: 1em;
-    padding-right: 1em;
+    height: 1.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .autoMode-radio-btns {
@@ -901,10 +870,9 @@ Für Text: color: #222; oder color: #424242;
 #myProgress {
     position: relative;
     width: 100%;
-    height: 1.6em;
-    font-size: var(--font-size);
+    height: 1.4rem;
     text-align: right;
-    padding-right: 0.5em;
+    padding-right: 0.5rem;
     background-color: var(--nested-cell-bg-color);
 }
 
@@ -912,8 +880,8 @@ Für Text: color: #222; oder color: #424242;
 #myBarPlay {
     position: absolute;
     width: 20%;
-    height: 1.6em;
-    line-height: 1.6em;
+    height: 1.4rem;
+    line-height: 1.4rem;
 }
 
 #myBarDef {
@@ -928,11 +896,10 @@ Für Text: color: #222; oder color: #424242;
     background-color: var(--played-cell-bg-color);
     color: black;
     text-align: right;
-    padding-right: 0.5em;
 }
 
 .total-bar-value {
-    line-height: 1.6em;
+    line-height: 1.4rem;
     vertical-align: center;
 }
 
@@ -944,7 +911,7 @@ Für Text: color: #222; oder color: #424242;
     font-size: var(--font-size-xl);
     display: inline-block;
     color: black;
-    margin-top: 1em;
+    margin-top: 1rem;
 }
 
 
@@ -968,14 +935,14 @@ Für Text: color: #222; oder color: #424242;
 .dlg-header {
     font-size: var(--font-size-lg);
     font-weight: bold;
-    margin: 0.5em;
+    margin: 0.5rem;
     text-align: center;
 }
 
 label {
     font-size: var(--font-size-lg);
-    margin-left: 1.2em;
-    margin-bottom: 1.2em;
+    margin-left: 1.2rem;
+    margin-bottom: 1.2rem;
 }
 
 .puzzle-name-input-dlg {
@@ -1011,6 +978,7 @@ label {
     z-index: 1;
     background-color: #f5f5f5;
     border: none;
+    margin: 0 auto;
 
 }
 
@@ -1214,12 +1182,6 @@ label {
     line-height: 1.6em;
     padding-right: 0.5em;
 }
-
-.total-bar-value {
-    line-height: 1.6em;
-    vertical-align: center;
-}
-
 
 
 #btn-new-puzzle-ok,
@@ -1646,6 +1608,16 @@ label {
 
 /* @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) { */
 @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) {
+
+    html {
+        font-size: 18px;
+    }
+
+    .app-content {
+        width: calc(min(95vw, 820px));
+        margin: 0 auto;
+    }
+
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1654,7 +1626,6 @@ label {
     }
 
     .grid-area {
-        font-size: 1.5em;
         width: 50%;
     }
 
@@ -1667,16 +1638,24 @@ label {
 /* Change styles for cancel button and delete button on extra small screens */
 
 @media screen and (orientation: portrait) and (width < 430px) {
+    html {
+        font-size: 12px;
+    }
+
+    .app-content {
+        width: 95vw;
+        margin: 0.5rem auto;
+    }
 
     .sudoku-solver-container {
         display: flex;
         flex-direction: column;
-        gap: 0.5em;
-        font-size: 1.5em;
+        gap: 0.8rem;
+        align-items: center;
+
     }
 
     .grid-area {
-        font-size: 1.5em;
         width: 100%;
     }
 

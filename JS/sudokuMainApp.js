@@ -843,9 +843,6 @@ class SudokuPuzzleDB {
         let update_str_puzzleMap = JSON.stringify(Array.from(puzzleMap.entries()));
         localStorage.setItem("localSudokuDB", update_str_puzzleMap);
 
-        this.init
-        sudoApp.mySolver.init();
-        sudoApp.mySolver.notify()
         this.notify();
     }
 
@@ -1925,7 +1922,7 @@ class SudokuGridView {
                 this.displayCandidateInvisibleMatrix();
             }
         } else {
-            // new_Node.style.border = "3px solid grey";
+            new_Node.style.border = "3px solid grey";
         }
 
         // Unlösbarkeit anzeigen.

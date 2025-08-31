@@ -4793,7 +4793,7 @@ class SudokuMainApp {
         this.myPuzzleDB = new SudokuPuzzleDB();
         this.myPuzzleDBView = new SudokuPuzzleDBView(this.myPuzzleDB);
         this.myPuzzleDBController = new SudokuPuzzleDBController(this.myPuzzleDB);
-        this.myPuzzleDB.init();
+        // this.myPuzzleDB.init();
 
         // The navigation bar
         this.myNavBar = new NavigationBar();
