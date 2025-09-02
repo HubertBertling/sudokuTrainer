@@ -44,7 +44,36 @@
     /* font-size: clamp(12px, 2.2vw, 20px);
 
     /* Effekt: 1rem = 10px */
+
+/*
+Farbschema generiert auf 
+https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d 
+*/
+
+/* Kontraste: */
+--myColor-1:  #ff0000; /* Red */
+--myColor-2:  #b30000; /* Bright Red */
+--myColor-3:  #ffbfbf; /* Your Pink */
+--myColor-4:  #ff8080; /* Vivid Tangerine */
+
+--myColor-5:  #00cc00; /* Green */
+--myColor-6:  #008f00; /* Japanese Laurel */
+--myColor-7:  #bfffbf; /* Snowy Mint */
+--myColor-8:  #80ff80; /* Mint Green */
+--myColor-9:  #0066b3; /* Endeavour */
+--myColor-10:  #00487d; /* Congress Blue */
+--myColor-11:  #bfe4ff; /* French Pass */
+--myColor-12:  #80c9ff; /* Malibu */
+
+--myColor-13:  #ff8000; /* Flush Orange */
+--myColor-14:  #b35a00; /* Rose of Sharon */
+--myColor-15:  #ffdfbf; /* Negroni */
+--myColor-16:  #ffc080; /* Macaroni and Cheese */
+
+
 }
+
+
 
 * {
     padding: 0;
@@ -64,25 +93,28 @@ body {
     /* Grey 100 */
 }
 
-/* ********** App-header and footer ***************************/
+
+
+/* ********** App-header ***************************/
 
 .app-name-header,
-.db-puzzle-header,
-.app-name-footer {
+.db-puzzle-header {
     margin-top: 0.1rem;
     margin-bottom: 0.2rem;
     width: 100%;
     display: grid;
     place-items: center;
     position: relative;
-    height: 1.4rem;
+    height: 1.8rem;
     /* font-size: 1rem; */
     font-weight: bold;
-    background-color: DimGray;
+    background-color: #696969;
     color: white;
 }
 
-.tracker-dlg-header {
+.tracker-dlg-header,
+.manual-solver-header {
+    margin-bottom: 0.2rem;
     width: 100%;
     /* height: 1.8rem; */
     display: grid;
@@ -93,14 +125,25 @@ body {
     vertical-align: center;
 
     font-weight: bold;
-    background-color: DimGray;
+    font-size: 0.8rem;
+}
+
+.tracker-dlg-header {
+    background-color: var(--myColor-9);
+    color: white;
+
+}
+.manual-solver-header {
+    background-color: var(--myColor-10);
     color: white;
 }
 
-.tracker-dlg-header>span {
+.tracker-dlg-header>span,
+.manual-solver-header>span {
     width: 100%;
     padding-left: 0.4rem;
 }
+
 
 /*
 .app-name-header>span,
@@ -539,9 +582,6 @@ body {
 /*======================================*/
 /* Button block                        */
 /*======================================*/
-.btn-block {
-    position: relative;
-}
 
 /* Buttons */
 
@@ -559,12 +599,11 @@ Für Text: color: #222; oder color: #424242;
     /* color: #9e9e9e; /* Google-grey 500 */
     vertical-align: middle;
 }
-
-#search-reset .material-icons,
 #btn-help .material-icons,
 #btn-menu .material-icons,
-#btn-share .material-icons
-
+#btn-share .material-icons,
+#btn-backtrack-stop .material-symbols-outlined,
+#btn-run .material-symbols-outlined
 /*
 .material-symbols-outlined #btn-backtrack-step,
 .material-symbols-outlined #btn-backtrack-continue,
@@ -626,13 +665,22 @@ Für Text: color: #222; oder color: #424242;
     right: 5rem;
 }
 
-#search-reset {
-    background: DimGray;
+
+#btn-backtrack-stop {
+    background: var(--myColor-9);
     color: white;
     position: absolute;
     right: 1rem;
 }
 
+
+
+#btn-run {
+    background: var(--myColor-10);
+    color: white;
+    position: absolute;
+    right: 0.2rem;
+}
 
 #manual-btn-block {
     display: grid;
@@ -827,8 +875,9 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: 1.2fr 0.2fr 0.8fr;
     gap: 0.2rem;
-    
+
 }
+
 .step-count-box {
     line-height: 1.4rem;
     height: 1.4rem;
@@ -1008,7 +1057,7 @@ label {
     display: flex;
     flex-direction: row;
     place-items: center;
-    border: 0.2rem solid DimGrey;
+    /* border: 0.2rem solid DimGrey; */
     background-color: var(--played-cell-bg-color);
 }
 
@@ -1036,8 +1085,7 @@ label {
     height: 1em;
 }
 
-.tipp-accept-btn,
-.search-reset-btn {
+.tipp-accept-btn {
     position: absolute;
     right: 1.8%;
     border-radius: 0.4em;
@@ -1604,6 +1652,7 @@ label {
 
 /* ============================================================*/
 
+
 /* @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) { */
 @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) {
 
@@ -1619,8 +1668,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
-        gap: 1em;
-        font-size: 0.8em;
+        gap: 1rem;
     }
 
     .grid-area {
@@ -1628,9 +1676,16 @@ label {
     }
 
     .btn-block {
-        width: 50%;
         position: relative;
+        width: 50%;
     }
+
+    .trackerDlg {
+        position: absolute;
+        width: 100%;
+        margin: 0 auto;       
+    }
+
 }
 
 /* Change styles for cancel button and delete button on extra small screens */
@@ -1642,18 +1697,16 @@ label {
 
     .app-content {
         width: 95vw;
-        margin: 0.5rem auto;
+        margin: 0 auto;
     }
 
     .sudoku-solver-container {
         display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        align-items: center;
-
+        flex-direction: column; 
+        gap: 1rem;
     }
 
-    .grid-area {
+     .grid-area {
         width: 100%;
     }
 
@@ -1661,6 +1714,13 @@ label {
         position: relative;
         width: 100%;
     }
+
+    .trackerDlg {
+        position: absolute;
+        width: 100%;
+        margin: 0 auto;       
+    }
+   
 
 }
 

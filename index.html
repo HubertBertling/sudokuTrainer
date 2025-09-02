@@ -51,7 +51,6 @@
             <div class="grid-area" id="grid-area">
                 <div class="loaded-evaluations" id="loaded-evaluations">
                 </div>
-
                 <div id="puzzle-info">
                 </div>
                 <div id="loader">
@@ -104,64 +103,78 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-block">
-                <div class="manual-btn-block" id="manual-btn-block">
-                    <button class="modern-btn btn-save" id="btn-save">
-                        <span class="material-icons">save</span>
-                        Speichern
-                    </button>
-                    <button class="modern-btn btn-delete-cell" id="btn-delete-cell">X</button>
-                    <button class="modern-btn number-btn" value="7">7</button>
-                    <button class="modern-btn number-btn" value="8">8</button>
-                    <button class="modern-btn number-btn" value="9">9</button>
+            <div class="btn-block" id="btn-block">
+                <div class="manual-block" id="manual-block">
+                    <div class="manual-solver-header" id="manual-solver-header">
+                        <span>Manuell lösen</span>
+                        <button class="modern-btn btn-run" id="btn-run">
+                            <span class="material-symbols-outlined">
+                                autoplay
+                            </span>
+                            Automatisch
+                        </button>
+                    </div>
+                    <div class="manual-btn-block" id="manual-btn-block">
+                        <button class="modern-btn btn-save" id="btn-save">
+                            <span class="material-icons">save</span>
+                            Speichern
+                        </button>
+                        <button class="modern-btn btn-delete-cell" id="btn-delete-cell">X</button>
+                        <button class="modern-btn number-btn" value="7">7</button>
+                        <button class="modern-btn number-btn" value="8">8</button>
+                        <button class="modern-btn number-btn" value="9">9</button>
 
-                    <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
-                    <button class="modern-btn btn-undo" id="btn-undo">
-                        <span class="material-icons">undo</span>
-                        Undo
-                    </button>
-                    <button class="modern-btn number-btn" value="4">4</button>
-                    <button class="modern-btn number-btn" value="5">5</button>
-                    <button class="modern-btn number-btn" value="6">6</button>
+                        <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
+                        <button class="modern-btn btn-undo" id="btn-undo">
+                            <span class="material-icons">undo</span>
+                            Undo
+                        </button>
+                        <button class="modern-btn number-btn" value="4">4</button>
+                        <button class="modern-btn number-btn" value="5">5</button>
+                        <button class="modern-btn number-btn" value="6">6</button>
 
-                    <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
-                    <button class="modern-btn btn-redo" id="btn-redo">
-                        <span class="material-icons">redo</span>
-                        Redo
-                    </button>
-                    <button class="modern-btn number-btn" value="1">1</button>
-                    <button class="modern-btn number-btn" value="2">2</button>
-                    <button class="modern-btn number-btn" value="3">3</button>
+                        <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
+                        <button class="modern-btn btn-redo" id="btn-redo">
+                            <span class="material-icons">redo</span>
+                            Redo
+                        </button>
+                        <button class="modern-btn number-btn" value="1">1</button>
+                        <button class="modern-btn number-btn" value="2">2</button>
+                        <button class="modern-btn number-btn" value="3">3</button>
 
-                    <button class="modern-btn btn-reset" id="btn-reset">
-                        <span class="material-icons">autorenew</span>
-                        Reset
-                    </button>
-                    <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                        <span class="material-symbols-outlined">
-                            data_check
-                        </span>
-                        Prüfen
-                    </button>
+                        <button class="modern-btn btn-reset" id="btn-reset">
+                            <span class="material-icons">autorenew</span>
+                            Reset
+                        </button>
+                        <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                            <span class="material-symbols-outlined">
+                                data_check
+                            </span>
+                            Prüfen
+                        </button>
 
-                    <button class="modern-btn btn-tip" id="btn-tip">
-                        <span class="material-icons">lightbulb</span>
-                        Tipp
-                    </button>
-                    <button class="modern-btn btn-run" id="btn-run">
-                        <span class="material-symbols-outlined">
-                            autoplay
-                        </span>
-                        Starte Suche
-                    </button>
+                        <button class="modern-btn btn-tip" id="btn-tip">
+                            <span class="material-icons">lightbulb</span>
+                            Tipp
+                        </button>
+                        <button class="modern-btn btn-run-old" id="btn-run-old">
+                            <span class="material-symbols-outlined">
+                                autoplay
+                            </span>
+                            Starte Suche
+                        </button>
+
+                    </div>
                 </div>
                 <dialog class="trackerDlg noprint" id="trackerDlg">
                     <div class="tracker-dialog-area">
                         <div class="tracker-dlg-header">
-                            <span> Mit dem Solver Lösungen suchen </span>
-                            <button class="modern-btn search-reset" id="search-reset">
-                                <span class="material-icons">autorenew</span>
-                                Reset
+                            <span> Automatisch lösen</span>
+                            <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
+                                <span class="material-symbols-outlined">
+                                    stop_circle
+                                </span>
+                                Stop
                             </button>
                         </div>
                         <div class="tracker-dlg-solution" id="tracker-dlg-solution">
@@ -200,13 +213,25 @@
                             </span>
                             Lösungen zählen ...
                         </button>
-                        <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
-                            <span class="material-symbols-outlined">
-                                stop_circle
-                            </span>
-                            Schließen
+                        <button class="modern-btn search-reset-btn" id="search-reset-btn">
+                            <span class="material-icons">autorenew</span>
+                            Reset
                         </button>
+
                         <!--
+                            <button class="modern-btn btn-backtrack-pause" id="btn-backtrack-pause">
+                                <span class="material-symbols-outlined">
+                                    pause_circle
+                                </span>
+                                Anhalten
+                            </button>
+
+                            <span> Lösungen automatisch suchen </span>
+                            <button class="search-reset-btn" id="search-reset">
+                                <span class="material-icons">autorenew</span>
+                                Reset
+                            </button>
+                                
                                 <button class="modern-btn btn-backtrack" id="btn-backtrack-step">
                                     <img title="autoStep" src="images/step.png" class="tracker-dlg-btn-image"
                                         id="image-autostep">
@@ -237,10 +262,8 @@
 
                     </div>
                 </dialog>
+
             </div>
-        </div>
-        <div class="app-name-footer">
-            <span>Mit dem Trainer macht das Sudokulösen Spaß.</span>
         </div>
     </div>
     </div>

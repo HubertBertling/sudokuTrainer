@@ -1912,9 +1912,9 @@ class SudokuGridView {
 
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                new_Node.style.border = "3px solid grey";
+                new_Node.style.border = "3px solid var(--myColor-10)";
             } else {
-                new_Node.style.border = "3px dashed white";
+                new_Node.style.border = "3px solid var(--myColor-9)";
             }
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                 // Candidates are not displayed in the matrix
@@ -1922,7 +1922,7 @@ class SudokuGridView {
                 this.displayCandidateInvisibleMatrix();
             }
         } else {
-            new_Node.style.border = "3px solid grey";
+            new_Node.style.border = "3px solid var(--myColor-10)";
         }
 
         // Unlösbarkeit anzeigen.
@@ -3182,7 +3182,7 @@ class SudokuSolverController {
             })
         });
 
-        let resetButton = document.getElementById('search-reset');
+        let resetButton = document.getElementById('search-reset-btn');
         resetButton.addEventListener('click', () => {
             this.searchResetBtnPressed();
         });
