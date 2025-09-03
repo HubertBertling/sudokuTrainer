@@ -109,7 +109,7 @@
                         <span>Manuell lösen</span>
                         <button class="modern-btn btn-run" id="btn-run">
                             <span class="material-symbols-outlined">
-                                autoplay
+                                arrow_right
                             </span>
                             Automatisch
                         </button>
@@ -142,11 +142,24 @@
                         <button class="modern-btn number-btn" value="2">2</button>
                         <button class="modern-btn number-btn" value="3">3</button>
 
+                        <button class="modern-btn btn-run-old" id="btn-run-old"
+                            onclick="sudoApp.mySolverController.initLinkPressed()">
+                            <span class="material-symbols-outlined">
+                                start
+                            </span>
+                            Initiali-sieren
+                        </button>
                         <button class="modern-btn btn-reset" id="btn-reset">
                             <span class="material-icons">autorenew</span>
                             Reset
                         </button>
-                        <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                           <button class="modern-btn btn-run-old" id="btn-run-old" onclick="sudoApp.mySolverController.newLinkPressed()">
+                            <span class="material-symbols-outlined">
+                                Add
+                            </span>
+                            Neu
+                        </button>
+                     <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
                             <span class="material-symbols-outlined">
                                 data_check
                             </span>
@@ -157,13 +170,6 @@
                             <span class="material-icons">lightbulb</span>
                             Tipp
                         </button>
-                        <button class="modern-btn btn-run-old" id="btn-run-old">
-                            <span class="material-symbols-outlined">
-                                autoplay
-                            </span>
-                            Starte Suche
-                        </button>
-
                     </div>
                 </div>
                 <dialog class="trackerDlg noprint" id="trackerDlg">
@@ -217,52 +223,8 @@
                             <span class="material-icons">autorenew</span>
                             Reset
                         </button>
-
-                        <!--
-                            <button class="modern-btn btn-backtrack-pause" id="btn-backtrack-pause">
-                                <span class="material-symbols-outlined">
-                                    pause_circle
-                                </span>
-                                Anhalten
-                            </button>
-
-                            <span> Lösungen automatisch suchen </span>
-                            <button class="search-reset-btn" id="search-reset">
-                                <span class="material-icons">autorenew</span>
-                                Reset
-                            </button>
-                                
-                                <button class="modern-btn btn-backtrack" id="btn-backtrack-step">
-                                    <img title="autoStep" src="images/step.png" class="tracker-dlg-btn-image"
-                                        id="image-autostep">
-                                    Nächster Suchschritt
-                                </button>
-                                <button class="modern-btn btn-backtrack" id="btn-backtrack-continue">
-                                    <img title="stepSequence" src="images/stepsequence.png"
-                                        class="tracker-dlg-btn-image" id="tracker-dlg-btn-step-sequence-image">
-                                    Suchlauf mit Haltepunkten
-                                </button>
-                                <button class="modern-btn btn-backtrack" id="btn-breakpoint-settings">
-                                    <img title="gearwheal" src="images/zahnrad.png" class="tracker-dlg-btn-image">
-                                    Haltepunkte setzen
-                                </button>
-                                <button class="modern-btn btn-backtrack" id="btn-backtrack-fast-step">
-                                    <img title="solution" src="images/solution.png" class="tracker-dlg-btn-image">
-                                    Weitere Lösung anzeigen
-                                </button>
-                                <button class="modern-btn btn-backtrack" id="btn-backtrack-fast">
-                                    <img title="solutionSequence" src="images/solutionsequence.png"
-                                        class="tracker-dlg-btn-image" id="tracker-dlg-btn-solution-sequence-image">
-                                    Lösungen zählen ...
-                                </button>
-                                <button class="modern-btn btn-backtrack" id="btn-backtrack-stop">
-                                    <img title="stop" src="images/stop-96.png" class="tracker-dlg-btn-image">
-                                    Schließen
-                                </button> -->
-
                     </div>
                 </dialog>
-
             </div>
         </div>
     </div>
