@@ -1895,9 +1895,9 @@ class SudokuGridView {
 
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                new_Node.style.border = "6px solid var(--myColor-10)";
+                new_Node.style.border = "6px solid var(--myColor-17)";
             } else {
-                new_Node.style.border = "6px solid var(--myColor-14)";
+                new_Node.style.border = "6px solid var(--myColor-18)";
             }
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                 // Candidates are not displayed in the matrix

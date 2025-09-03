@@ -86,6 +86,9 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
     --myColor-16: #ffc080;
     /* Macaroni and Cheese */
 
+    --myColor-17: #040273; /* deepblue */
+    --myColor-18: #410200; /* deepbrown */
+    --myColor-19: #404040; /*  */
 
 }
 
@@ -126,10 +129,10 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 1.8rem;
+    height: 2rem;
     /* font-size: 1rem; */
     font-weight: bold;
-    background-color: #696969;
+    background-color: var(--myColor-19);
     color: white;
 }
 
@@ -152,7 +155,7 @@ body {
 .tracker-dlg-header {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
-    background-color: var(--myColor-14);
+    background-color: var(--myColor-18);
     color: white;
 
 }
@@ -160,7 +163,7 @@ body {
 .manual-solver-header {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
-    background-color: var(--myColor-10);
+    background-color: var(--myColor-17);
     color: white;
 }
 
@@ -665,21 +668,21 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #btn-help {
-    background: DimGray;
+    background: var(--myColor-19);
     color: white;
     position: absolute;
     right: 0.6rem;
 }
 
 #btn-menu {
-    background: DimGray;
+    background: var(--myColor-19);
     color: white;
     position: absolute;
     left: 0.6rem;
 }
 
 #btn-share {
-    background: DimGray;
+    background: var(--myColor-19);
     color: white;
     position: absolute;
     right: 5rem;
@@ -687,7 +690,7 @@ Für Text: color: #222; oder color: #424242;
 
 
 #btn-backtrack-stop {
-    background: var(--myColor-14);
+    background: var(--myColor-18);
     color: white;
     position: absolute;
     right: 1rem;
@@ -696,10 +699,10 @@ Für Text: color: #222; oder color: #424242;
 
 
 #btn-run {
-    background: var(--myColor-10);
+    background: var(--myColor-17);
     color: white;
     position: absolute;
-    right: 0.2rem;
+    right: 0.8rem;
 }
 
 #manual-btn-block {
@@ -709,7 +712,6 @@ Für Text: color: #222; oder color: #424242;
     gap: 0.2rem;
     justify-items: stretch;
     align-items: stretch;
-    margin: 0 0.4rem;
 }
 
 #automatic-btn-block {
@@ -742,7 +744,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
-    /* font-size: 1.2rem; */
+    font-size: 1.2rem; 
 }
 
 #btn-define {
