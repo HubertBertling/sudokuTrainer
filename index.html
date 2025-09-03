@@ -51,8 +51,6 @@
             <div class="grid-area" id="grid-area">
                 <div class="loaded-evaluations" id="loaded-evaluations">
                 </div>
-                <div id="puzzle-info">
-                </div>
                 <div id="loader">
                     <div id="search-level"></div>
                 </div>
@@ -64,6 +62,9 @@
                     <!-- block 0 -->
                 </div>
                 <div class="grid-plus-explainer" id="grid-plus-explainer">
+                    <div class="hint" id="hint">
+                        <b>Hinweis:</b> &nbsp
+                    </div>
                     <div class="reasonUnsolvability" id="reasonUnsolvability">
                     </div>
                     <div class="technique-row" id="technique-row">
@@ -76,7 +77,11 @@
                         </button>
                     </div>
                 </div>
-                <div class="progress-box" id="progress-box">
+                <div class="nr-of-solutions-field" id="nr-of-solutions-field">
+                    <div class="label-solution"><span></span><b>Lösungen gefunden: </b></div>
+                    <div class="number-of-solutions" id="number-of-solutions"></div>
+                </div>
+                  <div class="progress-box" id="progress-box">
                     <div class="progress-block" id="progress-block">
                         <div class="step-count-box" id="step-count-box">
                             <div class="step-count" id="step-count">
@@ -153,13 +158,14 @@
                             <span class="material-icons">autorenew</span>
                             Reset
                         </button>
-                           <button class="modern-btn btn-run-old" id="btn-run-old" onclick="sudoApp.mySolverController.newLinkPressed()">
+                        <button class="modern-btn btn-run-old" id="btn-run-old"
+                            onclick="sudoApp.mySolverController.newLinkPressed()">
                             <span class="material-symbols-outlined">
                                 Add
                             </span>
                             Neu
                         </button>
-                     <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                        <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
                             <span class="material-symbols-outlined">
                                 data_check
                             </span>
@@ -183,10 +189,12 @@
                                 Stop
                             </button>
                         </div>
+                        <!--
                         <div class="tracker-dlg-solution" id="tracker-dlg-solution">
                             <div class="label-solution"><b>Lösungen gefunden: </b></div>
                             <div class="number-of-solutions" id="number-of-solutions">0</div>
                         </div>
+                        --->
                     </div>
                     <div class="automatic-btn-block" id="automatic-btn-block">
                         <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">

@@ -511,8 +511,8 @@ class TrackerDialog {
         this.manualBtnBlock = document.getElementById("manual-btn-block");
         // this.manualBtnBlock.style.visibility = "hidden";
         // this.automaticBtnBlock = document.getElementById("automatic-btn-block");
-        this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
-        this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
+        // this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
+        //,this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
         this.trackerDlgNode = document.getElementById("trackerDlg");
         this.trackerImage = document.getElementById("trackerImg");
         this.backtrackOptions = document.getElementById("backtrack-options");
@@ -526,7 +526,7 @@ class TrackerDialog {
         this.trackerDlgNode.close();
         this.myOpen = false;
         // this.automaticBtnBlock.style.visibility = "visible";
-     
+
         this.btnContinueNode.addEventListener('click', () => {
             sudoApp.mySolverController.trackerDlgStepSequencePressed();
         });
@@ -549,8 +549,8 @@ class TrackerDialog {
     open() {
         this.manualBtnBlock.style.visibility = "hidden";
         // this.automaticBtnBlock.style.display = "grid";
-        this.myOpen = false; this.myOpen = false;
-        this.reSetNumberOfSolutions();
+        this.myOpen = false;
+        sudoApp.mySolverView.reSetNumberOfSolutions();
         sudoApp.mySolver.notify();
         this.myOpen = true;
         this.trackerDlgNode.show();
@@ -564,27 +564,11 @@ class TrackerDialog {
             sudoApp.mySyncRunner.stop('cancelled');
 
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
-            this.reSetNumberOfSolutions();
             this.trackerDlgNode.close();
             this.manualBtnBlock.style.visibility = "visible";
             // this.automaticBtnBlock.style.visibility = "hidden";
             this.myOpen = false;
         }
-    }
-    setNumberOfSolutions(nr) {
-        this.solutionNumber = nr;
-        this.trackerNrOfSolutions.innerHTML = this.solutionNumber;
-        this.trackerDlgSolution.style.backgroundColor =
-            'var(--played-cell-bg-color)';
-    }
-    reSetNumberOfSolutions() {
-        this.solutionNumber = 0;
-        this.trackerNrOfSolutions.innerHTML = this.solutionNumber;
-        this.trackerDlgSolution.style.backgroundColor =
-            'var(--nested-cell-bg-color)';
-    }
-    getNumberOfSolutions() {
-        return this.solutionNumber;
     }
 }
 
@@ -1473,7 +1457,6 @@ class SudokuPuzzleDBController {
             sudoApp.mySolverController.myRedoActionStack = [];
 
             sudoApp.mySolver.notify();
-            sudoApp.mySolverView.hidePuzzleSolutionInfo();
             // Zoom in the loaded puzzle
             sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
         }
@@ -2006,6 +1989,11 @@ class SudokuGridView {
                 '<span class="pz-name"><b>Puzzle:</b> &nbsp' + currentPuzzle.myRecord.name + ', &nbsp' + new Date(currentPuzzle.myRecord.date).toLocaleDateString() + '</span>' +
                 '<span class="pz-level"><b>Level:</b> &nbsp' + currentPuzzle.myRecord.preRunRecord.level + '</span>'
         }
+    }
+
+    displayHint() {
+
+
     }
 
     displaySelection() {
@@ -2737,6 +2725,11 @@ class SudokuSolverView {
         this.mySolver = solver;
         this.myGridView = new SudokuGridView(solver.myGrid);
 
+        this.solutionNumber = undefined;
+
+        this.solutionFieldNode = document.getElementById("nr-of-solutions-field");
+        this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
+
         this.progressBar = new ProgressBar();
     }
 
@@ -2755,7 +2748,32 @@ class SudokuSolverView {
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
+        if (this.mySolver.isSearching()) {
+            if (this.mySolver.myCurrentSearch.getNumberOfSolutions() > 0 ) {
+                this.setNumberOfSolutions(this.mySolver.myCurrentSearch.getNumberOfSolutions());
+            }
+        } else {
+            this.reSetNumberOfSolutions();
+        }
     }
+    setNumberOfSolutions(nr) {
+        this.solutionNumber = nr;
+        this.nrOfSolutionsNode.innerHTML =
+            '&nbsp' + this.solutionNumber;
+        this.solutionFieldNode.style.backgroundColor =
+            'var(--played-cell-bg-color)';
+    }
+    reSetNumberOfSolutions() {
+        this.solutionNumber = 0;
+        this.nrOfSolutionsNode.innerHTML = '&nbsp' + this.solutionNumber;
+        this.solutionFieldNode.style.backgroundColor =
+            'var(--nested-cell-bg-color)';
+    }
+    getNumberOfSolutions() {
+        return this.solutionNumber;
+    }
+
+
 
     displayProgress() {
         let progressBlock = document.getElementById("progress-block");
@@ -2805,7 +2823,7 @@ class SudokuSolverView {
                 break;
             }
             case 'nrOfSolutions': {
-                sudoApp.myTrackerDialog.setNumberOfSolutions(aspectValue);
+                sudoApp.mySolverView.setNumberOfSolutions(aspectValue);
                 break;
             }
             case 'searchIsCompleted': {
@@ -2858,11 +2876,13 @@ class SudokuSolverView {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
         } else {
 
+            /*
             if (nrSol == 1) {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösung');
             } else {
                 sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösungen');
             }
+            */
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
         }
     }
@@ -2871,15 +2891,15 @@ class SudokuSolverView {
         let undoBtn = document.getElementById('btn-undo');
         let redoBtn = document.getElementById('btn-redo');
         if (sudoApp.mySolverController.myUndoActionStack.length > 0) {
-            undoBtn.classList.remove('btn-undo-off');
-        } else {
             undoBtn.classList.add('btn-undo-off');
+        } else {
+            undoBtn.classList.remove('btn-undo-off');
         }
 
         if (sudoApp.mySolverController.myRedoActionStack.length > 0) {
-            redoBtn.classList.remove('btn-redo-off');
-        } else {
             redoBtn.classList.add('btn-redo-off');
+        } else {
+            redoBtn.classList.remove('btn-redo-off');
         }
     }
 
@@ -3010,17 +3030,6 @@ class SudokuSolverView {
         }
     }
 
-    showPuzzleSolutionInfo(info) {
-        let pzInfo = document.getElementById("puzzle-info");
-        pzInfo.innerText = info;
-        pzInfo.style.display = "block";
-    }
-
-    hidePuzzleSolutionInfo() {
-        let pzInfo = document.getElementById("puzzle-info");
-        pzInfo.style.display = "none";
-    }
-
     startLoaderAnimation(requestedLevel) {
         // Der sich drehende Loader wird angezeigt
         let slNode = document.getElementById("search-level");
@@ -3143,7 +3152,7 @@ class SudokuSolverController {
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
                 this.saveBtnPressed();
-          })
+            })
         });
 
         // Click-Events for both init buttons, desktop and mobile
@@ -3224,7 +3233,6 @@ class SudokuSolverController {
                 this.clickNrBtn(event.key);
                 sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
                 sudoApp.mySolver.notify();
-                sudoApp.mySolverView.hidePuzzleSolutionInfo();
                 break;
             }
             default: {
@@ -3273,7 +3281,6 @@ class SudokuSolverController {
                 this.mySolver.deselect();
                 this.mySolver.notify();
             }
-            sudoApp.mySolverView.hidePuzzleSolutionInfo();
         }
     }
 
@@ -3297,7 +3304,6 @@ class SudokuSolverController {
                 this.clickDeleteBtn();
                 sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
                 sudoApp.mySolver.notify();
-                sudoApp.mySolverView.hidePuzzleSolutionInfo();
                 break;
             }
             default: {
@@ -3361,7 +3367,6 @@ class SudokuSolverController {
         }
         sudoApp.mySolver.myGrid.setCurrentSelection(newIndex);
         sudoApp.mySolver.notify();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
 
     handleDeletePressed() {
@@ -3382,12 +3387,10 @@ class SudokuSolverController {
             this.mySolver.deleteSelected();
             this.mySolver.notify();
         }
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
     sudokuCellPressed(index) {
         this.mySolver.select(index);
         this.mySolver.notify();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
     }
 
@@ -3403,7 +3406,6 @@ class SudokuSolverController {
         this.mySolver.myGrid.setSolvedToGiven();
         this.mySolver.setGamePhase('define');
         this.mySolver.notify();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
     }
 
     async playBtnPressed() {
@@ -3446,7 +3448,6 @@ class SudokuSolverController {
             sudoApp.mySolverView.displayReasonUnsolvability('');
             this.mySolver.notify();
         } else {
-            sudoApp.mySolverView.hidePuzzleSolutionInfo();
             this.initUndoActionStack();
             if (this.mySolver.getGamePhase() == 'define') {
                 // Switching to the play phase means that the definition of the puzzle 
@@ -3468,7 +3469,6 @@ class SudokuSolverController {
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
         sudoApp.myNavBar.closeNav();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
@@ -3507,7 +3507,6 @@ class SudokuSolverController {
     }
     resetBtnPressed() {
         sudoApp.myNavBar.closeNav();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
@@ -3531,7 +3530,6 @@ class SudokuSolverController {
     }
 
     tipPressed() {
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
         if (this.mySolver.isSearching()) {
             // The previous action was pressing the tip button.
             // This is due to the fact that the tip button is 
@@ -3567,8 +3565,6 @@ class SudokuSolverController {
 
 
     newPuzzleOkay() {
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
-
         var ele = document.getElementsByName('level');
         for (let i = 0; i < ele.length; i++) {
             if (ele[i].checked) {
@@ -3576,7 +3572,6 @@ class SudokuSolverController {
                 this.mySolver.myGrid.deselect();
                 this.mySolver.loadPuzzleRecord(puzzleRecord);
                 sudoApp.mySolver.notify();
-                sudoApp.mySolverView.hidePuzzleSolutionInfo();
                 // let gridPlusExplainer = document.getElementById('grid-plus-explainer');
                 // gridPlusExplainer.focus();       
             }
@@ -3710,11 +3705,8 @@ class SudokuSolverController {
             // So the loaded puzzle must be reset.
             sudoApp.mySolver.reset();
             sudoApp.mySolver.notify();
-            sudoApp.mySolverView.hidePuzzleSolutionInfo();
             sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
         }
-
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
         // Initialze
         sudoApp.myClockedRunner.stop('cancelled');
@@ -3890,7 +3882,6 @@ class SudokuSolverController {
     async pasteLinkPressed() {
 
         sudoApp.myNavBar.closeNav();
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
 
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
@@ -3944,8 +3935,6 @@ class SudokuSolverController {
     }
 
     printLinkPressed() {
-        sudoApp.mySolverView.hidePuzzleSolutionInfo();
-
         sudoApp.myNavBar.closeNav();
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle drucken", "negativ",
@@ -4060,7 +4049,8 @@ class SudokuSolverController {
         } else {
             if (sudoApp.mySolver.myCurrentSearch.isCompleted()) {
                 // Not able to start
-                sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
+                sudoApp.mySolver.notifyAspect('searchIsCompleted',
+                    sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 action = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();

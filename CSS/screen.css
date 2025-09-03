@@ -23,7 +23,7 @@
 
     --selected-cell-bg-color: black;
     --selected-cell-color: white;
-    --selected-cell-border-color: Magenta;
+    --selected-cell-border-color: #992572;
 
     --error-cell-bg-color: hsl(340, 82%, 52%);
     --error-cell-color: white;
@@ -150,7 +150,7 @@ body {
 }
 
 .tracker-dlg-header {
-    margin-top: 0.4rem ;
+    margin-top: 0.4rem;
     margin-bottom: 0.4rem;
     background-color: var(--myColor-14);
     color: white;
@@ -158,7 +158,7 @@ body {
 }
 
 .manual-solver-header {
-    margin-top: 0.4rem ;
+    margin-top: 0.4rem;
     margin-bottom: 0.4rem;
     background-color: var(--myColor-10);
     color: white;
@@ -168,6 +168,10 @@ body {
 .manual-solver-header>span {
     width: 100%;
     padding-left: 0.4rem;
+}
+
+.btn-undo-offset {
+    color: white;
 }
 
 /*======================================*/
@@ -621,7 +625,9 @@ Für Text: color: #222; oder color: #424242;
 #btn-menu .material-icons,
 #btn-share .material-icons,
 #btn-backtrack-stop .material-symbols-outlined,
-#btn-run .material-symbols-outlined {
+#btn-run .material-symbols-outlined,
+#btn-undo.btn-undo-off .material-icons,
+#btn-redo.btn-redo-off .material-icons {
     color: white;
 }
 
@@ -629,7 +635,7 @@ Für Text: color: #222; oder color: #424242;
     display: inline-flex;
     align-items: center;
     gap: 0.2rem;
-     background: linear-gradient(95deg, #888b90 0%, #b0b3b8 100%);
+    background: linear-gradient(95deg, #888b90 0%, #b0b3b8 100%);
     color: #222;
     border: none;
     border-radius: 0.3rem;
@@ -641,8 +647,8 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .modern-btn:hover {
-   
-     background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
+
+    background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
     color: white;
 
     box-shadow: 0 4px 16px rgba(120, 120, 120, 0.18);
@@ -967,6 +973,13 @@ Für Text: color: #222; oder color: #424242;
     vertical-align: center;
 }
 
+.nr-of-solutions-field {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.8em;
+    padding: 0.3rem 0.3rem;
+}
+
 /*=======================================*/
 /* DB-Dialog 
 /*=======================================*/
@@ -1079,17 +1092,18 @@ label {
     background-color: var(--played-cell-bg-color);
 }
 
+/*
 .label-solution {
-    font-size: 0.8em;
-    padding: 0.4em;
+    font-size: 0.8rem;
+    padding: 0.4rem;
 }
 
 .number-of-solutions {
     text-align: center;
-    font-size: 1em;
+    font-size: 0.8rem;
 }
 
-
+*/
 
 .tracker-dlg-btn-image {
     width: 4em;
