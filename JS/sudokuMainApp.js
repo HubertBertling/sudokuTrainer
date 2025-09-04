@@ -1,3 +1,13 @@
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
+
 function startMainApp() {
     startSudokuServiceWorker();
     startSudokuFileReader();
@@ -125,7 +135,7 @@ function setPuzzleShareBtnEventHandler() {
     // ==========================================================================
     // Share SudokuTrainer File
     // ==========================================================================
-    let shareButton = document.getElementById('share-button');
+    let shareButton = document.getElementById('btn-share');
     if (navigator.share && navigator.canShare) {
         // Web Share API ist Verfügbar!
         shareButton.addEventListener("click", async () => {
@@ -327,10 +337,10 @@ class NavigationBar {
     }
 
     openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("side-nav").style.width = "250px";
     }
     closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("side-nav").style.width = "0";
     }
 }
 
@@ -2947,7 +2957,7 @@ class SudokuSolverView {
     }
 
     displayPuzzleIOTechniqueBtns() {
-        let shareBtn = document.getElementById('share-button');
+        let shareBtn = document.getElementById('btn-share');
         let initDBButton = document.getElementById('db-pz-btn-init');
         let downloadDBButton = document.getElementById('db-puzzle-btn-download-db');
         let downloadPzButton = document.getElementById('db-puzzle-btn-download-pz');

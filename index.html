@@ -34,11 +34,11 @@
     <div class="app-content noprint">
         <div class="app-name-header" id="app-name-header">
             <span>Sudoku-Trainer</span>
-            <button class="modern-btn btn-menu" id="btn-menu">
+            <button class="modern-btn btn-menu" id="btn-menu" onclick="openNav()">
                 <span class="material-icons">menu</span>
                 Menü
             </button>
-            <button class="modern-btn btn-share" id="btn-share" onclick="sudoApp.myNavBar.openNav()">
+            <button class="modern-btn btn-share" id="btn-share">
                 <span class="material-icons">share</span>
                 Teilen
             </button>
@@ -229,31 +229,33 @@
                 </dialog>
             </div>
         </div>
+
+
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+            <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
+            <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
+            <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
+            <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
+            <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
+            <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
+
+            <div id="appVersion" class="navbar-element">
+
+            </div>
+            <button id="share-app-btn" class="navbar-element"> <img title="share" src="images/share.png"
+                    class="share-image">
+                Sudoku-Trainer URL
+            </button>
+
+            <div class="result navbar-element"></div>
+        </div>
     </div>
-    </div>
+
     <!--Ausblendbare Elemente -->
 
-    <div id="mySidenav" class="sidenav">
-        <div class="closebtn btn" onclick="sudoApp.myNavBar.closeNav()">&times;</div>
-        <a href="#" onclick="sudoApp.mySolverController.initLinkPressed()">Initialisieren</a>
-        <!-- <a href="#" onclick="sudoApp.mySolverController.resetLinkPressed()">Zurücksetzen</a> -->
-
-        <a href="#" onclick="sudoApp.mySolverController.newLinkPressed()">Neu</a>
-        <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
-        <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
-        <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
-        <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
-        <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
-        <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
-        <a href="#" onclick="sudoApp.myNavBar.closeNav()">Schließen</a>
-
-        <div id="appVersion" class="navbar-element">
-
-        </div>
-        <button id="share-app-btn" class="btn navbar-element"> <img title="share" src="images/share.png"
-                class="share-image">Sudoku-Trainer URL</button>
-        <div class="result navbar-element"></div>
-    </div>
 
     <!--Dialoge -->
 
