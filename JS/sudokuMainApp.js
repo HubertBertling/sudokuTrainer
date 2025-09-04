@@ -1895,9 +1895,9 @@ class SudokuGridView {
 
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                new_Node.style.border = "6px solid var(--myColor-17)";
+                new_Node.style.border = "6px solid var(--manual-solver)";
             } else {
-                new_Node.style.border = "6px solid var(--myColor-18)";
+                new_Node.style.border = "6px solid var(--automatic-solver)";
             }
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                 // Candidates are not displayed in the matrix
@@ -1905,7 +1905,7 @@ class SudokuGridView {
                 this.displayCandidateInvisibleMatrix();
             }
         } else {
-            new_Node.style.border = "6px solid var(--myColor-10)";
+            new_Node.style.border = "6px solid var(--manual-solver)";
         }
 
         // Unlösbarkeit anzeigen.

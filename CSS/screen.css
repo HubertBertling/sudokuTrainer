@@ -3,13 +3,9 @@
     /*    --screen-bg-color: white; */
     --screen-bg-color: #F2E2F2;
     --screen-color: #0d1117;
-    --standard-btn-bg-color: rgba(0, 0, 0, .25);
-    --standard-btn-color: black;
-    --standard-btn-height: 2em;
+   
     --delete-btn-bg-color: #e91e63;
     --delete-btn-color: white;
-
-    --help-color: #4e67c8;
 
     /* Cell colors */
     --defined-cell-bg-color: #7986CB;
@@ -20,37 +16,17 @@
 
     --nested-cell-bg-color: #ebdaa4;
     --nested-cell-color: black;
-
-    --selected-cell-bg-color: black;
-    --selected-cell-color: white;
-    --selected-cell-border-color: #992572;
-
+   
     --error-cell-bg-color: hsl(340, 82%, 52%);
     --error-cell-color: white;
 
-    /* Other definitions */
-    /* --sudoku-cell-size: calc((100vw - 3.8rem)/9);
-    --border-radius: 0.5em;
+     --hover-red-cell-border-color: Magenta;
 
-    --font-size-cell: 1.6em;
-
-    --font-size: 1.2em;
-    --font-size-lg: 1.4em;
-    --font-size-xl: 1.8em;
-
-    /* Setting the global font size */
-    /* Prozent von der Browser Font-Einstellung */
-    /* font-size: 62.5%; */
-    /* font-size: clamp(12px, 2.2vw, 20px);
-
-    /* Effekt: 1rem = 10px */
-
-    /*
+/*
 Farbschema generiert auf 
 https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d 
 */
-
-    /* Kontraste: */
+     /* Kontraste: */
     --myColor-1: #ff0000;
     /* Red */
     --myColor-2: #b30000;
@@ -86,9 +62,9 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
     --myColor-16: #ffc080;
     /* Macaroni and Cheese */
 
-    --myColor-17: #040273; /* deepblue */
-    --myColor-18: #410200; /* deepbrown */
-    --myColor-19: #404040; /*  */
+    --manual-solver: #040273; /* deepblue */
+    --automatic-solver: #410200; /* deepbrown */
+    --app-header-bg-color: #404040; /*  */
 
 }
 
@@ -132,7 +108,7 @@ body {
     height: 2rem;
     /* font-size: 1rem; */
     font-weight: bold;
-    background-color: var(--myColor-19);
+    background-color: var(--app-header-bg-color);
     color: white;
 }
 
@@ -155,7 +131,7 @@ body {
 .tracker-dlg-header {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
-    background-color: var(--myColor-18);
+    background-color: var(--automatic-solver);
     color: white;
 
 }
@@ -163,7 +139,7 @@ body {
 .manual-solver-header {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
-    background-color: var(--myColor-17);
+    background-color: var(--manual-solver);
     color: white;
 }
 
@@ -489,11 +465,11 @@ body {
 
 
 .sudoku-grid-cell.hover {
-    border: 0.2rem solid var(--selected-cell-border-color);
+    border: 0.2rem solid var(--hover-red-cell-border-color);
 }
 
 .sudoku-grid-cell.hover-red {
-    border: 0.3rem dashed Magenta;
+    border: 0.3rem dashed var(--hover-red-cell-border-color);
 }
 
 .sudoku-grid-cell.hover-green {
@@ -668,21 +644,21 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #btn-help {
-    background: var(--myColor-19);
+    background: var(--app-header-bg-color);
     color: white;
     position: absolute;
     right: 0.6rem;
 }
 
 #btn-menu {
-    background: var(--myColor-19);
+    background: var(--app-header-bg-color);
     color: white;
     position: absolute;
     left: 0.6rem;
 }
 
 #btn-share {
-    background: var(--myColor-19);
+    background: var(--app-header-bg-color);
     color: white;
     position: absolute;
     right: 5rem;
@@ -690,7 +666,7 @@ Für Text: color: #222; oder color: #424242;
 
 
 #btn-backtrack-stop {
-    background: var(--myColor-18);
+    background: var(--automatic-solver);
     color: white;
     position: absolute;
     right: 1rem;
@@ -699,7 +675,7 @@ Für Text: color: #222; oder color: #424242;
 
 
 #btn-run {
-    background: var(--myColor-17);
+    background: var(--manual-solver);
     color: white;
     position: absolute;
     right: 0.8rem;
@@ -1695,7 +1671,7 @@ label {
     }
 
     .app-content {
-        width: calc(min(95vw, 820px));
+        width: calc(min(98vw, 820px));
         margin: 0 auto;
     }
 
@@ -1730,7 +1706,7 @@ label {
     }
 
     .app-content {
-        width: 95vw;
+        width: 98vw;
         margin: 0 auto;
         background: lightgray;
     }
