@@ -3,7 +3,7 @@
     /*    --screen-bg-color: white; */
     --screen-bg-color: #f5f5f5;
     --screen-color: #0d1117;
-   
+
     --delete-btn-bg-color: #e91e63;
     --delete-btn-color: white;
 
@@ -16,18 +16,18 @@
 
     --nested-cell-bg-color: #ebdaa4;
     --nested-cell-color: black;
-   
+
     --error-cell-bg-color: hsl(340, 82%, 52%);
     --error-cell-color: white;
 
-     --hover-red-cell-border-color: Magenta;
+    --hover-red-cell-border-color: Magenta;
 
 
-/*
+    /*
 Farbschema generiert auf 
 https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d 
 */
-     /* Kontraste: */
+    /* Kontraste: */
     --myColor-1: #ff0000;
     /* Red */
     --myColor-2: #b30000;
@@ -63,9 +63,12 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
     --myColor-16: #ffc080;
     /* Macaroni and Cheese */
 
-    --manual-solver: #040273; /* deepblue */
-    --automatic-solver: #410200; /* deepbrown */
-    --app-header-bg-color: #404040; /*  */
+    --manual-solver: #040273;
+    /* deepblue */
+    --automatic-solver: #410200;
+    /* deepbrown */
+    --app-header-bg-color: #404040;
+    /*  */
 
 }
 
@@ -81,12 +84,12 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
 /* Set height of body and the document to 100% */
 html {
     font-size: 16px;
-    background: lightgrey  ;
+    background: lightgrey;
 }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-  /* Grey 100 */
+    /* Grey 100 */
 }
 
 .app-content {
@@ -720,7 +723,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
 }
 
 #btn-define {
@@ -1689,7 +1692,7 @@ label {
 
     .app-content {
         width: 100vw;
-         }
+    }
 
     .sudoku-solver-container {
         display: flex;
