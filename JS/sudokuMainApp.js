@@ -1,13 +1,3 @@
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-}
-
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-}
-
-
-
 function startMainApp() {
     startSudokuServiceWorker();
     startSudokuFileReader();
@@ -336,11 +326,11 @@ class NavigationBar {
     constructor() {
     }
 
-    openNav() {
-        document.getElementById("side-nav").style.width = "250px";
+    static openNav() {
+        document.getElementById("mySidenav").style.width = "16rem";
     }
-    closeNav() {
-        document.getElementById("side-nav").style.width = "0";
+    static closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
     }
 }
 
@@ -1691,6 +1681,7 @@ class SudokuGroupView {
 class SudokuBlockView extends SudokuGroupView {
     constructor(block, blockIndex) {
         super(block, blockIndex);
+        this.myNode = undefined;
         let tmpCellViews = [];
         for (let i = 0; i < 9; i++) {
             tmpCellViews.push(sudoApp.mySolverView.myGridView.sudoCellViews[
@@ -1740,8 +1731,9 @@ class SudokuBlockView extends SudokuGroupView {
         this.myCellNode.classList.add('necessary');
     }
     displayError() {
+        this.myNode.classList.add('error-block');
         this.getMyBlock().getMyCells().forEach(sudoCell => {
-            sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayColError();
+            sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayBlockError();
         })
     }
 
@@ -2001,17 +1993,21 @@ class SudokuGridView {
         }
     }
 
-    displayHint() {
-
-
-    }
-
+    /*
     displaySelection() {
         if (this.myGrid.indexSelected == -1) {
             this.sudoCellViews.forEach(cellView => {
                 cellView.unsetSelectStatus();
             })
         } else {
+            let selectedCellView = this.sudoCellViews[this.myGrid.indexSelected];
+            selectedCellView.unsetSelectStatus();
+            selectedCellView.setSelectStatus();
+        }
+    }*/
+
+    displaySelection() {
+        if (this.myGrid.indexSelected > -1) {
             let selectedCellView = this.sudoCellViews[this.myGrid.indexSelected];
             selectedCellView.unsetSelectStatus();
             selectedCellView.setSelectStatus();
@@ -2053,6 +2049,7 @@ class SudokuGridView {
             }
         }
     }
+
     displayWrongNumbers() {
         for (let i = 0; i < 81; i++) {
             if (this.sudoCellViews[i].displayWrongNumber());
@@ -2181,7 +2178,7 @@ class SudokuCellView {
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
-            candidateNode.classList.add('single');
+            candidateNode.classList.add('single-big');
             candidateNode.innerHTML = candidate;
             this.myCellNode.appendChild(candidateNode);
             return true;
@@ -2328,6 +2325,9 @@ class SudokuCellView {
         this.myCellNode.classList.add('err');
     }
 
+    displayBlockError() {
+        this.myCellNode.classList.add('block-err');
+    }
     displayRowError() {
         this.myCellNode.classList.add('row-err');
     }
@@ -2338,6 +2338,7 @@ class SudokuCellView {
 
     setSelected() {
         this.myCellNode.classList.add('selected');
+        this.setBorderSolidWhiteSelected();
     }
 
     unsetSelected() {
@@ -2369,11 +2370,14 @@ class SudokuCellView {
     }
 
     setBorderGreenSelected() {
-        // this.myCellNode.classList.add('hover-green');
+        this.myCellNode.classList.add('hover-green');
         this.myOverlayNode.style.display = "block";
     }
     setBorderWhiteSelected() {
         this.myCellNode.classList.add('hover-white');
+    }
+    setBorderSolidWhiteSelected() {
+        this.myCellNode.classList.add('hover-solid-white');
     }
     setBorderBlackSelected() {
         this.myCellNode.classList.add('hover-black');
@@ -2450,12 +2454,12 @@ class SudokuCellView {
                     }
                 }
             });
-            sudoApp.mySolverView.displayTechnique('Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
+            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
                 ' in dieser Gruppe setzen.');
             return;
         }
         if (this.myCell.getCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('Single ' + Array.from(this.myCell.getCandidates())[0] + ' in dieser Zelle setzen.');
+            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' in dieser Zelle setzen.');
 
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
@@ -2480,19 +2484,20 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('Hidden Single ' + Array.from(this.myCell.getTotalCandidates())[0] + ' in dieser Zelle setzen.');
+            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' in dieser Zelle setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }
             return;
         }
         if (this.myCell.getTotalCandidates().size > 1) {
-            sudoApp.mySolverView.displayTechnique('Aus mehreren Kandidaten eine Nummer setzen.');
+            sudoApp.mySolverView.displayTechnique('Aktion: <b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('multipleOption');
             }
+            return;
         }
-        return;
+
     }
 
     displayReasons() {
@@ -2634,23 +2639,26 @@ class SudokuCellView {
 
     setSelectStatus() {
         this.setSelected();
-        if (sudoApp.mySolver.isSearching()
-            && sudoApp.mySolver.getAutoDirection() == 'forward') {
-            if (this.myCell.candidateIndexSelected == -1) {
-                // Nach dem ersten Click auf die Zelle ist noch 
-                // kein Kandidat in der Zelle selektiert.
-                // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
-                this.displayTasks();
-            } else {
-                // Durch erneutes Clicken auf die bereits selektierte Zelle
-                // selektiert der Solver der Reihe nach unzulässige Kandidaten
-                // in der Zelle. Für jeden unzulässigen Kandidaten zeigt die
-                // Anwendung den Grund der Unzulässigkeit an.
-                this.displayReasons();
+        if (sudoApp.mySolver.isSearching()) {
+            if (sudoApp.mySolver.getAutoDirection() == 'forward') {
+                if (this.myCell.candidateIndexSelected == -1) {
+                    // Nach dem ersten Click auf die Zelle ist noch 
+                    // kein Kandidat in der Zelle selektiert.
+                    // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
+                    this.displayTasks();
+                } else {
+                    // Durch erneutes Clicken auf die bereits selektierte Zelle
+                    // selektiert der Solver der Reihe nach unzulässige Kandidaten
+                    // in der Zelle. Für jeden unzulässigen Kandidaten zeigt die
+                    // Anwendung den Grund der Unzulässigkeit an.
+                    this.displayReasons();
+                }
+            } else if (sudoApp.mySolver.getAutoDirection() == 'backward') {
+                sudoApp.mySolverView.displayTechnique('Aktion: <b>Backtracking: </b>Löschen der selektierten Zelle.');
             }
         }
     }
-
+    
     unsetSelectStatus() {
         this.unsetSelected();
         this.unsetBorderSelected();
@@ -2724,7 +2732,6 @@ class SudokuCellView {
             mySolverView.displayReasonUnsolvability('Gleichzeitig verschiedene notwendige Nummern.');
             return true;
         }
-
         mySolverView.displayReasonUnsolvability('');
         return false;
     }
@@ -2734,17 +2741,18 @@ class SudokuSolverView {
     constructor(solver) {
         this.mySolver = solver;
         this.myGridView = new SudokuGridView(solver.myGrid);
+        this.myStepExplainerView = new StepExplainerView();
 
         this.solutionNumber = undefined;
 
         this.solutionFieldNode = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
-
         this.progressBar = new ProgressBar();
     }
 
     init() {
         this.myGridView.upDate();
+        this.myStepExplainerView.clear();
     }
 
     upDate() {
@@ -2759,7 +2767,7 @@ class SudokuSolverView {
         this.displayUndoRedo();
         this.displayGamePhase();
         if (this.mySolver.isSearching()) {
-            if (this.mySolver.myCurrentSearch.getNumberOfSolutions() > 0 ) {
+            if (this.mySolver.myCurrentSearch.getNumberOfSolutions() > 0) {
                 this.setNumberOfSolutions(this.mySolver.myCurrentSearch.getNumberOfSolutions());
             }
         } else {
@@ -2789,7 +2797,7 @@ class SudokuSolverView {
         let progressBlock = document.getElementById("progress-block");
         let stepCountBox = document.getElementById("step-count-box");
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
-        if (this.mySolver.isSearching()) {
+        if (this.mySolver.isSearching() && !sudoApp.mySolver.myCurrentSearch.isTipSearch) {
             let mySearch = this.mySolver.myCurrentSearch;
             // let myStepper = this.getMyModel().myCurrentSearch.myStepper;
             progressBlock.style.gridTemplateColumns = "1fr 0.2fr 1fr";
@@ -2978,43 +2986,27 @@ class SudokuSolverView {
     }
 
     displayReasonUnsolvability(reason) {
-        let reasonNode = document.getElementById("reasonUnsolvability");
-        let evalNode = document.getElementById("technique-row");
-        if (reason == '') {
-            reasonNode.style.display = "none";
-            evalNode.style.display = "flex";
+        if (reason !== '') {
+            this.myStepExplainerView.setText('<b>Widerspruch:</b> &nbsp' + reason);
+            this.myStepExplainerView.unsetOkBtn();
         } else {
-            reasonNode.style.display = "block";
-            evalNode.style.display = "none";
-            reasonNode.innerHTML =
-                '<b>Widerspruch:</b> &nbsp' + reason;
+            this.myStepExplainerView.clear();
         }
     }
 
     displayTechnique(tech) {
-        let evalNode = document.getElementById("technique");
-        if (this.mySolver.getActualEvalType() == 'lazy') {
-            if (tech.includes('Single') ||
-                tech.includes('Aus mehreren') ||
-                tech.includes('Notwendig')) {
-                evalNode.style.color = 'black';
+        if (this.mySolver.getActualEvalType() == 'lazy' ||
+            this.mySolver.getActualEvalType() == 'lazy-invisible') {
+            this.myStepExplainerView.setText(tech);
+            if (sudoApp.mySolver.isSearching()) {
+                if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
+                    this.myStepExplainerView.setOkBtn();
+                } else {
+                    this.myStepExplainerView.unsetOkBtn();
+                }
             } else {
-                evalNode.style.color = 'Crimson';
+                this.myStepExplainerView.unsetOkBtn();
             }
-            evalNode.innerHTML = tech;
-        } else if (this.mySolver.getActualEvalType() == 'lazy-invisible') {
-            evalNode.style.color = 'darkgreen';
-            evalNode.innerHTML = tech;
-        }
-        let tippOkBtn = document.getElementById("tipp-accept-btn");
-        if (sudoApp.mySolver.isSearching()) {
-            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                tippOkBtn.style.display = "flex";
-            } else {
-                tippOkBtn.style.display = "none";
-            }
-        } else {
-            tippOkBtn.style.display = "none";
         }
     }
 
@@ -3057,7 +3049,28 @@ class SudokuSolverView {
         statusLineNode.innerHTML =
             '<b>Puzzle-Name:</b> &nbsp' + name;
     }
+}
 
+class StepExplainerView {
+    constructor() {
+        this.explainerNode = document.getElementById('step-explainer');
+        this.explainerTextNode = document.getElementById('step-explainer-text');
+        this.tippOkBtn = document.getElementById("tipp-accept-btn");
+    }
+    clear() {
+        this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
+        this.tippOkBtn.style.display = "none";
+    }
+    setText(text) {
+        if (text == '') text = 'Schrittsbeschreibung ...';
+        this.explainerTextNode.innerHTML = text;
+    }
+    setOkBtn() {
+        this.tippOkBtn.style.display = "flex";
+    }
+    unsetOkBtn() {
+        this.tippOkBtn.style.display = "none";
+    }
 }
 
 class SudokuSolverController {
@@ -3478,7 +3491,7 @@ class SudokuSolverController {
         // navigation bar init pressed
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
 
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
@@ -3516,7 +3529,7 @@ class SudokuSolverController {
         this.startBtnPressed();
     }
     resetBtnPressed() {
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
 
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle zurücksetzen", "negativ",
@@ -3534,8 +3547,8 @@ class SudokuSolverController {
             sudoApp.mySolver.notify();
             let resetBtn = document.getElementById('btn-reset');
             resetBtn.blur();
-            let gridPlusExplainer = document.getElementById('grid-plus-explainer');
-            gridPlusExplainer.focus({ focusVisible: false });
+            // let stepExplainer = document.getElementById('step-explainer');
+            //stepExplainer.focus({ focusVisible: false });
         }
     }
 
@@ -3569,8 +3582,8 @@ class SudokuSolverController {
         }
         let tippBtn = document.getElementById('btn-tip');
         tippBtn.blur();
-        let gridPlusExplainer = document.getElementById('grid-plus-explainer');
-        gridPlusExplainer.focus({ focusVisible: false });
+        // let stepExplainer = document.getElementById('step-explainer');
+        //stepExplainer.focus({ focusVisible: false });
     }
 
 
@@ -3582,8 +3595,8 @@ class SudokuSolverController {
                 this.mySolver.myGrid.deselect();
                 this.mySolver.loadPuzzleRecord(puzzleRecord);
                 sudoApp.mySolver.notify();
-                // let gridPlusExplainer = document.getElementById('grid-plus-explainer');
-                // gridPlusExplainer.focus();       
+                // let stepExplainer = document.getElementById('step-explainer');
+                // stepExplainer.focus();       
             }
         }
     }
@@ -3724,7 +3737,7 @@ class SudokuSolverController {
 
         sudoApp.mySolver.reInit();
 
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
         // Now we are waiting for the buffer to be filled.
         // The rotating loader icon is started.
         let aspectValue = {
@@ -3838,7 +3851,7 @@ class SudokuSolverController {
     openDBLinkPressed() {
         sudoApp.myPuzzleDBDialog.open();
         sudoApp.myPuzzleDB.notify();
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
     }
 
     openSettingsDlgPressed() {
@@ -3846,8 +3859,8 @@ class SudokuSolverController {
             sudoApp.myClockedRunner.stop('cancelled');
             sudoApp.mySolverView.stopLoaderAnimation();
         }
+        NavigationBar.closeNav();
         sudoApp.mySettingsDialog.open();
-        sudoApp.myNavBar.closeNav();
     }
 
     btnBreakPointSettingsPressed() {
@@ -3859,7 +3872,7 @@ class SudokuSolverController {
     }
 
     newLinkPressed() {
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
         sudoApp.myTrackerDialog.close();
         sudoApp.myNewPuzzleDlg.open(
             "Neues Puzzle",
@@ -3867,7 +3880,7 @@ class SudokuSolverController {
     }
 
     async copyLinkPressed() {
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getPuzzleString());
@@ -3879,7 +3892,7 @@ class SudokuSolverController {
     }
 
     async copyMatrixLinkPressed() {
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
         try {
             if (navigator?.clipboard?.writeText) {
                 await navigator.clipboard.writeText(sudoApp.mySolver.myGrid.getReadablePuzzleString());
@@ -3891,7 +3904,7 @@ class SudokuSolverController {
     }
     async pasteLinkPressed() {
 
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
 
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
@@ -3945,7 +3958,7 @@ class SudokuSolverController {
     }
 
     printLinkPressed() {
-        sudoApp.myNavBar.closeNav();
+        NavigationBar.closeNav();
         if (sudoApp.mySolver.getGamePhase() == 'define') {
             sudoApp.myInfoDialog.open("Puzzle drucken", "negativ",
                 "Das Puzzle ist noch in der Definition. Daher kann es nicht gedruckt werden.", this, () => { });
@@ -3985,8 +3998,8 @@ class SudokuSolverController {
         function setFocusBack() {
             let wrongNumbersBtn = document.getElementById('btn-showWrongNumbers');
             wrongNumbersBtn.blur();
-            let gridPlusExplainer = document.getElementById('grid-plus-explainer');
-            gridPlusExplainer.focus({ focusVisible: false });
+            // let stepExplainer = document.getElementById('step-explainer');
+            // stepExplainer.focus({ focusVisible: false });
         }
 
         if (sudoApp.mySolver.getGamePhase() == 'define') {

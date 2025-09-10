@@ -34,7 +34,7 @@
     <div class="app-content noprint">
         <div class="app-name-header" id="app-name-header">
             <span>Sudoku-Trainer</span>
-            <button class="modern-btn btn-menu" id="btn-menu" onclick="openNav()">
+            <button class="modern-btn btn-menu" id="btn-menu" onclick="NavigationBar.openNav()">
                 <span class="material-icons">menu</span>
                 Menü
             </button>
@@ -61,22 +61,18 @@
                 <div class="main-sudoku-grid" id="main-sudoku-grid">
                     <!-- block 0 -->
                 </div>
-                <div class="grid-plus-explainer" id="grid-plus-explainer">
-                    <div class="hint" id="hint">
-                        <b>Hinweis:</b> &nbsp
+                <div class="step-explainer" id="step-explainer">
+                    <div class="step-explainer-text" id="step-explainer-text">
+                        
                     </div>
-                    <div class="reasonUnsolvability" id="reasonUnsolvability">
-                    </div>
-                    <div class="technique-row" id="technique-row">
-                        <div class="technique" id="technique">
-
-                        </div>
-                        <button class="tipp-accept-btn btn" id="tipp-accept-btn">
-                            <img title="tipp-accept" src="images/ok.png" class="tipp-accept-btn-image">
-                            <span> Ok </span>
-                        </button>
-                    </div>
+                    <button class="tipp-accept-btn modern-btn" style="display:block" id="tipp-accept-btn">
+                        <span class="material-symbols-outlined">
+                            check_circle
+                        </span>
+                        Tipp OK
+                    </button>
                 </div>
+
                 <div class="nr-of-solutions-field" id="nr-of-solutions-field">
                     <div class="label-solution"><span></span><b>Lösungen gefunden: </b></div>
                     <div class="number-of-solutions" id="number-of-solutions"></div>
@@ -173,7 +169,9 @@
                         </button>
 
                         <button class="modern-btn btn-tip" id="btn-tip">
-                            <span class="material-icons">lightbulb</span>
+                            <span class="material-symbols-outlined">
+                                lightbulb_2
+                            </span>
                             Tipp
                         </button>
                     </div>
@@ -233,7 +231,7 @@
 
 
         <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="NavigationBar.closeNav()">&times;</a>
 
             <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
             <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
@@ -245,8 +243,10 @@
             <div id="appVersion" class="navbar-element">
 
             </div>
-            <button id="share-app-btn" class="navbar-element"> <img title="share" src="images/share.png"
-                    class="share-image">
+
+            <button class="modern-btn btn-share" id="share-app-btn"
+                onclick="sudoApp.mySolverController.setAppURLShareBtnEventHandler()">
+                <span class="material-icons">share</span>
                 Sudoku-Trainer URL
             </button>
 

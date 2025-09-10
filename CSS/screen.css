@@ -170,37 +170,37 @@ body {
 
 
 .sidenav {
-  height: 100%;
-  width: 0;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 4rem;
+    height: 100%;
+    width: 0;
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 4rem;
 }
 
 .sidenav a {
-  padding: 0.3rem 0.3rem 0.3rem 1rem;
-  text-decoration: none;
-  font-size: 1.4rem;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+    padding: 0.3rem 0.3rem 0.3rem 1rem;
+    text-decoration: none;
+    font-size: 1.4rem;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+    color: #f1f1f1;
 }
 
 .sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 1.56rem;
-  font-size: 2.25rem;
-  margin-left: 3.1rem;
+    position: absolute;
+    top: 0;
+    right: 1.56rem;
+    font-size: 2.25rem;
+    margin-left: 3.1rem;
 }
 
 /*
@@ -217,8 +217,9 @@ body {
 }
 
 #share-app-btn {
+    margin-left: 1rem;
     padding: 0.4rem;
-    border: 0.4rem solid grey;
+    /*border: 0.4rem solid grey;
     background-color: black;
     color: white;
     cursor: pointer;
@@ -227,6 +228,7 @@ body {
     grid-template-columns: 0.4fr 1.2fr 0.1fr;
     text-align: center;
     place-items: center;
+    */
 }
 
 .share-imageURL {
@@ -263,7 +265,7 @@ body {
 #caret-down-img,
 #no-caret-img {
     width: 0.4rem;
-        height: 0.4rem;
+    height: 0.4rem;
 }
 
 
@@ -311,7 +313,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(167, 218, 164, 0.708);
     /* Weiß, 60% Deckkraft */
     backdrop-filter: blur(6px);
     /* Milchiger Effekt */
@@ -344,25 +346,19 @@ body {
 
 .sudoku-grid-cell.empty {
     background-color: var(--nested-cell-bg-color);
-    /* sanftes, leicht bläuliches Grau */
     color: var(--nested-cell-color);
-    /*text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd;*/
 }
 
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
-    /* sanftes, leicht bläuliches Grau */
     color: var(--played-cell-color);
     font-size: inherit;
-    /*text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd;*/
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
-    /* sehr helles Blau, dezent */
     color: var(--defined-cell-color);
     font-size: inherit;
-    /* text-shadow: 0 1px 2px #fff, 0 0px 8px #bdbdbd; */
 
 }
 
@@ -436,20 +432,13 @@ body {
     animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.grid-plus-explainer {
-    position: relative;
-    /* border: 0.1rem solid black;*/
-    height: fit-content;
-    background-color: lightgrey;
+.sudoku-grid-cell.empty.selected {
+    border: 0.4rem solid black;
 }
 
-.sudoku-grid-cell.selected {
-    background-color: #f39795fb;
-}
-
-.sudoku-grid-cell.auto-selected {
+.sudoku-grid-cell.emptyauto-selected {
     /*  background-image: url("../images/selectBG1.png");*/
-    background-color: hsl(0, 67%, 84%);
+    border: 0.4rem solid black;
 }
 
 
@@ -462,12 +451,21 @@ body {
 }
 
 .sudoku-grid-cell.hover-green {
-    border: 0.3rem dashed green;
+    border: 0.3rem dashed rgb(175, 237, 175);
 }
 
 .sudoku-grid-cell.hover-white {
-    border: 0.3rem dashed white;
+    border: 0.2rem dashed white;
 }
+
+.sudoku-grid-cell.hover-white {
+    border: 0.2rem dashed white;
+}
+
+.sudoku-grid-cell.hover-white-solid {
+    border: 0.2rem solid white;
+}
+
 
 .sudoku-grid-cell.hover-black {
     border: 0.3rem dashed black;
@@ -475,23 +473,26 @@ body {
 
 
 .sudoku-block.err {
-    background-color: var(--error-cell-bg-color);
-    color: var(--error-cell-color);
+    border: 0.1rem solid var(--error-cell-bg-color);
 }
 
-.sudoku-grid-cell.row-err,
-.sudoku-grid-cell.col-err {
-    border: 0.3rem solid var(--error-cell-bg-color);
+.sudoku-grid-cell.block-err {
+    border: 0.1rem solid var(--error-cell-bg-color);
 }
 
+
 .sudoku-grid-cell.col-err {
-    border-top: 0.2rem solid var(--error-cell-bg-color);
-    border-bottom: 0.2rem solid var(--error-cell-bg-color);
+    border-top: 0.1rem solid var(--error-cell-bg-color);
+    border-bottom: 0.1rem solid var(--error-cell-bg-color);
+    border-left: 0.2rem solid var(--error-cell-bg-color);
+    border-right: 0.2rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.row-err {
-    border-left: 0.2rem solid var(--error-cell-bg-color);
-    border-right: 0.2rem solid var(--error-cell-bg-color);
+    border-left: 0.1rem solid var(--error-cell-bg-color);
+    border-right: 0.1rem solid var(--error-cell-bg-color);
+    border-top:0.2rem solid var(--error-cell-bg-color);
+    border-bottom:0.2rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.err,
@@ -508,9 +509,15 @@ body {
 
 .necessary-big {
     background-color: rgb(175, 237, 175);
-    font-size: inherit;
-    font-weight: bold;
-    color: rgb(0, 57, 0);
+    font-size: 0.8rem;
+    /* font-weight: bold;
+    color: rgb(0, 57, 0); */
+    width: 50%;
+}
+
+.single-big {
+    background-color: white;
+    font-size: 0.8rem;
     width: 50%;
 }
 
@@ -518,7 +525,8 @@ body {
     background-color: var(--nested-cell-bg-color);
     /* fast weiß, aber leicht abgesetzt */
     /* background: none; */
-    font-size: 0.6em;
+    font-size: 0.8rem;
+    border: solid black 0.1rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -538,11 +546,11 @@ body {
 }
 
 
-.loaded-evaluations,
-.grid-plus-explainer {
+.loaded-evaluations {
+    margin-top: 0.4rem;
     display: flex;
     padding: 0.3rem 0.3rem;
-    background-color: var(--screen-bg-color);
+    background-color: lightgrey;
     font-size: 0.8rem;
 }
 
@@ -556,15 +564,44 @@ body {
     width: 100%;
 }
 
-.technique,
-.reasonUnsolvability {
+
+.step-explainer {
+    margin-bottom: 0.2rem;
     width: 100%;
-    font-size: 0.8rem;
-    display: flex;
+    display: grid;
+    place-items: center;
+    position: relative;
+    height: 2rem;
+    /* font-size: 1rem; */
     background-color: lightgrey;
 }
 
-.reasonUnsolvability {
+.step-explainer-text {
+    font-size: 0.6rem;
+    position: absolute;
+    left: 0.2rem;
+    width: 80%;
+}
+
+/*
+.step-explainer-text>span  {
+    font-weight: bold;
+}
+*/
+#tipp-accept-btn {
+    background: lightgreen;
+    position: absolute;
+    right: 0.2rem;
+    border-radius: 0.4rem;
+    font-size: 0.6rem;
+    padding-top: 0.1rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    padding-bottom: 0.1rem;
+}
+
+
+.step-explainer-text.red {
     color: Crimson;
 }
 
@@ -857,7 +894,7 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 
 .progress-box {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
 }
 
 .progress-block {
@@ -888,8 +925,8 @@ Für Text: color: #222; oder color: #424242;
 .forward,
 .backward {
     height: 1.4rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
 }
 
 .autoMode-radio-btns {
@@ -943,7 +980,7 @@ Für Text: color: #222; oder color: #424242;
 .nr-of-solutions-field {
     display: flex;
     flex-direction: row;
-    font-size: 0.8em;
+    font-size: 0.6rem;
     padding: 0.3rem 0.3rem;
 }
 
@@ -1058,28 +1095,6 @@ label {
     /* border: 0.2rem solid DimGrey; */
     background-color: var(--played-cell-bg-color);
 }
-
-.tipp-accept-btn-image {
-    padding-right: 0.4em;
-    width: 1.2em;
-    height: 1em;
-}
-
-.tipp-accept-btn {
-    position: absolute;
-    right: 1.8%;
-    border-radius: 0.4em;
-
-    font-size: 1em;
-    padding: 0.1em;
-    padding-right: 0.4em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.1em;
-
-}
-
 
 
 /*================
