@@ -110,7 +110,7 @@ body {
     place-items: center;
     position: relative;
     height: 2rem;
-    /* font-size: 1rem; */
+    font-size: 1.2rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
     color: white;
@@ -273,11 +273,6 @@ body {
 /*=======================================================*/
 
 
-#db-close-btn {
-    position: absolute;
-    right: 1%
-}
-
 
 /*==============================================*/
 
@@ -374,7 +369,7 @@ body {
 
 .sudoku-grid-cell.selected,
 .sudoku-grid-cell.auto-selected {
-    border: 0.3rem solid var(--automatic-solver)
+    border: 0.3rem solid #a500f1
 }
 
 .candidate {
@@ -383,9 +378,10 @@ body {
 
 .candidate.inAdmissible {
     font-weight: bold;
-    color:red;
+    color: red;
     padding: 0.1rem;
 }
+
 .candidate.necessary {
     font-weight: bold;
     color: white;
@@ -393,7 +389,7 @@ body {
     padding: 0.1rem;
 }
 
-.candidate.single, 
+.candidate.single,
 .candidate.hidden-single {
     font-weight: bold;
     color: white;
@@ -601,7 +597,7 @@ body {
     padding-right: 0.2rem;
     padding-bottom: 0.1rem;
 
-     border: none;
+    border: none;
     border-radius: 0.3rem;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
@@ -646,7 +642,8 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 }
 
-.modern-btn {
+.modern-btn,
+.db-puzzle-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.2rem;
@@ -655,6 +652,7 @@ Für Text: color: #222; oder color: #424242;
     border: none;
     border-radius: 0.3rem;
     font-weight: 600;
+    font-size: 0.8rem;
     box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
@@ -804,6 +802,15 @@ Für Text: color: #222; oder color: #424242;
     grid-row-end: 4;
 }
 
+.btn-image {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.breakpoint-setting-image {
+    width: 2.4rem;
+    height: 2.4rem;
+}
 
 /*======================================*/
 /* Evaluation radio buttons             */
@@ -896,7 +903,7 @@ Für Text: color: #222; oder color: #424242;
     margin-top: 1.4em;
     margin-left: 1.2em;
     font-weight: bold;
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
 }
 
 /*======================================*/
@@ -999,7 +1006,7 @@ Für Text: color: #222; oder color: #424242;
 /*=======================================*/
 
 .puzzle-header {
-    font-size: var(--font-size-xl);
+    font-size: 1.8rem;
     display: inline-block;
     color: black;
     margin-top: 1rem;
@@ -1016,7 +1023,7 @@ Für Text: color: #222; oder color: #424242;
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 1.4em;
+    border-radius: 1rem;
 }
 
 .puzzle-dlg::backdrop {
@@ -1024,14 +1031,14 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .dlg-header {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     font-weight: bold;
     margin: 0.5rem;
     text-align: center;
 }
 
 label {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     margin-left: 1.2rem;
     margin-bottom: 1.2rem;
 }
@@ -1041,11 +1048,11 @@ label {
     margin-top: 0.8em;
     margin-left: 1.2em;
     padding: 0.4em;
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
 }
 
 .ok-cancel-btns {
-    font-size: var(--font-size);
+    font-size: 1.2rem;
     margin: 2.4em;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1131,7 +1138,7 @@ label {
 }
 
 .infoDlgHeader {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     font-weight: bold;
     margin: 1em;
     text-align: center;
@@ -1147,7 +1154,7 @@ label {
 }
 
 .infoDlgBody {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     margin-left: 1em;
 }
 
@@ -1160,7 +1167,7 @@ label {
 }
 
 .infoDlg-OK-Btn {
-    font-size: var(--font-size);
+    font-size: 1.2rem;
     width: 10em;
     margin-top: 1em;
     /* margin-left: auto; */
@@ -1191,7 +1198,7 @@ label {
 .new-puzzle-selection-legend {
     margin-left: 1em;
     font-weight: bold;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
 }
 
 .new-puzzle-icon {
@@ -1218,7 +1225,7 @@ label {
     position: relative;
     width: 50%;
     height: 1.6em;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
     text-align: right;
 }
 
@@ -1238,7 +1245,7 @@ label {
 #btn-new-puzzle-ok,
 #btn-new-puzzle-cancel {
     text-align: center;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
 }
 
 
@@ -1251,7 +1258,7 @@ label {
 }
 
 .confirm-dlg {
-    width: 30em;
+    width: 30rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -1263,14 +1270,14 @@ label {
 }
 
 .confirm-dlg-header {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     font-weight: bold;
     margin: 1em;
     text-align: center;
 }
 
 .confirm-dlg-body {
-    font-size: var(--font-size-lg);
+    font-size: 1.4rem;
     margin-left: 1em;
 }
 
@@ -1299,7 +1306,7 @@ label {
 #btn-confirm-ok,
 #btn-confirm-cancel {
     text-align: center;
-    font-size: var(--font-size);
+    font-size: 1.2rem;
 }
 
 .copyFeedback-dlg {
@@ -1323,7 +1330,7 @@ label {
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    font-size: var(--font-size-xl);
+    font-size: 1.8rem;
 }
 
 /*=======================================*/
@@ -1376,7 +1383,9 @@ label {
 .puzzle-table-dlg {
     margin: auto;
     /*max-width: 800px;*/
-    max-width: 95%;
+    max-width: 98%;
+    max-height: 98%;
+    border-radius: 1rem;
     border: none;
     background-color: #500;
 
@@ -1391,24 +1400,19 @@ label {
 }
 
 #db-close-btn {
-    font-weight: bold;
+    position: absolute;
+    right: 1%;
     color: white;
-    text-align: right;
-    font-size: 3.4em;
+    font-size: 1.4rem;
 }
+
+
 
 .tableFixHead {
     overflow-y: auto;
     /* make the table scrollable if height is more than 200 px  */
-    height: 30em;
+    height: 20rem;
     /* gives an initial height of 200px to the table */
-}
-
-.tableFixHead thead th {
-    position: sticky;
-    /* make the table heads sticky */
-    top: 0px;
-    /* table head will be placed from the top of the table and sticks to it */
 }
 
 .db-puzzle-table {
@@ -1417,13 +1421,25 @@ label {
     width: 100%;
 }
 
+.tableFixHead thead th {
+    position: sticky;
+    /* make the table heads sticky */
+    top: 0;
+    /* table head will be placed from the top of the table and sticks to it */
+}
+
+.tableFixHead {
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
 .db-puzzle-table th,
 .db-puzzle-table td {
-    font-size: 1.0em;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+    font-size: 0.8rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
     border: 0.1rem solid #ccc;
 }
 
@@ -1439,7 +1455,7 @@ label {
 #col-backTracks,
 #col-countSolutions {
     writing-mode: vertical-rl;
-    padding: 0.6em;
+    padding: 0.6rem;
 }
 
 #col-status-given {
@@ -1466,25 +1482,36 @@ label {
     background-color: lightcyan;
 }
 
+
+.container-puzzle-buttons {
+    background-color: #500 ;
+    margin: 0 auto ;
+}
+
 .db-puzzle-btns {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.3em;
-    margin: 1em;
+    gap: 0.2rem;
+
+    margin-top: 1rem;
+    margin-right: 3rem;
+    margin-bottom: 1rem;
+    margin-left: 3rem;
+
+    background-color: #500;
 }
 
 .db-puzzle-button {
     background-color: #ddd;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 0.8rem;
     display: grid;
     grid-template-columns: 1fr;
     place-items: center;
-    border-radius: 0.5em;
+    border-radius: 0.5rem;
     border: none;
-    /*margin: 0.6rem 0.4rem 0.4rem 0.4em;*/
-    padding: 0.2em;
+    padding: 0.2rem;
 }
 
 .db-puzzle-button:active {
@@ -1506,23 +1533,23 @@ label {
     flex-direction: row;
     align-items: center;
     position: relative;
-    height: 4.6em;
+    height: 2.6rem;
 
-    font-size: 1.8em;
+    font-size: 1.8rem;
     font-weight: bold;
     /*  text-align: center;
     place-items: center; */
-    padding: 0.5em;
+    padding: 0.5rem;
     background-color: gray;
     color: white;
-    border-radius: 0.6em;
+    border-radius: 0.6rem;
 
 }
 
 .dlg-new-puzzle-header {
-    font-size: var(--font-size-lg);
+    font-size: 1rem;
     font-weight: bold;
-    padding-left: 1em;
+    padding-left: 1rem;
 }
 
 #loader-new-puzzle {
@@ -1530,8 +1557,8 @@ label {
     position: absolute;
     right: 5%;
     z-index: 2;
-    width: 2em;
-    height: 2em;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     border-top: 0.4rem solid gray;
     border-bottom: 0.4rem solid white;
@@ -1548,8 +1575,8 @@ label {
     top: 24%;
     left: 25%;
     z-index: 2;
-    width: 20em;
-    height: 20em;
+    width: 20rem;
+    height: 20rem;
     border: 4.8rem solid #fbf9f900;
     border-radius: 50%;
     border-top: 4.8rem solid var(--defined-cell-bg-color);
@@ -1563,9 +1590,9 @@ label {
 #search-level,
 #loader-db-info {
     margin-top: 3em;
-    width: 15em;
-    padding: 1em;
-    font-size: var(--font-size-lg);
+    width: 15rem;
+    padding: 1rem;
+    font-size: 1.4rem;
     color: black;
     background-color: white;
 }
@@ -1582,7 +1609,7 @@ label {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
     border: 0.4rem solid dimgray;
-    padding: 2em;
+    padding: 2rem;
 }
 
 /* Safari */
@@ -1648,11 +1675,6 @@ label {
 }
 
 
-.tableFixHead {
-    /* make the table scrollable if height is more than 200 px */
-    height: 40em;
-}
-
 
 
 /* ============================================================*/
@@ -1689,6 +1711,11 @@ label {
         position: absolute;
         width: 100%;
         margin: 0 auto;
+    }
+
+    .db-puzzle-root {
+        width: calc(min(98vw, 820px));
+        background-color: #500;
     }
 
 }

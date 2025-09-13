@@ -337,7 +337,7 @@ class NavigationBar {
 class PuzzleDBDialog {
     constructor() {
         this.myOpen = false;
-        this.myPuzzleDBDialogNode = document.getElementById("db-puzzle-dialog")
+        this.myPuzzleDBDialogNode = document.getElementById("puzzle-table-dlg")
     }
     open() {
         this.myOpen = true;
