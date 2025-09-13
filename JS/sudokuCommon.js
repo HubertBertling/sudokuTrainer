@@ -4725,7 +4725,7 @@ class SudokuSolver {
                 sudoApp.mySolverController.resetConfirmed,
                 sudoApp.mySolverController.resetRejected,
                 "Puzzle zurücksetzen?",
-                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver zwar die Korrektheit berechneter Lösungen nicht aber die Korrektheit der Auswertungen der Lösungen garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
+                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver zwar die Korrektheit berechneter Lösungen, nicht aber die Korrektheit von Aussagen über die Lösungen (Anzahl der Lösungen, Anzahl der benötigten Schritte) garantieren. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
     }
 
