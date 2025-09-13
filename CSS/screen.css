@@ -109,7 +109,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2rem;
+    height: 2.2rem;
     font-size: 1.2rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
@@ -124,7 +124,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 1.8rem;
+    height: 2.2rem;
     line-height: 1.8rem;
     vertical-align: center;
 
@@ -203,12 +203,7 @@ body {
     margin-left: 3.1rem;
 }
 
-/*
-@media screen and (max-height: 28rem) {
-  .sidenav {padding-top: 0.8rem;}
-  .sidenav a {font-size: 1.125rem;}
-}
-*/
+
 /*=====================================*/
 
 
@@ -554,7 +549,10 @@ body {
 
 .pz-name {
     text-align: left;
-    width: 100%;
+    width: 30rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pz-level {
@@ -1168,12 +1166,12 @@ label {
 
 .infoDlg-OK-Btn {
     font-size: 0.8rem;
-    width: 8rem;
+    width: 4rem;
     margin-top: 0.4rem;
     /* margin-left: auto; */
     float: right;
     margin-right: 0.4rem;
-    margin-bottom:0.4rem;
+    margin-bottom: 0.4rem;
 }
 
 /*=======================================*/
@@ -1494,8 +1492,8 @@ label {
 
 
 .container-puzzle-buttons {
-    background-color: #500 ;
-    margin: 0 auto ;
+    background-color: #500;
+    margin: 0 auto;
 }
 
 .db-puzzle-btns {
@@ -1526,6 +1524,11 @@ label {
 
 .db-puzzle-button:active {
     transform: translate(0.2rem, 0.2rem);
+}
+
+.db-puzzle-root {
+    width: calc(min(98vw, 820px));
+    background-color: #500;
 }
 
 /*======================================*/
@@ -1582,16 +1585,16 @@ label {
 #loader-db {
     display: none;
     position: absolute;
-    top: 24%;
-    left: 25%;
+    top: 31%;
+    left: 15%;
     z-index: 2;
-    width: 20rem;
-    height: 20rem;
-    border: 4.8rem solid #fbf9f900;
+    width: 10rem;
+    height: 10rem;
+    border: 2.8rem solid #fbf9f900;
     border-radius: 50%;
-    border-top: 4.8rem solid var(--defined-cell-bg-color);
-    border-bottom: 4.8rem solid black;
-    border-right: 4.8rem solid var(--played-cell-bg-color);
+    border-top: 2.8rem solid var(--defined-cell-bg-color);
+    border-bottom: 2.8rem solid black;
+    border-right: 2.8rem solid var(--played-cell-bg-color);
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
@@ -1599,10 +1602,10 @@ label {
 
 #search-level,
 #loader-db-info {
-    margin-top: 3em;
-    width: 15rem;
-    padding: 1rem;
-    font-size: 1.4rem;
+    margin-top: 1rem;
+    width: 6rem;
+    padding: 0.2rem;
+    font-size: 0.8rem;
     color: black;
     background-color: white;
 }
@@ -1721,11 +1724,6 @@ label {
         position: absolute;
         width: 100%;
         margin: 0 auto;
-    }
-
-    .db-puzzle-root {
-        width: calc(min(98vw, 820px));
-        background-color: #500;
     }
 
 }
