@@ -2006,9 +2006,9 @@ class SudokuGridView {
                 this.displayCandidateInvisibleMatrix();
             }
         } else {
-                evalNode.style.borderLeft = "6px solid var(--manual-solver)";
-                evalNode.style.borderTop = "6px solid var(--manual-solver)";
-                evalNode.style.borderRight = "6px solid var(--manual-solver)";
+            evalNode.style.borderLeft = "6px solid var(--manual-solver)";
+            evalNode.style.borderTop = "6px solid var(--manual-solver)";
+            evalNode.style.borderRight = "6px solid var(--manual-solver)";
         }
     }
 
@@ -2175,11 +2175,11 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
 
-               // if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-               //     candidateNode.classList.add('necessary-big');
-               // } else {
-                    candidateNode.classList.add('necessary');
-               // }
+                // if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+                //     candidateNode.classList.add('necessary-big');
+                // } else {
+                candidateNode.classList.add('necessary');
+                // }
                 this.myCellNode.classList.remove('empty');
                 this.myCellNode.appendChild(candidateNode);
             })
@@ -2201,7 +2201,7 @@ class SudokuCellView {
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.classList.add('single');
             candidateNode.innerHTML = candidate;
-            
+
             this.myCellNode.classList.remove('empty');
             this.myCellNode.appendChild(candidateNode);
             return true;
@@ -2389,7 +2389,7 @@ class SudokuCellView {
         }
     }
     setBorderRedSelected() {
-        this.myCellNode.classList.add('hover-red');
+        this.myCellNode.classList.add('hover-magenta');
     }
 
     setOverlay() {
@@ -2416,7 +2416,7 @@ class SudokuCellView {
 
     unsetBorderSelected() {
         this.myCellNode.classList.remove('hover');
-        this.myCellNode.classList.remove('hover-red');
+        this.myCellNode.classList.remove('hover-magenta');
         this.myCellNode.classList.remove('hover-green');
         this.myCellNode.classList.remove('hover-white');
         this.myCellNode.classList.remove('hover-black');
@@ -3117,12 +3117,12 @@ class StepExplainerView {
                 this.explainerNode.style.borderLeft = "6px solid var(--automatic-solver)";
                 this.explainerNode.style.borderBottom = "6px solid var(--automatic-solver)";
                 this.explainerNode.style.borderRight = "6px solid var(--automatic-solver)";
-             }
+            }
         } else {
-                this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
-                this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
-                this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
-         
+            this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
+            this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
+            this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
+
         }
     }
 }
