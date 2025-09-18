@@ -1727,9 +1727,6 @@ class SudokuBlockView extends SudokuGroupView {
         }
         return tmp;
     }
-    displayNecessaryCandidate() {
-        this.myCellNode.classList.add('necessary');
-    }
     displayError() {
         this.myNode.classList.add('error-block');
         this.getMyBlock().getMyCells().forEach(sudoCell => {
@@ -1901,6 +1898,11 @@ class SudokuGridView {
             } else {
                 new_Node.style.border = "6px solid var(--automatic-solver)";
             }
+            if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+                // Candidates are not displayed in the matrix
+                // except for the cell of the next step
+                this.displayCandidateInvisibleMatrix();
+            }
 
         } else {
             new_Node.style.border = "6px solid var(--manual-solver)";
@@ -1999,11 +2001,6 @@ class SudokuGridView {
                 evalNode.style.borderLeft = "6px solid var(--automatic-solver)";
                 evalNode.style.borderTop = "6px solid var(--automatic-solver)";
                 evalNode.style.borderRight = "6px solid var(--automatic-solver)";
-            }
-            if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-                // Candidates are not displayed in the matrix
-                // except for the cell of the next step
-                this.displayCandidateInvisibleMatrix();
             }
         } else {
             evalNode.style.borderLeft = "6px solid var(--manual-solver)";
@@ -2110,8 +2107,6 @@ class SudokuCellView {
                 this.displayCandidates();
                 this.displayNecessaryCandidates(this.myCell.myNecessarys);
             } else {
-                // Display empty cell
-                // this.myCellNode.classList.add('empty');
                 this.myCellNode.classList.add('candidates');
             }
         } else {
@@ -2155,7 +2150,7 @@ class SudokuCellView {
         // Set the value in the new DOM-cell
         if (this.myCell.myValue == '0') {
             // Display empty cell
-            this.myCellNode.classList.add('empty');
+            // this.myCellNode.classList.add('empty');
         } else {
             // Set phase and value of the new DOM-cell
             this.displayGamePhase(this.myCell.myGamePhase);
@@ -2174,13 +2169,7 @@ class SudokuCellView {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
-
-                // if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-                //     candidateNode.classList.add('necessary-big');
-                // } else {
-                candidateNode.classList.add('necessary');
-                // }
-                this.myCellNode.classList.remove('empty');
+                candidateNode.classList.add('special-candidate', 'necessary');
                 this.myCellNode.appendChild(candidateNode);
             })
             return true;
@@ -2199,10 +2188,8 @@ class SudokuCellView {
             let candidate = Array.from(tmpCandidates)[0]
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
-            candidateNode.classList.add('single');
+            candidateNode.classList.add('special-candidate', 'single');
             candidateNode.innerHTML = candidate;
-
-            this.myCellNode.classList.remove('empty');
             this.myCellNode.appendChild(candidateNode);
             return true;
         } else {
@@ -2218,12 +2205,11 @@ class SudokuCellView {
             && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
 
-            let candidate = Array.from(tmpCandidates)[0]
+            let candidate = Array.from(tmpCandidates)[0];
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.innerHTML = candidate;
-            candidateNode.classList.add('hidden-single');
-            // this.myCellNode.classList.add('candidates-big');
+            candidateNode.classList.add('candidate', 'hidden-single');
             this.myCellNode.appendChild(candidateNode);
 
             let redAdmissibles = this.myCell.getCandidates().difference(tmpCandidates);
@@ -2232,8 +2218,7 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', redAdmissible);
 
                 candidateNode.innerHTML = redAdmissible;
-                candidateNode.classList.add('inAdmissible');
-                this.myCellNode.classList.remove('empty');
+                candidateNode.classList.add('candidate', 'inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
             });
             //To understand the hidden single of this cell, 
@@ -2247,7 +2232,7 @@ class SudokuCellView {
 
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
-        this.myCellNode.classList.remove('empty');
+        // this.myCellNode.classList.remove('empty');
         this.myCellNode.classList.add('candidates');
         // Die Optionen sind zulässige Kandidaten
         let tmpCandidates = this.myCell.getTotalCandidates();
@@ -2293,11 +2278,6 @@ class SudokuCellView {
                 candidateNodes[i].classList.add('necessary');
             }
         }
-    }
-
-    displayInAdmissibleCandidates(inAdmissibleCandidates, myNecessarys) {
-
-
     }
 
     classifyCandidateNodesInAdmissible() {
@@ -2484,12 +2464,12 @@ class SudokuCellView {
                     }
                 }
             });
-            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
-                ' in dieser Gruppe setzen.');
+            sudoApp.mySolverView.displayTechnique('In dieser Gruppe <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
+                ' setzen.');
             return;
         }
         if (this.myCell.getCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' in dieser Zelle setzen.');
+            sudoApp.mySolverView.displayTechnique('In diese Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
 
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
@@ -2514,14 +2494,14 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('Aktion:  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' in dieser Zelle setzen.');
+            sudoApp.mySolverView.displayTechnique('In dieser Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }
             return;
         }
         if (this.myCell.getTotalCandidates().size > 1) {
-            sudoApp.mySolverView.displayTechnique('Aktion: <b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
+            sudoApp.mySolverView.displayTechnique('<b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('multipleOption');
             }
@@ -2684,7 +2664,7 @@ class SudokuCellView {
                     this.displayReasons();
                 }
             } else if (sudoApp.mySolver.getAutoDirection() == 'backward') {
-                sudoApp.mySolverView.displayTechnique('Aktion: <b>Backtracking: </b>Löschen der selektierten Zelle.');
+                sudoApp.mySolverView.displayTechnique('<b>Backtracking: </b>Löschen der selektierten Zelle.');
             }
         }
     }
@@ -2790,7 +2770,17 @@ class SudokuSolverView {
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
 
+        /*
+        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+            // Candidates are not displayed in the matrix
+            // except for the cell of the next step
+            this.myGridView.displayCandidateInvisibleMatrix();
+        } else {
+            this.myGridView.upDate();
+        }
+        */
         this.myGridView.upDate();
+
         this.myStepExplainerView.updateOperationMode();
         // Indication that the puzzle cannot be solved, if this is the case
         this.displayProgress();
