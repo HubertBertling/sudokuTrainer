@@ -84,7 +84,8 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
 /* Set height of body and the document to 100% */
 html {
     font-size: 16px;
-    background: lightgrey;
+    /* background: lightgrey; */
+    background-color: var(--screen-bg-color);
 }
 
 body {
@@ -406,11 +407,10 @@ body {
 
 .special-candidate.necessary {
     font-size: 1.2rem;
-    color: white;
+    color: black;
     font-weight: bold;
-    background-color: green;
+    background-color: var(--played-cell-bg-color);
     padding: 0.1rem;
-
 }
 
 
@@ -960,7 +960,7 @@ Für Text: color: #222; oder color: #424242;
     margin-right: 0.4rem;
     padding-left: 0.2rem;
     width: 100%;
-    background-color: var(--screen-bg-color);
+    background: lightgray;
 }
 
 .forward-backward-image {
@@ -1764,17 +1764,16 @@ label {
     /* iPhone SE (2022): 375 x 667 */
 
     html {
-        font-size: 14px;
+        font-size: 11px;
     }
 
     .app-content {
         position: relative;
-        width: calc(min(98vw, 769px));
+        width: 60%;
         margin: 0 auto;
     }
 
     .sudoku-solver-container {
-        position: absolute;
         display: flex;
         flex-direction: row;
         gap: 1rem;
@@ -1801,8 +1800,14 @@ label {
     /* case 3*/
     /* portrait */
     html {
-        font-size: 18px;
+        font-size: 25px;
     }
+
+      .app-content {
+        width: calc(min(98vw, 800px));
+        margin: 0 auto;
+    }
+
 
     .empty-display {
         display: none;
@@ -1879,7 +1884,7 @@ label {
     }
 
     .app-content {
-        width: 100vw;
+        width: 100%;
     }
 
     .sudoku-solver-container {
