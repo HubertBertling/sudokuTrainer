@@ -124,7 +124,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.2rem;
+    height: 2.4rem;
     font-size: 1rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
@@ -145,7 +145,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.2rem;
+    height: 2.4rem;
     line-height: 1.8rem;
     vertical-align: center;
 

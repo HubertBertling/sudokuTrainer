@@ -3236,7 +3236,7 @@ class SudokuSolverController {
             })
         });
 
-        this.btns = document.querySelectorAll('.help-button');
+        this.btns = document.querySelectorAll('.btn-help');
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
                 sudoApp.helpFunktion();
