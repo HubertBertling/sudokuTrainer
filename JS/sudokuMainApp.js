@@ -1991,7 +1991,7 @@ class SudokuGridView {
                 '<span class="pz-level"><b>Level:</b> &nbsp' + currentPuzzle.myRecord.preRunRecord.level + '</span>'
         }
 
-
+        /*
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                 evalNode.style.borderLeft = "6px solid var(--manual-solver)";
@@ -2007,6 +2007,7 @@ class SudokuGridView {
             evalNode.style.borderTop = "6px solid var(--manual-solver)";
             evalNode.style.borderRight = "6px solid var(--manual-solver)";
         }
+        */
     }
 
     /*
@@ -3098,6 +3099,7 @@ class StepExplainerView {
         this.tippOkBtn.style.display = "none";
     }
     updateOperationMode() {
+       /*
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                 this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
@@ -3114,6 +3116,7 @@ class StepExplainerView {
             this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
 
         }
+            */
     }
 }
 

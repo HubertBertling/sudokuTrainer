@@ -124,7 +124,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.4rem;
+    height: 2.6rem;
     font-size: 1rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
@@ -561,7 +561,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.8rem;
+    height: 2.6rem;
     background-color: lightgrey;
 }
 
@@ -1218,9 +1218,10 @@ label {
 .new-puzzle-bar {
     position: relative;
     width: 50%;
-    height: 1.2rem;
+    height: 1.rem;
     font-size: 0.8rem;
     text-align: right;
+    margin-bottom: 0.6rem;
 }
 
 #very-simple-Bar,
@@ -1332,7 +1333,7 @@ label {
 /*=======================================*/
 
 .new-puzzle-dlg {
-    width: 20rem;
+    width: 18rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
