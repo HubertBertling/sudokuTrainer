@@ -1706,6 +1706,11 @@ label {
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
     }
+
+    .sidenav a {
+        font-size: 1.2rem;
+    }
+
 }
 
 
@@ -1763,6 +1768,11 @@ label {
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
     }
+
+    .sidenav a {
+        font-size: 1.2rem;
+    }
+
 }
 
 
