@@ -123,7 +123,7 @@ body {
     place-items: center;
     position: relative;
     height: 2.8rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
     color: white;
@@ -148,7 +148,7 @@ body {
     vertical-align: center;
 
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
 }
 
 .tracker-dlg-header {
@@ -704,7 +704,6 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #manual-btn-block {
-    font-size: 12rem;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -714,7 +713,6 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #automatic-btn-block {
-    font-size: 12rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -732,7 +730,6 @@ Für Text: color: #222; oder color: #424242;
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
-    /* font-size: 0.6rem; */
     padding: 0.2rem 0.2rem;
     min-width: 0;
     min-height: 0;
@@ -847,18 +844,9 @@ Für Text: color: #222; oder color: #424242;
     padding-inline-end: 0.1rem;
 }
 
-/*======================= */
-
-
-.eval-btn-block {
-    margin-top: 1em;
-    font-size: 1.2em;
-}
-
 /* ======================================*/
 /* Evaluation block                       */
 /* ======================================*/
-
 
 .pc-eval,
 .play-mode,
@@ -1325,7 +1313,7 @@ label {
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 /*=======================================*/
