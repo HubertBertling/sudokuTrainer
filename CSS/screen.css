@@ -118,13 +118,11 @@ body {
 
 .app-name-header,
 .db-puzzle-header {
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
     width: 100%;
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.6rem;
+    height: 2.8rem;
     font-size: 1rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
@@ -534,9 +532,8 @@ body {
 
 
 .loaded-evaluations {
-    margin-top: 0.4rem;
     display: flex;
-    padding: 0.3rem 0.3rem;
+    padding: 0.6rem 0.6rem;
     background-color: lightgrey;
     font-size: 0.8rem;
 }
