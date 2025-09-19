@@ -110,7 +110,7 @@ body {
     position: relative;
     max-width: 768px;
     background: var(--screen-bg-color);
-    padding: 1rem;
+    padding: 0.2rem;
     margin: 0 auto;
 }
 
@@ -125,7 +125,7 @@ body {
     place-items: center;
     position: relative;
     height: 2.2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     background-color: var(--app-header-bg-color);
     color: white;
@@ -204,7 +204,7 @@ body {
 }
 
 .sidenav a {
-    padding: 0.3rem 0.3rem 0.3rem 1rem;
+    padding: 0.6rem 0.6rem 0.6rem 1.4rem;
     text-decoration: none;
     font-size: 1.4rem;
     color: #818181;
@@ -229,10 +229,13 @@ body {
 
 
 #appVersion {
-    margin-top: 1rem;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    color: white;
 }
 
 #share-app-btn {
+    margin-top: 1rem;
     margin-left: 1rem;
     padding: 0.4rem;
     /*border: 0.4rem solid grey;
@@ -307,7 +310,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.1rem;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 1;
     text-align: center;
 
@@ -530,47 +533,6 @@ body {
 }
 
 
-.necessary-big {
-    background-color: rgb(175, 237, 175);
-    font-size: 0.8rem;
-    /* font-weight: bold;
-    color: rgb(0, 57, 0); */
-    width: 50%;
-}
-
-.single-big {
-    background-color: white;
-    font-size: 0.8rem;
-    width: 50%;
-}
-
-/*
-.candidates-big {
-    background-color: var(--nested-cell-bg-color);
-    /* fast weiß, aber leicht abgesetzt */
-/* background: none; 
-    font-size: 0.8rem;
-    border: solid black 0.1rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    align-items: center;
-    justify-items: center;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.single {
-    background-color: white;
-    font-size: inherit;
-    font-weight: bold;
-    color: rgb(0, 57, 0);
-    width: 50%;
-}
-    */
-
-
 .loaded-evaluations {
     margin-top: 0.4rem;
     display: flex;
@@ -599,8 +561,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 3rem;
-    /* font-size: 1rem; */
+    height: 2.8rem;
     background-color: lightgrey;
 }
 
@@ -746,6 +707,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #manual-btn-block {
+    font-size: 12rem;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -755,7 +717,8 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #automatic-btn-block {
-    display: grid;
+    font-size: 12rem;
+ 
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
@@ -904,9 +867,9 @@ Für Text: color: #222; oder color: #424242;
 .play-mode,
 .breakpoint-settings,
 .io-technique {
-    margin-top: 0.4em;
-    margin-left: 2em;
-    margin-right: 2em;
+    margin-top: 0.4rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 .level-fieldset {
@@ -920,8 +883,8 @@ Für Text: color: #222; oder color: #424242;
 .breakpoint,
 .puzzle-io,
 .further {
-    font-size: 1.0em;
-    padding: 0.4em;
+    font-size: 1.0rem;
+    padding: 0.4rem;
 }
 
 /* ======================================*/
@@ -931,8 +894,8 @@ Für Text: color: #222; oder color: #424242;
 .play-mode-legend,
 .breakpoints-legend,
 .puzzle-io-legend {
-    margin-top: 1.4em;
-    margin-left: 1.2em;
+    margin-top: 1.4rem;
+    margin-left: 1.2rem;
     font-weight: bold;
     font-size: 1.4rem;
 }
@@ -946,7 +909,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .progress-block {
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
     line-height: 1.4rem;
     display: grid;
     grid-template-columns: 1.2fr 0.2fr 0.8fr;
@@ -1724,7 +1687,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
-        gap: 1rem;
+        gap: 0.4rem;
     }
 
     .grid-area {
@@ -1777,7 +1740,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
-        gap: 1rem;
+        gap: 0.2rem;
     }
 
     .empty-display {
@@ -1836,7 +1799,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.2rem;
     }
 
     .grid-area {
@@ -1890,7 +1853,7 @@ label {
     /* Galaxy S20 Ultra: 412px x 915px*/
     /* iPhone 14: 380 x 844 */
     html {
-        font-size: 12px;
+        font-size: 14px;
         background: var(--screen-bg-color);
     }
 
@@ -1905,7 +1868,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.2rem;
     }
 
     .grid-area {
@@ -1974,7 +1937,7 @@ label {
     .sudoku-solver-container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.2rem;
     }
 
     .grid-area {
