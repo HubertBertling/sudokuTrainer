@@ -2470,7 +2470,7 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('In diese Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('In die selektierte Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
 
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
@@ -2495,7 +2495,7 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('In dieser Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('In die selektierte Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }
@@ -2976,7 +2976,7 @@ class SudokuSolverView {
 
     displayGoneSteps(goneSteps) {
         let goneStepsNode = document.getElementById("step-count");
-        goneStepsNode.innerHTML = '<b>Schritte:</b> &nbsp' + goneSteps;
+        goneStepsNode.innerHTML = '&nbsp <b>Schritte:</b> &nbsp' + goneSteps;
     }
 
     displayAutoDirection(autoDirection) {

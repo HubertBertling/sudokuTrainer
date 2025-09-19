@@ -558,7 +558,7 @@ body {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.6rem;
+    height: 2.4rem;
     background-color: lightgrey;
 }
 
@@ -986,10 +986,12 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .nr-of-solutions-field {
+    margin-top: 0.2rem;
     display: flex;
     flex-direction: row;
     font-size: 0.8rem;
-    padding: 0.6rem 0.6rem;
+    padding-left: 0.4rem;
+    padding-bottom: 0.4rem;
 }
 
 /*=======================================*/
