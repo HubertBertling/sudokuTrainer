@@ -630,6 +630,16 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 }
 
+
+
+#btn-run {
+    font-size: 1.2rem;
+}
+
+#btn-backtrack-stop {
+    font-size: 1.2rem;
+}
+
 .modern-btn,
 .db-puzzle-btn {
     display: inline-flex;
