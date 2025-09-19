@@ -204,7 +204,7 @@ body {
 .sidenav a {
     padding: 1rem 1rem 1rem 1.6rem;
     text-decoration: none;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     color: #818181;
     display: block;
     transition: 0.3s;
@@ -902,7 +902,7 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 
 .progress-box {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
 }
 
 .progress-block {
@@ -990,8 +990,9 @@ Für Text: color: #222; oder color: #424242;
     display: flex;
     flex-direction: row;
     font-size: 0.8rem;
-    padding-left: 0.4rem;
-    padding-bottom: 0.4rem;
+    padding-top: 0.2rem;
+    padding-left: 0.6rem;
+    padding-bottom: 0.2rem;
 }
 
 /*=======================================*/
