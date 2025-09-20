@@ -2787,21 +2787,21 @@ class SudokuSolverView {
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
-        this.setNumberOfSolutions(sudoApp.mySolver.myGrid.numberOfSolutions);   
+        this.setNumberOfSolutions(sudoApp.mySolver.myGrid.numberOfSolutions);
     }
 
     setNumberOfSolutions(nr) {
         this.solutionNumber = nr;
         if (nr > 0) {
-        this.nrOfSolutionsNode.innerHTML =
-            '&nbsp' + this.solutionNumber;
-        this.solutionFieldNode.style.backgroundColor =
-            'var(--played-cell-bg-color)';
+            this.nrOfSolutionsNode.innerHTML =
+                '&nbsp' + this.solutionNumber;
+            this.solutionFieldNode.style.backgroundColor =
+                'var(--played-cell-bg-color)';
         } else {
             this.nrOfSolutionsNode.innerHTML =
-            '&nbsp' + this.solutionNumber;
-        this.solutionFieldNode.style.backgroundColor =
-            'var(--nested-cell-bg-color)';
+                '&nbsp' + this.solutionNumber;
+            this.solutionFieldNode.style.backgroundColor =
+                'var(--nested-cell-bg-color)';
         }
     }
     /*

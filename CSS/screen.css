@@ -1045,13 +1045,14 @@ label {
 
 .ok-cancel-btns {
     font-size: 0.8rem;
-    margin: 2.4em;
+    margin: 2.4rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
 }
 
 .ok-cancel-btn {
+
     padding-left: 0.8em;
     padding-right: 0.8em;
 }
@@ -1160,7 +1161,7 @@ label {
 
 .infoDlg-OK-Btn {
     font-size: 0.8rem;
-    width: 4rem;
+    width: 6rem;
     margin-top: 0.4rem;
     /* margin-left: auto; */
     float: right;
@@ -1303,7 +1304,7 @@ label {
 }
 
 .copyFeedback-dlg {
-    width: 30rem;
+    width: 20rem;
     height: 10rem;
     background-color: black;
     -webkit-box-sizing: border-box;

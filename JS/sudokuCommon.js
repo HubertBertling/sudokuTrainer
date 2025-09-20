@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1017;
+let VERSION = 1018;
 
 // ==========================================
 // Basic classes
@@ -478,7 +478,7 @@ class Search {
     }
     incrementNumberOfSolutions() {
         this.myNumberOfSolutions++;
-        sudoApp.mySolver.myGrid.numberOfSolutions = this.myNumberOfSolutions;           
+        sudoApp.mySolver.myGrid.numberOfSolutions = this.myNumberOfSolutions;
     }
     getNumberOfSolutions() {
         return this.myNumberOfSolutions;
@@ -2445,7 +2445,7 @@ class SudokuGrid {
         this.sudoRows = [];
         this.sudoCols = [];
         this.numberOfSolutions = 0;
- 
+
         this.indexSelected = -1;
         this.candidateIndexSelected = -1;
         // Erzeuge die interne Tabelle
@@ -2706,7 +2706,7 @@ class SudokuGrid {
         this.deselect();
         this.evaluateMatrix();
         this.numberOfSolutions = 0;
-     }
+    }
 
 
     takeBackGivenCells() {
@@ -2880,6 +2880,7 @@ class SudokuGrid {
 
 
     loadPuzzleString(puzzleStr) {
+        this.numberOfSolutions = 0;
         for (let i = 0; i < 81; i++) {
             if (puzzleStr[i] == '0' || puzzleStr[i] == '.') {
                 this.sudoCells[i].manualSetValue('0', '');
@@ -2890,6 +2891,7 @@ class SudokuGrid {
     }
 
     loadPuzzleArray(pa) {
+        this.numberOfSolutions = 0;
         // Loading puzzle from puzzle array, 
         // possibly already partially solved
         for (let i = 0; i < 81; i++) {
@@ -2900,6 +2902,7 @@ class SudokuGrid {
     }
 
     loadPuzzleArrayGivens(pa) {
+        this.numberOfSolutions = 0;
         // Loading puzzle from puzzle array, the definition only
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = pa[i].cellValue;
@@ -2913,6 +2916,8 @@ class SudokuGrid {
     }
 
     loadSimplePuzzleArray(pa) {
+        this.numberOfSolutions = 0;
+  
         // Loading puzzle from simple puzzle array.
         // A simple puzzle array does not distinguish 
         // between given and solved cells
@@ -2926,6 +2931,8 @@ class SudokuGrid {
     }
 
     loadPuzzleRecord(puzzleRecordToLoad) {
+        this.numberOfSolutions = 0;
+  
         //  Loading puzzle from puzzle record
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = puzzleRecordToLoad.puzzle[i].cellValue;
@@ -4315,8 +4322,8 @@ class SudokuSolver {
         }
         return infoString;
     }
-    
-    
+
+
 
     unsetCurrentPuzzle() {
         this.myCurrentPuzzle = undefined;
