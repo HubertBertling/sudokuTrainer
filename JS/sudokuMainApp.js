@@ -550,7 +550,7 @@ class TrackerDialog {
         this.manualBtnBlock.style.visibility = "hidden";
         // this.automaticBtnBlock.style.display = "grid";
         this.myOpen = false;
-        sudoApp.mySolverView.reSetNumberOfSolutions();
+        // sudoApp.mySolverView.reSetNumberOfSolutions();
         sudoApp.mySolver.notify();
         this.myOpen = true;
         this.trackerDlgNode.show();
@@ -566,7 +566,6 @@ class TrackerDialog {
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
             this.trackerDlgNode.close();
             this.manualBtnBlock.style.visibility = "visible";
-            // this.automaticBtnBlock.style.visibility = "hidden";
             this.myOpen = false;
         }
     }
@@ -2788,32 +2787,31 @@ class SudokuSolverView {
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
-        if (this.mySolver.isSearching()) {
-            if (this.mySolver.myCurrentSearch.getNumberOfSolutions() > 0) {
-                this.setNumberOfSolutions(this.mySolver.myCurrentSearch.getNumberOfSolutions());
-            }
-        } else {
-            if (sudoApp.mySolver.myGrid.isFinished()) {
-                this.setNumberOfSolutions(1);
-            } else {
-                this.reSetNumberOfSolutions();
-            }
-        }
+        this.setNumberOfSolutions(sudoApp.mySolver.myGrid.numberOfSolutions);   
     }
 
     setNumberOfSolutions(nr) {
         this.solutionNumber = nr;
+        if (nr > 0) {
         this.nrOfSolutionsNode.innerHTML =
             '&nbsp' + this.solutionNumber;
         this.solutionFieldNode.style.backgroundColor =
             'var(--played-cell-bg-color)';
+        } else {
+            this.nrOfSolutionsNode.innerHTML =
+            '&nbsp' + this.solutionNumber;
+        this.solutionFieldNode.style.backgroundColor =
+            'var(--nested-cell-bg-color)';
+        }
     }
+    /*
     reSetNumberOfSolutions() {
         this.solutionNumber = 0;
         this.nrOfSolutionsNode.innerHTML = '&nbsp' + this.solutionNumber;
         this.solutionFieldNode.style.backgroundColor =
             'var(--nested-cell-bg-color)';
     }
+            */
     getNumberOfSolutions() {
         return this.solutionNumber;
     }
@@ -3099,24 +3097,24 @@ class StepExplainerView {
         this.tippOkBtn.style.display = "none";
     }
     updateOperationMode() {
-       /*
-        if (sudoApp.mySolver.isSearching()) {
-            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
-                this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
-                this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
-            } else {
-                this.explainerNode.style.borderLeft = "6px solid var(--automatic-solver)";
-                this.explainerNode.style.borderBottom = "6px solid var(--automatic-solver)";
-                this.explainerNode.style.borderRight = "6px solid var(--automatic-solver)";
-            }
-        } else {
-            this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
-            this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
-            this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
-
-        }
-            */
+        /*
+         if (sudoApp.mySolver.isSearching()) {
+             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
+                 this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
+                 this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
+                 this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
+             } else {
+                 this.explainerNode.style.borderLeft = "6px solid var(--automatic-solver)";
+                 this.explainerNode.style.borderBottom = "6px solid var(--automatic-solver)";
+                 this.explainerNode.style.borderRight = "6px solid var(--automatic-solver)";
+             }
+         } else {
+             this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
+             this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
+             this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
+ 
+         }
+             */
     }
 }
 

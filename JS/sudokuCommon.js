@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1016;
+let VERSION = 1017;
 
 // ==========================================
 // Basic classes
@@ -478,6 +478,7 @@ class Search {
     }
     incrementNumberOfSolutions() {
         this.myNumberOfSolutions++;
+        sudoApp.mySolver.myGrid.numberOfSolutions = this.myNumberOfSolutions;           
     }
     getNumberOfSolutions() {
         return this.myNumberOfSolutions;
@@ -2435,6 +2436,7 @@ class SudokuGrid {
         // Im aktuellen Lösungsschritt wird das grid
         // im lazy mode angezeigt. Siehe Tipp-Taste.
         this.stepLazy = false;
+        this.numberOfSolutions = 0;
     }
 
     init() {
@@ -2442,7 +2444,8 @@ class SudokuGrid {
         this.sudoBlocks = [];
         this.sudoRows = [];
         this.sudoCols = [];
-
+        this.numberOfSolutions = 0;
+ 
         this.indexSelected = -1;
         this.candidateIndexSelected = -1;
         // Erzeuge die interne Tabelle
@@ -2702,7 +2705,8 @@ class SudokuGrid {
         }
         this.deselect();
         this.evaluateMatrix();
-    }
+        this.numberOfSolutions = 0;
+     }
 
 
     takeBackGivenCells() {
