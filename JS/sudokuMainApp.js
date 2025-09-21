@@ -2755,6 +2755,7 @@ class SudokuSolverView {
 
         this.solutionNumber = undefined;
 
+        this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
         this.progressBar = new ProgressBar();
     }
@@ -2794,12 +2795,12 @@ class SudokuSolverView {
         if (nr > 0) {
             this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' + 
                 '&nbsp' + this.solutionNumber;
-            this.nrOfSolutionsNode.style.backgroundColor =
+            this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
         } else {
             this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
                 '&nbsp' + this.solutionNumber;
-            this.nrOfSolutionsNode.style.backgroundColor =
+            this.nrOfSolutionsField.style.backgroundColor =
                 'lightgray';
         }
     }

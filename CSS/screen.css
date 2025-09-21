@@ -983,16 +983,21 @@ Für Text: color: #222; oder color: #424242;
     vertical-align: center;
 }
 
-.number-of-solutions {
+  
+.nr-of-solutions-field {
     margin-top: 0.2rem;
     width: 100%;
-    display: grid;
-    text-align: center;
-    height: 1.4rem;
     font-size: 0.8rem;
     font-weight: bold;
-    background-color: lightgray;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    background-color: lightgray;
     color: black;
+    display: flex;
+    justify-content: center;
+    /* Horizontale Zentrierung */
+    align-items: center;
+    /* Vertikale Zentrierung */
+    height: 1.4rem;
+}
     /*
     margin-top: 0.2rem;
     display: flex;
@@ -1002,8 +1007,6 @@ Für Text: color: #222; oder color: #424242;
     padding-left: 0.6rem;
     padding-bottom: 0.2rem;
     */
-}
-
 /*=======================================*/
 /* DB-Dialog 
 /*=======================================*/

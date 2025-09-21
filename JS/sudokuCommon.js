@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1019;
+let VERSION = 1020;
 
 // ==========================================
 // Basic classes
