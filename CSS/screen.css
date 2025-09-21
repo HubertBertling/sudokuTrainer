@@ -983,7 +983,17 @@ Für Text: color: #222; oder color: #424242;
     vertical-align: center;
 }
 
-.nr-of-solutions-field {
+.number-of-solutions {
+    margin-top: 0.2rem;
+    width: 100%;
+    display: grid;
+    text-align: center;
+    height: 1.4rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: lightgray;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    color: black;
+    /*
     margin-top: 0.2rem;
     display: flex;
     flex-direction: row;
@@ -991,6 +1001,7 @@ Für Text: color: #222; oder color: #424242;
     padding-top: 0.2rem;
     padding-left: 0.6rem;
     padding-bottom: 0.2rem;
+    */
 }
 
 /*=======================================*/
@@ -1672,7 +1683,7 @@ label {
     /* iPhone 14: 380 x 844 */
 
     html {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .empty-display {
