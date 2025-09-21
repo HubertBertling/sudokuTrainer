@@ -2793,7 +2793,7 @@ class SudokuSolverView {
     setNumberOfSolutions(nr) {
         this.solutionNumber = nr;
         if (nr > 0) {
-            this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' + 
+            this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
                 '&nbsp' + this.solutionNumber;
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
@@ -3129,6 +3129,14 @@ class SudokuSolverController {
         // =============================================================
         // The events of the solver are set
         // =============================================================
+
+        this.modernBtn = document.querySelector('.modern-btn');
+        this.modernBtn.addEventListener('touchstart', function () {
+            this.modernBtn.classList.add('active-style'); // Fügt eine CSS-Klasse hinzu, um den Stil zu ändern
+        });
+        this.modernBtn.addEventListener('touchend', function () {
+            this.modernBtn.classList.remove('active-style'); // Entfernt die Klasse, wenn die Berührung endet
+        });
 
         // Set click event for the number buttons
         this.number_inputs = document.querySelectorAll('.number-btn');
