@@ -662,7 +662,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .modern-btn:active {
-    /*transform: translate(0.2rem, 0.2rem); */
+    transform: translate(0.2rem, 0.2rem);
     background-color: #ddd;
     /* Beispiel: Hellt den Hintergrund auf */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
