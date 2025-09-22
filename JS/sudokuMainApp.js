@@ -3130,15 +3130,19 @@ class SudokuSolverController {
         // The events of the solver are set
         // =============================================================
 
-        /*
-        this.modernBtn = document.querySelector('.modern-btn');
-        this.modernBtn.addEventListener('touchstart', function () {
-            this.modernBtn.classList.add('active-style'); // Fügt eine CSS-Klasse hinzu, um den Stil zu ändern
+        // Alle Buttons auswählen
+        document.querySelectorAll("button").forEach(btn => {
+            // Touch Events
+            btn.addEventListener("touchstart", () => btn.classList.add("active"));
+            btn.addEventListener("touchend", () => btn.classList.remove("active"));
+            btn.addEventListener("touchcancel", () => btn.classList.remove("active"));
+
+            // Maus Events (für PC)
+            btn.addEventListener("mousedown", () => btn.classList.add("active"));
+            btn.addEventListener("mouseup", () => btn.classList.remove("active"));
+            btn.addEventListener("mouseleave", () => btn.classList.remove("active"));
         });
-        this.modernBtn.addEventListener('touchend', function () {
-            this.modernBtn.classList.remove('active-style'); // Entfernt die Klasse, wenn die Berührung endet
-        });
-        */
+        
         // Set click event for the number buttons
         this.number_inputs = document.querySelectorAll('.number-btn');
         this.number_inputs.forEach((e, index) => {
