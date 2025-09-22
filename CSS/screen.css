@@ -93,6 +93,12 @@ body {
     /* Grey 100 */
 }
 
+
+button, a {
+  cursor: pointer; /* wichtig für iOS Safari */
+}
+
+
 .empty-display {
     display: none;
     position: absolute;
