@@ -101,18 +101,22 @@ a {
 }
 
 
+/* Fallback :active für Desktop */
+button:active {
+    transform: translate(0.2rem, 0.2rem);
+    background-color: #ddd;
+    /* Beispiel: Hellt den Hintergrund auf */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    /* Beispiel: Erzeugt einen Eintrungseffekt */
+}
 
-.empty-display {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    color: white;
-    font-size: 2rem;
-    z-index: 4;
+/* Klasse für Mobile (über JS gesetzt) */
+.active {
+    transform: translate(0.2rem, 0.2rem);
+    background-color: #ddd;
+    /* Beispiel: Hellt den Hintergrund auf */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    /* Beispiel: Erzeugt einen Eintrungseffekt */
 }
 
 .app-content {
@@ -256,11 +260,6 @@ a {
 /*=====================================================*/
 
 /**************************************/
-
-.active {
-    background-color: green;
-    color: white;
-}
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color 
    and some left padding to change the design of the dropdown content */
@@ -662,22 +661,12 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 
     box-shadow: 0 4px 16px rgba(120, 120, 120, 0.18);
-    transform: translateY(-2px) scale(1.03);
+    /* transform: translateY(-2px) scale(1.03); */
     outline: none;
 }
 
 .modern-btn:focus {
     outline: none;
-}
-
-.active {
-    background: #666;
-    color: #fff;
-}
-
-.modern-btn:active {
-    background: #666;
-    color: #fff;
 }
 
 
@@ -1528,14 +1517,6 @@ label {
     border-radius: 0.5rem;
     border: none;
     padding: 0.2rem;
-}
-
-.db-puzzle-button:active {
-    background-color: #ddd;
-    /* Beispiel: Hellt den Hintergrund auf */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-    /* Beispiel: Erzeugt einen Eintrungseffekt */
-
 }
 
 .db-puzzle-root {
