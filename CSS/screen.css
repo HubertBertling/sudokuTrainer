@@ -655,7 +655,7 @@ Für Text: color: #222; oder color: #424242;
 
 }
 
-
+/*
 .modern-btn:hover,
 .db-puzzle-button:hover {
     background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
@@ -663,6 +663,7 @@ Für Text: color: #222; oder color: #424242;
     transform: translateY(-2px) scale(1.03);
     outline: none;
 }
+*/
 
 .modern-btn:focus {
     outline: none;
