@@ -982,7 +982,7 @@ Für Text: color: #222; oder color: #424242;
 .nr-of-solutions-field {
     margin-top: 0.2rem;
     width: 100%;
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: bold;
     background-color: lightgray;
     color: black;
