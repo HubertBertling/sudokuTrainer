@@ -428,14 +428,14 @@ button:active {
     font-weight: bold;
     color: white;
     background-color: red;
-    padding: 0.1rem;
+    padding: 0.16rem;
 }
 
 .candidate.necessary {
     font-weight: bold;
     color: white;
     background-color: green;
-    padding: 0.1rem;
+    padding: 0.16rem;
 }
 
 .candidate.single,
