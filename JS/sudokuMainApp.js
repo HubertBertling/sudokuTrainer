@@ -3669,7 +3669,8 @@ class SudokuSolverController {
         let action = {
             operation: 'reset',
             pzRecord: puzzleRec,
-            pzArray: this.mySolver.myGrid.getPuzzleArray()
+            pzArray: this.mySolver.myGrid.getPuzzleArray(),
+            numberOfSolutions: this.mySolver.myGrid.numberOfSolutions
         }
         this.myUndoActionStack.push(action);
         this.mySolver.reset();
@@ -3713,6 +3714,7 @@ class SudokuSolverController {
             case 'define': {
                 this.mySolver.setCurrentPuzzle(action.pzRecord);
                 sudoApp.mySolver.myGrid.loadPuzzleArray(action.pzArray);
+                sudoApp.mySolver.myGrid.numberOfSolutions = action.numberOfSolutions;
                 this.mySolver.setGamePhase('play');
                 break;
             }
