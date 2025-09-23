@@ -2464,12 +2464,12 @@ class SudokuCellView {
                     }
                 }
             });
-            sudoApp.mySolverView.displayTechnique('In dieser Gruppe <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
+            sudoApp.mySolverView.displayTechnique('', 'In dieser Gruppe <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
                 ' setzen.');
             return;
         }
         if (this.myCell.getCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('In die selektierte Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('', 'In die selektierte Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
 
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
@@ -2494,14 +2494,14 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('In die selektierte Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('', 'In die selektierte Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }
             return;
         }
         if (this.myCell.getTotalCandidates().size > 1) {
-            sudoApp.mySolverView.displayTechnique('<b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
+            sudoApp.mySolverView.displayTechnique('', '<b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('multipleOption');
             }
@@ -2530,7 +2530,7 @@ class SudokuCellView {
                         }
                     }
                 });
-                sudoApp.mySolverView.displayTechnique('Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
+                sudoApp.mySolverView.displayTechnique('', 'Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
                     ' in dieser Gruppe setzen.');
                 return;
             }
@@ -2554,7 +2554,7 @@ class SudokuCellView {
                 sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell2.myIndex].setBorderRedSelected();
 
                 pairArray = Array.from(pairInfo.pairCell1.getTotalCandidates());
-                sudoApp.mySolverView.displayTechnique(
+                sudoApp.mySolverView.displayTechnique('red',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Nacktem Paar" {'
                     + pairArray[0]
@@ -2585,7 +2585,7 @@ class SudokuCellView {
                     });
                 }
 
-                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
+                sudoApp.mySolverView.displayTechnique('red', adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
                 return;
             }
         }
@@ -2613,7 +2613,7 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderRedSelected();
                     }
                 })
-                sudoApp.mySolverView.displayTechnique(adMissibleNrSelected
+                sudoApp.mySolverView.displayTechnique('red', adMissibleNrSelected
                     + ' eliminierbar wegen Zeiger-Paar');
                 return;
             }
@@ -2636,7 +2636,7 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
                     }
                 });
-                sudoApp.mySolverView.displayTechnique(
+                sudoApp.mySolverView.displayTechnique('red',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Verstecktem Paar" {'
                     + pairArray[0]
@@ -2664,7 +2664,7 @@ class SudokuCellView {
                     this.displayReasons();
                 }
             } else if (sudoApp.mySolver.getAutoDirection() == 'backward') {
-                sudoApp.mySolverView.displayTechnique('<b>Backtracking: </b>Löschen der selektierten Zelle.');
+                sudoApp.mySolverView.displayTechnique('', '<b>Backtracking: </b>Löschen der selektierten Zelle.');
             }
         }
     }
@@ -2672,7 +2672,7 @@ class SudokuCellView {
     unsetSelectStatus() {
         this.unsetSelected();
         this.unsetBorderSelected();
-        sudoApp.mySolverView.displayTechnique('');
+        sudoApp.mySolverView.displayTechnique('', '');
     }
 
     unsetAutoSelectStatus() {
@@ -3012,17 +3012,17 @@ class SudokuSolverView {
 
     displayReasonUnsolvability(reason) {
         if (reason !== '') {
-            this.myStepExplainerView.setText('<b>Widerspruch:</b> &nbsp' + reason);
+            this.myStepExplainerView.setText('red', '<b>Widerspruch:</b> &nbsp' + reason);
             this.myStepExplainerView.unsetOkBtn();
         } else {
             this.myStepExplainerView.clear();
         }
     }
 
-    displayTechnique(tech) {
+    displayTechnique(color, tech) {
         if (this.mySolver.getActualEvalType() == 'lazy' ||
             this.mySolver.getActualEvalType() == 'lazy-invisible') {
-            this.myStepExplainerView.setText(tech);
+            this.myStepExplainerView.setText(color, tech);
             if (sudoApp.mySolver.isSearching()) {
                 if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                     this.myStepExplainerView.setOkBtn();
@@ -3083,13 +3083,25 @@ class StepExplainerView {
         this.tippOkBtn = document.getElementById("tipp-accept-btn");
     }
     clear() {
+        this.explainerTextNode.classList.remove('red');
         this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
         this.tippOkBtn.style.display = "none";
     }
-    setText(text) {
-        if (text == '') text = 'Schrittsbeschreibung ...';
-        this.explainerTextNode.innerHTML = text;
+    setText(color, text) {
+        if (text == '') {
+            this.explainerTextNode.classList.remove('red');
+            text = 'Schrittsbeschreibung ...';
+        } else {
+            this.explainerTextNode.innerHTML = text;
+            if (color == 'red') {
+                this.explainerTextNode.classList.add('red');
+            } else {
+                this.explainerTextNode.classList.remove('red');
+            }
+        }
     }
+
+
     setOkBtn() {
         this.tippOkBtn.style.display = "flex";
     }
@@ -3112,7 +3124,7 @@ class StepExplainerView {
              this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
              this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
              this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
- 
+     
          }
              */
     }
@@ -3142,7 +3154,7 @@ class SudokuSolverController {
             btn.addEventListener("mouseup", () => btn.classList.remove("active"));
             btn.addEventListener("mouseleave", () => btn.classList.remove("active"));
         });
-        
+
         // Set click event for the number buttons
         this.number_inputs = document.querySelectorAll('.number-btn');
         this.number_inputs.forEach((e, index) => {

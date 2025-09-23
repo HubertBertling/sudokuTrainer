@@ -35,7 +35,8 @@ layout: default
       4. [Puzzle lösen durch Scannen, Eliminieren und Trial and Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial-and-error)
       5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
       6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
-      7. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
+      7. [Lösungsarchitektur des Sudoku-Trainers](#lösungsarchitektur-des-sudoku-trainers)
+      8. [Schwierigkeitsgrade (Levels)](#schwierigkeitsgrade-levels)
    8. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
       1. [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung)
       2. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
@@ -163,7 +164,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 
 ### Widerspruchsvolle Puzzles
 
-Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku bei der aktuellen Befüllung widerspruchsvoll ist. Ein Sudoku-Puzzle ist widerspruchsvoll, wenn es
+Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku unlösbar ist. Ein Puzzle ist unlösbar, wenn es direkt widerspruchsvoll ist, oder wenn seine Widersprüchlichkeit logisch hergeleitet werden kann. Ein Sudoku-Puzzle ist direkt widerspruchsvoll, wenn es
 
 1. eine widerspruchsvolle Zelle besitzt, oder
 1. eine widerspruchsvollen Gruppe.
@@ -172,11 +173,10 @@ Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende So
 
 **Widerspruchsvolle Zellen**
 
-Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten, Zellen mit zwei notwendigen Nummern gleichzeitig und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
+Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
 
 ![No selectable candidates](./imagesHelp/nochoice.png)
 ![No candidates at all](./imagesHelp/nochoice2.png)
-![MoreThanOneNecessary](./imagesHelp/twoNeccessary.png)
 ![NumberConflict](./imagesHelp/conflct.png)
 
 **Widerspruchsvolle Gruppen**
@@ -611,6 +611,14 @@ Im Lazy-Modus wird die Verursachung notwendiger Nummern oder eliminierbarer Kand
 Woran liegt das? Es liegt daran, dass der Solver im Ausführungsmodus Strikt sehr viel früher die Widersprüchlichkeit, falls vorhanden, der aktuellen Nummernbelegungen feststellt. Dies wiederum führt dazu, dass die Anzahl der Vorwärts- und Rückwärtsschritte entsprechend geringer wird und damit die Anzahl der Schritte insgesamt. Die Anzahl der Rückwärtsläufe bleibt in beiden Ausführungsmodi gleich. Der Solver untersucht in beiden Auswertungsmodi dieselben möglichen Nummernsetzungen.
 
 Dieser Sudoku-Trainer zeichnet sich in erster Linie durch seine nachvollziehbare Lösungssuche aus. Die Schrittminimierung ist kein Ziel. Daher ist die Einstellung "Keine Kandidatenanzeige" mit der Lazy-Auswertung im Hintergrund der Default-Auswertungsmodus.
+
+
+### Lösungsarchitektur des Sudoku-Trainers
+
+<figure>
+   <img src="./imagesHelp/lösungsArchitektur.png" alt="Notwendig" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Lösungsarchitektur des Sudoku-Trainers</figcaption>
+</figure>
 
 ### Schwierigkeitsgrade (Levels)
 
