@@ -386,7 +386,7 @@ button:active {
 }
 
 .candidate {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     color: black;
 }
 
@@ -399,7 +399,7 @@ button:active {
 
 .sudoku-grid-cell.selected>.candidate,
 .sudoku-grid-cell.auto-selected>.candidate {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     color: white;
     font-weight: bold;
 
@@ -1004,7 +1004,6 @@ Für Text: color: #222; oder color: #424242;
     color: black;
     margin-top: 1rem;
 }
-
 
 /* ===================================================*/
 /*  Save and rename dialogs                           */
