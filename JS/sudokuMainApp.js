@@ -3574,7 +3574,8 @@ class SudokuSolverController {
         let action = {
             operation: 'init',
             pzRecord: puzzleRec,
-            pzArray: this.mySolver.myGrid.getPuzzleArray()
+            pzArray: this.mySolver.myGrid.getPuzzleArray(),         
+            numberOfSolutions: this.mySolver.myGrid.numberOfSolutions
         }
         this.myUndoActionStack.push(action);
 
