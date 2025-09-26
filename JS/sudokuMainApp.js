@@ -1894,8 +1894,10 @@ class SudokuGridView {
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                 new_Node.style.border = "6px solid var(--manual-solver)";
+                new_Node.style.background = "var(--manual-solver)";
             } else {
                 new_Node.style.border = "6px solid var(--automatic-solver)";
+                new_Node.style.background = "var(--automatic-solver)";
             }
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
                 // Candidates are not displayed in the matrix
@@ -1905,6 +1907,7 @@ class SudokuGridView {
 
         } else {
             new_Node.style.border = "6px solid var(--manual-solver)";
+                new_Node.style.background = "var(--manual-solver)";
         }
 
 
@@ -1989,38 +1992,7 @@ class SudokuGridView {
                 '<span class="pz-name"><b>Puzzle:</b> &nbsp' + currentPuzzle.myRecord.name + ', &nbsp' + new Date(currentPuzzle.myRecord.date).toLocaleDateString() + '</span>' +
                 '<span class="pz-level"><b>Level:</b> &nbsp' + currentPuzzle.myRecord.preRunRecord.level + '</span>'
         }
-
-        /*
-        if (sudoApp.mySolver.isSearching()) {
-            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                evalNode.style.borderLeft = "6px solid var(--manual-solver)";
-                evalNode.style.borderTop = "6px solid var(--manual-solver)";
-                evalNode.style.borderRight = "6px solid var(--manual-solver)";
-            } else {
-                evalNode.style.borderLeft = "6px solid var(--automatic-solver)";
-                evalNode.style.borderTop = "6px solid var(--automatic-solver)";
-                evalNode.style.borderRight = "6px solid var(--automatic-solver)";
-            }
-        } else {
-            evalNode.style.borderLeft = "6px solid var(--manual-solver)";
-            evalNode.style.borderTop = "6px solid var(--manual-solver)";
-            evalNode.style.borderRight = "6px solid var(--manual-solver)";
-        }
-        */
     }
-
-    /*
-    displaySelection() {
-        if (this.myGrid.indexSelected == -1) {
-            this.sudoCellViews.forEach(cellView => {
-                cellView.unsetSelectStatus();
-            })
-        } else {
-            let selectedCellView = this.sudoCellViews[this.myGrid.indexSelected];
-            selectedCellView.unsetSelectStatus();
-            selectedCellView.setSelectStatus();
-        }
-    }*/
 
     displaySelection() {
         if (this.myGrid.indexSelected > -1) {
@@ -2769,19 +2741,7 @@ class SudokuSolverView {
         // Redisplay the complete solver
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
-
-        /*
-        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-            // Candidates are not displayed in the matrix
-            // except for the cell of the next step
-            this.myGridView.displayCandidateInvisibleMatrix();
-        } else {
-            this.myGridView.upDate();
-        }
-        */
         this.myGridView.upDate();
-
-        this.myStepExplainerView.updateOperationMode();
         // Indication that the puzzle cannot be solved, if this is the case
         this.displayProgress();
         // Display status applicability of the undo/redo buttons
@@ -2804,14 +2764,7 @@ class SudokuSolverView {
                 'lightgray';
         }
     }
-    /*
-    reSetNumberOfSolutions() {
-        this.solutionNumber = 0;
-        this.nrOfSolutionsNode.innerHTML = '&nbsp' + this.solutionNumber;
-        this.solutionFieldNode.style.backgroundColor =
-            'var(--nested-cell-bg-color)';
-    }
-            */
+    
     getNumberOfSolutions() {
         return this.solutionNumber;
     }
@@ -2918,14 +2871,6 @@ class SudokuSolverView {
         if (nrSol == 0) {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
         } else {
-
-            /*
-            if (nrSol == 1) {
-                sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösung');
-            } else {
-                sudoApp.mySolverView.showPuzzleSolutionInfo(nrSol + ' Lösungen');
-            }
-            */
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
         }
     }
@@ -3107,26 +3052,6 @@ class StepExplainerView {
     }
     unsetOkBtn() {
         this.tippOkBtn.style.display = "none";
-    }
-    updateOperationMode() {
-        /*
-         if (sudoApp.mySolver.isSearching()) {
-             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                 this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
-                 this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
-                 this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
-             } else {
-                 this.explainerNode.style.borderLeft = "6px solid var(--automatic-solver)";
-                 this.explainerNode.style.borderBottom = "6px solid var(--automatic-solver)";
-                 this.explainerNode.style.borderRight = "6px solid var(--automatic-solver)";
-             }
-         } else {
-             this.explainerNode.style.borderLeft = "6px solid var(--manual-solver)";
-             this.explainerNode.style.borderBottom = "6px solid var(--manual-solver)";
-             this.explainerNode.style.borderRight = "6px solid var(--manual-solver)";
-     
-         }
-             */
     }
 }
 

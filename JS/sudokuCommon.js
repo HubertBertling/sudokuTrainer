@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1036;
+let VERSION = 1037;
 
 // ==========================================
 // Basic classes
@@ -4195,30 +4195,7 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-        /*
-    this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
-    console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
-    this.webworkerGenerator_4.addEventListener(
-        "message",
-        this.onPuzzleGenerated,
-        false);
-
-    this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
-    console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
-    this.webworkerGenerator_5.addEventListener(
-        "message",
-        this.onPuzzleGenerated,
-        false);
-
-    this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
-    console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
-    this.webworkerGenerator_6.addEventListener(
-        "message",
-        this.onPuzzleGenerated,
-        false);
-        */
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
-
     }
 
 }
