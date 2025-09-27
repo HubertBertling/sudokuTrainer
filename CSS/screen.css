@@ -554,7 +554,7 @@ button:active {
     display: grid;
     place-items: center;
     position: relative;
-    height: 2.4rem;
+    height: 2rem;
     background-color: lightgrey;
 }
 
@@ -572,6 +572,7 @@ button:active {
 */
 #tipp-accept-btn {
     background: var(--played-cell-bg-color);
+    background: linear-gradient(95deg, #a5ed8d 0%, #07c025 100%);
     position: absolute;
     right: 0.2rem;
     border-radius: 0.4rem;
@@ -994,7 +995,7 @@ Für Text: color: #222; oder color: #424242;
     /* Horizontale Zentrierung */
     align-items: center;
     /* Vertikale Zentrierung */
-    height: 1.4rem;
+    height: 2rem;
 }
 
 /*=======================================*/
