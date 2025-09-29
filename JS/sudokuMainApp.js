@@ -3405,6 +3405,7 @@ class SudokuSolverController {
                 this.myUndoActionStack.push(action);
             }
             this.mySolver.deleteSelected();
+            sudoApp.mySolver.myGrid.numberOfSolutions = 0;
             this.mySolver.notify();
         }
     }
