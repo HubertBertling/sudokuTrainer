@@ -3288,7 +3288,7 @@ class SudokuSolverController {
                 this.mySolver.atCurrentSelectionSetNumber(nr);
                 this.myUndoActionStack.push(action);
                 if (this.mySolver.succeeds()) {
-                    // ??? sudoApp.mySolverView.setNumberOfSolutions(1);
+                    sudoApp.mySolver.myGrid.numberOfSolutions = 1;
                     sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
                         this, () => { }
                     );
@@ -3660,6 +3660,7 @@ class SudokuSolverController {
                 // Delete set number
                 this.mySolver.myGrid.indexSelected = action.cellIndex;
                 this.mySolver.deleteSelected();
+                sudoApp.mySolver.myGrid.numberOfSolutions = 0;
                 break;
             }
             case 'delete': {
@@ -3692,6 +3693,9 @@ class SudokuSolverController {
                 // Set the number again
                 this.mySolver.myGrid.indexSelected = action.cellIndex;
                 this.mySolver.atCurrentSelectionSetNumber(action.cellValue);
+                if (this.mySolver.succeeds()) {
+                    sudoApp.mySolver.myGrid.numberOfSolutions = 1;
+                }
                 break;
             }
             case 'delete': {
