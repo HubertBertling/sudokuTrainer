@@ -180,7 +180,8 @@ button:active {
 .tracker-dlg-header>span,
 .manual-solver-header>span {
     width: 100%;
-    padding-left: 0.4rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
 }
 
 .btn-undo-offset {
@@ -714,21 +715,21 @@ Für Text: color: #222; oder color: #424242;
     gap: 0.2rem;
     justify-items: stretch;
     align-items: stretch;
-     background: var(--manual-solver);
-     padding: 1rem;
+    background: var(--manual-solver);
+    padding: 0.8rem;
 }
 
 #automatic-btn-block {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.4rem;
+    gap: 0.2rem;
     justify-items: stretch;
     align-items: stretch;
     /* background: var(--screen-bg-color);*/
     background: var(--automatic-solver);
-    padding: 1rem;
-  
+    padding: 0.8rem;
+
 }
 
 
