@@ -1907,7 +1907,7 @@ class SudokuGridView {
 
         } else {
             new_Node.style.border = "6px solid var(--manual-solver)";
-                new_Node.style.background = "var(--manual-solver)";
+            new_Node.style.background = "var(--manual-solver)";
         }
 
 
@@ -2748,6 +2748,7 @@ class SudokuSolverView {
         this.displayUndoRedo();
         this.displayGamePhase();
         this.setNumberOfSolutions(sudoApp.mySolver.myGrid.numberOfSolutions);
+
     }
 
     setNumberOfSolutions(nr) {
@@ -2758,13 +2759,21 @@ class SudokuSolverView {
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
         } else {
-            this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
-                '&nbsp' + this.solutionNumber;
-            this.nrOfSolutionsField.style.backgroundColor =
-                'lightgray';
+            if (this.mySolver.isSearching() && 
+                this.mySolver.myCurrentSearch.isCompleted()) {
+                this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
+                this.nrOfSolutionsField.style.backgroundColor =
+                    'var(--played-cell-bg-color)';
+            } else {
+                this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
+                    '&nbsp' + this.solutionNumber;
+                this.nrOfSolutionsField.style.backgroundColor =
+                    'lightgray';
+
+            }
         }
     }
-    
+
     getNumberOfSolutions() {
         return this.solutionNumber;
     }
@@ -3500,7 +3509,7 @@ class SudokuSolverController {
         let action = {
             operation: 'init',
             pzRecord: puzzleRec,
-            pzArray: this.mySolver.myGrid.getPuzzleArray(),         
+            pzArray: this.mySolver.myGrid.getPuzzleArray(),
             numberOfSolutions: this.mySolver.myGrid.numberOfSolutions
         }
         this.myUndoActionStack.push(action);
