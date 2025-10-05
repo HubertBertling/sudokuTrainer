@@ -5,8 +5,10 @@ email: h.bertling@web.de
 description: > # this means to ignore newlines until "baseurl:"
     Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! 
     Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, 
-    wie Du die gelieferte Lösung hättest finden können. Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung 
-    Deines Puzzles durchführen. Dieser Sudoku-Trainer macht Spaß, weil er jedes Puzzle löst und weil er auf Wunsch einen Tipp für den nächsten Lösungsschritt gibt. 
+    wie Du die gelieferte Lösung hättest finden können. Wieso bezeichnet die Zeitung das Puzzle als 'Leicht'? Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt die Lösung 
+    Deines Puzzles durchführen und verstehen. Neben der Lösung von konkreten Puzzles lernst Du sehr viel über die Phänomene des klassischen 9x9 Sudokus an sich. Dieser Sudoku-Trainer macht Spaß, 
+    weil er jedes Puzzle löst und weil er auf Wunsch einen Tipp für den nächsten Lösungsschritt gibt. Du lernst Basis-Kandidaten-Eliminationsregeln kennen, durch die sich die Lösungssuche erheblich verkürzen lässt. 
+    Mit Hilfe des autmatischen Solvers kannst Du überprüfen, ob ein gegebenes Puzzle unlösbar ist, oder ob es mehrere Lösungen hat. 
     Viel Spaß damit. 
 
 # Build settings
