@@ -1895,8 +1895,10 @@ class SudokuGridView {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                 new_Node.style.border = "6px solid var(--manual-solver)";
                 new_Node.style.background = "var(--manual-solver)";
+                new_Node.style.background = "var(--manual-solver)";
             } else {
                 new_Node.style.border = "6px solid var(--automatic-solver)";
+                new_Node.style.background = "var(--automatic-solver)";
                 new_Node.style.background = "var(--automatic-solver)";
             }
             if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {

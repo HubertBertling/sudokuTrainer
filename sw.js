@@ -10,7 +10,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1044';
+var VERSION = 'version_1045';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -67,10 +67,12 @@ var URLS = [
   `${GHPATH}/imagesHelp/appView2.png`, 
   `${GHPATH}/imagesHelp/appView3.png`, 
   `${GHPATH}/imagesHelp/architecture.png`, 
-  `${GHPATH}/imagesHelp/autoSelected.png`, 
+  `${GHPATH}/imagesHelp/autoSelected.png`,
+  `${GHPATH}/imagesHelp/autoSelectedLazy.png`,
   `${GHPATH}/imagesHelp/breakpointSettings.png`, 
   `${GHPATH}/imagesHelp/closeSolver.png`, 
   `${GHPATH}/imagesHelp/conflct.png`, 
+  `${GHPATH}/imagesHelp/chromeInstall1.png`,
   `${GHPATH}/imagesHelp/define.png`, 
   `${GHPATH}/imagesHelp/definedCell.png`, 
   `${GHPATH}/imagesHelp/downloadDB.png`, 
@@ -99,6 +101,7 @@ var URLS = [
   `${GHPATH}/imagesHelp/logischUnloesbarEindeutig.png`, 
   `${GHPATH}/imagesHelp/logischUnloesbarKeineWeitereLoesung.png`, 
   `${GHPATH}/imagesHelp/manualSelected.png`, 
+  `${GHPATH}/imagesHelp/manualSelectedLazy.png`,
   `${GHPATH}/imagesHelp/naechsterSchritt.png`, 
   `${GHPATH}/imagesHelp/nakedSingle.png`, 
   `${GHPATH}/imagesHelp/neccessary.png`, 
@@ -126,7 +129,9 @@ var URLS = [
   `${GHPATH}/imagesHelp/solutionSequenceBtn.png`, 
   `${GHPATH}/imagesHelp/strictplus.png`, 
   `${GHPATH}/imagesHelp/striktminus.png`, 
-  `${GHPATH}/imagesHelp/tastenauswahlAutomatik.png`, 
+  `${GHPATH}/imagesHelp/tastenauswahlAutomatik.png`,
+  `${GHPATH}/imagesHelp/tastenauswahlManual.png`, 
+  `${GHPATH}/imagesHelp/tastenBlockAutomatic.png`,
   `${GHPATH}/imagesHelp/tasteResetfürSolver.png`, 
   `${GHPATH}/imagesHelp/teilenURLApp.png`, 
   `${GHPATH}/imagesHelp/teilenURLApp2.png`, 
@@ -139,6 +144,7 @@ var URLS = [
   `${GHPATH}/imagesHelp/versteckterSingle.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeGlecheSingles.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeFehlendeNr.png`
+  `${GHPATH}/imagesHelp/Ziele.png`
 ]
 
 const CACHE_NAME = APP_PREFIX + VERSION

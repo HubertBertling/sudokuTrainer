@@ -1,14 +1,32 @@
 # Herzlich willkommen zur Sudoku-Trainer-App
 
-## Die App  
+## Der Trainer
 
-Diese App ist ein Trainer für klassisches Sudoku. Sie besteht aus drei Komponenten, dem Sudoku-Solver, dem Sudoku-Generator und der Sudoku-Datenbank.
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
 
-1. Der **Sudoku-Solver** kann manuell oder automatisch genutzt werden. Seine Besonderheit: man kann ihm bei der automatischen Suche nach der Lösung zuschauen. Bei jeder automatischen Setzung einer Nummer zeigt der Solver den logischen Grund für die Setzung. Der Anwender kann ein Puzzle manuell lösen, oder er kann sich einen Tipp für den nächsten möglichen Schritt geben lassen. Es ist auch möglich, das Puzzle vollständig automatisch lösen zu lassen. Automatisch löst der Solver jedes Puzzle in wenigen Sekunden oder erkennt es als nicht lösbar (weil es widersprüchlich ist). Im vorliegenden Trainer werden bei Bedarf logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass bei der Lösungssuche die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
+Es gibt aber auch weitere Sudoku-Trainer. Großartige Seiten für Sudoku-Interessierte sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps vermitteln dem Spieler die Anwendung logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Diese Trainer-Apps wenden sich daher eher an Sudoku-Freaks.
 
-1. Der **Sudoku-Generator** generiert faire Puzzles mit den Schwierigkeitsgraden 'Sehr leicht', 'Leicht', 'Mittel' und 'Schwer'. Im Gegensatz zu 'Sehr schweren' oder 'Extrem schweren' Puzzles können faire Puzzles allein durch logisches Schließen gelöst werden. Sie benötigen kein "Backtracking", kein Raten und Probieren.
 
-1. In der **Sudoku-Datenbank** kann der Spielstand von Sudoku-Puzzles gespeichert werden. Die Datenbank wird im lokalen Speicher des Browsers(!) abgelegt. D.h. installierte Web Apps sind einem Browser fest zugeordnet.
+|         |Dieser Trainer  |Andere Trainer|Andere Sudoku-Solver |
+|---------|----------------|---------------------|--------------|
+|Adressat |Gelegenheits-spieler| Freaks |Gelegenheits-spieler         |
+|Ziele |(1) Training der Lösung einfacher Puzzles durch Beobachtung der Lösungsschritte des Trainers. (2) Vermittlung eines Überblicks über den Raum der Puzzles. | Anwendung und Weiterentwicklung logischer Schlussregeln für die Lösung von Puzzles. Verzicht auf Backtracking.| Beschaffung der Lösung eines gegebenen Puzzles| 
+|Anwendungs-bereich   |Alle Puzzles: (1) Unlösbare Puzzles, (2) Puzzles mit eindeutiger Lösung. (3) Puzzles mit mehreren Lösungen        |  Nur Puzzles mit eindeutiger Lösung       | Alle Puzzles|
+
+
+|Analyse der Unlösbarkeit         | Für unlösbare Puzzles leitet der Trainer mittels beobachtbarer Lösungsschritte widerspruchsvolle Zellen oder Gruppen her. |  Keine Analyse oder nicht  beobachtbare Analyse im Hintergrund       |
+|Lösung für eindeutige Puzzles| Beobachtbare Schritte zur Lösung. Unterschiedliche Schrittarten für unterschiedliche Schwierigkeitsgrade der Puzzles | Nicht beobachtbarer Backtrack-Algorithmus|
+
+## Puzzles generieren
+Die App besitzt einen Puzzle-Generator. Der **Sudoku-Generator** generiert faire Puzzles mit den Schwierigkeitsgraden 'Sehr leicht', 'Leicht', 'Mittel' und 'Schwer'. Im Gegensatz zu 'Sehr schweren' oder 'Extrem schweren' Puzzles können faire Puzzles allein durch logisches Schließen gelöst werden. Sie benötigen kein "Backtracking", kein Raten und Probieren.
+
+## Puzzles speichern
+Der Trainer kann der Spielstand von Sudoku-Puzzles speichern. Die Datenbank wird im lokalen Speicher des Browsers(!) abgelegt. D.h. installierte Web Apps sind einem Browser fest zugeordnet.
+
+### Sudoku Theorie sichtbar machen
+Anders als viele andere Sudoku-Solver will dieser Trainer nicht nur Puzzles lösen sondern er will auch Eigenschaften und Struktur der klassischen Sudokus sichtbar machen. 
+
+Der Solver im Trainer löst daher auch mehrdeutige Puzzles; er zählt die Lösungen auf. Für unlösbare Puzzles berechnet er, indem er sie zu lösen versucht, elementare Widersprüche. Beispielsweise eine nicht gesetzte Zelle, die überhaupt keine Kandidaten hat.
 
 ## Sudoku Trainer Installation
 

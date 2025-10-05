@@ -655,15 +655,6 @@ Für Text: color: #222; oder color: #424242;
 
 }
 
-/*
-.modern-btn:hover,
-.db-puzzle-button:hover {
-    background: linear-gradient(95deg, #b0b3b8 0%, #bdbdbd 100%);
-    box-shadow: 0 4px 16px rgba(33, 33, 33, 0.32);
-    transform: translateY(-2px) scale(1.03);
-    outline: none;
-}
-*/
 
 .modern-btn:focus {
     outline: none;

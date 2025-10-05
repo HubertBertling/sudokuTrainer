@@ -33,14 +33,14 @@
   "screenshots": [
     {
       "src": "./images/screenshotHandy.png",
-      "sizes": "400x845",
+      "sizes": "488x910",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "sudoku-trainer"
     },
     {
-      "src": "./images/screenshot-527x434.png",
-      "sizes": "527x434",
+      "src": "./images/screenshot-533x406.png",
+      "sizes": "533x406",
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "sudoku-trainer"
