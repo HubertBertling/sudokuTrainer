@@ -175,7 +175,7 @@ Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden
     <figcaption style="font-size: 16px; font-style: italic">App-Darstellung eines Puzzles</figcaption>
 </figure>
 
-Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen Kandidatennummern anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in den [Solver-Einstellungen](#solver-einstellungen) der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
+Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen Kandidatennummern anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in den Solver-Einstellungen der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
 
 <figure >
    <img src="./imagesHelp/appViewLazy.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
