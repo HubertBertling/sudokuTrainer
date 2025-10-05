@@ -103,7 +103,7 @@ Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als
 
 <figure >
    <img src="./imagesHelp/chromeInstall1.png" alt="Chro,e Install" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Inszallations-Icon in der URL-Zeile</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Installations-Icon in der URL-Zeile</figcaption>
 </figure>
 
 | Installation                                                     | Installation                                                      |
@@ -223,7 +223,7 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
 ## Das Menu
 
 <figure>
-   <img src="./imagesHelp/initialsieren.png" alt="Navigation" style="max-width:15%">
+   <img src="./imagesHelp/initialsieren.png" alt="Navigation" style="max-width:80%">
     <figcaption style="font-size: 16px; font-style: italic">Menü-Navigation</figcaption>
 </figure>
 
@@ -235,10 +235,10 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
 1. Haltepunkte der automatischen Lösungssuche
 
 {: style="text-align:center"}
-![KandidatenAuswertung](./imagesHelp/einstellungKandidatenAuswertung.png){:width="50%"}
+![KandidatenAuswertung](./imagesHelp/einstellungKandidatenAuswertung.png){:width="95%"}
 
 {: style="text-align:center"}
-![Haltepunkte](./imagesHelp/breakpointSettings.png){:width="50%"}
+![Haltepunkte](./imagesHelp/breakpointSettings.png){:width="95%"}
 
 ## Der Tastenblock 'Manuelles Lösen'
 
@@ -257,7 +257,7 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
    <img src="./imagesHelp/generatingOnGoingNew.png" alt="NeuePuzzles" 
    style="
     display: grid;
-    width: 25%;
+    width: 95%;
     align-items: center;
         ">
     <figcaption style="font-size: 16px; font-style: italic;"
@@ -445,17 +445,17 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 
 ### Standard Sudoku-Lösetechniken
 
-| Englisch             | Deutsch                         | Trainer                                                | Erklärung                                                                                                            |
-| -------------------- | ------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Naked Single         | Nackter Einziger                | Single (auch: Einziger Kandidat)                       | Nur 1 Kandidat in der Zelle                                                                                          |
-| Hidden Single        |                                 | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
-|                      |                                 | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
-|                      |                                 | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
-| Naked Pair/Triple    | Nacktes Paar/Trio               | Nacktes Paar/Trio                                      | Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten                                                      |
-| Hidden Pair/Triple   | Verstecktes Paar/Trio           | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
-| Pointing Pair/Triple | Zeigendes Paar/Trio             | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
-| Box-Line Reduction   | Block-Zeilen-/Spaltenausschluss | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
-| Trial and Error      |                                 |                                                        | Backtracking                                                                                                         |
+| Englisch                                    | Trainer                                                | Erklärung                                                                                                            |
+| ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Naked Single                        | Single (auch: Einziger Kandidat)                       | Nur 1 Kandidat in der Zelle                                                                                          |
+| Hidden Single                                       | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
+|                                                     | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
+|                                                     | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
+| Naked Pair/Triple                  | Nacktes Paar/Trio                                      | Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten                                                      |
+| Hidden Pair/Triple             | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
+| Pointing Pair/Triple             | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
+| Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
+| Trial and Error      |                                                                                | Backtracking                                                                                                         |
 
 ## Definitionen dieser App
 
