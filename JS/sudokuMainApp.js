@@ -2204,7 +2204,6 @@ class SudokuCellView {
 
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
-        // this.myCellNode.classList.remove('empty');
         this.myCellNode.classList.add('candidates');
         // Die Optionen sind zulässige Kandidaten
         let tmpCandidates = this.myCell.getTotalCandidates();
@@ -2627,7 +2626,10 @@ class SudokuCellView {
                     // Nach dem ersten Click auf die Zelle ist noch 
                     // kein Kandidat in der Zelle selektiert.
                     // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
-                    this.displayTasks();
+                    if (sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected == 
+                            sudoApp.mySolver.myGrid.indexSelected) {
+                        this.displayTasks();
+                    }
                 } else {
                     // Durch erneutes Clicken auf die bereits selektierte Zelle
                     // selektiert der Solver der Reihe nach unzulässige Kandidaten
@@ -2747,26 +2749,46 @@ class SudokuSolverView {
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
-        this.setNumberOfSolutions(sudoApp.mySolver.myGrid.numberOfSolutions);
-
+        if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
+            this.displayLastSearchProgress();
+        }
     }
 
+    displayLastSearchProgress() {
+        let progressBlock = document.getElementById("progress-block");
+        let stepCountBox = document.getElementById("step-count-box");
+        let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
+        progressBlock.style.gridTemplateColumns = "1fr 0.2fr 1fr";
+        stepCountBox.style.display = "flex";
+        autoModeRadioBtns.style.display = "flex";
+        if (sudoApp.mySolver.myCurrentPuzzle !== undefined) {
+            let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+            this.displayGoneSteps(sudoApp.mySolver.myGrid.lastSearch.steps);
+            if (tmpLevel == 'Sehr schwer') {
+                this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
+            } else {
+                this.displayBackwardCount('none');
+            }
+            this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
+        }
+    }
+
+
     setNumberOfSolutions(nr) {
-        this.solutionNumber = nr;
         if (nr > 0) {
             this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
-                '&nbsp' + this.solutionNumber;
+                '&nbsp' + nr;
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
         } else {
-            if (this.mySolver.isSearching() && 
+            if (this.mySolver.isSearching() &&
                 this.mySolver.myCurrentSearch.isCompleted()) {
                 this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                 this.nrOfSolutionsField.style.backgroundColor =
                     'var(--played-cell-bg-color)';
             } else {
                 this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
-                    '&nbsp' + this.solutionNumber;
+                    '&nbsp' + nr;
                 this.nrOfSolutionsField.style.backgroundColor =
                     'lightgray';
 
@@ -2784,13 +2806,14 @@ class SudokuSolverView {
         let progressBlock = document.getElementById("progress-block");
         let stepCountBox = document.getElementById("step-count-box");
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
+        let mySearch = this.mySolver.myCurrentSearch;
+
         if (this.mySolver.isSearching() && !sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-            let mySearch = this.mySolver.myCurrentSearch;
-            // let myStepper = this.getMyModel().myCurrentSearch.myStepper;
+            // Progress while searching
             progressBlock.style.gridTemplateColumns = "1fr 0.2fr 1fr";
             stepCountBox.style.display = "flex";
             autoModeRadioBtns.style.display = "flex";
-            // this.displayGoneSteps(myStepper.getGoneSteps());
+
             this.displayGoneSteps(mySearch.getNumberOfSteps());
             let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
             if (tmpLevel == 'Sehr schwer') {
@@ -2800,11 +2823,20 @@ class SudokuSolverView {
             }
             this.displayAutoDirection(mySearch.myStepper.getAutoDirection());
         } else {
-            // In case of no active automatic search 
-            // the step count field is not dislayed
-            stepCountBox.style.display = "none";
-            autoModeRadioBtns.style.display = "none";
-            progressBlock.style.gridTemplateColumns = "1fr";
+            // Progress while not searching
+            // In manual mode show last progress of searching when
+            // returned to manual mode
+            if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
+                this.displayLastSearchProgress();
+            } else {
+                // In case of no active automatic search 
+                // the step count field is not dislayed
+                stepCountBox.style.display = "none";
+                autoModeRadioBtns.style.display = "none";
+                progressBlock.style.gridTemplateColumns = "1fr";
+                // Set initial progress
+                this.setNumberOfSolutions(0);
+            }
         }
         this.displayProgressBar();
     }
@@ -3297,7 +3329,11 @@ class SudokuSolverController {
                 this.mySolver.atCurrentSelectionSetNumber(nr);
                 this.myUndoActionStack.push(action);
                 if (this.mySolver.succeeds()) {
-                    sudoApp.mySolver.myGrid.numberOfSolutions = 1;
+                    sudoApp.mySolver.myGrid.lastSearch = {
+                        steps: 0,
+                        error_rl: 0,
+                        numberOfSolutions: 1
+                    }
                     sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
                         this, () => { }
                     );
@@ -3414,7 +3450,7 @@ class SudokuSolverController {
                 this.myUndoActionStack.push(action);
             }
             this.mySolver.deleteSelected();
-            sudoApp.mySolver.myGrid.numberOfSolutions = 0;
+            sudoApp.mySolver.myGrid.lastSearch = undefined;
             this.mySolver.notify();
         }
     }
@@ -3510,7 +3546,7 @@ class SudokuSolverController {
             operation: 'init',
             pzRecord: puzzleRec,
             pzArray: this.mySolver.myGrid.getPuzzleArray(),
-            numberOfSolutions: this.mySolver.myGrid.numberOfSolutions
+            lastSearch: this.mySolver.myGrid.lastSearch
         }
         this.myUndoActionStack.push(action);
 
@@ -3618,7 +3654,7 @@ class SudokuSolverController {
             operation: 'reset',
             pzRecord: puzzleRec,
             pzArray: this.mySolver.myGrid.getPuzzleArray(),
-            numberOfSolutions: this.mySolver.myGrid.numberOfSolutions
+            lastSearch: this.mySolver.myGrid.lastSearch
         }
         this.myUndoActionStack.push(action);
         this.mySolver.reset();
@@ -3662,7 +3698,7 @@ class SudokuSolverController {
             case 'define': {
                 this.mySolver.setCurrentPuzzle(action.pzRecord);
                 sudoApp.mySolver.myGrid.loadPuzzleArray(action.pzArray);
-                sudoApp.mySolver.myGrid.numberOfSolutions = action.numberOfSolutions;
+                sudoApp.mySolver.myGrid.lastSearch = action.lastSearch;
                 this.mySolver.setGamePhase('play');
                 break;
             }
@@ -3670,7 +3706,7 @@ class SudokuSolverController {
                 // Delete set number
                 this.mySolver.myGrid.indexSelected = action.cellIndex;
                 this.mySolver.deleteSelected();
-                sudoApp.mySolver.myGrid.numberOfSolutions = 0;
+                sudoApp.mySolver.myGrid.lastSearch = undefined;
                 break;
             }
             case 'delete': {
@@ -3703,9 +3739,7 @@ class SudokuSolverController {
                 // Set the number again
                 this.mySolver.myGrid.indexSelected = action.cellIndex;
                 this.mySolver.atCurrentSelectionSetNumber(action.cellValue);
-                if (this.mySolver.succeeds()) {
-                    sudoApp.mySolver.myGrid.numberOfSolutions = 1;
-                }
+                sudoApp.mySolver.myGrid.lastSearch = action.lastSearch;
                 break;
             }
             case 'delete': {

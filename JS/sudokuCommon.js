@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1043;
+let VERSION = 1044;
 
 // ==========================================
 // Basic classes
@@ -528,6 +528,12 @@ class Search {
             }
             let nr = this.getNumberOfSolutions();
             sudoApp.mySolver.notifyAspect('solutionDiscovered', nr);
+            sudoApp.mySolver.myGrid.lastSearch =
+            {
+                steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
+                error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
+            }
             sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
             sudoApp.breakpointPassed('solutionDiscovered');
             // Prepare the search for further solutions in the next steps
@@ -537,6 +543,13 @@ class Search {
             sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
             sudoApp.breakpointPassed('searchCompleted');
             this.setCompleted();
+            sudoApp.mySolver.myGrid.lastSearch =
+            {
+                steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
+                error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
+            }
+
             sudoApp.mySolver.myGrid.deselect();
             sudoApp.mySolver.notifyAspect('searchIsCompleted',
                 this.getNumberOfSolutions());
@@ -560,7 +573,7 @@ class StepperOnGrid {
     constructor() {
         this.lastNumberSet = '0';
         this.indexSelected = -1;
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
         this.myBackTracker;
         this.goneSteps = 0;
         this.maxSelectionDifficulty = 'Leicht';
@@ -2436,7 +2449,7 @@ class SudokuGrid {
         // Im aktuellen Lösungsschritt wird das grid
         // im lazy mode angezeigt. Siehe Tipp-Taste.
         this.stepLazy = false;
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
     }
 
     init() {
@@ -2444,7 +2457,7 @@ class SudokuGrid {
         this.sudoBlocks = [];
         this.sudoRows = [];
         this.sudoCols = [];
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
 
         this.indexSelected = -1;
         this.candidateIndexSelected = -1;
@@ -2705,7 +2718,7 @@ class SudokuGrid {
         }
         this.deselect();
         this.evaluateMatrix();
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
     }
 
 
@@ -2880,7 +2893,7 @@ class SudokuGrid {
 
 
     loadPuzzleString(puzzleStr) {
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
         for (let i = 0; i < 81; i++) {
             if (puzzleStr[i] == '0' || puzzleStr[i] == '.') {
                 this.sudoCells[i].manualSetValue('0', '');
@@ -2891,7 +2904,7 @@ class SudokuGrid {
     }
 
     loadPuzzleArray(pa) {
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
         // Loading puzzle from puzzle array, 
         // possibly already partially solved
         for (let i = 0; i < 81; i++) {
@@ -2902,7 +2915,7 @@ class SudokuGrid {
     }
 
     loadPuzzleArrayGivens(pa) {
-        this.numberOfSolutions = 0;
+        this.lastSearch = undefined;
         // Loading puzzle from puzzle array, the definition only
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = pa[i].cellValue;
@@ -2916,8 +2929,8 @@ class SudokuGrid {
     }
 
     loadSimplePuzzleArray(pa) {
-        this.numberOfSolutions = 0;
-  
+        this.lastSearch = undefined;
+
         // Loading puzzle from simple puzzle array.
         // A simple puzzle array does not distinguish 
         // between given and solved cells
@@ -2931,8 +2944,8 @@ class SudokuGrid {
     }
 
     loadPuzzleRecord(puzzleRecordToLoad) {
-        this.numberOfSolutions = 0;
-  
+        this.lastSearch = undefined;
+
         //  Loading puzzle from puzzle record
         for (let i = 0; i < 81; i++) {
             let tmpCellValue = puzzleRecordToLoad.puzzle[i].cellValue;
