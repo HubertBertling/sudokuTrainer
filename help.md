@@ -64,7 +64,7 @@ Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen e
 Im Internet findet man auch andere Sudoku-Trainer. Bemerkenswert sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps vermitteln dem Spieler die Anwendung logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Diese Trainer-Apps wenden sich daher eher an Sudoku-Freaks.
 
 <figure >
-   <img src="./imagesHelp/ziele.png" alt="Ziele" style="max-width:95%">
+   <img src="./imagesHelp/appZiele.png" alt="Ziele" style="max-width:95%">
     <figcaption style="font-size: 16px; font-style: italic;">Ziele des Trainers</figcaption>
 </figure>
 
