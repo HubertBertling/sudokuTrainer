@@ -6,8 +6,7 @@ layout: default
    1. [Der Trainer](#der-trainer)
    2. [Puzzles generieren](#puzzles-generieren)
    3. [Puzzles speichern](#puzzles-speichern)
-   4. [Sudoku-Theorie sichtbar machen](#sudoku-theorie-sichtbar-machen)
-   5. [Architektur der App](#architektur-der-app)
+   4. [Architektur der App](#architektur-der-app)
 2. [Sudoku-Trainer Installation](#sudoku-trainer-installation)
 3. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
 4. [Einführung in den Sudoku-Trainer](#einführung-in-den-sudoku-trainer)
@@ -15,9 +14,10 @@ layout: default
    2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
    3. [Zwei Spielphasen](#zwei-spielphasen)
    4. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
-   5. [Das Menu](#das-menu)
-   6. [Der Tastenblock 'Manuelles Lösen'](#der-tastenblock-manuelles-lösen)
-   7. [Der Tastenblock 'Automatisches Lösen'](#der-tastenblock-automatisches-lösen)
+   5. [Die Taste Menu ](#die-taste-menu-)
+   6. [Die Taste Teilen ](#die-taste-teilen-)
+   7. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
+   8. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
 5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
    1. [Operationen der Datenbank](#operationen-der-datenbank)
    2. [Import/Export](#importexport)
@@ -79,10 +79,6 @@ Die App besitzt einen Puzzle-Generator. Der **Sudoku-Generator** generiert faire
 ## Puzzles speichern
 
 Der Trainer kann der Spielstand von Sudoku-Puzzles speichern. Die Datenbank wird im lokalen Speicher des Browsers(!) abgelegt. D.h. installierte Web Apps sind einem Browser fest zugeordnet.
-
-## Sudoku-Theorie sichtbar machen
-
-Anders als viele andere Sudoku-Solver will dieser Trainer nicht nur Puzzles lösen sondern er will auch Eigenschaften und Phänomene des klassischen Sudokus sichtbar machen. Deshalb ist der automatische Suchlauf dies Trainers auch auf unlösbare und mehrdeutige Puzzles anwendbar. Für mehdeutige Puizzles zählt der Trainer die Lösungen auf. Für unlösbare Puzzles berechnet er, indem er sie zu lösen versucht, elementare Widersprüche. Beispielsweise eine nicht gesetzte Zelle, die überhaupt keine Kandidaten hat.
 
 ## Architektur der App
 
@@ -220,7 +216,8 @@ Beim Eingeben wie auch beim Lösen besteht ein **Lösungsschritt** aus zwei Subs
 
 Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle selektiert werden und dann die rote Lösch-Taste gedrückt werden.
 
-## Das Menu
+## Die Taste Menu <img src="./imagesHelp/menu.png" alt="Menü" style="width:4rem" >
+
 
 <figure>
    <img src="./imagesHelp/initialsieren.png" alt="Navigation" style="max-width:80%">
@@ -240,7 +237,11 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
 {: style="text-align:center"}
 ![Haltepunkte](./imagesHelp/breakpointSettings.png){:width="100%"}
 
-## Der Tastenblock 'Manuelles Lösen'
+## Die Taste Teilen <img src="./imagesHelp/teilen.png" alt="Teilen" style="width:4rem" >
+
+Die Sudoku-Trainer-App ist eine Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.
+
+## Der Tastenblock 'Manuell Lösen'
 
 <figure>
    <img src="./imagesHelp/tastenauswahlManual.png" alt="Tastenblock manuell" style="max-width:100%">
@@ -287,7 +288,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 **Taste: Automatisch.**
 Die Taste "Automatisch" startet den automatischen Solver der App.
 
-## Der Tastenblock 'Automatisches Lösen'
+## Der Tastenblock 'Automatisch Lösen'
 
 <figure >
    <img src="./imagesHelp/tastenBlockAutomatic.png" alt="Tastenblock Automatisch" style="width:100%">
@@ -345,7 +346,6 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 | Download Puzzle-DB                                         | **Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                                                                                                         |
 | Download Puzzle                                            | **Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<< in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                                                                                           |
 | Import Puzzle(s)                                           | **Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.                                                                                                                                                                                                                             |
-| ![ShareTaste](./imagesHelp/shareButton.png){:width="50px"} | **Puzzle teilen.** Die Sudoku-Trainer-App ist Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich. |
 
 ## Import/Export
 
@@ -639,9 +639,10 @@ Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende So
 
 Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
 
-![No selectable candidates](./imagesHelp/nochoice.png)
-![No candidates at all](./imagesHelp/nochoice2.png)
-![NumberConflict](./imagesHelp/conflct.png)
+![No selectable candidates](./imagesHelp/nochoice.png){:width="50px"; height="50px"}
+![No candidates at all](./imagesHelp/nochoice2.png){:width="50px"; height="50px"}
+![NumberConflict](./imagesHelp/conflct.png){:width="50px"; height="50px"}
+![NumberConflictGiven](./imagesHelp/conflictBlau.png){:width="50px"; height="50px"}
 
 **Widerspruchsvolle Gruppen**
 
@@ -673,7 +674,15 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
 
 ### Puzzles mit genau einer Lösung
 
+Für ein Puzzle mit genau einer Lösung gibt es genau eine fehlerfreie Belegung aller offenen Zellen. Deshalb kann der Trainer bei einer manuellen Lösung des Puzzles prüfen, ob alle bisher belegten Zellen korrekt belegt sind. Der Spieler bzw. die Spielerin kann die Prüfung mit der Prüfen-Taste im manuellen Tastenblock anstoßen.
+
+Hegt der Spieler bzw. die Spielerin Zeifel, dass das gegebene Puzzle tatsächlich nur eine Lösung hat, kann er beispielsweie mit der Taste "Suchlauf mit Haltepunkten" nach der Lieferung der ersten Lösung die Suche fortsetzen. Der Suchlauf sollte dann mit der Meldung "Keine weitere Lösung! Suche abgeschlossen" enden.
+
+Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logischer Eliminationskriterien. 
+
 ### Puzzles mit mehreren Lösungen
+
+Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie für logisches Schließen nicht geeignet sind. Der vorliegende Trainer liefert die Lösungen per Backtracking. Er zeigt die Backtracking-Schritte an. Reizvoll zu beobachten ist dabei, wie nah verschiedene Lösungen beieinander liegen können.
 
 ## Lösungsarchitektur dieses Sudoku-Trainers
 
