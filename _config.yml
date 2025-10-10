@@ -3,12 +3,13 @@
 title: Sudoku-Trainer
 email: h.bertling@web.de
 description: > # this means to ignore newlines until "baseurl:"
-    Diese App ist ein Sudoku-Trainer. Dieser Sudoku-Trainer macht Spaß, weil er Dich weder mit einem ungelösten Puzzle im Stich lässt, 
-    noch liefert er die fertige Lösung einfach so, ohne Erklärung. Er zeigt Dir, wie Du Schritt für Schritt zur Lösung Deines Puzzles gelangst.
-    Spielerisch lernst Du dabei das klassische 9x9 Sudoku kennen: die Anwendung logischer Lösungstechniken, das Backtracking, die Bedeutung von Schwierigkeitsgraden, 
-    die drei Kategorien von Puzzles: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
+    Diese App ist ein Sudoku-Trainer, der Spaß macht, weil er Dich nicht mit einem ungelösten Puzzle im Stich lässt, und weil er die fertige Lösung 
+    nicht einfach so liefert, ohne Erklärung. Er zeigt Dir, wie Du Schritt für Schritt zur Lösung Deines Puzzles gelangst.
+    Spielerisch lernst Du dabei die Elemente des klassischen 9x9 Sudoku kennen: die Anwendung logischer Lösungstechniken, 
+    das Backtracking, die Bedeutung von Schwierigkeitsgraden, die Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar". 
+    In der Hilfe der App findest Du weitere Informationen zu 9x9-Sudokus und zur Bedienung der App. 
 
-    Viel Freude damit.
+    Viel Vergnügen.
 
 # Build settings
 theme: jekyll-theme-cayman
