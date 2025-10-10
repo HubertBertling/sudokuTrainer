@@ -3,21 +3,12 @@
 title: Sudoku-Trainer
 email: h.bertling@web.de
 description: > # this means to ignore newlines until "baseurl:"
-    Spontan versuchst Du ein Sudoku-Puzzle Deiner Zeitung zu lösen. Aber Du bleibst stecken und findest die Lösung nicht. Frust! 
-    Am nächsten Tag liefert die Zeitung die Lösung, die Du nicht finden konntest. Noch einmal Frust. Denn für Dich bleibt es ein Rätsel, 
-    wie Du die gelieferte Lösung hättest finden können. 
+    Diese App ist ein Sudoku-Trainer. Dieser Sudoku-Trainer macht Spaß, weil er Dich weder mit einem ungelösten Puzzle im Stich lässt, 
+    noch liefert er die fertige Lösung einfach so, ohne Erklärung. Er zeigt Dir, wie Du Schritt für Schritt zur Lösung Deines Puzzles gelangst.
+    Spielerisch lernst Du dabei das klassische 9x9 Sudoku kennen: die Anwendung logischer Lösungstechniken, das Backtracking, die Bedeutung von Schwierigkeitsgraden, 
+    die drei Kategorien von Puzzles: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
 
-    Diese App ist ein Sudoku-Trainer. Mit ihr kannst Du Schritt für Schritt Dein Puzzle lösen. Wenn Du das Puzzle manuell löst, kannst Du 
-    Dir einen Tipp geben lassen. Auch kannst Du Deine bisherige Teillösung prüfen lassen. Du kannst den Trainer die Lösung auch automatisch
-    finden lassen. Dabei wird Dir jeder einzelne Schritt der Lösung angezeigt. So kannst Du nachvollziehen, wie die Lösung zustande kommt.
-
-    Neben der Lösung von konkreten Puzzles lernst Du spielerisch sehr viel über die Phänomene des klassischen 9x9 Sudokus an sich:
-    Die Anwendung logischer Lösungstechniken und Backtracking-Methoden, die Bedeutung von Schwierigkeitsgraden wie "Leicht", "Mittel", 
-    "Schwer" und "Sehr schwer" und die drei Kategorien von Puzzles: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
-
-    Dieser Sudoku-Trainer macht Spaß einerseits, weil er jedes Puzzle löst, weil er Dich nicht mit einem ungelösten Puzzle im Stich lässt, und 
-    andererseits, weil er Dir spielerisch einen Überblick über die Welt des klassischen 9x9 Sudokus vermittelt.
-    Viel Freude damit. 
+    Viel Freude damit.
 
 # Build settings
 theme: jekyll-theme-cayman

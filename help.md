@@ -283,7 +283,8 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 
 **Taste: Prüfen.** Die gesetzten Lösungsnummern werden geprüft. Wenn sie falsch gesetzt sind, werden sie als fehlerhaft gekennzeichnet. Diese Funktion ist dann nützlich, wenn man das Puzzle manuell lösen will und man vermutet, dass man bereits einen Fehler gemacht hat.
 
-**Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. Siehe [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung), Anwendungsfall "Tipp".
+**Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. 
+Siehe [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
 
 **Taste: Puzzle speichern.** Der Spielstand des aktuellen Puzzles wird in der Datenbank gespeichert. Gegebenenfalls wird das Puzzle in der DB neu angelegt und erhält dabei einen generierten Namen: 'PZ (>>Datum<<)'. Falls es schon in der Datenbank ist, wird es mit dem aktuellen Spielstand überschrieben. Der Name des Puzzles kann jederzeit umbenannt werden.
 
@@ -447,7 +448,7 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 
 | Englisch             | Trainer                                                | Erklärung                                                                                                            |
 | -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Naked Single         | Single (auch: Einziger Kandidat)                       | Nur 1 Kandidat in der Zelle                                                                                          |
+| Naked Single         | Single (auch: Einziger Kandidat)                       | Nur ein Kandidat in der Zelle                                                                                          |
 | Hidden Single        | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
 |                      | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
 |                      | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
@@ -455,7 +456,7 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Hidden Pair/Triple   | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
 | Pointing Pair/Triple | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
 | Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
-| Trial and Error      |                                                        | Backtracking                                                                                                         |
+| Trial and Error      | Backtracking                                                       | Puzzlelösung durch systematisches Ausprobieren                                                                                                         |
 
 ## Definitionen dieser App
 
@@ -869,7 +870,7 @@ Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schw
 **3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
 
 Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe
-[Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung).
+[Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
 
 **4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
 
