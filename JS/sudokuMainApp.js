@@ -4125,6 +4125,7 @@ class SudokuSolverController {
                 sudoApp.mySolver.notifyAspect('searchIsCompleted',
                     sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
+                sudoApp.mySolver.myGrid.lastSearch = undefined;
                 action = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
 
@@ -4150,6 +4151,8 @@ class SudokuSolverController {
                 // Repeat the execution of the step 'performSearchStep()'
                 // until the next active BreakPoint is reached.
                 sudoApp.myClockedRunner.setBreakpoints(sudoApp.getMySettings().breakpoints);
+    
+                sudoApp.mySolver.myGrid.lastSearch = undefined;
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
                     () => {
                         sudoApp.mySolver.performSearchStep();

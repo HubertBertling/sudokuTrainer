@@ -14,8 +14,8 @@ layout: default
    2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
    3. [Zwei Spielphasen](#zwei-spielphasen)
    4. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
-   5. [Die Taste Menu ](#die-taste-menu-)
-   6. [Die Taste Teilen ](#die-taste-teilen-)
+   5. [Die Taste Menu](#die-taste-menu)
+   6. [Die Taste Teilen](#die-taste-teilen)
    7. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
    8. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
 5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
@@ -25,33 +25,32 @@ layout: default
       2. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
       3. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
 6. [Sudoku-Theorie](#sudoku-theorie)
-   1. [Standardbegriffe und Lösetechniken](#standardbegriffe-und-lösetechniken)
-      1. [Standard-Grundbegriffe](#standard-grundbegriffe)
-      2. [Standard Sudoku-Lösetechniken](#standard-sudoku-lösetechniken)
-   2. [Definitionen dieser App](#definitionen-dieser-app)
-   3. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
+   1. [Standardbegriffe](#standardbegriffe)
+   2. [Standard Sudoku-Lösetechniken](#standard-sudoku-lösetechniken)
+   3. [Definitionen dieser App](#definitionen-dieser-app)
+   4. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
       1. [Eliminationskriterium "Nacktes Paar"](#eliminationskriterium-nacktes-paar)
       2. [Eliminationskriterium: "Verstecktes Paar"](#eliminationskriterium-verstecktes-paar)
       3. [Eliminationskriterium: "Überschneidung"](#eliminationskriterium-überschneidung)
       4. [Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"](#eliminationskriterium-zeiger-paar-zeiger-triple)
-   4. [Puzzle lösen durch Scannen, Eliminieren und Trial and Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial-and-error)
-   5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
-   6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
-   7. [Sudoku-Puzzles](#sudoku-puzzles)
+   5. [Puzzle lösen durch Scannen, Eliminieren und Trial and Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial-and-error)
+   6. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
+   7. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
+   8. [Sudoku-Puzzles](#sudoku-puzzles)
       1. [Unlösbare Puzzles](#unlösbare-puzzles)
       2. [Elementare Widersprüche in Zellen und Gruppen](#elementare-widersprüche-in-zellen-und-gruppen)
       3. [Puzzles mit genau einer Lösung](#puzzles-mit-genau-einer-lösung)
       4. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
-   8. [Lösungsarchitektur dieses Sudoku-Trainers](#lösungsarchitektur-dieses-sudoku-trainers)
-   9. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
+   9. [Lösungsarchitektur dieses Sudoku-Trainers](#lösungsarchitektur-dieses-sudoku-trainers)
+   10. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
 7. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
-   1. [Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung)
-   2. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
+   1. [Puzzle manuell lösen: Anwendungsfall "Prüfen"](#puzzle-manuell-lösen-anwendungsfall-prüfen)
+   2. [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp)
+   3. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
 8. [Mit Hilfe des Sudoku-Trainers gewonnene Erfahrungen und Einsichten](#mit-hilfe-des-sudoku-trainers-gewonnene-erfahrungen-und-einsichten)
    1. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#übersicht-über-die-bedeutung-der-schwierigkeitsgrade)
    2. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
-   3. [Faire Puzzles](#faire-puzzles)
-   4. [Einsichten und Tatsachen über Sudokus](#einsichten-und-tatsachen-über-sudokus)
+   3. [Tatsachen und Einsichten über klassische 9x9-Sudokus](#tatsachen-und-einsichten-über-klassische-9x9-sudokus)
 9. [Schlussbemerkungen](#schlussbemerkungen)
 10. [Beispiel-Puzzles](#beispiel-puzzles)
 
@@ -188,7 +187,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 | ![Necessary](./imagesHelp/neccessary.png){:width="100px}                                                                                    | **Notwendiger Kandidat:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidatnummern sind die Nummern 2, 5, 6 und 7. Jedoch hat der Solver ermittelt, dass der Kandidat 5 notwendig ist, damit das Sudoku lösbar bleibt. 5 ist eine notwendige Nummer für diese Zelle. Ein Kandidat in einer Zelle ist notwendig, wenn die Kandidatnummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur noch hier gesetzt werden. Hinweis: Im Wikipedia-Artikel [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku) werden notwendige Kandidaten als "Hidden Singles" bezeichnet. Wir wollen diese Bezeichnung hier nicht übernehmen, weil wir diese Bezeichnung schon anderweitig benutzen: siehe nachfolgende Definition 'Hidden Single'. |
 | ![Inadmissible candidates](./imagesHelp/indirect.png){:width="100px}                                                                        | **Eliminierbarer Kandidat:** Für die nebenstehende Zelle wurde noch keine Nummer gesetzt. Kandidaten dieser Zelle sind die drei Nummern 1, 3 und 6. Jedoch hat der Solver ermittelt, dass die Kandidatnummer 3 unzulässig ist. Wenn man sie setzen würde, würde der Solver sofort oder einige Schritte später die Widersprüchlichkeit des Puzzles feststellen.                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ![Single](./imagesHelp/nakedSingle.png){:width="100px"}                                                                                     | **Einziger Kandidat (Single):** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ![Hidden single](./imagesHelp/indirekterSingle.png){:width="100px"}                                                                         | **Versteckt einziger Kandidat (Hidden Single):** im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, eliminierbare Kandidaten sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ![Hidden single](./imagesHelp/indirekterSingle.png){:width="100px"}                                                                         | **Versteckt einziger Kandidat (Hidden Single):** im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, eliminierbare Kandidaten sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ![No selectable candidates](./imagesHelp/nochoice.png){: width="100px"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="100px"} | **Widerspruch - Kein Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.                                                                                                                                                                                                            |
 | ![NumberConflict](./imagesHelp/conflct.png){:width="100px"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
@@ -216,8 +215,9 @@ Beim Eingeben wie auch beim Lösen besteht ein **Lösungsschritt** aus zwei Subs
 
 Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle selektiert werden und dann die rote Lösch-Taste gedrückt werden.
 
-## Die Taste Menu <img src="./imagesHelp/menu.png" alt="Menü" style="width:4rem" >
+## Die Taste Menu
 
+<img src="./imagesHelp/menu.png" alt="Menü" style="width:4rem">
 
 <figure>
    <img src="./imagesHelp/initialsieren.png" alt="Navigation" style="max-width:80%">
@@ -237,7 +237,9 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
 {: style="text-align:center"}
 ![Haltepunkte](./imagesHelp/breakpointSettings.png){:width="100%"}
 
-## Die Taste Teilen <img src="./imagesHelp/teilen.png" alt="Teilen" style="width:4rem" >
+## Die Taste Teilen
+
+<img src="./imagesHelp/teilen.png" alt="Teilen" style="width:4rem" >
 
 Die Sudoku-Trainer-App ist eine Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.
 
@@ -335,17 +337,17 @@ Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das ak
 
 ## Operationen der Datenbank
 
-| Taste                                                      | Bedeutung                                                                                                                                                                                                                                                                                                                                                 |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Spaltenkopf                                                | **Sortieren.** Die Puzzles der Datenbank können sortiert werden nach jeder Spalte. Dazu einfach den Spaltenkopf klicken. Wiederholtes Klicken wechselt zwischen der aufsteigenden und der absteigenden Sortierung.                                                                                                                                        |
-| Pfeiltasten                                                | **Navigieren.** Mit den Pfeiltasten kann in der Tabelle vorwärts und rückwärts navigiert werden. Durch Klicken auf eine Reihe der Tabelle kann ein Puzzle direkt selektiert werden.                                                                                                                                                                       |
-| Laden                                                      | **Puzzle laden.** Durch Drücken der Lade-Taste wird das selektierte Puzzle in den Sudoku-Solver geladen.                                                                                                                                                                                                                                                  |
-| Puzzle löschen                                             | **Puzzle löschen.** Gespeicherte Puzzles können auch wieder gelöscht werden.                                                                                                                                                                                                                                                                              |
-| DB löschen                                                 | **DB löschen.** Die ganze DB kann gelöscht werden. Nützlich, wenn man die DB von einem anderen Gerät übernehmen will und die Übernahme nicht mit der aktuellen DB mischen will.                                                                                                                                                                           |
-| Drucken                                                    | **Puzzle drucken.** Mittels der Taste Drucken kann das aktuell selektierte Puzzle gedruckt werden. Dabei wird nur die Aufgabe, nicht aber die Lösung ausgedruckt. Dies ist besonders dann nützlich wenn man ein generiertes Puzzle von Hand auf dem Papier lösen möchte.                                                                                  |
-| Download Puzzle-DB                                         | **Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                                                                                                         |
-| Download Puzzle                                            | **Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<< in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                                                                                           |
-| Import Puzzle(s)                                           | **Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.                                                                                                                                                                                                                             |
+| Taste              | Bedeutung                                                                                                                                                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Spaltenkopf        | **Sortieren.** Die Puzzles der Datenbank können sortiert werden nach jeder Spalte. Dazu einfach den Spaltenkopf klicken. Wiederholtes Klicken wechselt zwischen der aufsteigenden und der absteigenden Sortierung.                                                       |
+| Pfeiltasten        | **Navigieren.** Mit den Pfeiltasten kann in der Tabelle vorwärts und rückwärts navigiert werden. Durch Klicken auf eine Reihe der Tabelle kann ein Puzzle direkt selektiert werden.                                                                                      |
+| Laden              | **Puzzle laden.** Durch Drücken der Lade-Taste wird das selektierte Puzzle in den Sudoku-Solver geladen.                                                                                                                                                                 |
+| Puzzle löschen     | **Puzzle löschen.** Gespeicherte Puzzles können auch wieder gelöscht werden.                                                                                                                                                                                             |
+| DB löschen         | **DB löschen.** Die ganze DB kann gelöscht werden. Nützlich, wenn man die DB von einem anderen Gerät übernehmen will und die Übernahme nicht mit der aktuellen DB mischen will.                                                                                          |
+| Drucken            | **Puzzle drucken.** Mittels der Taste Drucken kann das aktuell selektierte Puzzle gedruckt werden. Dabei wird nur die Aufgabe, nicht aber die Lösung ausgedruckt. Dies ist besonders dann nützlich wenn man ein generiertes Puzzle von Hand auf dem Papier lösen möchte. |
+| Download Puzzle-DB | **Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                        |
+| Download Puzzle    | **Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<< in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                          |
+| Import Puzzle(s)   | **Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.                                                                                                                                            |
 
 ## Import/Export
 
@@ -423,11 +425,9 @@ Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell gelade
 
 # Sudoku-Theorie
 
-## Standardbegriffe und Lösetechniken
-
 Es gibt eine Reihe von weitgehend akzeptierten Standardbegriffen im Bereich Sudoku – insbesondere unter Rätsellösern, Softwareentwicklern, Turnierspielern und Autoren von Sudoku-Literatur. Diese Begriffe stammen vor allem aus der englischsprachigen Community, werden aber auch im deutschsprachigen Raum verwendet, oft in eingedeutschter oder direkt übersetzter Form.
 
-### Standard-Grundbegriffe
+## Standardbegriffe
 
 Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Originalbegriff, deutscher Entsprechung, Trainer-Begriff und kurzer Erklärung
 
@@ -443,19 +443,19 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Grid      | Raster / Gitter      | Grid / Matrix      | Die gesamte Sudoku-Matrix                                                                                             |
 | Given     | Vorgabe              | Given              | Eine Zahl des eingegebenen Puzzles                                                                                    |
 
-### Standard Sudoku-Lösetechniken
+## Standard Sudoku-Lösetechniken
 
-| Englisch                                    | Trainer                                                | Erklärung                                                                                                            |
-| ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Naked Single                        | Single (auch: Einziger Kandidat)                       | Nur 1 Kandidat in der Zelle                                                                                          |
-| Hidden Single                                       | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
-|                                                     | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
-|                                                     | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
-| Naked Pair/Triple                  | Nacktes Paar/Trio                                      | Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten                                                      |
-| Hidden Pair/Triple             | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
-| Pointing Pair/Triple             | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
+| Englisch             | Trainer                                                | Erklärung                                                                                                            |
+| -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Naked Single         | Single (auch: Einziger Kandidat)                       | Nur 1 Kandidat in der Zelle                                                                                          |
+| Hidden Single        | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
+|                      | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
+|                      | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
+| Naked Pair/Triple    | Nacktes Paar/Trio                                      | Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten                                                      |
+| Hidden Pair/Triple   | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
+| Pointing Pair/Triple | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
 | Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
-| Trial and Error      |                                                                                | Backtracking                                                                                                         |
+| Trial and Error      |                                                        | Backtracking                                                                                                         |
 
 ## Definitionen dieser App
 
@@ -678,7 +678,7 @@ Für ein Puzzle mit genau einer Lösung gibt es genau eine fehlerfreie Belegung 
 
 Hegt der Spieler bzw. die Spielerin Zeifel, dass das gegebene Puzzle tatsächlich nur eine Lösung hat, kann er beispielsweie mit der Taste "Suchlauf mit Haltepunkten" nach der Lieferung der ersten Lösung die Suche fortsetzen. Der Suchlauf sollte dann mit der Meldung "Keine weitere Lösung! Suche abgeschlossen" enden.
 
-Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logischer Eliminationskriterien. 
+Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logischer Eliminationskriterien.
 
 ### Puzzles mit mehreren Lösungen
 
@@ -704,13 +704,12 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 
 # Beispiele der Nutzung des Sudoku-Trainers
 
-## Beispiel manuelle Puzzle-Lösung
+## Puzzle manuell lösen: Anwendungsfall "Prüfen"
 
-Werkzeugeinstellung:
+Angenommene Werkzeugeinstellung:
 
 - **Kandidatenauswertung:** Keine Kandidatenanzeige
 
-**Anwendungsfall: Prüfen**
 Manuelles Lösen bedeutet, dass der Spieler die Lösungsnummern (grün) in den Zellen setzt. Will der Spieler sich der Herausforderung einer manuellen Lösungssuche ernsthaft stellen, verzichtet er auf jede Hilfe durch den Solver. Keine Kandidatenanzeige: denn sie würde ja die notwendigen Kandidaten anzeigen.
 
 Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr, ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind.
@@ -718,7 +717,7 @@ Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. V
 {: style="text-align:center"}
 ![Prüfen](./imagesHelp/pruefungfehler.png){: width="400px"}
 
-**Anwendungsfall: Tipp**
+## Puzzle manuell lösen: Anwendungsfall "Tipp"
 
 Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man die Taste "Tipp" nutzen. Durch das Drücken dieser Taste wird automatisch die Zelle in der Matrix selektiert, die der Solver bei der automatischen Lösung als nächste Zelle selektieren würde.
 
@@ -744,13 +743,7 @@ In dieser Nutzungsform zeigt der Sudoku-Trainer seinen vollen Funktionsumfang. S
 **Backtrack_5:**
 140006800000050002000094060004000000000008036750001900000300010090000005800000700
 
-Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer". Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste oder der Suchlauftaste. Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
-
-{: style="text-align:center"}
-![NextStep](./imagesHelp/naechsterSchritt.png){:width="200px"}
-
-{: style="text-align:center"}
-![stepSequence](./imagesHelp/schrittSequenz.png){:width="200px"}
+Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer". Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste "Nächster Suchschritt" oder der Suchlauftaste "Suchlauf mit Haltepunkten". Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
 
 <h3> ==> Schritttaste einmal gedrückt:</h3>
 
@@ -782,7 +775,7 @@ Nach der Setzung der ersten Option.
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 4.b: Notwendiger Kandidat 3 gesetzt.</figcaption>
 </figure>
 
-<h3> ==> Haltepunkt "Bei Single gesetzt". Suchlauftaste gedrückt: </h3>
+<h3> ==> Haltepunkt "Bei Single" gesetzt. Suchlauftaste gedrückt: </h3>
 
 **Schritt 13: Zelle mit Single.** Im Schritt 13.a selektiert der Solver eine Zelle mit nur einem Kandidaten, die 7, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl außer 7 gibt es eine solche Zelle.
 
@@ -791,7 +784,7 @@ Nach der Setzung der ersten Option.
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 13.a: Single</figcaption>
 </figure>
 
-<h3> ==> Haltepunkt "Bei Widerspruch" gesetzt". Suchlauftaste gedrückt: </h3>
+<h3> ==> Haltepunkt "Bei Widerspruch" gesetzt. Suchlauftaste gedrückt: </h3>
 
 **Schritt 23: Block mit Widerspruch.** Im Schritt 23.a entdeckt der Solver einen widerspruchsvollen Block. Deshalb wurde der Solver in den Rückwärts-Modus gesetzt (grüner Pfeil links).
 
@@ -861,14 +854,7 @@ table {
 | Schwer                      | **Hochleistungsbereite Spieler**, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den **Freaks** in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten. | Bei [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) gibt es eine Rubrik „**The weekly unsolvable**“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde. |
 | Alle Schwierig-keitsgrade   | **Alle Spieler und Interessierte**, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines **beobachtbaren Backtrackers**.                                                                                                                                                                                                                        | Der vorliegende Sudoku-Trainer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von **benutzersetzbaren Haltepunkten**.                                                                                     |
 
-## Faire Puzzles
-
-Extrem oder sehr schwere Sudokus eignen sich nicht für die manuelle Lösungssuche, da das notwendige Backtracking mit Papier und Bleistift durchgeführt werden müsste. Die in den Zeitungen oder Zeitschriften als 'Leicht', 'Mittel' oder 'Schwer' klassifizierten Sudoku-Puzzles sind meistens in dem hier dargestellten Sinn 'Sehr leicht', 'Leicht' oder 'Mittel'. Selten auch einmal 'Schwer'. D.h. die Zeitungs-Sudokus sind in der Regel fair. Sie können ohne Backtracking gelöst werden.
-
-Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe
-[Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung).
-
-## Einsichten und Tatsachen über Sudokus
+## Tatsachen und Einsichten über klassische 9x9-Sudokus
 
 Im Laufe der Entwicklung dieser App ergaben sich für den Autor zahlreiche neue Einsichten und Tatsachen über klassische 9x9-Sudokus. Viele davon stammen von Recherchen im Internet. Nicht wenige aber auch aus den Erfahrungen mit der vorliegenden App. Diese sollen in diesem Abschnitt vorgetragen werden.
 
@@ -876,15 +862,20 @@ Im Laufe der Entwicklung dieser App ergaben sich für den Autor zahlreiche neue 
 
 Das trifft für den vorliegenden Sudoku-Trainer zu, aber auch für den Sudoku-Coach von [Jan Feldmann](https://sudoku.coach/) und dem Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page). Das hat seine Ursache darin, dass die Definition der Schwierigkeitsgrade von den Definitionen und Implementierungen der Kandidaten-Eliminationsregeln abhängig sind. Letztere sind werkzeugabhängig definiert.
 
-**2. Beobachtung: Sudokus in Zeitschriften sind häufig 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'.**
+**2. Beobachtung: Sudokus in Zeitschriften sind in der Regel fair.**
 
-Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' benötigt man auch keine Buchführung über Zell-Kandidaten. 
+Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' benötigt man auch keine Buchführung über Zell-Kandidaten.
 
-**3. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
+**3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
+
+Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe
+[Beispiel manuelle Puzzle-Lösung](#beispiel-manuelle-puzzle-lösung).
+
+**4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
 
 2012 haben Mathematiker bewiesen, dass 17 die kleinste Anzahl von Givens ist, die noch eine eindeutige Lösung garantieren kann. [FAZ 2012](https://www.faz.net/aktuell/wissen/physik-mehr/mathematik-der-heilige-gral-der-sudokus-11682905.html).
 
-**4. Falsche Vermutung: Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle.**
+**5. Falsche Vermutung: Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle.**
 
 Wir betrachten das folgende Puzzle und kopieren die Textdarstellung des Puzzle in die Zwischenablage. D.h. wir selektieren die Textdarstellung vollständig und kopieren mit der Kopier-Operation in der Navgationsbar oder mit Strg+C. Dann öffnen wir die App und fügen die Kopie mit der Einfüge-Operation der Navigationsbar in den Sudoku-Trainer ein.
 
@@ -903,7 +894,7 @@ Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgr
 
 Das Puzzle ist gelöst. Für seine Lösung brauchten nur Notwendig-Schritte angewendet zu werden. D.h. das Puzzle hat den Schwierigkeitsgrad Leicht. Die Vermutung "Je weniger Givens ein Puzzle hat, um so schwieriger ist das Puzzle." ist also falsch.
 
-**5. Falsche Vermutung: Je mehr Givens ein Puzzle hat, um so einfacher ist das Puzzle.**
+**6. Falsche Vermutung: Je mehr Givens ein Puzzle hat, um so einfacher ist das Puzzle.**
 
 Wir kopieren die Textdarstellung des Puzzle in die Zwischenablage und in den Sudoku-Trainer ein.
 
@@ -932,11 +923,11 @@ Der Sudoku-Trainer berechnet nach dem Einfügen des Puzzles den Schwierigkeitsgr
 
 Dieses Puzzle hat genau zwei Lösungen.
 
-**6. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen.**
+**7. Einsicht: Puzzles mit mehreren Lösungen lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen.**
 
 Puzzles, die mehrere Lösungen besitzen, lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen. In dem besonders einfachen Fall des vorigen Beispiels gibt es nur zwei Lösungen, die unmittelbar ersichtlich sind. Es kann aber sehr viel mehr Lösungen eines Puzzles geben. So gibt es ca. 6,7 Trilliarden verschiedene, vollständig ausgefüllte 9×9-Standard-Sudokus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#Die_Anzahl_der_Sudokus). D.h. die Lösungen mehrdeutiger Puzzles lassen sich prinzipiell aufzählen. Pragmatisch stößt diese Aufzählung bei großen Lösungsmengen an ihre Grenzen.
 
-**7. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
+**8. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
 Betrachten wir das folgende Beispiel.
 
 <figure >
@@ -961,11 +952,11 @@ Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als be
 
 Zurück zu unserer Vermutung: "Es gibt Puzzles, die eine eindeutige Lösung haben, die aber vermutlich nicht durch logisches Schließen hergeleitet werden kann." Für unser Beispiel-Puzzle kann die vorliegende App keine logische Herleitung finden. Aber auch die Solver von Stuart und Feldmann können es nicht. Dies legt die Vermutung nahe, dass es derart schwierige Puzzles gibt, sodass sie prinzipiell nicht durch logisches Schließen gelöst werden können. Aber ein Beispiel ist kein Beweis. Deswegen können wir nur von einer Vermutung sprechen.
 
-**8. Tatsache: Es gibt nicht trivial unlösbare Sudokus.**
+**9. Tatsache: Es gibt nicht-trivial unlösbare Sudokus.**
 
- Wir haben gelernt, dass es nicht-trivial unlösbare Sudokus gibt. Siehe [Unlösbare Puzzles](#unlösbare-puzzles). Nicht-trivial unlösbare Sudukus sieht man ihre Unlösbarkeit nicht unmittelbar an. Jedoch führen sie bei ihrer Lösung zu elementaren Widersprüchen. 
+Wir haben gelernt, dass es nicht-trivial unlösbare Sudokus gibt. Siehe [Unlösbare Puzzles](#unlösbare-puzzles). Nicht-trivial unlösbare Sudukus sieht man ihre Unlösbarkeit nicht unmittelbar an. Jedoch führen sie bei ihrer Lösung zu elementaren Widersprüchen.
 
-**9. Beobachtung: Logisches Schließen und BacKtracking ineinander verschränkt kann die Lösungssuche vereinfachen.**
+**10. Beobachtung: Logisches Schließen und BacKtracking ineinander verschränkt kann die Lösungssuche vereinfachen.**
 
 Reines Backtracking aber auch die Anwendung komplexer Kandidaten-Eliminationsregeln sind ohne Computerunterstützung kaum denkbar. Mit Bleistift und Papier kann man nicht tausende von Backtrack-Schritten managen. Manuelles Kandidatenmangement und die Überprüfung der Anwendbarkeit komplexer Eliminationsregeln auf das aktuelle Kandidatenportfolio stellen ebenso eine erhebliche Herausforderung dar. Hinzu kommt, dass die Eliminationsregeln nicht überschneidungsfrei sind. Welche Regel soll zuerst angewandt werden. Ist die Reihenfolge der Regelanwendung kritisch? Brauche ich für die Regelanwendung nicht erneut einen Backtracking-Prozess?
 
@@ -973,11 +964,17 @@ Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer be
 
 # Schlussbemerkungen
 
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. 
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann.
 
-Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche Eliminationsregeln für Kandidaten anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest Du einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
+Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche Eliminationsregeln für Kandidaten anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest man einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
 
-Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Sie stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
+Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Stuart und Feldmann stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
+
+Auch der vorliegende Trainer will nicht einfach nur Solver sein. Er will auf zweifache Weise Trainer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andereseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. Auf diese Weise gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
+- Die Anwendung logischer Lösungstechniken
+- Die Anwendung von Backtracking-Methoden, 
+- die Bedeutung von Schwierigkeitsgraden und 
+- die Bedeutung der Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
 
 # Beispiel-Puzzles
 
