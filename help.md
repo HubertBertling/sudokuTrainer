@@ -94,7 +94,8 @@ Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeich
 
 # Sudoku-Trainer Installation
 
-Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist einfach und selbsterklärend.
+Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist einfach und selbsterklärend. Die installlierte App funktioniert auch offline, wenn sie einmal geladen wurde. 
+
 
 <figure >
    <img src="./imagesHelp/chromeInstall1.png" alt="Chro,e Install" style="max-width:100%">

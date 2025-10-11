@@ -2628,8 +2628,8 @@ class SudokuCellView {
                     // Nach dem ersten Click auf die Zelle ist noch 
                     // kein Kandidat in der Zelle selektiert.
                     // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
-                    if (sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected == 
-                            sudoApp.mySolver.myGrid.indexSelected) {
+                    if (sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected ==
+                        sudoApp.mySolver.myGrid.indexSelected) {
                         this.displayTasks();
                     }
                 } else {
@@ -2783,17 +2783,33 @@ class SudokuSolverView {
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
         } else {
-            if (this.mySolver.isSearching() &&
-                this.mySolver.myCurrentSearch.isCompleted()) {
-                this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
-                this.nrOfSolutionsField.style.backgroundColor =
-                    'var(--played-cell-bg-color)';
+            // nr == 0
+            if (this.mySolver.isSearching()) {
+                // current search exists                
+                if (this.mySolver.myCurrentSearch.isCompleted()) {
+                    //nr == 0 and search is completed
+                    this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
+                    this.nrOfSolutionsField.style.backgroundColor =
+                        'var(--played-cell-bg-color)';
+                } else {
+                    // nr == 0 and current search is in progress
+                    this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
+                        '&nbsp' + 0;
+                    this.nrOfSolutionsField.style.backgroundColor =
+                        'lightgray';
+                }
             } else {
-                this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
-                    '&nbsp' + nr;
-                this.nrOfSolutionsField.style.backgroundColor =
-                    'lightgray';
-
+                // nr == 0 and no current search
+                if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
+                    this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
+                    this.nrOfSolutionsField.style.backgroundColor =
+                        'var(--played-cell-bg-color)';
+                } else {
+                    this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
+                        '&nbsp' + 0;
+                    this.nrOfSolutionsField.style.backgroundColor =
+                        'lightgray';
+                }
             }
         }
     }
@@ -4151,7 +4167,7 @@ class SudokuSolverController {
                 // Repeat the execution of the step 'performSearchStep()'
                 // until the next active BreakPoint is reached.
                 sudoApp.myClockedRunner.setBreakpoints(sudoApp.getMySettings().breakpoints);
-    
+
                 sudoApp.mySolver.myGrid.lastSearch = undefined;
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
                     () => {
