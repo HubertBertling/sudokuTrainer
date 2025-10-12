@@ -609,7 +609,7 @@ Unlösbare Puzzles haben keine Lösung. Wie kann man unlösbare Puzzles erkennen
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 1: Unlösbar wegen sichtbarem Widerspruch vor dem ersten Lösungsschritt</figcaption>
 </figure>
 
-Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Der Solver zeigt aus Übersichtlichkeitsgründen nur einen Widerspruch an: Zwei Dreien in Block 8. Oft gibt es mehrere Widersprüche gleichzeitig. Im Beispiel gibt es im Block 8 noch einmal zwei Dreien.
+Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Der Solver zeigt aus Übersichtlichkeitsgründen nur einen Widerspruch an: Zwei Dreien in Spalte 7. Oft gibt es mehrere Widersprüche gleichzeitig. Im Beispiel gibt es im Block 8 noch einmal zwei Dreien.
 
 Ein weiteres Beispiel.
 Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
@@ -626,12 +626,12 @@ Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000
 
 Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann überhaupt keine 2 mehr gesetzt werden. Im Schritt 2 wird die gesetzte 1 wieder zurückgenommen. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
 
-Es gibt aber auch nicht triviale Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
+Die beiden Beispiele zeigten eher einfache Unlösbarkeiten. Es gibt aber auch nicht-triviale Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
 Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
 
 <figure >
    <img src="./imagesHelp/unloesbar24Schritte.png" alt="verborgen unloesbar" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Beispiel 3: Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
 </figure>
 
 <figure >
@@ -639,7 +639,7 @@ Puzzle = 05060030771030005636005002950900600000720400543689570000356004000100000
     <figcaption style="font-size: 16px; font-style: italic;">Nach abgeschlossener Suche: Keine Lösung</figcaption>
 </figure>
 
-Für unlösbare Puzzles berechnet er, indem er sie zu lösen versucht, elementare Widersprüche.
+Zusammengefasst: der Solver berechnet die Unlösbartkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, ist das Ausgangspuzzle unlösbar.
 
 ### Elementare Widersprüche in Zellen und Gruppen
 
