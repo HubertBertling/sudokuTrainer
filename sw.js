@@ -10,7 +10,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1060';
+var VERSION = 'version_1061';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -141,8 +141,10 @@ var URLS = [
   `${GHPATH}/imagesHelp/twoNeccessary.png`, 
   `${GHPATH}/imagesHelp/ueberschneidung.png`, 
   `${GHPATH}/imagesHelp/unloesbar_Widerspruch.png`, 
-  `${GHPATH}/imagesHelp/unloesbar24Schritte.png`, 
+  `${GHPATH}/imagesHelp/unloesbar24Schritte.png`,
+  `${GHPATH}/imagesHelp/unloesbarExample2.png`,
   `${GHPATH}/imagesHelp/unloesbarOffensichtlich.png`, 
+  `${GHPATH}/imagesHelp/unloesbarSchoen.png`,
   `${GHPATH}/imagesHelp/versteckterSingle.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeGlecheSingles.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeFehlendeNr.png`,

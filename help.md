@@ -56,7 +56,7 @@ layout: default
 
 # Herzlich willkommen zur Sudoku-Trainer-App
 
-## Der Trainer
+## Der Trainer 
 
 Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
 
@@ -606,12 +606,25 @@ Unlösbare Puzzles haben keine Lösung. Wie kann man unlösbare Puzzles erkennen
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Unlösbar wegen offfensichtlichem Widerspruch</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Beispiel 1: Unlösbar wegen sichtbarem Widerspruch vor dem ersten Lösungsschritt</figcaption>
 </figure>
+
+Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Der Solver zeigt aus Übersichtlichkeitsgründen nur einen Widerspruch an: Zwei Dreien in Block 8. Oft gibt es mehrere Widersprüche gleichzeitig. Im Beispiel gibt es im Block 8 noch einmal zwei Dreien.
+
+Ein weiteres Beispiel.
+Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
 <figure >
-   <img src="./imagesHelp/unloesbar_Widerspruch.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Widerspruch sichtbar bei Wechsel in den Suchmodus</figcaption>
+   <img src="./imagesHelp/unloesbarSchoen.png" alt="Unloesbar schoen" style="max-width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Beispiel 2: Schritt_1: Widerspruch in Block 5 
+    nach Setzen der notwendigen 1 im Schritt 1</figcaption>
 </figure>
+
+<figure >
+   <img src="./imagesHelp/unloesbarExample2.png" style="max-width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Beispiel 2: Schritt_2 Widerspruch in Block 5 im Schritt 1</figcaption>
+</figure>
+
+Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann überhaupt keine 2 mehr gesetzt werden. Im Schritt 2 wird die gesetzte 1 wieder zurückgenommen. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
 
 Es gibt aber auch nicht triviale Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
 Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
