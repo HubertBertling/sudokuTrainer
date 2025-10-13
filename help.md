@@ -10,14 +10,13 @@ layout: default
 2. [Sudoku-Trainer Installation](#sudoku-trainer-installation)
 3. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
 4. [Einführung in den Sudoku-Trainer](#einführung-in-den-sudoku-trainer)
-   1. [Darstellungsformen von Sudoku-Puzzles](#darstellungsformen-von-sudoku-puzzles)
-   2. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
-   3. [Zwei Spielphasen](#zwei-spielphasen)
-   4. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
-   5. [Die Taste Menu](#die-taste-menu)
-   6. [Die Taste Teilen](#die-taste-teilen)
-   7. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
-   8. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
+   1. [Die möglichen Inhalte einer Sudoku-Zelle](#die-möglichen-inhalte-einer-sudoku-zelle)
+   2. [Zwei Spielphasen](#zwei-spielphasen)
+   3. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
+   4. [Die Taste Menu](#die-taste-menu)
+   5. [Die Taste Teilen](#die-taste-teilen)
+   6. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
+   7. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
 5. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
    1. [Operationen der Datenbank](#operationen-der-datenbank)
    2. [Import/Export](#importexport)
@@ -56,14 +55,14 @@ layout: default
 
 # Herzlich willkommen zur Sudoku-Trainer-App
 
-## Der Trainer 
+## Der Trainer
 
 Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
 
 Im Internet findet man auch andere Sudoku-Trainer. Bemerkenswert sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps vermitteln dem Spieler die Anwendung logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Diese Trainer-Apps wenden sich daher eher an Sudoku-Freaks.
 
 <figure >
-   <img src="./imagesHelp/appZiele.png" alt="Ziele" style="max-width:100%">
+   <img src="./imagesHelp/appZiele.png" alt="Ziele" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Ziele des Trainers</figcaption>
 </figure>
 
@@ -82,7 +81,7 @@ Der Trainer kann der Spielstand von Sudoku-Puzzles speichern. Die Datenbank wird
 ## Architektur der App
 
 <figure >
-   <img src="./imagesHelp/architecture.png" alt="Architektur" style="max-width:100%">
+   <img src="./imagesHelp/architecture.png" alt="Architektur" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Architektur des Trainers</figcaption>
 </figure>
 
@@ -94,19 +93,12 @@ Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeich
 
 # Sudoku-Trainer Installation
 
-Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist einfach und selbsterklärend. Die installlierte App funktioniert auch offline, wenn sie einmal geladen wurde. 
-
+Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist einfach und selbsterklärend. Die installlierte App funktioniert auch offline, wenn sie einmal geladen wurde.
 
 <figure >
    <img src="./imagesHelp/chromeInstall1.png" alt="Chro,e Install" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Installations-Icon in der URL-Zeile</figcaption>
 </figure>
-
-| Installation                                                     | Installation                                                      |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
-| ![Installation Chrome](./imagesHelp/install.png){:width="250px"} | ![Installation Chrome](./imagesHelp/install2.png){:width="250px"} |
-
-Beim Browser Edge geht es ganz analog. Es wird empfohlen tatsächlich Chrome oder Edge als Installationsbasis zu wählen. Der Autor hat gute Erfahrung mit diesen beiden Browsern gemacht. Auch der Firefox ist möglich. Er ist aber signifikant langsamer als die beiden erstgenannten Browser. Hinsichtlich weiterer alternativer Browser liegen dem Autor keine Erfahrungen vor.
 
 # Teilen der Sudoku-Trainer-App URL
 
@@ -135,36 +127,7 @@ Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses T
 
 Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
 
-## Darstellungsformen von Sudoku-Puzzles
-
-<figure >
-   <img src="./imagesHelp/puzzlePrintDisplay.png" alt="Printdarstellung eines Puzzles" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Printdarstellung eines Puzzles</figcaption>
-</figure>
-
-Es gibt verschiedene Darstellungsformen eines Puzzles. Oben ist die Druckdarstellung eines Puzzles zu sehen. Nachfolgend sind zwei reine Textdarstellungen des Puzzles angezeigt:
-
-Textdarstellung 1:
-
-    14.|..6|8..
-    ...|.5.|..2
-    ...|.94|.6.
-    -----------
-    ..4|...|...
-    ...|..8|.36
-    75.|..1|9..
-    -----------
-    ...|3..|.1.
-    .9.|...|..5
-    8..|...|7..
-
-Textdarstellung 2
-
-    140006800000050002000094060004000000000008036750001900000300010090000005800000700
-
-Die Textdarstellungen eignen sich für den Austausch von Puzzles zwischen Spielern und zwischen Sudoku-Apps. Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Trainer geladen. Beide Textformate sind anwendbar.
-
-Die 4. Darstellung ist die Darstellung des Puzzles in der App. Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden.
+Die Darstellung des Puzzles in der App. Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden.
 
 <figure>
    <img src="./imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
@@ -284,7 +247,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 
 **Taste: Prüfen.** Die gesetzten Lösungsnummern werden geprüft. Wenn sie falsch gesetzt sind, werden sie als fehlerhaft gekennzeichnet. Diese Funktion ist dann nützlich, wenn man das Puzzle manuell lösen will und man vermutet, dass man bereits einen Fehler gemacht hat.
 
-**Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen. 
+**Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen.
 Siehe [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
 
 **Taste: Puzzle speichern.** Der Spielstand des aktuellen Puzzles wird in der Datenbank gespeichert. Gegebenenfalls wird das Puzzle in der DB neu angelegt und erhält dabei einen generierten Namen: 'PZ (>>Datum<<)'. Falls es schon in der Datenbank ist, wird es mit dem aktuellen Spielstand überschrieben. Der Name des Puzzles kann jederzeit umbenannt werden.
@@ -449,7 +412,7 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 
 | Englisch             | Trainer                                                | Erklärung                                                                                                            |
 | -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Naked Single         | Single (auch: Einziger Kandidat)                       | Nur ein Kandidat in der Zelle                                                                                          |
+| Naked Single         | Single (auch: Einziger Kandidat)                       | Nur ein Kandidat in der Zelle                                                                                        |
 | Hidden Single        | Notwendiger Kandidat                                   | Die Nummer in ihrem Block, in ihrer Reihe oder Spalte ist einzig. D.h. sie kann nur hier gesetzt werden              |
 |                      | Eliminierbarer (auch: unzulässiger) Kandidat           | Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde. |
 |                      | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
@@ -457,7 +420,7 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Hidden Pair/Triple   | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
 | Pointing Pair/Triple | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
 | Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
-| Trial and Error      | Backtracking                                                       | Puzzlelösung durch systematisches Ausprobieren                                                                                                         |
+| Trial and Error      | Backtracking                                           | Puzzlelösung durch systematisches Ausprobieren                                                                       |
 
 ## Definitionen dieser App
 
@@ -478,10 +441,10 @@ Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block
 
 <figure>
    <img src="./imagesHelp/single.png" alt="Single" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Single 9</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Single 7</figcaption>
 </figure>
 
-Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 9 ein einziger Kandidat. Die Nummern 1 - 8 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
+Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 7 ein einziger Kandidat. Die Nummern 1 - 6 und 8 und 9 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
 
 **Eliminierbare Kandidaten**
 
@@ -507,7 +470,7 @@ Grundsätzlich ist die rein logische Erkennung der Eliminierbarkeit von Kandidat
     <figcaption style="font-size: 16px; font-style: italic;">Nacktes Paar</figcaption>
 </figure>
 
-Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 6-8-Paar ein nacktes Paar. Das 6-8-Paar macht in seiner Reihe alle 6 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 6 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 6 oder die 8 links ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Reihe keine 6 oder 8 mehr vorkommen können. Die 6 und 8 sind hier eliminierbar. Diese Reihendarstellung mit den gestrichelten Kanten zeigt der Solver nur im Lazy-Auswertungsmodus, wenn man eine Zelle mit eliminierbaren Nummern selektiert hat.
+Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 6-8-Paar ein nacktes Paar. Das 6-8-Paar macht in seiner Reihe alle 6 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 6 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 6 oder die 8 links ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Reihe keine 6 oder 8 mehr vorkommen können. Die 6 und 8 sind hier eliminierbar. Die Zellendarstellung mit den doppelten Kanten zeigt der Trainer, wenn man eine Zelle mit eliminierbaren Nummern selektiert hat.
 
 ### Eliminationskriterium: "Verstecktes Paar"
 
@@ -516,7 +479,7 @@ Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder S
     <figcaption style="font-size: 16px; font-style: italic;">Verstecktes Paar</figcaption>
 </figure>
 
-In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 8, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 8 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
+In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 7, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 7 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
 
 ### Eliminationskriterium: "Überschneidung"
 
@@ -534,7 +497,7 @@ Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es N
     <figcaption style="font-size: 16px; font-style: italic;">Zeiger-Paar, Zeiger-Tripel</figcaption>
 </figure>
 
-Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den mittleren oberen Block. Alle Zellen, die die Zahl 2 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 2 in diesem Block mindestens einmal vorkommen sollte, wird eine der hervorgehobenen Zellen sicher die Zahl 2 enthalten. In den übrigen Zellen der Zeile kann daher die 2 gestrichen werden.
+Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den Block 9. Alle Zellen des Blocks, die die Zahl 5 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 5 in diesem Block mindestens einmal vorkommen sollte, wird sie in einer der Zellen mit doppeltem Rand enthalten sein. In den übrigen Zellen der ganzen Zeile kann daher die 5 gestrichen werden.
 
 ## Puzzle lösen durch Scannen, Eliminieren und Trial and Error
 
@@ -613,6 +576,7 @@ Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den
 
 Ein weiteres Beispiel.
 Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
+
 <figure >
    <img src="./imagesHelp/unloesbarSchoen.png" alt="Unloesbar schoen" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 2: Schritt_1: Widerspruch in Block 5 
@@ -713,7 +677,7 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 1. **Sehr Leicht:** Allein durch das Scannen Notwendiger Kandidaten kann die Lösung des Sudokus erreicht werden.
 1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.
 1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen.
-1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Scann-Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
+1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
 1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial & Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
 1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die mehrere Lösungen haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. Siehe Wikipedia Abschnitt "Die Anzahl der Sudokus". [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku). Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.
 
@@ -986,9 +950,10 @@ Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzz
 Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Stuart und Feldmann stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
 
 Auch der vorliegende Trainer will nicht einfach nur Solver sein. Er will auf zweifache Weise Trainer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andereseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. Auf diese Weise gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
+
 - Die Anwendung logischer Lösungstechniken
-- Die Anwendung von Backtracking-Methoden, 
-- die Bedeutung von Schwierigkeitsgraden und 
+- Die Anwendung von Backtracking-Methoden,
+- die Bedeutung von Schwierigkeitsgraden und
 - die Bedeutung der Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
 
 # Beispiel-Puzzles
