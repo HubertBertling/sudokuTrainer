@@ -747,7 +747,7 @@ Nach der Setzung der ersten Option.
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 4.a</figcaption>
 </figure>
 
-**Schritt 4: Zelle mit notwendiger Nummer.** Im vierten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 3. Sie ist notwendig, weil in dem Block in allen freien Zellen, grün gestrichelte Rahmen haben und keine 3 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 3.
+**Schritt 4: Zelle mit notwendiger Nummer.** Im vierten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 3. Sie ist notwendig, weil in dem Block in allen freien Zellen, einen grünen Hintergrund haben und keine 3 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 3.
 
 <figure>
    <img src="./imagesHelp/schritt4_2.png" alt="Schritt 4_2" style="max-width:100%">
@@ -833,7 +833,7 @@ Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schw
 Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Trainers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe
 [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
 
-**4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindesten 17 Givens.**
+**4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindestens 17 Givens.**
 
 2012 haben Mathematiker bewiesen, dass 17 die kleinste Anzahl von Givens ist, die noch eine eindeutige Lösung garantieren kann. [FAZ 2012](https://www.faz.net/aktuell/wissen/physik-mehr/mathematik-der-heilige-gral-der-sudokus-11682905.html).
 
