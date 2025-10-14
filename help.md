@@ -40,16 +40,15 @@ layout: default
       2. [Elementare Widersprüche in Zellen und Gruppen](#elementare-widersprüche-in-zellen-und-gruppen)
       3. [Puzzles mit genau einer Lösung](#puzzles-mit-genau-einer-lösung)
       4. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
+      5. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
    9. [Lösungsarchitektur dieses Sudoku-Trainers](#lösungsarchitektur-dieses-sudoku-trainers)
-   10. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
 7. [Beispiele der Nutzung des Sudoku-Trainers](#beispiele-der-nutzung-des-sudoku-trainers)
    1. [Puzzle manuell lösen: Anwendungsfall "Prüfen"](#puzzle-manuell-lösen-anwendungsfall-prüfen)
    2. [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp)
    3. [Beispiel automatische Puzzle-Lösung](#beispiel-automatische-puzzle-lösung)
 8. [Mit Hilfe des Sudoku-Trainers gewonnene Erfahrungen und Einsichten](#mit-hilfe-des-sudoku-trainers-gewonnene-erfahrungen-und-einsichten)
-   1. [Übersicht über die Bedeutung der Schwierigkeitsgrade](#übersicht-über-die-bedeutung-der-schwierigkeitsgrade)
-   2. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
-   3. [Tatsachen und Einsichten über klassische 9x9-Sudokus](#tatsachen-und-einsichten-über-klassische-9x9-sudokus)
+   1. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
+   2. [Tatsachen und Einsichten über klassische 9x9-Sudokus](#tatsachen-und-einsichten-über-klassische-9x9-sudokus)
 9. [Schlussbemerkungen](#schlussbemerkungen)
 10. [Beispiel-Puzzles](#beispiel-puzzles)
 
@@ -663,14 +662,7 @@ Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logisc
 
 Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie für logisches Schließen nicht geeignet sind. Der vorliegende Trainer liefert die Lösungen per Backtracking. Er zeigt die Backtracking-Schritte an. Reizvoll zu beobachten ist dabei, wie nah verschiedene Lösungen beieinander liegen können.
 
-## Lösungsarchitektur dieses Sudoku-Trainers
-
-<figure>
-   <img src="./imagesHelp/lösungsArchitektur.png" alt="Notwendig" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Lösungsarchitektur des Sudoku-Trainers</figcaption>
-</figure>
-
-## Schwierigkeitsgrade (Levels) von Puzzles
+### Schwierigkeitsgrade (Levels) von Puzzles
 
 Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:
 
@@ -680,6 +672,14 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
 1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial & Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
 1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die mehrere Lösungen haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. Siehe Wikipedia Abschnitt "Die Anzahl der Sudokus". [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku). Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.
+
+## Lösungsarchitektur dieses Sudoku-Trainers
+
+<figure>
+   <img src="./imagesHelp/lösungsArchitektur.png" alt="Notwendig" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Lösungsarchitektur des Sudoku-Trainers</figcaption>
+</figure>
+
 
 # Beispiele der Nutzung des Sudoku-Trainers
 
@@ -808,28 +808,11 @@ Nach der Setzung der ersten Option.
 
 # Mit Hilfe des Sudoku-Trainers gewonnene Erfahrungen und Einsichten
 
-## Übersicht über die Bedeutung der Schwierigkeitsgrade
-
-<style scoped>
-table {
-  font-size: 12px;
-}
-</style>
-
-| Level         | Lösung / Methode                | Angewandte Lösungstechnik und Kommentare                                                                                                                                                                                                                           |
-| ------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Sehr Leicht   | Eindeutig / Logik               | Allein Scannen: "Notwendige Kandidaten"                                                                                                                                                                                                                            |
-| Leicht        | Eindeutig / Logik               | Allein Scannen: "Notwendige Kandidaten"                                                                                                                                                                                                                            |
-| Mittel        | Eindeutig / Logik               | Scannen: "Notwendige Kandidaten" und mindestens einmal Scannen: "Einziger Kandidat"                                                                                                                                                                                |
-| Schwer        | Eindeutig / Logik               | Scannen: "Notwendige Kandidaten", Scannen: "Einziger Kandidat" und mindestens ein "Versteckt einziger Kandidat", gewonnen durch Elimination.                                                                                                                       |
-| Sehr schwer   | Eindeutig / Backtracking        | Es gibt Puzzles, die nicht allein mit logischen Schlussregeln gelöst werden können.                                                                                                                                                                                |
-| Extrem schwer | Mehrere Lösungen / Backtracking | Mittels Backtracking können prinzipiell alle Lösungen eines extrem schweren Puzzles angezeigt werden. Das können sehr viele sein. Dass leere Puzzle hat über eine Trilliarde Lösungen. Pragmatisch wird der Spieler eine solche Auflistung der Lösungen abbrechen. |
-
 ## Welcher Schwierigkeitsgrad für welchen Spielertyp?
 
 | Level                       | Spielertyp                                                                                                                                                                                                                                                                                                                                                   | Quelle der Puzzles                                                                                                                                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sehr leicht, Leicht, Mittel | **Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen. Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.                                                                                                                                                 | Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition. Meist werden die Schwierigkeitsgrade mit einer abweichenden Definition genutzt.                               |
+| Sehr leicht, Leicht, Mittel | **Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen. Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.                                                                                                                                                 | Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition.                               |
 | Schwer                      | **Hochleistungsbereite Spieler**, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den **Freaks** in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten. | Bei [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) gibt es eine Rubrik „**The weekly unsolvable**“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde. |
 | Alle Schwierig-keitsgrade   | **Alle Spieler und Interessierte**, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines **beobachtbaren Backtrackers**.                                                                                                                                                                                                                        | Der vorliegende Sudoku-Trainer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von **benutzersetzbaren Haltepunkten**.                                                                                     |
 
@@ -843,7 +826,7 @@ Das trifft für den vorliegenden Sudoku-Trainer zu, aber auch für den Sudoku-Co
 
 **2. Beobachtung: Sudokus in Zeitschriften sind in der Regel fair.**
 
-Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' benötigt man auch keine Buchführung über Zell-Kandidaten.
+Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' ist auch keine Buchführung über Zell-Kandidaten erforderlich.
 
 **3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
 
