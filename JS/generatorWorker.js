@@ -76,6 +76,25 @@ class NewPuzzleGenerator {
             }
         }
     }
+    changedSolvedCell2given(puzzleRecord) {
+        let unsolvablePZ = JSON.parse(JSON.stringify(puzzleRecord));
+        let randomCellOrder = Randomizer.getRandomNumbers(81, 0, 81);
+        for (let i = 0; i < 81; i++) {
+            let k = randomCellOrder[i];
+            if (unsolvablePZ.puzzle[k].cellValue == '0') {
+                let changedValue = Number.parseInt(unsolvablePZ.preRunRecord.solvedPuzzle[k].cellValue) + 1;
+                if (changedValue > 9) {
+                    changedValue = 1;
+                }
+                unsolvablePZ.puzzle[k].cellValue = changedValue.toString();
+                unsolvablePZ.puzzle[k].cellPhase = 'define';
+                let preRec = sudoApp.mySolver.computePuzzlePreRunData(unsolvablePZ.puzzle);
+                unsolvablePZ.preRunRecord.level = 'Unlösbar';
+                unsolvablePZ.preRunRecord.backTracks = '-';
+                return unsolvablePZ;
+            }
+        }
+    }
 
     async start() {
         let commandFromMain = 'proceedGeneration';
@@ -112,7 +131,19 @@ class NewPuzzleGenerator {
                 extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
                 command = await this.send2Main(extremeHeavySend3);
             }
-        } else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
+        } else if (puzzleRecord.preRunRecord.level == 'Sehr schwer') {
+            // Case very heavy puzzle generated
+            let veryHeavySend = JSON.parse(JSON.stringify(puzzleRecord));
+            command = await this.send2Main(veryHeavySend);
+            if (command !== 'stopGeneration') {
+                // A very heavy puzzle can be made into a unsolvable puzzle 
+                // by adding a changed solved cell to the givens.
+                let unsolvableSend = this.changedSolvedCell2given(veryHeavySend);
+                unsolvableSend.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                command = await this.send2Main(unsolvableSend);
+            }
+        }
+        else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
             && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
             // The normal case
             command = await this.send2Main(puzzleRecord);

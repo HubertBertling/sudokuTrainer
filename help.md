@@ -3,10 +3,11 @@ layout: default
 ---
 
 1. [Herzlich willkommen zur Sudoku-Trainer-App](#herzlich-willkommen-zur-sudoku-trainer-app)
-   1. [Der Trainer](#der-trainer)
-   2. [Puzzles generieren](#puzzles-generieren)
-   3. [Puzzles speichern](#puzzles-speichern)
-   4. [Architektur der App](#architektur-der-app)
+   1. [Die Sudoku-Grundregeln](#die-sudoku-grundregeln)
+   2. [Der Trainer](#der-trainer)
+   3. [Puzzles generieren](#puzzles-generieren)
+   4. [Puzzles speichern](#puzzles-speichern)
+   5. [Architektur der App](#architektur-der-app)
 2. [Sudoku-Trainer Installation](#sudoku-trainer-installation)
 3. [Teilen der Sudoku-Trainer-App URL](#teilen-der-sudoku-trainer-app-url)
 4. [Einführung in den Sudoku-Trainer](#einführung-in-den-sudoku-trainer)
@@ -54,9 +55,13 @@ layout: default
 
 # Herzlich willkommen zur Sudoku-Trainer-App
 
+## Die Sudoku-Grundregeln
+Die Grundregeln von Sudoku sind, dass jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke die Zahlen von 1 bis 9 jeweils genau einmal enthalten muss. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden. Das Ziel ist, die leeren Felder durch logisches Denken mit den korrekten Zahlen zu füllen, sodass alle diese Regeln erfüllt sind. 
+
+
 ## Der Trainer
 
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
 
 Im Internet findet man auch andere Sudoku-Trainer. Bemerkenswert sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps vermitteln dem Spieler die Anwendung logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Diese Trainer-Apps wenden sich daher eher an Sudoku-Freaks.
 
@@ -65,13 +70,12 @@ Im Internet findet man auch andere Sudoku-Trainer. Bemerkenswert sind die Seiten
     <figcaption style="font-size: 16px; font-style: italic;">Ziele des Trainers</figcaption>
 </figure>
 
-Die vorliegende App analysiert gegebene Puzzles auf Unlösbarkeit, indem sie die Puzzles zu lösen versucht und dabei auf elementare Widersprüche stößt, wie beispielsweise eine Zelle, für die es überhaupt keinen Kandidaten mehr gibt.
-
 Hervorzuheben sind auch die Definitionen der Schwierigeitsgrade der Puzzles. Beipsielsweise können 'Sehr leichte', Leichte' und 'Mittlere' Puzzles ohne Buchführung der Kandidaten einer Zelle gelöst werden. Es ist daher nicht verwunderlich, dass die Puzzles in Zeitungen und Zeitschriften fast immer diese leichten Schwierigkeitsgrade haben.
 
 ## Puzzles generieren
 
-Die App besitzt einen Puzzle-Generator. Der **Sudoku-Generator** generiert faire Puzzles mit den Schwierigkeitsgraden 'Sehr leicht', 'Leicht', 'Mittel' und 'Schwer'. Im Gegensatz zu 'Sehr schweren' oder 'Extrem schweren' Puzzles können faire Puzzles allein durch logisches Schließen gelöst werden. Sie benötigen kein "Backtracking", kein Raten und Probieren.
+Die App besitzt einen Puzzle-Generator. Der **Sudoku-Generator** generiert Puzzles für alle Schwierigkeitsgrade. 
+Auch unlösbare Puzzles werden generiert. So kann der Spieler miterleben, wie der Trainer die Unlösbarkeit aufdeckt. Die vorliegende App analysiert gegebene Puzzles auf Unlösbarkeit, indem sie die Puzzles zu lösen versucht und dabei auf elementare Widersprüche stößt, wie beispielsweise eine Zelle, für die es überhaupt keinen Kandidaten mehr gibt.
 
 ## Puzzles speichern
 
@@ -238,7 +242,7 @@ Die App startet im Hintergrund einen Puzzle-Generator, der solange neue Puzzles 
 
 Hinweis: der Generator kann nicht gezielt ein Puzzle für einen vorgegebenen Schwierigkeitsgrad erzeugen. Vielmehr generiert er ein neues Puzzle und bestimmt dann, welchen Schwierigkeitsgrad das erzeugte Puzzle hat.
 
-Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und ein entsprechendes Puzzle laden. Er braucht nicht auf den Stopp des Generators warten.
+Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und ein entsprechendes Puzzle laden. Er braucht nicht auf den Stopp des Generators zu warten.
 
 **Taste: Undo.** Durch das Drücken dieser Taste wird die letzte Zellenoperation zurückgenommen.
 
@@ -665,10 +669,10 @@ Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie 
 ### Schwierigkeitsgrade (Levels) von Puzzles
 
 Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:
-
+1. **Unlösbar:** Es gibt keine Belegung aller offenen Zellen des Puzzles, sodass alle Sudoku-Regeln erfüllt sind.
 1. **Sehr Leicht:** Allein durch das Scannen Notwendiger Kandidaten kann die Lösung des Sudokus erreicht werden.
 1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.
-1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen.
+1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne eine Kandidatenbuchführung auskommt.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
 1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial & Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
 1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die mehrere Lösungen haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. Siehe Wikipedia Abschnitt "Die Anzahl der Sudokus". [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku). Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.

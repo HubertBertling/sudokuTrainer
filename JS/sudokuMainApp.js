@@ -157,6 +157,7 @@ function setPuzzleShareBtnEventHandler() {
 // ==========================================
 class NewPuzzlesBar {
     constructor() {
+        this.unsolvable = document.getElementById("unsolvable");
         this.verySimple = document.getElementById("very-simple");
         this.simple = document.getElementById("simple");
         this.medium = document.getElementById("medium");
@@ -166,6 +167,7 @@ class NewPuzzlesBar {
 
     }
     init() {
+        this.unsolvable.style.width = "10%"
         this.verySimple.style.width = "10%"
         this.simple.style.width = "10%"
         this.medium.style.width = "10%"
@@ -193,7 +195,20 @@ class NewPuzzlesBar {
         }
 
         switch (level) {
-            case 'Sehr leicht': {
+              case 'Unlösbar': {
+                this.unsolvable.style.width = puzzleCountProzent + "%";
+                this.unsolvable.innerHTML = puzzleCount;
+                this.unsolvable.style.paddingRight = "6px";
+                if (puzzleCount == 0) {
+                    this.unsolvable.style.backgroundColor = 'var(--error-cell-bg-color)';
+                    this.unsolvable.style.color = 'var(--error-cell-color)';
+                } else {
+                    this.unsolvable.style.backgroundColor = 'var(--defined-cell-bg-color)';
+                    this.unsolvable.style.color = 'var(--defined-cell-color)';
+                }
+                break;
+            }
+          case 'Sehr leicht': {
                 this.verySimple.style.width = puzzleCountProzent + "%";
                 this.verySimple.innerHTML = puzzleCount;
                 this.verySimple.style.paddingRight = "6px";
@@ -279,6 +294,7 @@ class NewPuzzlesBar {
         }
     }
     upDate() {
+        this.setValue('Unlösbar', sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length);
         this.setValue('Sehr leicht', sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length);
         this.setValue('Leicht', sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length);
         this.setValue('Mittel', sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length);
