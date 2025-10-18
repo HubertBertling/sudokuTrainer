@@ -156,7 +156,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 | ![Single](./imagesHelp/nakedSingle.png){:width="48rem"}                                                                                     | **Einziger Kandidat (Single):** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ![Hidden single](./imagesHelp/indirekterSingle.png){:width="48rem"}                                                                         | **Versteckt einziger Kandidat (Hidden Single):** im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, eliminierbare Kandidaten sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ![No selectable candidates](./imagesHelp/nochoice.png){: width="48rem"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="48rem"} | **Widerspruch - Kein Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.                                                                                                                                                                                                            |
-| ![NumberConflict](./imagesHelp/conflct.png){:width="48rem"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ![NumberConflict](./imagesHelp/conflct.png){:width="48rem"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.                                                                                                     |
 
 | ![Automatische Selektion](./imagesHelp/autoSelected.png){:width="48rem"} | **Automatisch selektierte Zelle** mit notwendiger Nummer. Schwarzer Hintergrund.|
 
@@ -568,14 +568,16 @@ Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
 ### Unlösbare Puzzles
 
-Unlösbare Puzzles haben keine Lösung. Wie kann man unlösbare Puzzles erkennen? Die Anrwort lautet: an den Widersprüchen.
+Ein Puzzle ist unlösbar, wenn es keine Belegung Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Wie kann man unlösbare Puzzles erkennen? Die Antwort lautet: an den Widersprüchen.
+
+Ein (offenes) Puzzle ist widersprüchlich, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht.  Ein widersprüchliches Puzzle ist unlösbar. Ein Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 1: Unlösbar wegen sichtbarem Widerspruch vor dem ersten Lösungsschritt</figcaption>
 </figure>
 
-Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Der Solver zeigt aus Übersichtlichkeitsgründen nur einen Widerspruch an: Zwei Dreien in Spalte 7. Oft gibt es mehrere Widersprüche gleichzeitig. Im Beispiel gibt es im Block 8 noch einmal zwei Dreien.
+Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Die siebte Spalte enthält zweimal die Drei, ein Widerspruch zur Sudoku-Regel, dass eine Zahl nur einmal in der Spalte vorkommen darf. 
 
 Ein weiteres Beispiel.
 Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
@@ -591,15 +593,17 @@ Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 2: Schritt_2 Widerspruch in Block 5 im Schritt 1</figcaption>
 </figure>
 
-Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann überhaupt keine 2 mehr gesetzt werden. Im Schritt 2 wird die gesetzte 1 wieder zurückgenommen. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
+Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann keine 2 mehr gesetzt werden. D.h. der Block 5 wird ohne die Ziffer 2 bleiben. Ein Widerspruch zur Sudoku-Regel, dass in jedem Block jede Ziffer genau einmal vorkommen muss. Im Schritt 2 wird die gesetzte 1 wieder zurückgenommen. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
 
-Die beiden Beispiele zeigten eher einfache Unlösbarkeiten. Es gibt aber auch nicht-triviale Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
+Die beiden Beispiele zeigen Unlösbarkeiten, die sich unmittelbar aus Widersprüchen zu Sudoku-Regeln ergeben. Es gibt aber auch nicht-elementare Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
 Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
 
 <figure >
    <img src="./imagesHelp/unloesbar24Schritte.png" alt="verborgen unloesbar" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 3: Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
 </figure>
+
+Nach 21 Suchschritten hat das Puzzle eine Belegung, die in Block 8 zweimaal die 1 enthalten soll. Ein Widerspruch zur Sudoku-Regel, dass jede Zahl nur genau einmal im Block vorkommen darf.
 
 <figure >
    <img src="./imagesHelp/keineLoesung.png" alt="verborgen unloesbar" style="max-width:100%">
@@ -610,7 +614,7 @@ Zusammengefasst: der Solver berechnet die Unlösbartkeit von Puzzles, indem er s
 
 ### Elementare Widersprüche in Zellen und Gruppen
 
-Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku unlösbar ist. Ein Puzzle ist unlösbar, wenn es direkt widerspruchsvolle Zellen oder Gruppen enthält, oder wenn sie im Laufe der Lösungssuche indirekt hergeleitet werden. Ein Sudoku-Puzzle ist direkt widerspruchsvoll, wenn es
+Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku unlösbar ist. Ein Puzzle ist nachgewiesen unlösbar, wenn es widerspruchsvolle Zellen oder Gruppen enthält, oder wenn im Laufe der Lösungssuche widerspruchsvolle Zellen oder Gruppen entstehen. Ein Sudoku-Puzzle ist widerspruchsvoll, wenn es
 
 1. eine widerspruchsvolle Zelle besitzt, oder
 1. eine widerspruchsvollen Gruppe.
@@ -619,7 +623,7 @@ Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende So
 
 **Widerspruchsvolle Zellen**
 
-Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten und Zellen, die mit einer direkt unzulässigen Nummer belegt sind.
+Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten und Zellen, die mit einer direkt unzulässigen Nummer, also einer Nummer, die es bereits an anderer Stelle in der Zeile, Spalte oder Block der Zelle einmal gibt.
 
 ![No selectable candidates](./imagesHelp/nochoice.png){:width="50px"; height="50px"}
 ![No candidates at all](./imagesHelp/nochoice2.png){:width="50px"; height="50px"}
@@ -640,7 +644,7 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
        <figcaption style="font-size: 16px; font-style: italic; text-align:center">Widerspruch - Zwei gleiche Singles</figcaption>
    </figure>
 
-   Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch.
+   Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch zur bereits mehrfach erwähnten Sudoku-Regel.
 
 2. **Widerspruch - Fehlende Nummer:**
 
@@ -652,13 +656,13 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
        <figcaption style="font-size: 16px; font-style: italic; text-align:center">Widerspruch - Fehlende Nummer</figcaption>
    </figure>
 
-   In der Gruppe kommt eine Nummer überhaupt nicht vor. Hier die 3. Wir sehen, dass gleichzeitig mehrere Bedingungen für einen Gruppenwiderspruch vorliegen können. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.
+   In der Gruppe kommt eine Nummer überhaupt nicht vor. Hier die 3. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.
 
 ### Puzzles mit genau einer Lösung
 
 Für ein Puzzle mit genau einer Lösung gibt es genau eine fehlerfreie Belegung aller offenen Zellen. Deshalb kann der Trainer bei einer manuellen Lösung des Puzzles prüfen, ob alle bisher belegten Zellen korrekt belegt sind. Der Spieler bzw. die Spielerin kann die Prüfung mit der Prüfen-Taste im manuellen Tastenblock anstoßen.
 
-Hegt der Spieler bzw. die Spielerin Zeifel, dass das gegebene Puzzle tatsächlich nur eine Lösung hat, kann er beispielsweie mit der Taste "Suchlauf mit Haltepunkten" nach der Lieferung der ersten Lösung die Suche fortsetzen. Der Suchlauf sollte dann mit der Meldung "Keine weitere Lösung! Suche abgeschlossen" enden.
+Hegt der Spieler bzw. die Spielerin Zweifel, dass das gegebene Puzzle tatsächlich nur eine Lösung hat, kann er beispielsweise mit der Taste "Suchlauf mit Haltepunkten" nach der Lieferung der ersten Lösung die Suche fortsetzen. Der Suchlauf sollte dann mit der Meldung "Keine weitere Lösung! Suche abgeschlossen" enden.
 
 Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logischer Eliminationskriterien.
 
@@ -922,9 +926,9 @@ Zurück zu unserer Vermutung: "Es gibt Puzzles, die eine eindeutige Lösung habe
 
 Diese Einsicht unterstreicht noch einmal, dass es Stuart und Feldmann nicht darum geht, überhaupt eine Lösung für ein gegebenes Puzzle zu finden, sondern darum, ein eindeutiges Puzzle ohne Backtracking logisch zu lösen.
 
-**10. Tatsache: Es gibt nicht-trivial unlösbare Sudokus.**
+**10. Tatsache: Es gibt nicht-elementar unlösbare Sudokus.**
 
-Wir haben gelernt, dass es nicht-trivial unlösbare Sudokus gibt. Siehe [Unlösbare Puzzles](#unlösbare-puzzles). Nicht-trivial unlösbare Sudukus sieht man ihre Unlösbarkeit nicht unmittelbar an. Jedoch führen sie bei ihrer Lösung zu elementaren Widersprüchen, die das Puzzle evident unlösbar machen.
+Wir haben gelernt, dass es nicht-elementar unlösbare Sudokus gibt. Siehe [Unlösbare Puzzles](#unlösbare-puzzles). Nicht-elementar unlösbare Sudukus sieht man ihre Unlösbarkeit nicht unmittelbar an. Jedoch führen sie bei ihrer Lösung zu elementaren Widersprüchen, die das Puzzle evident unlösbar machen.
 
 **11. Beobachtung: Logisches Schließen und Backtracking ineinander verschränkt können die Lösungssuche vereinfachen.**
 
