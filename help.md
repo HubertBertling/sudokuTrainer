@@ -59,12 +59,7 @@ layout: default
 
 ![Given](./imagesHelp/appview0_2.png){:width="200rem"} ![Solved](./imagesHelp/appview0_1.png){:width="200rem"}
 
-Die Grundregeln des klaschissen 9x9-Sudoku:
-
-1. Jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke muss die Zahlen von 1 bis 9 jeweils genau einmal enthalten.
-2. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden.
-
-Das Ziel ist, alle leeren Felder durch logisches Denken mit korrekten Zahlen zu füllen, sodass diese Regeln erfüllt sind.
+Die Grundregeln des klassischen 9x9-Sudoku: Jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke muss die Zahlen von 1 bis 9 jeweils genau einmal enthalten. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden. Ziel des Spiels ist es, alle leeren Felder durch logisches Denken mit korrekten Zahlen so zu füllen, dass diese Regeln erfüllt sind.
 
 ## Ziele und Abgrenzung dieses Trainers
 
