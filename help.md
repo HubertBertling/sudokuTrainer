@@ -4,7 +4,7 @@ layout: default
 
 1. [Herzlich willkommen zur Sudoku-Trainer-App](#herzlich-willkommen-zur-sudoku-trainer-app)
    1. [Die Sudoku-Grundregeln](#die-sudoku-grundregeln)
-   2. [Der Trainer](#der-trainer)
+   2. [Ziele und Abgrenzung dieses Trainers](#ziele-und-abgrenzung-dieses-trainers)
    3. [Puzzles generieren](#puzzles-generieren)
    4. [Puzzles speichern](#puzzles-speichern)
    5. [Architektur der App](#architektur-der-app)
@@ -33,7 +33,7 @@ layout: default
       2. [Eliminationskriterium: "Verstecktes Paar"](#eliminationskriterium-verstecktes-paar)
       3. [Eliminationskriterium: "Überschneidung"](#eliminationskriterium-überschneidung)
       4. [Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"](#eliminationskriterium-zeiger-paar-zeiger-triple)
-   5. [Puzzle lösen durch Scannen, Eliminieren und Trial and Error](#puzzle-lösen-durch-scannen-eliminieren-und-trial-and-error)
+   5. [Puzzle lösen durch Scannen, Eliminieren und Trial\&Error](#puzzle-lösen-durch-scannen-eliminieren-und-trialerror)
    6. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
    7. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
    8. [Sudoku-Puzzles](#sudoku-puzzles)
@@ -56,26 +56,33 @@ layout: default
 # Herzlich willkommen zur Sudoku-Trainer-App
 
 ## Die Sudoku-Grundregeln
-Die Grundregeln von Sudoku sind, dass jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke die Zahlen von 1 bis 9 jeweils genau einmal enthalten muss. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden. Das Ziel ist, die leeren Felder durch logisches Denken mit den korrekten Zahlen zu füllen, sodass alle diese Regeln erfüllt sind. 
 
+![Given](./imagesHelp/appview0_2.png){:width="200rem"} ![Solved](./imagesHelp/appview0_1.png){:width="200rem"}
 
-## Der Trainer
+Die Grundregeln des klaschissen 9x9-Sudoku:
 
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
+1. Jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke muss die Zahlen von 1 bis 9 jeweils genau einmal enthalten.
+2. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden.
 
-Im Internet findet man auch andere Sudoku-Trainer. Bemerkenswert sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps vermitteln dem Spieler die Anwendung logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Diese Trainer-Apps wenden sich daher eher an Sudoku-Freaks.
+Das Ziel ist, alle leeren Felder durch logisches Denken mit korrekten Zahlen zu füllen, sodass diese Regeln erfüllt sind.
+
+## Ziele und Abgrenzung dieses Trainers
 
 <figure >
    <img src="./imagesHelp/appZiele.png" alt="Ziele" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Ziele des Trainers</figcaption>
 </figure>
 
-Hervorzuheben sind auch die Definitionen der Schwierigeitsgrade der Puzzles. Beipsielsweise können 'Sehr leichte', Leichte' und 'Mittlere' Puzzles ohne Buchführung der Kandidaten einer Zelle gelöst werden. Es ist daher nicht verwunderlich, dass die Puzzles in Zeitungen und Zeitschriften fast immer diese leichten Schwierigkeitsgrade haben.
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
+
+Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudoku-Trainer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. Es gibt Puzzles, die eine eindeutige Lösung haben, aber es wurde bisher noch keine logische Herleitung der Lösung gefunden.
+
+Das Ziel des vorliegenden Trainers ist neben der Einübung der Anwendung logischer Schlussregeln auch die Vermittlung eines Überblicks über den Raum der 9x9-Sudokus. Anders als die erwähnten Sudoku-Trainer betrachtet der vorliegende Trainer auch unlösbare Puzzles und Puzzles mit mehr als einer Lösung. Technisch wendet er ineinander verschränkt beides an, logisches Schließen und Backtracking.
 
 ## Puzzles generieren
 
-Die App besitzt einen Puzzle-Generator. Der **Sudoku-Generator** generiert Puzzles für alle Schwierigkeitsgrade. 
-Auch unlösbare Puzzles werden generiert. So kann der Spieler miterleben, wie der Trainer die Unlösbarkeit aufdeckt. Die vorliegende App analysiert gegebene Puzzles auf Unlösbarkeit, indem sie die Puzzles zu lösen versucht und dabei auf elementare Widersprüche stößt, wie beispielsweise eine Zelle, für die es überhaupt keinen Kandidaten mehr gibt.
+Die App besitzt einen Puzzle-Generator. Der Sudoku-Generator generiert Puzzles für alle Schwierigkeitsgrade.
+Auch unlösbare Puzzles werden generiert. So kann der Spieler miterleben, wie der Trainer die verdeckte Unlösbarkeit eines Puzzles aufdeckt. 
 
 ## Puzzles speichern
 
@@ -126,11 +133,9 @@ Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Br
 
 # Einführung in den Sudoku-Trainer
 
-Die nachfolgend verwendeten Bezeichnungen sind im Laufe der Entwicklung dieses Trainers entstanden. Sie unterstützen primär das Verständnis dieses Trainers. Dennoch haben wir uns bemüht, Standardbegriffe zu verwenden, wie man sie im Internet findet, beispielsweise in [Wikipedia](https://en.wikipedia.org/wiki/Glossary_of_Sudoku). Großartige Seiten für Sudoku-Interessierte sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/).
-
 Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
 
-Die Darstellung des Puzzles in der App. Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden.
+Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden.
 
 <figure>
    <img src="./imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
@@ -156,7 +161,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 | ![Single](./imagesHelp/nakedSingle.png){:width="48rem"}                                                                                     | **Einziger Kandidat (Single):** Eine Single-Nummer ist der Kandidat in einer Zelle, wenn es keine weiteren Kandidaten in der Zelle gibt. Im nebenstehendem Beispiel ist 1 ein Single.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ![Hidden single](./imagesHelp/indirekterSingle.png){:width="48rem"}                                                                         | **Versteckt einziger Kandidat (Hidden Single):** im nebenstehenden Beispiel ist die 9 ein Versteckt einziger Kandidat. Die 9 ist in dieser Zelle ein Hidden Single, weil die anderen Kandidaten, die rote 5 und 6, eliminierbare Kandidaten sind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ![No selectable candidates](./imagesHelp/nochoice.png){: width="48rem"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="48rem"} | **Widerspruch - Kein Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.                                                                                                                                                                                                            |
-| ![NumberConflict](./imagesHelp/conflct.png){:width="48rem"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.                                                                                                     |
+| ![NumberConflict](./imagesHelp/conflct.png){:width="48rem"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 | ![Automatische Selektion](./imagesHelp/autoSelected.png){:width="48rem"} | **Automatisch selektierte Zelle** mit notwendiger Nummer. Schwarzer Hintergrund.|
 
@@ -244,7 +249,7 @@ Hinweis: der Generator kann nicht gezielt ein Puzzle für einen vorgegebenen Sch
 
 Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und ein entsprechendes Puzzle laden. Er braucht nicht auf den Stopp des Generators zu warten.
 
-**Taste: Undo.** Durch das Drücken dieser Taste wird die letzte Zellenoperation zurückgenommen.
+**Taste: Undo.** Durch das Drücken dieser Taste wird die letzte Operation zurückgenommen.
 
 **Taste: Redo.** Rücknahme des Undo.
 
@@ -423,7 +428,7 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Hidden Pair/Triple   | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
 | Pointing Pair/Triple | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
 | Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
-| Trial and Error      | Backtracking                                           | Puzzlelösung durch systematisches Ausprobieren                                                                       |
+| Trial&Error      | Backtracking                                           | Puzzlelösung durch systematisches Ausprobieren                                                                       |
 
 ## Definitionen dieser App
 
@@ -502,9 +507,9 @@ Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es N
 
 Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den Block 9. Alle Zellen des Blocks, die die Zahl 5 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 5 in diesem Block mindestens einmal vorkommen sollte, wird sie in einer der Zellen mit doppeltem Rand enthalten sein. In den übrigen Zellen der ganzen Zeile kann daher die 5 gestrichen werden.
 
-## Puzzle lösen durch Scannen, Eliminieren und Trial and Error
+## Puzzle lösen durch Scannen, Eliminieren und Trial&Error
 
-Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial & Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
+Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Trial&Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
 
 1. **Scanne notwendige Kandidaten:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt.
 2. **Scanne Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
@@ -513,9 +518,9 @@ Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein
    2. **Verstecktes Paar**
    3. **Überschneidung**
    4. **Zeiger-Paar, Zeiger-Tripel**
-4. **Trial and Error**
+4. **Trial&Error**
    1. **Scanne Kandidaten-Optionen:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
-   2. **Trial and Error der Optionen** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.
+   2. **Trial&Error der Optionen** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl einer anderen Nummer aus der Optionenmenge die Lösung zu finden.
    3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung. Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der **Error-Rückwärtsläufe** an. Hinweis: Error-Rückwärtsläufe erfolgen nach Auftreten eines Widerspruchs. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe**. Lösungs-Rückwärtsläufe erfolgen nach Aufdeckung einer Lösung.
 
 ## Lazy und strikte Kandidatenauswertung
@@ -570,14 +575,14 @@ Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
 Ein Puzzle ist unlösbar, wenn es keine Belegung Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Wie kann man unlösbare Puzzles erkennen? Die Antwort lautet: an den Widersprüchen.
 
-Ein (offenes) Puzzle ist widersprüchlich, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht.  Ein widersprüchliches Puzzle ist unlösbar. Ein Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+Ein (offenes) Puzzle ist widersprüchlich, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht. Ein widersprüchliches Puzzle ist unlösbar. Ein Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 1: Unlösbar wegen sichtbarem Widerspruch vor dem ersten Lösungsschritt</figcaption>
 </figure>
 
-Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Die siebte Spalte enthält zweimal die Drei, ein Widerspruch zur Sudoku-Regel, dass eine Zahl nur einmal in der Spalte vorkommen darf. 
+Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Die siebte Spalte enthält zweimal die Drei, ein Widerspruch zur Sudoku-Regel, dass eine Zahl nur einmal in der Spalte vorkommen darf.
 
 Ein weiteres Beispiel.
 Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
@@ -673,12 +678,13 @@ Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie 
 ### Schwierigkeitsgrade (Levels) von Puzzles
 
 Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definiert werden. Dieser Solver unterscheidet Schwierigkeitsgrade anhand der Komplexität der erforderlichen Lösungstechniken. Folgende Schwierigkeitsgrade werden unterschieden:
+
 1. **Unlösbar:** Es gibt keine Belegung aller offenen Zellen des Puzzles, sodass alle Sudoku-Regeln erfüllt sind.
 1. **Sehr Leicht:** Allein durch das Scannen Notwendiger Kandidaten kann die Lösung des Sudokus erreicht werden.
 1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.
 1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne eine Kandidatenbuchführung auskommt.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
-1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial & Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
+1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial&Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
 1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die mehrere Lösungen haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. Siehe Wikipedia Abschnitt "Die Anzahl der Sudokus". [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku). Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.
 
 ## Lösungsarchitektur dieses Sudoku-Trainers
@@ -687,7 +693,6 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
    <img src="./imagesHelp/lösungsArchitektur.png" alt="Notwendig" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Lösungsarchitektur des Sudoku-Trainers</figcaption>
 </figure>
-
 
 # Beispiele der Nutzung des Sudoku-Trainers
 
@@ -820,7 +825,7 @@ Nach der Setzung der ersten Option.
 
 | Level                       | Spielertyp                                                                                                                                                                                                                                                                                                                                                   | Quelle der Puzzles                                                                                                                                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sehr leicht, Leicht, Mittel | **Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen. Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.                                                                                                                                                 | Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition.                               |
+| Sehr leicht, Leicht, Mittel | **Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen. Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.                                                                                                                                                 | Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition.                                                                                                               |
 | Schwer                      | **Hochleistungsbereite Spieler**, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den **Freaks** in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten. | Bei [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) gibt es eine Rubrik „**The weekly unsolvable**“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde. |
 | Alle Schwierig-keitsgrade   | **Alle Spieler und Interessierte**, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines **beobachtbaren Backtrackers**.                                                                                                                                                                                                                        | Der vorliegende Sudoku-Trainer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von **benutzersetzbaren Haltepunkten**.                                                                                     |
 
@@ -834,7 +839,7 @@ Das trifft für den vorliegenden Sudoku-Trainer zu, aber auch für den Sudoku-Co
 
 **2. Beobachtung: Sudokus in Zeitschriften sind in der Regel fair.**
 
-Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' ist auch keine Buchführung über Zell-Kandidaten erforderlich.
+Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Trainers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' bedarf es auch keiner Buchführung über Zell-Kandidaten.
 
 **3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
 
@@ -938,24 +943,21 @@ Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer be
 
 # Schlussbemerkungen
 
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen. Dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Trainer zeigt Schritt für Schritt, wie man das Puzzle lösen kann.
-
-Dem gegenüber gibt es aber auch "Sudoku-Freaks", die sich zum Ziel setzen, Puzzles allein durch logisches Schließen zu lösen. Ihre Herausforderung besteht darin, herauszufinden, welche Eliminationsregeln für Kandidaten anwendbar sind. Für Sudoku-Interessierte sind die bereits erwähnten Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/) ein Muss. Dort findest man einen kompletten Überblick über logische Lösungsstrategien für klassisches Sudoku und auch einen Überblick über nicht klassische Sudoku-Varianten.
-
-Stuarts und Feldmanns Sudoku-Solver wollen wie der vorliegende Sudoku-Trainer nicht einfach nur Solver sein. Stuart und Feldmann stellen die Anwendung logischer Lösungsstrategien in den Mittelpunkt. Ein Lösungsschritt besteht aus der Anwendung einer logischen Schlussregel. Puzzles, die keine Lösung per logischem Schließen haben, löst Stuarts Solver (absichtlich) nicht. Echte Sudoku-Freaks verzichten auf Backtracking.
-
-Auch der vorliegende Trainer will nicht einfach nur Solver sein. Er will auf zweifache Weise Trainer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andereseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. Auf diese Weise gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
+Der vorliegende Trainer will nicht einfach nur Solver sein. Er will auf zweifache Weise Trainer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andererseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. So gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
 
 - Die Anwendung logischer Lösungstechniken
 - Die Anwendung von Backtracking-Methoden,
 - die Bedeutung von Schwierigkeitsgraden und
 - die Bedeutung der Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
 
+Dieser Trainer macht Spaß, weil man mit ihm nachvollziehbar beliebige Sudokus lösen kann. Sehr einfach kann 
+man mit allen Schwierigkeitsgraden experimentieren, weil der Trainer Sudokus für alle Schwierigkeitsgrade generieren kann. Interessante Sodokus können in der Datenbank gespeichert werden, sodass sie für spätere Vergleiche und weitere Experimente zur Verfügung stehen.
+
 # Beispiel-Puzzles
 
 **Sehr schwere Puzzles mit langen Backtracks**
 
-Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_8'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
+Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_22'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
 
 1. Dieser Trainer kann sehr schwere Puzzles generieren.
 2. Im Internet kann man zum Beispiel bei [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
