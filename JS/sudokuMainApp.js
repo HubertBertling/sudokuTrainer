@@ -3365,10 +3365,9 @@ class SudokuSolverController {
                 break;
             }
             case 'BODY': {
+                let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;   
                 this.handleNumberPressed(event.key);
-                //   let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
-                //   this.clickNrBtn(event.key);
-                //   sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
+                sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
                 sudoApp.mySolver.notify();
                 break;
             }
