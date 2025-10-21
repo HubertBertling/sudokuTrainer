@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1070;
+let VERSION = 1071;
 
 // ==========================================
 // Basic classes
@@ -3731,6 +3731,11 @@ class SudokuCell {
     }
     setCol(col) {
         this.myCol = col;
+    }
+
+
+    isSelected() {
+        return this.isSelected;
     }
 
     setSelected() {

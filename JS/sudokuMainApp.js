@@ -195,7 +195,7 @@ class NewPuzzlesBar {
         }
 
         switch (level) {
-              case 'Unlösbar': {
+            case 'Unlösbar': {
                 this.unsolvable.style.width = puzzleCountProzent + "%";
                 this.unsolvable.innerHTML = puzzleCount;
                 this.unsolvable.style.paddingRight = "6px";
@@ -208,7 +208,7 @@ class NewPuzzlesBar {
                 }
                 break;
             }
-          case 'Sehr leicht': {
+            case 'Sehr leicht': {
                 this.verySimple.style.width = puzzleCountProzent + "%";
                 this.verySimple.innerHTML = puzzleCount;
                 this.verySimple.style.paddingRight = "6px";
@@ -1676,9 +1676,32 @@ class SudokuGroupView {
         // einer Reihe oder einer Spalte an verschiedenen Stellen das gleiche Single auftritt.
         let intSingle = this.getMyGroup().withConflictingSingles();
         if (intSingle > 0) {
-
             this.displayError();
             sudoApp.mySolverView.displayReasonUnsolvability('In der Gruppe zwei gleiche Singles: ' + intSingle);
+            // If a conflicting single is selected, mark filled cells, which cause the single.
+            this.getMyGroup().getMyCells().forEach(sudoCell => {
+                if (sudoCell.getValue() == '0' &&
+                    sudoCell.getCandidates().size == 1 &&
+                    sudoCell.isSelected &&
+                    intSingle.toString() == Array.from(sudoCell.getCandidates())[0]) {
+
+                    let numberSet = new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+                    let single = Array.from(sudoCell.getCandidates())[0];
+                    numberSet.forEach(nr => {
+                        if (nr !== single) {
+                            let coveredNrs = new MatheSet();
+                            sudoCell.myInfluencers.forEach(cell => {
+                                if (cell.getValue() == nr) {
+                                    if (!coveredNrs.has(nr)) {
+                                        sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
+                                        coveredNrs.add(nr);
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+            });
             return true;
         }
         // Widerspruchserkennung durch eine fehlende Nummer in der Gruppe.
@@ -1687,6 +1710,15 @@ class SudokuGroupView {
             this.displayError();
             const [missingNr] = missingNumbers;
             sudoApp.mySolverView.displayReasonUnsolvability('In der Gruppe fehlt die Nummer: ' + missingNr);
+            this.getMyGroup().getMyCells().forEach(sudoCell => {
+                if (sudoCell.getValue() == '0') {
+                    sudoCell.myInfluencers.forEach(cell => {
+                        if (cell.getValue() == missingNr) {
+                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
+                        }
+                    });
+                }
+            });
             return true;
         }
         return false;
@@ -2459,7 +2491,6 @@ class SudokuCellView {
         }
         if (this.myCell.getCandidates().size == 1) {
             sudoApp.mySolverView.displayTechnique('', 'In die selektierte Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
-
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
                 let numberSet = new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
@@ -2656,7 +2687,9 @@ class SudokuCellView {
                     this.displayReasons();
                 }
             } else if (sudoApp.mySolver.getAutoDirection() == 'backward') {
-                sudoApp.mySolverView.displayTechnique('', '<b>Backtracking: </b>Löschen der selektierten Zelle.');
+                if (this.myCell.getValue() !== '0') {
+                    sudoApp.mySolverView.displayTechnique('', '<b>Backtracking: </b>Löschen der selektierten Zelle.');
+                }
             }
         }
     }
@@ -2719,6 +2752,16 @@ class SudokuCellView {
             if (this.myCell.getValue() == '0' && this.myCell.getCandidates().size == 0) {
                 this.displayCellError();
                 mySolverView.displayReasonUnsolvability('Überhaupt keine zulässige Nummer.');
+                let numberSet = new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+                let coveredNrs = new MatheSet();
+                numberSet.forEach(nr => {
+                    this.myCell.myInfluencers.forEach(cell => {
+                        if (!coveredNrs.has(nr) && cell.getValue() == nr) {
+                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
+                            coveredNrs.add(nr);
+                        }
+                    })
+                })
                 return true;
             }
         } else if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' || sudoApp.mySolver.getActualEvalType() == 'strict-minus') {

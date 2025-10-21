@@ -479,7 +479,10 @@ button:active {
     border: 0.3rem double green;
 }
 
-.sudoku-grid-cell.hover-white {
+.sudoku-grid-cell.hover-white,
+.sudoku-grid-cell.col-err.hover-white,
+.sudoku-grid-cell.row-err.hover-white,
+.sudoku-grid-cell.block-err.hover-white {
     border: 0.2rem dashed white;
 }
 
