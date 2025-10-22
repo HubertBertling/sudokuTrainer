@@ -570,7 +570,7 @@ Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
 Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Ein (offenes) Puzzle ist **widerspruchsvoll**, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht. Jedes widerspruchvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle ist widerspruchsvoll. 
 
-Ist ein Puzzle widerspruchsvoll, dann ist das Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+Ist ein Puzzle widerspruchsvoll, dann ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
