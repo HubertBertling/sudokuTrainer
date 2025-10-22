@@ -568,9 +568,9 @@ Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
 ### Unlösbare Puzzles
 
-Ein Puzzle ist unlösbar, wenn es keine Belegung Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Wie kann man unlösbare Puzzles erkennen? Die Antwort lautet: an den Widersprüchen.
+Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Ein (offenes) Puzzle ist **widerspruchsvoll**, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht. Jedes widerspruchvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle ist widerspruchsvoll. 
 
-Ein (offenes) Puzzle ist widersprüchlich, wenn seine aktuelle Belegung den Sudoku-Regeln widerspricht. Ein widersprüchliches Puzzle ist unlösbar. Ein Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+Ist ein Puzzle widerspruchsvoll, dann ist das Setzen weiterer Zellen ist nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
@@ -580,7 +580,7 @@ Ein (offenes) Puzzle ist widersprüchlich, wenn seine aktuelle Belegung den Sudo
 Im ersten Beispiel wird ein Widerspruch sichtbar unmittelbar nach Wechsel in den Modus "Automatisch lösen". Die siebte Spalte enthält zweimal die Drei, ein Widerspruch zur Sudoku-Regel, dass eine Zahl nur einmal in der Spalte vorkommen darf.
 
 Ein weiteres Beispiel.
-Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000000000000
+Puzzle: 000000000000002000000001000021000000000000000000000120000100000000200000000000000
 
 <figure >
    <img src="./imagesHelp/unloesbarSchoen.png" alt="Unloesbar schoen" style="max-width:100%">
@@ -593,9 +593,10 @@ Puzzle: 000000000000001000000002000012000000000000000000000120000100000000200000
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 2: Schritt_2 Widerspruch in Block 5 im Schritt 1</figcaption>
 </figure>
 
-Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann keine 2 mehr gesetzt werden. D.h. der Block 5 wird ohne die Ziffer 2 bleiben. Ein Widerspruch zur Sudoku-Regel, dass in jedem Block jede Ziffer genau einmal vorkommen muss. Im Schritt 2 wird die gesetzte 1 wieder zurückgenommen. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
+Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann keine 2 mehr gesetzt werden. D.h. der Block 5 wird ohne die Ziffer 2 bleiben. Ein Widerspruch zur Sudoku-Regel, dass in jedem Block jede Ziffer genau einmal vorkommen muss. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
 
-Die beiden Beispiele zeigen Unlösbarkeiten, die sich unmittelbar aus Widersprüchen zu Sudoku-Regeln ergeben. Es gibt aber auch nicht-elementare Unlösbarkeiten. Sie werden erst erst nach vielen Suchschritten sichtbar.
+Die beiden Beispiel-Puzzles zeigen Widersprüche zu den Sudoku-Regeln. Sie sind deshalb unlösbar. Es gibt aber auch unlösbare Puzzles, die (noch) nicht widerspruchsvoll sind. Sie erweisen sich erst nach vielen Suchschritten als widerspruchsvoll.
+
 Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
 
 <figure >
@@ -603,7 +604,7 @@ Puzzle = 05060030771030005636005002950900600000720400543689570000356004000100000
     <figcaption style="font-size: 16px; font-style: italic;">Beispiel 3: Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
 </figure>
 
-Nach 21 Suchschritten hat das Puzzle eine Belegung, die in Block 8 zweimaal die 1 enthalten soll. Ein Widerspruch zur Sudoku-Regel, dass jede Zahl nur genau einmal im Block vorkommen darf.
+Nach 21 Suchschritten hat das Puzzle eine Belegung, die in Block 8 zweimal die 1 enthalten soll. Ein Widerspruch zur Sudoku-Regel, dass jede Zahl nur genau einmal im Block vorkommen darf.
 
 <figure >
    <img src="./imagesHelp/keineLoesung.png" alt="verborgen unloesbar" style="max-width:100%">
@@ -623,12 +624,18 @@ Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende So
 
 **Widerspruchsvolle Zellen**
 
-Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies Zellen ohne zulässige Kandidaten und Zellen, die mit einer direkt unzulässigen Nummer, also einer Nummer, die es bereits an anderer Stelle in der Zeile, Spalte oder Block der Zelle einmal gibt.
-
 ![No selectable candidates](./imagesHelp/nochoice.png){:width="50px"; height="50px"}
 ![No candidates at all](./imagesHelp/nochoice2.png){:width="50px"; height="50px"}
 ![NumberConflict](./imagesHelp/conflct.png){:width="50px"; height="50px"}
 ![NumberConflictGiven](./imagesHelp/conflictBlau.png){:width="50px"; height="50px"}
+
+Widerspruchsvolle Zellen hatten wir oben schon kennengelernt. Es sind dies 
+1. Zellen ohne zulässige Kandidaten und 
+2. Zellen, die mit einer direkt unzulässigen Nummer, also einer Nummer, die es bereits an anderer Stelle in der Zeile, Spalte oder Block der Zelle einmal gibt.
+
+Zellen ohne zulässige Kandidaten widersprechen der Sudoku-Grundregel, dass jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke die Zahlen von 1 bis 9 jeweils genau einmal enthalten muss. Dies ist nicht möglich, wenn Zellen leer bleiben.
+
+Wenn eine Zelle eine direkt unzulässige Nummer enthält, dann enthält ihre Zeile oder Spalte oder Block die Nummer ein zweites mal. Ein Widerspruch zu den Sudoku-Grundregeln.
 
 **Widerspruchsvolle Gruppen**
 
@@ -644,7 +651,7 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
        <figcaption style="font-size: 16px; font-style: italic; text-align:center">Widerspruch - Zwei gleiche Singles</figcaption>
    </figure>
 
-   Ein Single taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch zur bereits mehrfach erwähnten Sudoku-Regel.
+   Ein Single, hier die 1, taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch zur bereits mehrfach erwähnten Sudoku-Regel.
 
 2. **Widerspruch - Fehlende Nummer:**
 
