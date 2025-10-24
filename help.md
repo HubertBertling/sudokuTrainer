@@ -603,7 +603,6 @@ Die beiden Beispiel-Puzzles zeigen Widersprüche zu den Sudoku-Regeln. Sie sind 
 
 Puzzle = 040000900000000012080090000924000008600008000500201070050079823000005090700000004
 
-
 Nach 140 Trial&error-Schritten wurde der Suchbaum vollständig durchlaufen, ohne dass eine Lösung gefunden wurde. 
 
 <figure >
