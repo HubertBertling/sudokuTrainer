@@ -4055,8 +4055,10 @@ class SudokuSolverController {
             let text5 = text4.replaceAll('x', '0');
             let text6 = text5.replaceAll('_', '0');
             let text7 = text6.replaceAll('*', '0');
+            //
+            let text8 = text7.replaceAll(' ', '');
             // Delete vertical border lines
-            let text = text7.replaceAll('|', '');
+            let text = text8.replaceAll('|', '');
 
             // text should now consist of digits only
             let numberRegex = /^\d+$/;

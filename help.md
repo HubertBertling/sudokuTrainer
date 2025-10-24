@@ -101,7 +101,7 @@ Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeich
 Technisch gesehen ist die App Sudoku-Trainer eine progressive Web-App (PWA). Als solche besitzt sie eine URL. Für die Installation benötigt man lediglich diese URL. Moderne Browser erkennen an der Manifest-Datei im Startverzeichnis, dass es sich um eine Web-App handelt, und zeigen die Möglichkeit der Installation an. Die Installation einer Web-App in einem Browser ist einfach und selbsterklärend. Die installlierte App funktioniert auch offline, wenn sie einmal geladen wurde.
 
 <figure >
-   <img src="./imagesHelp/chromeInstall1.png" alt="Chro,e Install" style="max-width:100%">
+   <img src="./imagesHelp/chromeInstall1.png" alt="Chrome_Install" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Installations-Icon in der URL-Zeile</figcaption>
 </figure>
 
@@ -421,8 +421,8 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 |                      | Versteckter Single (auch: Versteckt einziger Kandidat) | Alle Kandidatennummern bis auf eine (ein **versteckter Single**) sind eliminierbar                                   |
 | Naked Pair/Triple    | Nacktes Paar/Trio                                      | Zwei/Drei Zellen enthalten genau dieselben zwei/drei Kandidaten                                                      |
 | Hidden Pair/Triple   | Verstecktes Paar/Trio                                  | Zwei/Drei Kandidaten kommen nur in zwei/drei Zellen einer Einheit vor                                                |
-| Pointing Pair/Triple | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
-| Box-Line Reduction   | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
+|Box-Line-Reduction, Pointing  | Zeigendes Paar/Trio                                    | Ein Kandidat kommt in einem Block nur in einer Zeile/Spalte vor                                                      |
+| Line-Box-Reduction  | Überschneidung                                         | Umkehrung Pointing Pair/Tripel                                                                                       |
 | Trial&Error      | Backtracking                                           | Puzzlelösung durch systematisches Ausprobieren                                                                       |
 
 ## Definitionen dieser App
@@ -486,6 +486,8 @@ In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein 
 
 ### Eliminationskriterium: "Überschneidung"
 
+Auch Line-Box-Kriterium genannt. Die Zeile führt zu Eliminationen im Block.
+
 <figure >
    <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Überschneidung</figcaption>
@@ -494,6 +496,8 @@ In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein 
 Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 7. Damit es am Ende in der Reihe überhaupt eine 7 gibt, muss eine 7 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 7 in dem Block jenseits der Reihe gestrichen werden müssen.
 
 ### Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"
+
+Auch Box-Line-Kriterium genannt. Der Block führt zu Eliminationen in der Zeile.
 
 <figure >
    <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
