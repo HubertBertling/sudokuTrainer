@@ -601,21 +601,17 @@ Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch i
 
 Die beiden Beispiel-Puzzles zeigen Widersprüche zu den Sudoku-Regeln. Sie sind deshalb unlösbar. Es gibt aber auch unlösbare Puzzles, die (noch) nicht widerspruchsvoll sind. Sie erweisen sich erst nach vielen Suchschritten als widerspruchsvoll.
 
-Puzzle = 050600307710300056360050029509006000007204005436895700003560040001000000605000900
+Puzzle = 040000900000000012080090000924000008600008000500201070050079823000005090700000004
 
-<figure >
-   <img src="./imagesHelp/unloesbar24Schritte.png" alt="verborgen unloesbar" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Beispiel 3: Widerspruch sichtbar nach 21 Suchschritten; </figcaption>
-</figure>
 
-Nach 21 Suchschritten hat das Puzzle eine Belegung, die in Block 8 zweimal die 1 enthalten soll. Ein Widerspruch zur Sudoku-Regel, dass jede Zahl nur genau einmal im Block vorkommen darf.
+Nach 140 Trial&error-Schritten wurde der Suchbaum vollständig durchlaufen, ohne dass eine Lösung gefunden wurde. 
 
 <figure >
    <img src="./imagesHelp/keineLoesung.png" alt="verborgen unloesbar" style="max-width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Nach abgeschlossener Suche: Keine Lösung</figcaption>
 </figure>
 
-Zusammengefasst: der Solver berechnet die Unlösbartkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, ist das Ausgangspuzzle unlösbar.
+Zusammengefasst: der Solver berechnet die Unlösbartkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, die keinen weiteren Try nach sich haben, ist das Ausgangspuzzle unlösbar.
 
 ### Elementare Widersprüche in Zellen und Gruppen
 
