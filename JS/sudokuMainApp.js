@@ -2831,7 +2831,6 @@ class SudokuSolverView {
             (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar')) {
             this.searchPathContainer.style.display = "flex";
             this.searchPathField.innerHTML = '';
-            this.mySolver.optionPath = this.mySolver.myCurrentSearch.getOptionPath();
             // Display the search path in the UI
             let optionPathHTML = [];
             this.mySolver.optionPath.forEach(optionList => {
@@ -2849,7 +2848,6 @@ class SudokuSolverView {
                 }
             })
             if (this.mySolver.optionPath.length > 0) {
-                this.mySolver.optionPathMaxLength = Math.max(this.mySolver.optionPathMaxLength, this.mySolver.optionPath.length -1);
                 this.searchPathLabel.innerHTML = 'Suchpfad(' + (this.mySolver.optionPath.length - 1) + '): Max.Tiefe: ' 
                 + this.mySolver.optionPathMaxLength;
                 this.searchPathField.innerHTML = optionPathHTML;
@@ -2857,7 +2855,7 @@ class SudokuSolverView {
                 this.searchPathLabel.innerHTML = '';
                 this.searchPathField.innerHTML = '';
                 this.searchPathLabel.innerHTML = 'Max.Tiefe: ' 
-                + this.mySolver.optionPathMaxLength;
+                    + this.mySolver.optionPathMaxLength;
             }
 
         } else {

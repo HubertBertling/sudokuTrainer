@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1079;
+let VERSION = 1080;
 
 // ==========================================
 // Basic classes
@@ -4576,7 +4576,10 @@ class SudokuSolver {
         this.myCurrentSearch = new Search();
     }
     performSearchStep() {
-        return this.myCurrentSearch.performStep();
+        let stepResult = this.myCurrentSearch.performStep();
+        this.optionPath = this.myCurrentSearch.getOptionPath();
+        this.optionPathMaxLength = Math.max(this.optionPathMaxLength, this.optionPath.length);
+        return stepResult;
     }
 
     searchInfos2PuzzleRecord() {
