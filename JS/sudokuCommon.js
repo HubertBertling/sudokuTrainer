@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1077;
+let VERSION = 1078;
 
 // ==========================================
 // Basic classes
@@ -507,7 +507,9 @@ class Search {
             return this.myStepper.maxSelectionDifficulty;
         }
     }
-
+    getOptionPath() {
+        return this.myStepper.getOptionPath();
+    }
     performStep() {
         // The previous step result is undefined or 'inProgress'
         // Make the grid selection equal to the stepper selection
@@ -597,6 +599,10 @@ class StepperOnGrid {
 
     setAutoDirection(direction) {
         this.autoDirection = direction;
+    }
+
+    getOptionPath() {
+        return this.myBackTracker.getOptionPath();
     }
 
     // =============================================================
@@ -1036,6 +1042,10 @@ class BackTracker {
         this.maxDepth = 0;
     }
 
+    getOptionPath() {
+        return this.currentStep.getOptionPath();
+    }
+
     getCurrentStep() {
         return this.currentStep;
     }
@@ -1142,6 +1152,17 @@ class BackTrackOptionStep {
             return this.myOwnerPath.getDepth() + 1;
         }
     }
+
+    getOptionPath() {
+        if (this.myCellIndex == -1) {
+            return [];
+        } else {
+            let tmpOptionPath = this.myOwnerPath.getOptionPath();
+            tmpOptionPath.push(this.options());
+            return tmpOptionPath;
+        }
+    }
+
     isFinished() {
         // The BackTrackOptionStep is finished when all its paths are finished
         for (let i = 0; i < this.myBackTrackOptionPaths.length; i++) {
@@ -1191,6 +1212,10 @@ class BackTrackRealStep {
     getDepth() {
         return this.myOwnerPath.getDepth();
     }
+    getOptionPath() {
+        return this.myOwnerPath.getOptionPath();
+    }
+
     options() {
         return this.myOwnerPath.options(this.myStepsIndex);
     }
@@ -1242,6 +1267,24 @@ class BackTrackOptionPath {
             return this.myOwnerStep.getDepth();
         }
     }
+
+    getOptionPath() {
+        let path = [];
+        if (this.myValue == '0') {
+
+
+            let tmpOption = {
+                value: '0',
+                open: false
+            }
+
+            path.push([tmpOption]); // The root option
+            return path;
+        } else {
+            return this.myOwnerStep.getOptionPath();
+        }
+    }
+
     isFinished() {
         return (!(this.myLastBackTrackOptionStep == null));
     }
@@ -4029,12 +4072,13 @@ class NewPuzzleBuffer {
     getPuzzle(level) {
         let puzzleRecord = undefined;
         switch (level) {
-             case 'Unlösbar': {
+            case 'Unlösbar': {
                 if (this.myUnsolvablePuzzles.length > 0) {
                     puzzleRecord = this.myUnsolvablePuzzles.pop();
                 }
                 break;
-            }case 'Sehr leicht': {
+            }
+            case 'Sehr leicht': {
                 if (this.myVerySimplePuzzles.length > 0) {
                     puzzleRecord = this.myVerySimplePuzzles.pop();
                 }
@@ -4266,15 +4310,21 @@ class SudokuSolver {
         // The solver knows the following evaluation methods
         // 'lazy', 'lazy-invisible', 'strict-plus', 'strict-minus' 
         this.currentEvalType = 'lazy-invisible';
+        this.optionPath = [];
+        this.optionPathMaxLength = 0;
     }
 
 
     init() {
         this.myGrid.init();
+        this.optionPath = [];
+        this.optionPathMaxLength = 0;
     }
 
     reInit() {
         this.myGrid.init();
+        this.optionPath = [];
+         this.optionPathMaxLength = 0;
         this.unsetCurrentPuzzle();
         this.cleanUpAndDeleteCurrentSearch();
         this.setGamePhase('define');
@@ -4316,10 +4366,8 @@ class SudokuSolver {
 
         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
             infoString = infoString + '<br>' +
-                ' * mit zwei Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
-                ' &nbsp;&nbsp;davon <br>' +
-                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 1. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry + '<br>' +
-                ' &nbsp;&nbsp;&nbsp;&nbsp; * mit Versuch der 2. Option: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore + '<br>' +
+                ' * mit Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
+                ' * Max. Suchtiefe: ' + this.optionPathMaxLength + '<br>' +
                 ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
         }
         if (sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles) {
@@ -4767,6 +4815,8 @@ class SudokuSolver {
 
     reset() {
         this.cleanUpAndDeleteCurrentSearch();
+        this.optionPath = [];
+         this.optionPathMaxLength = 0;
         this.myGrid.reset();
         this.myGrid.initialze_HSDependent_variables();
     }

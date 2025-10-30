@@ -2792,6 +2792,9 @@ class SudokuSolverView {
 
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
+        this.searchPathContainer = document.getElementById("search-path-container");
+        this.searchPathLabel = document.getElementById("search-path-label");
+        this.searchPathField = document.getElementById("search-path-field");
         this.progressBar = new ProgressBar();
     }
 
@@ -2810,11 +2813,55 @@ class SudokuSolverView {
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
+        this.displayOptionPath();
         if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
             this.displayLastSearchProgress();
         }
     }
 
+
+    displayOptionPath() {
+        this.searchPathContainer.style.display = "none";
+        this.searchPathField.innerHTML = '';
+        if (this.mySolver.myCurrentPuzzle === undefined) {
+            return;
+        }
+        let tmpLevel = this.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;   
+        if (this.mySolver.isSearching() &&
+            (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer')) {
+            this.searchPathContainer.style.display = "flex";
+            this.searchPathField.innerHTML = '';
+            this.mySolver.optionPath = this.mySolver.myCurrentSearch.getOptionPath();
+            // Display the search path in the UI
+            let optionPathHTML = [];
+            this.mySolver.optionPath.forEach(optionList => {
+                if (optionList.length > 1) {
+                    optionPathHTML = optionPathHTML + '[';
+                    optionList.forEach(option => {
+                        if (option.open) {
+                            // nr is open if it has not yet been tried
+                            optionPathHTML = optionPathHTML + option.value;
+                        } else {
+                            optionPathHTML = optionPathHTML + '<span style="color: #237F52;">' + option.value + '</span>';
+                        }
+                    })
+                    optionPathHTML = optionPathHTML + '] ';
+                }
+            })
+            if (this.mySolver.optionPath.length > 0) {
+                this.mySolver.optionPathMaxLength = Math.max(this.mySolver.optionPathMaxLength, this.mySolver.optionPath.length -1);
+                this.searchPathLabel.innerHTML = 'Suchpfad(' + (this.mySolver.optionPath.length - 1) + '): Max.Tiefe: ' 
+                + this.mySolver.optionPathMaxLength;
+                this.searchPathField.innerHTML = optionPathHTML;
+            } else {
+                this.searchPathLabel.innerHTML = '';
+                this.searchPathField.innerHTML = '';
+            }
+
+        } else {
+            this.searchPathContainer.style.display = "none";
+        }
+    }
     displayLastSearchProgress() {
         let progressBlock = document.getElementById("progress-block");
         let stepCountBox = document.getElementById("step-count-box");
@@ -3365,7 +3412,7 @@ class SudokuSolverController {
                 break;
             }
             case 'BODY': {
-                let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;   
+                let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
                 this.handleNumberPressed(event.key);
                 sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
                 sudoApp.mySolver.notify();

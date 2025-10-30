@@ -922,6 +922,38 @@ Für Text: color: #222; oder color: #424242;
     height: 1rem;
 }
 
+#search-path-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.2rem;
+    height: 2.8rem;
+    width: 100%;
+    background: lightgray;
+}
+
+#search-path-label {
+    text-align: left;
+    margin-left: 0.4rem;
+    font-weight: bold;
+}
+
+#search-path-field {
+    margin-left: 0.3rem;
+   /* text-align: left;
+    white-space: normal;
+    overflow: auto;
+    text-overflow: normal; */
+    text-align: left;
+
+    /* overflow: hidden;
+    text-overflow: ellipsis; */
+    overflow-x: auto;
+    white-space: nowrap;
+
+    width: 100%;
+    font-weight: bold;
+}
+
 .forward,
 .backward {
     height: 1.4rem;
