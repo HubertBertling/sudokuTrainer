@@ -2828,7 +2828,7 @@ class SudokuSolverView {
         }
         let tmpLevel = this.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;   
         if (this.mySolver.isSearching() &&
-            (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer')) {
+            (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar')) {
             this.searchPathContainer.style.display = "flex";
             this.searchPathField.innerHTML = '';
             this.mySolver.optionPath = this.mySolver.myCurrentSearch.getOptionPath();
@@ -2856,6 +2856,8 @@ class SudokuSolverView {
             } else {
                 this.searchPathLabel.innerHTML = '';
                 this.searchPathField.innerHTML = '';
+                this.searchPathLabel.innerHTML = 'Max.Tiefe: ' 
+                + this.mySolver.optionPathMaxLength;
             }
 
         } else {

@@ -935,6 +935,7 @@ Für Text: color: #222; oder color: #424242;
     text-align: left;
     margin-left: 0.4rem;
     font-weight: bold;
+    width: 8rem;
 }
 
 #search-path-field {
