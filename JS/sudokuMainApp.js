@@ -3694,6 +3694,8 @@ class SudokuSolverController {
         this.trackerDlgStopPressed();
         this.resetBtnPressed();
         this.startBtnPressed();
+        // Zoom in the new initiated grid
+        this.mySolver.notifyAspect('puzzleLoading', undefined);
     }
     resetBtnPressed() {
         NavigationBar.closeNav();
@@ -3716,6 +3718,8 @@ class SudokuSolverController {
             resetBtn.blur();
             // let stepExplainer = document.getElementById('step-explainer');
             //stepExplainer.focus({ focusVisible: false });
+             // Zoom in the new initiated grid
+        this.mySolver.notifyAspect('puzzleLoading', undefined);
         }
     }
 
@@ -4112,6 +4116,8 @@ class SudokuSolverController {
                 sudoApp.mySolver.myGrid.evaluateMatrix();
                 this.defineBtnPressed();
                 this.playBtnPressed();
+                 // Zoom in the new initiated grid
+        this.mySolver.notifyAspect('puzzleLoading', undefined);
             } else {
                 sudoApp.myInfoDialog.open("Clipboard Puzzle einfügen", 'negativ',
                     "Kein gültiges Puzzle im Clipboard.",
