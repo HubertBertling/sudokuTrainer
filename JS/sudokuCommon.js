@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1080;
+let VERSION = 1081;
 
 // ==========================================
 // Basic classes
@@ -4578,7 +4578,9 @@ class SudokuSolver {
     performSearchStep() {
         let stepResult = this.myCurrentSearch.performStep();
         this.optionPath = this.myCurrentSearch.getOptionPath();
-        this.optionPathMaxLength = Math.max(this.optionPathMaxLength, this.optionPath.length);
+        // This optionPath includes the root option, not visible for the user.
+        // Therefore the length - 1 is relevant. 
+        this.optionPathMaxLength = Math.max(this.optionPathMaxLength, this.optionPath.length - 1);
         return stepResult;
     }
 
@@ -4639,6 +4641,9 @@ class SudokuSolver {
     // =================================================
     loadPuzzleRecord(puzzleRecord) {
         this.myCurrentSearch = undefined;
+        this.optionPath = [];
+        this.optionPathMaxLength = 0;
+
         // Load puzzleRecord into the solvers grid
         this.myGrid.loadPuzzleRecord(puzzleRecord);
         this.myGrid.evaluateMatrix();
@@ -4650,6 +4655,9 @@ class SudokuSolver {
     loadPuzzleArrayGivens(puzzleArray) {
         // Called from FastSolver
         // Loading puzzle from puzzleArray into the grid
+        this.optionPath = [];
+        this.optionPathMaxLength = 0;
+
         this.myGrid.loadPuzzleArrayGivens(puzzleArray);
         this.myGrid.evaluateMatrix();
         // 

@@ -3762,8 +3762,6 @@ class SudokuSolverController {
                 this.mySolver.myGrid.deselect();
                 this.mySolver.loadPuzzleRecord(puzzleRecord);
                 sudoApp.mySolver.notify();
-                // let stepExplainer = document.getElementById('step-explainer');
-                // stepExplainer.focus();       
             }
         }
     }
