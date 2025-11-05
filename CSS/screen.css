@@ -939,12 +939,12 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #search-path-field {
-    margin-left: 0.4rem;
+    margin-left: 0.6rem;
     margin-right: 0.4rem;
-   /* text-align: left;
+    text-align: left;
     white-space: normal;
     overflow: auto;
-    text-overflow: normal; */
+    text-overflow: normal;
     text-align: left;
 
     /* overflow: hidden;

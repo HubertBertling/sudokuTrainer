@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1082;
+let VERSION = 1085;
 
 // ==========================================
 // Basic classes
@@ -597,6 +597,18 @@ class StepperOnGrid {
         return this.autoDirection;
     }
 
+    isNotStarted() {
+        return this.isNotStarted;
+    }
+
+    setIsNotStarted() {
+        this.isNotStarted = true;
+    }
+
+    unsetIsNotStarted() {
+        this.isNotStarted = false;
+    }
+
     setAutoDirection(direction) {
         this.autoDirection = direction;
     }
@@ -616,6 +628,7 @@ class StepperOnGrid {
 
     autoStep() {
         // Returns one of: {'solutionDiscovered', 'searchCompleted', 'inProgress'}
+        this.isNotStarted = false;
         if (this.autoDirection == 'forward') {
             return this.stepForward();
         }
@@ -4312,6 +4325,8 @@ class SudokuSolver {
         this.currentEvalType = 'lazy-invisible';
         this.optionPath = [];
         this.optionPathMaxLength = 0;
+        this.isNotStarted = true;
+        this.lastAction = undefined;
     }
 
 
@@ -4319,15 +4334,22 @@ class SudokuSolver {
         this.myGrid.init();
         this.optionPath = [];
         this.optionPathMaxLength = 0;
+        this.isNotStarted = true;
+        this.lastAction = undefined;
     }
 
     reInit() {
         this.myGrid.init();
         this.optionPath = [];
-         this.optionPathMaxLength = 0;
+        this.optionPathMaxLength = 0;
+        this.isNotStarted = true;
         this.unsetCurrentPuzzle();
         this.cleanUpAndDeleteCurrentSearch();
         this.setGamePhase('define');
+    }
+
+    isStarted() {
+        return !this.isNotStarted;
     }
 
     attach(solverView) {
@@ -4577,10 +4599,12 @@ class SudokuSolver {
     }
     performSearchStep() {
         let stepResult = this.myCurrentSearch.performStep();
+        this.isNotStarted = false;
         this.optionPath = this.myCurrentSearch.getOptionPath();
         // This optionPath includes the root option, not visible for the user.
         // Therefore the length - 1 is relevant. 
         this.optionPathMaxLength = Math.max(this.optionPathMaxLength, this.optionPath.length - 1);
+        this.lastAction = stepResult;
         return stepResult;
     }
 
@@ -4605,8 +4629,8 @@ class SudokuSolver {
         sudoApp.mySyncRunner.start(sudoApp.mySolver,
             sudoApp.mySolver.performSearchStep);
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
+        let action = sudoApp.mySolver.performSearchStep();
         return stoppingBreakpoint;
-
     }
 
     isSearching() {
@@ -4826,8 +4850,9 @@ class SudokuSolver {
 
     reset() {
         this.cleanUpAndDeleteCurrentSearch();
+        this.isNotStarted = true;
         this.optionPath = [];
-         this.optionPathMaxLength = 0;
+        this.optionPathMaxLength = 0;
         this.myGrid.reset();
         this.myGrid.initialze_HSDependent_variables();
     }

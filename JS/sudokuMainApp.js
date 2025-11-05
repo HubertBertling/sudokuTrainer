@@ -2847,15 +2847,14 @@ class SudokuSolverView {
                     optionPathHTML = optionPathHTML + '] ';
                 }
             })
-            if (this.mySolver.optionPath.length > 0) {
-                this.searchPathLabel.innerHTML = 'Suchpfad(' + (this.mySolver.optionPath.length - 1) + '): Max.Tiefe: ' 
+            if ((this.mySolver.optionPath.length -1) > 0) {
+                this.searchPathLabel.innerHTML = 'Suchpfad(' + (this.mySolver.optionPath.length - 1) + '): Max.Tiefe: '
                 + this.mySolver.optionPathMaxLength;
                 this.searchPathField.innerHTML = optionPathHTML;
             } else {
                 this.searchPathLabel.innerHTML = '';
                 this.searchPathField.innerHTML = '';
-                this.searchPathLabel.innerHTML = 'Max.Tiefe: ' 
-                    + this.mySolver.optionPathMaxLength;
+                this.searchPathLabel.innerHTML = 'Max.Tiefe: ' + this.mySolver.optionPathMaxLength;
             }
 
         } else {
