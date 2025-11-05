@@ -142,12 +142,6 @@ button:active {
     color: white;
 }
 
-.trackerDlg {
-    position: absolute;
-    width: 100%;
-    /* margin: 0 auto; */
-}
-
 .tracker-dlg-header,
 .manual-solver-header {
     /* margin-bottom: 0.2rem;*/
@@ -157,7 +151,7 @@ button:active {
     place-items: center;
     position: relative;
     height: 2.4rem;
-    line-height: 1.8rem;
+    /* line-height: 1.8rem; */
     vertical-align: center;
 
     font-weight: bold;
@@ -165,17 +159,18 @@ button:active {
 }
 
 .tracker-dlg-header {
-    margin-top: 0.4rem;
+    /* margin-top: 0.4rem; */
     background-color: var(--automatic-solver);
     color: white;
 
 }
 
 .manual-solver-header {
-    margin-top: 0.4rem;
+    /* margin-top: 0.4rem; */
     background-color: var(--manual-solver);
     color: white;
 }
+
 
 .tracker-dlg-header>span,
 .manual-solver-header>span {
@@ -717,12 +712,12 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.2rem;
+    gap: 0.4rem;
     justify-items: stretch;
     align-items: stretch;
     /* background: var(--screen-bg-color);*/
     background: var(--automatic-solver);
-    padding: 0.8rem;
+    padding: 0.4rem;
 
 }
 
@@ -730,6 +725,7 @@ Für Text: color: #222; oder color: #424242;
 #manual-btn-block .modern-btn,
 #automatic-btn-block .modern-btn {
     display: flex;
+    font-size: 0.8rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -892,28 +888,37 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 /* Progress box block */
 /*======================================*/
-
-.progress-box {
-    font-size: 0.8rem;
-}
-
 .progress-block {
+    font-size: 0.8rem;
     margin-top: 0.2rem;
     line-height: 1.4rem;
     display: grid;
-    grid-template-columns: 1.2fr 0.2fr 0.8fr;
+    grid-template-columns: auto auto auto; 
     gap: 0.2rem;
 
 }
 
-.step-count-box {
+.step-count,
+.backward-count,
+.max-search-depth-value {
     line-height: 1.4rem;
     height: 1.4rem;
-    display: flex;
     margin-right: 0.4rem;
     padding-left: 0.2rem;
     width: 100%;
     background: lightgray;
+}
+
+.search-path-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    margin-top: 0.2rem;
+    margin-bottom: 0.4rem;
+    padding-right: 0.4rem;
+    font-size: 0.8rem;
+    background-color: lightgrey;
+        height: 2.6rem;
 }
 
 .forward-backward-image {
@@ -922,38 +927,30 @@ Für Text: color: #222; oder color: #424242;
     height: 1rem;
 }
 
-#search-path-container {
-    display: flex;
-    flex-direction: row;
-    margin-top: 0.2rem;
-    height: 2.8rem;
-    width: 100%;
-    background: lightgray;
-}
-
 #search-path-label {
     text-align: left;
-    margin-left: 0.4rem;
+    padding-left: 0.2rem;
     font-weight: bold;
-    width: 9rem;
 }
 
 #search-path-field {
-    margin-left: 0.4rem;
+    width: 95;
+    margin-left: 0.8rem;
     margin-right: 0.4rem;
-   /* text-align: left;
-    white-space: normal;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: row;
     overflow: auto;
-    text-overflow: normal; */
-    text-align: left;
-
-    /* overflow: hidden;
-    text-overflow: ellipsis; */
-    overflow-x: auto;
-    white-space: nowrap;
-
-    width: 100%;
+    scrollbar-gutter: stable both-edges;
     font-weight: bold;
+}
+
+.cell-option {
+    font-weight: bold;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
 }
 
 .forward,
@@ -1100,22 +1097,21 @@ label {
     top: 0;
     left: 0;
     z-index: 1;
-    background-color: #f5f5f5;
-    border: none;
+ 
     /* margin: 0 auto;  */
-    background: var(--screen-bg-color);
+    /* background: var(--screen-bg-color); */
 }
 
 .trackerDlg::backdrop {
     background: hsl(201 50% 40% /.1);
 }
 
-
-
+/*
 .tracker-dialog-area {
     width: 100%;
+       border: 0.84rem solid var(--automatic-solver);
 }
-
+*/
 
 .technique-row {
     height: 2.2em;
