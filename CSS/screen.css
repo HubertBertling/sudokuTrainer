@@ -951,9 +951,9 @@ Für Text: color: #222; oder color: #424242;
 
 .horizontal-scroll {
     scrollbar-color: red orange;
-    overflow-x: scroll;
     overflow-y: hidden;
     scrollbar-width: thin;
+    overflow-x: auto;
 }
 
 .horizontal-scroll::-webkit-scrollbar {
