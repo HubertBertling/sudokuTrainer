@@ -2842,9 +2842,9 @@ class SudokuSolverView {
                     optionList.forEach(option => {
                         if (option.open) {
                             // nr is open if it has not yet been tried
-                            optionPathHTML = optionPathHTML + option.value;
+                            optionPathHTML = optionPathHTML + '<span style="font-weight: bold;">' + option.value + '</span>';
                         } else {
-                            optionPathHTML = optionPathHTML + '<span style="color: #237F52;">' + option.value + '</span>';
+                            optionPathHTML = optionPathHTML + '<span style="font-weight: bold; color: #237F52;">' + option.value + '</span>';
                         }
                     })
                     optionPathHTML = optionPathHTML + '] ';
@@ -2857,7 +2857,7 @@ class SudokuSolverView {
             } else {
                 this.searchPathLabel.innerHTML = 'Suchpfad(0): ';
                 this.searchPathField.innerHTML = '';
-                this.maxDepthValueNode.innerHTML =  '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
+                this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + this.mySolver.optionPathMaxLength;
             }
 
         } else {
