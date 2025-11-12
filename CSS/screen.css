@@ -1707,24 +1707,16 @@ label {
 
 
 @media screen and (orientation: landscape) and (width >=768px) and (height > 500px) {
-    /* case 5 */
+    /* case 1 */
     /* Landscape */
     /* Galaxy S20 Ultra: 412px * 915px */
     /* iPhone 14: 380 x 844 */
 
     html {
-        font-size: 14px;
+        font-size: 16px;
     }
 
-    .empty-display {
-        display: none;
-    }
-
-    .app-content {
-        width: calc(min(98vw, 900px));
-        margin: 0 auto;
-    }
-
+  
     .sudoku-solver-container {
         display: flex;
         flex-direction: row;
@@ -1766,9 +1758,10 @@ label {
 }
 
 
-@media screen and (width >=480px) and (height < 500px) {
+@media screen and (orientation: landscape) 
+    and (width >=480px) and (height < 500px) {
 
-    /* Case 4 */
+    /* Case 2 */
     /* Landscape */
     /* Galaxy S10: 360px * 760px */
     /* iPhone SE (2022): 375 x 667 */
@@ -1784,13 +1777,10 @@ label {
     }
 
     .sudoku-solver-container {
+        width: 100%;
         display: flex;
         flex-direction: row;
         gap: 0.2rem;
-    }
-
-    .empty-display {
-        display: block;
     }
 
     .grid-area {
@@ -1829,22 +1819,18 @@ label {
 
 
 
-@media screen and (orientation: portrait) and (width >=480px) {
+@media screen and (orientation: portrait) 
+    and (width >=480px) {
 
     /* case 3*/
     /* portrait */
     html {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     .app-content {
-        width: calc(min(98vw, 800px));
+        width: 66%;
         margin: 0 auto;
-    }
-
-
-    .empty-display {
-        display: none;
     }
 
     .sudoku-solver-container {
@@ -1867,15 +1853,6 @@ label {
         height: 25rem;
     }
 
-    .puzzle-table-dlg {
-        margin: auto;
-        width: 100%;
-        height: 100%;
-        border: none;
-        background-color: #500;
-
-    }
-
     #loader,
     #loader-db {
         display: none;
@@ -1896,21 +1873,19 @@ label {
 }
 
 
-@media screen and (orientation: portrait) and (width < 480px) {
+@media screen and (orientation: portrait) 
+    and (width < 480px) {
 
-    /* case 1 */
+    /* case 4 */
     /* Portrait */
     /* Galaxy S10: 360px * 760px */
     /* Galaxy S20 Ultra: 412px x 915px*/
     /* iPhone 14: 380 x 844 */
     html {
-        font-size: 14px;
+        font-size: 12px;
         background: var(--screen-bg-color);
     }
 
-    .empty-display {
-        display: none;
-    }
 
     .app-content {
         width: 100vw;
@@ -1936,15 +1911,6 @@ label {
         height: 40rem;
     }
 
-    .puzzle-table-dlg {
-        margin: auto;
-        width: 100%;
-        height: 100%;
-        border: none;
-        background-color: #500;
-
-    }
-
     #loader,
     #loader-db {
         display: none;
@@ -1965,20 +1931,15 @@ label {
 
 }
 
+@media screen and (orientation: portrait) 
+    and (width < 480px) and (height <=700px) {
 
-
-@media screen and (orientation: portrait) and (width < 480px) and (height <=700px) {
-
-    /* case 2 */
+    /* case 5 */
     /* Portrait */
     /* iPhone SE (2022): 375 x 667*/
     html {
-        font-size: 11px;
+        font-size: 10px;
         background: var(--screen-bg-color);
-    }
-
-    .empty-display {
-        display: none;
     }
 
     .app-content {
@@ -2003,14 +1964,6 @@ label {
     .tableFixHead {
         /* make the table scrollable if height is more than 200 px  */
         height: 40rem;
-    }
-
-    .puzzle-table-dlg {
-        margin: auto;
-        width: 100%;
-        height: 100%;
-        border: none;
-        background-color: #500;
     }
 
     #loader,
