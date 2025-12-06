@@ -524,7 +524,7 @@ class PuzzleSaveRenameDialog {
 
 class TrackerDialog {
     constructor() {
-        this.manualBtnBlock = document.getElementById("manual-btn-block");
+        this.manualBlock = document.getElementById("manual-block");
         // this.manualBtnBlock.style.visibility = "hidden";
         // this.automaticBtnBlock = document.getElementById("automatic-btn-block");
         // this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
@@ -563,7 +563,8 @@ class TrackerDialog {
         });
     }
     open() {
-        this.manualBtnBlock.style.visibility = "hidden";
+        this.manualBlock.style.display = 'none';
+        // this.manualBlock.style.visibility = "hidden";
         // this.automaticBtnBlock.style.display = "grid";
         this.myOpen = false;
         // sudoApp.mySolverView.reSetNumberOfSolutions();
@@ -581,9 +582,10 @@ class TrackerDialog {
 
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
             this.trackerDlgNode.close();
-            this.manualBtnBlock.style.visibility = "visible";
+            // this.manualBlock.style.visibility = "visible";
             this.myOpen = false;
         }
+              this.manualBlock.style.display = 'block';
     }
 }
 

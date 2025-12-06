@@ -28,23 +28,28 @@
 
 <body>
     <div class="app-content noprint">
-        <div class="app-name-header" id="app-name-header">
-            <span>Sudoku-Trainer</span>
-            <button class="modern-btn btn-menu" id="btn-menu" onclick="NavigationBar.openNav()">
-                <span class="material-icons">menu</span>
-                Menü
-            </button>
-            <button class="modern-btn btn-share" id="btn-share">
-                <span class="material-icons">share</span>
-                Teilen
-            </button>
-            <button class="modern-btn btn-help" id="btn-help">
-                <span class="material-icons">help</span>
-                Hilfe
-            </button>
+        <div class="topbar app-name-header" id="app-name-header">
+            <div class="topbar-left">
+                <button class="modern-btn topbar-btn" id="btn-menu" onclick="NavigationBar.openNav()">
+                    <span class="material-icons">menu</span>
+                    Menü
+                </button>
+            </div>
+            <span class="topbar-title">Sudoku-Trainer</span>
+            <div class="topbar-right">
+
+                <button class="modern-btn topbar-btn" id="btn-help">
+                    <span class="material-icons">help</span>
+                    Hilfe
+                </button>
+                <button class="modern-btn topbar-btn" id="btn-share">
+                    <span class="material-icons">share</span>
+                    Teilen
+                </button>
+            </div>
         </div>
-        <div class="sudoku-solver-container">
-            <div class="grid-area" id="grid-area">
+        <div class="content sudoku-solver-container">
+            <div class="panel main-panel grid-area" id="grid-area">
                 <div class="loaded-evaluations" id="loaded-evaluations">
                 </div>
                 <div id="loader">
@@ -113,11 +118,11 @@
 
 
             </div>
-            <div class="btn-block" id="btn-block">
+            <div class="panel sidebar">
                 <div class="manual-block" id="manual-block">
                     <div class="manual-solver-header" id="manual-solver-header">
                         <span>Manuell lösen</span>
-                        <button class="modern-btn btn-run" id="btn-run">
+                        <button class="btn-run" id="btn-run">
                             <span class="material-symbols-outlined">
                                 play_circle
                             </span>
@@ -186,16 +191,14 @@
                     </div>
                 </div>
                 <dialog class="trackerDlg noprint" id="trackerDlg">
-                    <div class="tracker-dialog-area">
-                        <div class="tracker-dlg-header">
-                            <span> Automatisch lösen</span>
-                            <button class="modern-btn btn-backtrack-stop" id="btn-backtrack-stop">
-                                <span class="material-symbols-outlined">
-                                    stop_circle
-                                </span>
-                                Stopp
-                            </button>
-                        </div>
+                    <div class="tracker-dlg-header">
+                        <span> Automatisch lösen</span>
+                        <button class="btn-backtrack-stop" id="btn-backtrack-stop">
+                            <span class="material-symbols-outlined">
+                                stop_circle
+                            </span>
+                            Stopp
+                        </button>
                     </div>
                     <div class="automatic-btn-block" id="automatic-btn-block">
                         <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
