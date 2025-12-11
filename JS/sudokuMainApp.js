@@ -529,7 +529,7 @@ class TrackerDialog {
         // this.automaticBtnBlock = document.getElementById("automatic-btn-block");
         // this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
         //,this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
-        this.trackerDlgNode = document.getElementById("trackerDlg");
+        this.trackerDlg = document.getElementById("trackerDlg");
         this.trackerImage = document.getElementById("trackerImg");
         this.backtrackOptions = document.getElementById("backtrack-options");
         this.btnContinueNode = document.getElementById("btn-backtrack-continue");
@@ -539,7 +539,7 @@ class TrackerDialog {
         this.btnStopNode = document.getElementById("btn-backtrack-stop");
         this.btnFastStepNode = document.getElementById("btn-backtrack-fast-step");
         this.btnFastNode = document.getElementById("btn-backtrack-fast");
-        this.trackerDlgNode.close();
+        this.trackerDlg.close();
         this.myOpen = false;
         // this.automaticBtnBlock.style.visibility = "visible";
 
@@ -564,13 +564,15 @@ class TrackerDialog {
     }
     open() {
         this.manualBlock.style.display = 'none';
-        // this.manualBlock.style.visibility = "hidden";
+        /* this.manualBlock.style.visibility = "hidden"; */
         // this.automaticBtnBlock.style.display = "grid";
         this.myOpen = false;
         // sudoApp.mySolverView.reSetNumberOfSolutions();
+
         sudoApp.mySolver.notify();
         this.myOpen = true;
-        this.trackerDlgNode.show();
+        
+        this.trackerDlg.show();
     }
     isOpen() {
         return this.myOpen;
@@ -581,11 +583,10 @@ class TrackerDialog {
             sudoApp.mySyncRunner.stop('cancelled');
 
             sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
-            this.trackerDlgNode.close();
-            // this.manualBlock.style.visibility = "visible";
+            this.trackerDlg.close();
+            this.manualBlock.style.display = "inline-block";
             this.myOpen = false;
         }
-              this.manualBlock.style.display = 'block';
     }
 }
 

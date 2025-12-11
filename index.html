@@ -28,7 +28,7 @@
 
 <body>
     <div class="app-content noprint">
-        <div class="topbar app-name-header" id="app-name-header">
+        <div class="topbar" id="topbar">
             <div class="topbar-left">
                 <button class="modern-btn topbar-btn" id="btn-menu" onclick="NavigationBar.openNav()">
                     <span class="material-icons">menu</span>
@@ -48,77 +48,78 @@
                 </button>
             </div>
         </div>
-        <div class="content sudoku-solver-container">
-            <div class="panel main-panel grid-area" id="grid-area">
-                <div class="loaded-evaluations" id="loaded-evaluations">
-                </div>
-                <div id="loader">
-                    <div id="search-level"></div>
-                </div>
-                <div id="loader-db">
-                    <div id="loader-db-info"></div>
-                </div>
-
-                <div class="main-sudoku-grid" id="main-sudoku-grid">
-                    <!-- block 0 -->
-                </div>
-                <div class="step-explainer" id="step-explainer">
-                    <div class="step-explainer-text" id="step-explainer-text">
-
+        <div class="content">
+            <div class="panel main-panel" id="main-panel">
+                <div class="grid-area" id="grid-area">
+                    <div class="loaded-evaluations" id="loaded-evaluations">
                     </div>
-                    <button class="tipp-accept-btn modern-btn" style="display:block" id="tipp-accept-btn">
-                        <span class="material-symbols-outlined">
-                            check_circle
-                        </span>
-                        Tipp OK
-                    </button>
-                </div>
-                <div class="progress-box" id="progress-box">
-                    <div class="progress-block" id="progress-block">
-                        <div class="step-count-box" id="step-count-box">
-                            <div class="step-count" id="step-count">
+                    <div id="loader">
+                        <div id="search-level"></div>
+                    </div>
+                    <div id="loader-db">
+                        <div id="loader-db-info"></div>
+                    </div>
+
+                    <div class="main-sudoku-grid" id="main-sudoku-grid">
+                        <!-- block 0 -->
+                    </div>
+                    <div class="step-explainer" id="step-explainer">
+                        <div class="step-explainer-text" id="step-explainer-text">
+
+                        </div>
+                        <button class="tipp-accept-btn modern-btn" style="display:block" id="tipp-accept-btn">
+                            <span class="material-symbols-outlined">
+                                check_circle
+                            </span>
+                            Tipp OK
+                        </button>
+                    </div>
+                    <div class="progress-box" id="progress-box">
+                        <div class="progress-block" id="progress-block">
+                            <div class="step-count-box" id="step-count-box">
+                                <div class="step-count" id="step-count">
+                                </div>
+                                <div class="backward-count" id="backward-count">
+
+                                </div>
                             </div>
-                            <div class="backward-count" id="backward-count">
+                            <div class="autoMode-radio-btns" id="autoMode-radio-btns">
+                                <div class="backward" id="radio-backward">
+                                    <img title="backward" src="images/pfeilrueckwaerts.png"
+                                        class="forward-backward-image">
+                                </div>
+                                <div class="forward" id="radio-forward">
+                                    <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
+                                </div>
+                            </div>
+                            <div class="progress-bar" id="myProgress">
+                                <div id="myBarDef">20%</div>
+                                <div id="myBarPlay">70%</div>
+                                <div class="total-bar-value" id="total-bar-value">
+                                    81
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solution-container" id="solution-container">
+                        <div class="nr-of-solutions-field" id="nr-of-solutions-field">
+                            <div class="number-of-solutions" id="number-of-solutions">
 
                             </div>
                         </div>
-                        <div class="autoMode-radio-btns" id="autoMode-radio-btns">
-                            <div class="backward" id="radio-backward">
-                                <img title="backward" src="images/pfeilrueckwaerts.png" class="forward-backward-image">
-                            </div>
-                            <div class="forward" id="radio-forward">
-                                <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
-                            </div>
+                        <div class="max-depth-value" id="max-depth-value">
                         </div>
-                        <div class="progress-bar" id="myProgress">
-                            <div id="myBarDef">20%</div>
-                            <div id="myBarPlay">70%</div>
-                            <div class="total-bar-value" id="total-bar-value">
-                                81
-                            </div>
+                    </div>
+                    <div class="search-path-container" id="search-path-container">
+                        <div class="search-path-label" id="search-path-label">
+                        </div>
+                        <div class="search-path-field horizontal-scroll" id="search-path-field">
                         </div>
                     </div>
                 </div>
-
-                <div class="solution-container" id="solution-container">
-                    <div class="nr-of-solutions-field" id="nr-of-solutions-field">
-                        <div class="number-of-solutions" id="number-of-solutions">
-
-                        </div>
-                    </div>
-                    <div class="max-depth-value" id="max-depth-value">
-                    </div>
-                </div>
-                <div class="search-path-container" id="search-path-container">
-                    <div class="search-path-label" id="search-path-label">
-                    </div>
-                    <div class="search-path-field horizontal-scroll" id="search-path-field">
-                    </div>
-                </div>
-
-
             </div>
-            <div class="panel sidebar">
+            <div class="panel sidebar" id="sidebar">
                 <div class="manual-block" id="manual-block">
                     <div class="manual-solver-header" id="manual-solver-header">
                         <span>Manuell lösen</span>
@@ -189,7 +190,7 @@
                             Tipp
                         </button>
                     </div>
-                </div>
+                </div> 
                 <dialog class="trackerDlg noprint" id="trackerDlg">
                     <div class="tracker-dlg-header">
                         <span> Automatisch lösen</span>
@@ -435,7 +436,7 @@
                             class="btn-image">
                         <div>Schließen</div>
                     </button>
-                </div>
+                </div>                                          
             </div>
 
         </div>
