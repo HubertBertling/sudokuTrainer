@@ -3087,7 +3087,7 @@ class SudokuSolverView {
 
     displayGoneSteps(goneSteps) {
         let goneStepsNode = document.getElementById("step-count");
-        goneStepsNode.innerHTML = '&nbsp <b>Schritte:</b> &nbsp' + goneSteps;
+        goneStepsNode.innerHTML = '<b>Schritte:</b> &nbsp' + goneSteps;
     }
 
     displayAutoDirection(autoDirection) {
@@ -3156,7 +3156,7 @@ class SudokuSolverView {
         } else {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-                + '<b>Error-RL:</b> &nbsp' + countBackwards;
+                + '<b>E-RL:</b> &nbsp' + countBackwards;
         }
     }
 
@@ -3166,7 +3166,7 @@ class SudokuSolverView {
             evalNode.innerHTML = '';
         } else {
             evalNode.innerHTML =
-                '&nbsp <b>Error-RL:</b> &nbsp' + countBackwards;
+                '&nbsp <b>E-RL:</b> &nbsp' + countBackwards;
         }
     }
 
