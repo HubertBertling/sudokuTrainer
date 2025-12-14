@@ -571,7 +571,7 @@ class TrackerDialog {
 
         sudoApp.mySolver.notify();
         this.myOpen = true;
-        
+
         this.trackerDlg.show();
     }
     isOpen() {
@@ -2827,8 +2827,8 @@ class SudokuSolverView {
     displayOptionPath() {
         this.searchPathContainer.style.display = "none";
         this.searchPathField.innerHTML = '';
-        this.maxDepthValueNode.innerHTML =  '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
-      
+        this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
+
         if (this.mySolver.myCurrentPuzzle === undefined) {
             return;
         }
@@ -3149,24 +3149,27 @@ class SudokuSolverView {
     }
 
     displayLoadedBenchmark(levelOfDifficulty, countBackwards) {
+        // countBackwards abgeschaltet
         let evalNode = document.getElementById("loaded-evaluations");
         if (countBackwards == 0) {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
         } else {
-            evalNode.innerHTML =
+           /* evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-                + '<b>E-RL:</b> &nbsp' + countBackwards;
+                + '<b>E-RL:</b> &nbsp' + countBackwards; */
         }
     }
 
     displayBackwardCount(countBackwards) {
+        // countBackwards abgeschaltet
+        countBackwards = 0;
         let evalNode = document.getElementById("backward-count");
         if (countBackwards == 'none') {
             evalNode.innerHTML = '';
         } else {
-            evalNode.innerHTML =
-                '&nbsp <b>E-RL:</b> &nbsp' + countBackwards;
+            /* evalNode.innerHTML =
+                '&nbsp <b>E-RL:</b> &nbsp' + countBackwards; */
         }
     }
 
