@@ -1556,12 +1556,7 @@ label {
 
 
 
-.tableFixHead {
-    overflow-y: auto;
-    /* make the table scrollable if height is more than 200 px  */
-    height: 20rem;
-    /* gives an initial height of 200px to the table */
-}
+
 
 .db-puzzle-table {
     border-collapse: collapse;
@@ -1872,6 +1867,15 @@ label {
     .main-panel {
         order: 1;
     }
+
+    
+    .tableFixHead {
+    overflow-y: auto;
+    /* make the table scrollable if height is more than 200 px  */
+    height: 20rem;
+    /* gives an initial height of 200px to the table */
+}
+
 }
 
 
@@ -1904,8 +1908,16 @@ label {
         margin: auto;
         /*max-width: 800px;*/
         max-width: 100%;
-        max-height: 100%;
+        max-height: 95dvh;
         background-color: #500;
         height: calc(100dvh - 15rem);
     }
+
+    
+    .tableFixHead {
+    overflow-y: auto;
+    /* make the table scrollable if height is more than 200 px  */
+    height: 12rem;
+    /* gives an initial height of 200px to the table */
+}
 }
