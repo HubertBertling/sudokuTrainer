@@ -200,6 +200,7 @@ body {
     display: flex;
     flex-direction: column;
     font-size: var(--cg-font-base);
+   
 }
 
 /* TOP & BOTTOM BARS ------------------------------------------ */
@@ -704,21 +705,17 @@ button:active {
 
 
 .step-explainer {
-    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
-    width: 100%;
-    /* display: grid; */
-    position: relative;
-    padding: 0.2rem 0.4rem;
     background-color: lightgrey;
 }
 
 .step-explainer-text {
     flex-grow: 1;
     font-size: var(--cg-font-base);
-    /* padding: 0.2rem 0.4rem; */
-    width: 80%;
+    padding: 0.2rem 0.4rem;
 }
 
 /*
@@ -729,8 +726,6 @@ button:active {
 #tipp-accept-btn {
     background: var(--played-cell-bg-color);
     background: linear-gradient(95deg, #a5ed8d 0%, #07c025 100%);
-    position: absolute;
-    right: 0.2rem;
     border-radius: 0.4rem;
     font-size: var(--cg-font-tiny);
     padding-top: 0.1rem;
@@ -805,34 +800,6 @@ Für Text: color: #222; oder color: #424242;
     outline: none;
 }
 
-/*
-#btn-help {
-    background: var(--app-header-bg-color);
-    color: white;
-    position: absolute;
-    right: 0.6rem;
-}
-
-#btn-menu {
-    background: var(--app-header-bg-color);
-    color: white;
-    position: absolute;
-    left: 0.6rem;
-}
-
-#btn-share {
-    background: var(--app-header-bg-color);
-    color: white;
-    position: absolute;
-    right: 5rem;
-}
-    */
-
-/*
-.sudoku-solver-container {
-    position: relative;
-}
-*/
 
 #manual-block {
     position: absolute;
@@ -848,7 +815,6 @@ Für Text: color: #222; oder color: #424242;
     gap: 0.2rem;
     background: var(--manual-solver);
     padding: 0.8rem;
-    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
 #automatic-btn-block {
@@ -857,9 +823,7 @@ Für Text: color: #222; oder color: #424242;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.3rem;
     background: var(--automatic-solver);
-    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
     padding: 0.8rem;
-
 }
 
 
@@ -920,15 +884,6 @@ Für Text: color: #222; oder color: #424242;
 #btn-stop {
     display: none;
 }
-
-/*
-#btn-run {
-    grid-column-start: 4;
-    grid-column-end: 6;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-    */
 
 #btn-autoStep {
     grid-column-start: 1;
@@ -1902,9 +1857,8 @@ label {
         aspect-ratio: 1 / 2.1;
         /* Seitenverhältnis definieren */
         /* Der Browser berechnet nun automatisch die passende Breite */
-        width: calc(max(auto, 98vw));
         /* width auto lässt aspect-ratio arbeiten */
-        max-width: 95%;
+        max-width: 98%;
     }
 
     .content {
@@ -1954,394 +1908,4 @@ label {
         background-color: #500;
         height: calc(100dvh - 15rem);
     }
-}
-
-/* SMALL DEVICES --------------------------------------------- */
-/*
-@media (max-width: 420px) {
-    .topbar button {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.9rem;
-    }
-}
-*/
-
-/* Wide screens (landscape) 
-@media (orientation: landscape) {
-    /* case 1 */
-/* Größtes Landscape 
-
-
-    .app-content {
-        width: 80vw;
-        margin: auto;
-        padding: 0.2rem;
-    }
-
-
-    .sudoku-solver-container {
-        flex-direction: row;
-    }
-
-    .grid-area {
-        width: 50%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 50%;
-    }
-
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 31%;
-        left: 15%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
-    .sidenav a {
-        font-size: 1.2rem;
-    }
-
-}
-
-
-/* Größtes Portrait */
-/* Tall screens 
-@media (orientation: portrait) {
-
-    .app-content {
-        height: 95vh;
-        margin: 0 auto;
-    }
-
-    .sudoku-solver-container {
-        flex-direction: column;
-    }
-
-    .grid-area {
-        width: 100%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 100%;
-    }
-
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 20%;
-        left: 30%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
-    .sidenav a {
-        font-size: 1.2rem;
-    }
-}
-
-/*
-
-@media screen and (orientation: landscape) and (width < 769px) and (height < 1025px) and (width > 760px) and (height > 1000px) {
-    /* case 1 
-   
-    html {
-        font-size: 14px;
-    }
-
-  
-    .sudoku-solver-container {
-        display: flex;
-        flex-direction: row;
-        gap: 0.4rem;
-    }
-
-    .grid-area {
-        width: 50%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 50%;
-    }
-
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 31%;
-        left: 15%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
-    .sidenav a {
-        font-size: 1.2rem;
-    }
-
-}
-
-
-
-
-@media screen and (orientation: landscape) 
-    and (width >=480px) and (height < 375px) {
-
-    /* Case 2 */
-/* Landscape */
-/* Galaxy S10: 360px * 760px */
-/* iPhone SE (2022): 375 x 667 *
-
-    html {
-        font-size: 11px;
-    }
-
-    .app-content {
-        position: relative;
-        width: 60%;
-        margin: 0 auto;
-    }
-
-    .sudoku-solver-container {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        gap: 0.2rem;
-    }
-
-    .grid-area {
-        width: 50%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 50%;
-    }
-
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 31%;
-        left: 15%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
-    .sidenav a {
-        font-size: 1.2rem;
-    }
-
-}
-
-@media screen and (orientation: portrait) 
-    and (width >=480px) {
-
-    /* case 3*/
-/* portrait 
-    html {
-        font-size: 20px;
-    }
-
-    .app-content {
-        width: 66%;
-        margin: 0 auto;
-    }
-
-    .sudoku-solver-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-
-    .grid-area {
-        width: 100%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 100%;
-    }
-
-    .tableFixHead {
-        /* make the table scrollable 
-        if height is more than 200 px 
-        height: 25rem;
-    }
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 26%;
-        left: 30%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-}
-
-
-@media screen and (orientation: portrait) 
-    and (width < 480px) {
-
-    /* case 4 */
-/* Portrait */
-/* Galaxy S10: 360px * 760px */
-/* Galaxy S20 Ultra: 412px x 915px*/
-/* iPhone 14: 380 x 844 
-    html {
-        font-size: 12px;
-        background: var(--screen-bg-color);
-    }
-
-
-    .app-content {
-        width: 100vw;
-    }
-
-    .sudoku-solver-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-
-    .grid-area {
-        width: 100%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 100%;
-    }
-
-    .tableFixHead {
-        /* make the table scrollable 
-        if height is more than 200 px  
-        height: 40rem;
-    }
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 26%;
-        left: 39%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
-}
-/*
-@media screen and (orientation: portrait) 
-    and (width < 480px) and (height <=700px) {
-
-    /* case 5 */
-/* Portrait */
-/* iPhone SE (2022): 375 x 667
-    html {
-        font-size: 10px;
-        background: var(--screen-bg-color);
-    }
-
-    .app-content {
-        width: 100%;
-    }
-
-    .sudoku-solver-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-
-    .grid-area {
-        width: 100%;
-    }
-
-    .btn-block {
-        position: relative;
-        width: 100%;
-    }
-
-    .tableFixHead {
-        /* make the table scrollable 
-        if height is more than 200 px  
-        height: 40rem;
-    }
-
-    #loader,
-    #loader-db {
-        display: none;
-        position: absolute;
-        top: 26%;
-        left: 30%;
-        z-index: 2;
-        width: 10rem;
-        height: 10rem;
-        border: 2.8rem solid #fbf9f900;
-        border-radius: 50%;
-        border-top: 2.8rem solid var(--defined-cell-bg-color);
-        border-bottom: 2.8rem solid black;
-        border-right: 2.8rem solid var(--played-cell-bg-color);
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-    }
-
 }

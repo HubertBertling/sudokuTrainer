@@ -2488,7 +2488,7 @@ class SudokuCellView {
                     }
                 }
             });
-            sudoApp.mySolverView.displayTechnique('', 'In dieser Gruppe <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
+            sudoApp.mySolverView.displayTechnique('', 'In der Gruppe <b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
                 ' setzen.');
             return;
         }
@@ -2554,7 +2554,7 @@ class SudokuCellView {
                     }
                 });
                 sudoApp.mySolverView.displayTechnique('', 'Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
-                    ' in dieser Gruppe setzen.');
+                    ' in der Gruppe setzen.');
                 return;
             }
         }
