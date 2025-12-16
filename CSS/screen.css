@@ -314,7 +314,7 @@ button:active {
     background: var(--manual-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
 
 }
 
@@ -323,7 +323,7 @@ button:active {
     background: var(--automatic-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem);
 }
 
@@ -693,7 +693,7 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: lightgrey;
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-base);
 }
 
 .pz-name {
@@ -711,7 +711,7 @@ button:active {
 
 .step-explainer {
     display: flex;
-    font-size: var(--cg-font-smmall);
+    font-size: var(--cg-font-base);
     justify-content: space-between;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
@@ -720,7 +720,7 @@ button:active {
 
 .step-explainer-text {
     flex-grow: 1;
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
     padding: 0.2rem 0.4rem;
 }
 
@@ -728,7 +728,7 @@ button:active {
     background: var(--played-cell-bg-color);
     background: linear-gradient(95deg, #a5ed8d 0%, #07c025 100%);
     border-radius: 0.4rem;
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
     padding-top: 0.1rem;
     padding-left: 0.2rem;
     padding-right: 0.2rem;
@@ -940,7 +940,7 @@ Für Text: color: #222; oder color: #424242;
 
 .prefix {
     font-weight: bold;
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
 }
 
 .text-spacing {
@@ -1849,7 +1849,7 @@ label {
     .app-content {
         margin: 0 auto;
         height: 100vh;
-        aspect-ratio: 1 / 2.1;
+        aspect-ratio: 1 / 2.2;
         /* Seitenverhältnis definieren */
         /* Der Browser berechnet nun automatisch die passende Breite */
         /* width auto lässt aspect-ratio arbeiten */
