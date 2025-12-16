@@ -533,7 +533,7 @@ button:active {
 
 .sudoku-grid-cell.selected>.candidate,
 .sudoku-grid-cell.auto-selected>.candidate {
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
     /* 0.7rem; */
     color: white;
     font-weight: bold;
