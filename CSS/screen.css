@@ -1824,7 +1824,7 @@ label {
     .app-content {
         margin: 0 auto;
         height: 100vh;
-        aspect-ratio: 1 / 2.2;
+        aspect-ratio: 1 / 2.1;
         /* Seitenverhältnis definieren */
         /* Der Browser berechnet nun automatisch die passende Breite */
         /* width auto lässt aspect-ratio arbeiten */
