@@ -195,7 +195,7 @@ body {
     background: var(--app-header-bg-color);
     color: white;
 
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h6 );
 
     /* align-items: center; */
     /*  margin: 0 auto;
@@ -807,7 +807,7 @@ Für Text: color: #222; oder color: #424242;
 #automatic-btn-block .modern-btn {
     display: flex;
     flex-direction: column;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
@@ -1823,8 +1823,8 @@ label {
 @media (orientation: portrait) {
     .app-content {
         margin: 0 auto;
-        height: 100vh;
-        aspect-ratio: 1 / 2.1;
+        height: 100dvh;
+        aspect-ratio: 1 / 2.25;
         /* Seitenverhältnis definieren */
         /* Der Browser berechnet nun automatisch die passende Breite */
         /* width auto lässt aspect-ratio arbeiten */
