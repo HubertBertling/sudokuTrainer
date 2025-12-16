@@ -519,7 +519,7 @@ button:active {
 }
 
 .candidate {
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
     /* 0.7rem */
     color: black;
 }
@@ -541,7 +541,7 @@ button:active {
 }
 
 .special-candidate.necessary {
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     /* 1.2rem */
     color: black;
     font-weight: bold;
@@ -551,7 +551,7 @@ button:active {
 
 
 .special-candidate.single {
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     /* 1.2rem */
     font-weight: bold;
     color: white;
@@ -1530,7 +1530,7 @@ label {
     position: absolute;
     right: 1%;
     color: white;
-    font-size: 1.4rem;
+    font-size: var(--cg-font-base);
 }
 
 
@@ -1557,7 +1557,7 @@ label {
 
 .db-puzzle-table th,
 .db-puzzle-table td {
-    font-size: var(--cg-font-tiny);
+    font-size: var(--cg-font-small);
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     padding-left: 0.2rem;
@@ -1625,7 +1625,7 @@ label {
     background-color: #ddd;
     text-align: center;
     /* font-size: 0.8rem; */
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     display: grid;
     grid-template-columns: 1fr;
     place-items: center;
