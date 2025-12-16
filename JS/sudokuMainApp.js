@@ -2524,7 +2524,7 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size > 1) {
-            sudoApp.mySolverView.displayTechnique('', '<b>Nächste Option </b> setzen. Bereits probierte Kandidaten sind unterstrichen.');
+            sudoApp.mySolverView.displayTechnique('', '<b>Nächste Option </b> setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('multipleOption');
             }
@@ -2793,6 +2793,7 @@ class SudokuSolverView {
 
         this.solutionNumber = undefined;
 
+        this.solutionContainer = document.getElementById("solution-container");
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
         this.searchPathContainer = document.getElementById("search-path-container");
@@ -2825,7 +2826,9 @@ class SudokuSolverView {
 
 
     displayOptionPath() {
-        this.searchPathContainer.style.display = "none";
+        // this.searchPathContainer.style.display = "none";
+        this.searchPathContainer.style.display = "flex";
+        this.searchPathLabel.innerHTML = 'Suchpfad(0): ';
         this.searchPathField.innerHTML = '';
         this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
 
@@ -2864,7 +2867,8 @@ class SudokuSolverView {
             }
 
         } else {
-            this.searchPathContainer.style.display = "none";
+            // this.searchPathContainer.style.display = "none";
+            this.searchPathContainer.style.display = "flex";
         }
     }
     displayLastSearchProgress() {
@@ -2892,6 +2896,9 @@ class SudokuSolverView {
             this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
+            this.solutionContainer.style.backgroundColor =
+                'var(--played-cell-bg-color)';
+
         } else {
             // nr == 0
             if (this.mySolver.isSearching()) {
@@ -2901,11 +2908,15 @@ class SudokuSolverView {
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
                         'var(--played-cell-bg-color)';
+                    this.solutionContainer.style.backgroundColor =
+                        'var(--played-cell-bg-color)';
                 } else {
                     // nr == 0 and current search is in progress
                     this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
                         '&nbsp;' + 0;
                     this.nrOfSolutionsField.style.backgroundColor =
+                        'var(--nested-cell-bg-color)';
+                    this.solutionContainer.style.backgroundColor =
                         'var(--nested-cell-bg-color)';
                 }
             } else {
@@ -2914,10 +2925,15 @@ class SudokuSolverView {
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
                         'var(--played-cell-bg-color)';
+                    this.solutionContainer.style.backgroundColor =
+                        'var(--played-cell-bg-color)';
                 } else {
                     this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
                     this.nrOfSolutionsField.style.backgroundColor =
                         'var(--nested-cell-bg-color)';
+                    this.solutionContainer.style.backgroundColor =
+                        'var(--nested-cell-bg-color)';
+
                 }
             }
         }
@@ -3155,9 +3171,9 @@ class SudokuSolverView {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
         } else {
-           /* evalNode.innerHTML =
-                '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-                + '<b>E-RL:</b> &nbsp' + countBackwards; */
+            /* evalNode.innerHTML =
+                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
+                 + '<b>E-RL:</b> &nbsp' + countBackwards; */
         }
     }
 
@@ -3355,13 +3371,6 @@ class SudokuSolverController {
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
                 this.redoBtnPressed();
-            })
-        });
-
-        this.btns = document.querySelectorAll('.btn-help');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                sudoApp.helpFunktion();
             })
         });
 
@@ -3701,7 +3710,7 @@ class SudokuSolverController {
         this.resetBtnPressed();
         this.startBtnPressed();
         // Zoom in the new initiated grid
-        this.mySolver.notifyAspect('puzzleLoading', undefined);
+        // this.mySolver.notifyAspect('puzzleLoading', undefined);
     }
     resetBtnPressed() {
         NavigationBar.closeNav();
@@ -3723,7 +3732,7 @@ class SudokuSolverController {
             let resetBtn = document.getElementById('btn-reset');
             resetBtn.blur();
             // let stepExplainer = document.getElementById('step-explainer');
-            //stepExplainer.focus({ focusVisible: false });
+            // stepExplainer.focus({ focusVisible: false });
             // Zoom in the new initiated grid
             // this.mySolver.notifyAspect('puzzleLoading', undefined);
         }

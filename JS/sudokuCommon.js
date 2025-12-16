@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 1104;
+let VERSION = 1105;
 
 // ==========================================
 // Basic classes
@@ -4979,8 +4979,7 @@ class SudokuMainApp {
         versionNode.innerHTML =
             '<b>AppVersion:</b> &nbsp' + VERSION;
     }
-
-    helpFunktion() {
+    helpFunction() {
         window.open('./help.html');
     }
 }

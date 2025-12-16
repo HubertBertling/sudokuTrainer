@@ -85,83 +85,102 @@ https://www.webmart.de/web/harmonische-farben#696969:t:d:g:d
  * Viewport: 340vw to 1200vw
  */
 
-html { font-size: 16px; }
+html {
+    font-size: 16px;
+}
 
 :root {
-  --cg-font-family-base: 'Inter', sans-serif;
-  --cg-font-weight-base: 400;
-  --cg-font-family-head: 'Inter', sans-serif;
-  --cg-font-weight-head: 700;
-  --cg-font-family-code: 'Roboto Mono', monospace;
-  --cg-font-weight-code: 400;
+    --cg-font-family-base: 'Inter', sans-serif;
+    --cg-font-weight-base: 400;
+    --cg-font-family-head: 'Inter', sans-serif;
+    --cg-font-weight-head: 700;
+    --cg-font-family-code: 'Roboto Mono', monospace;
+    --cg-font-weight-code: 400;
 
-  --cg-font-h1: clamp(1.35rem, calc(0.994rem + 1.674vw), 2.25rem);
-  --cg-font-h2: clamp(1.13rem, calc(0.828rem + 1.395vw), 1.88rem);
-  --cg-font-h3: clamp(1.05rem, calc(0.773rem + 1.302vw), 1.75rem);
-  --cg-font-h4: clamp(0.98rem, calc(0.718rem + 1.209vw), 1.63rem);
-  --cg-font-h5: clamp(0.90rem, calc(0.663rem + 1.116vw), 1.50rem);
-  --cg-font-h6: clamp(0.83rem, calc(0.608rem + 1.023vw), 1.38rem);
-  --cg-font-base: clamp(0.75rem, calc(0.552rem + 0.930vw), 1.25rem);
-  --cg-font-small: clamp(0.66rem, calc(0.483rem + 0.814vw), 1.09rem);
-  --cg-font-tiny: clamp(0.56rem, calc(0.414rem + 0.698vw), 0.94rem);
-  --cg-font-code: clamp(0.66rem, calc(0.483rem + 0.814vw), 1.09rem);
+    --cg-font-h1: clamp(1.35rem, calc(0.994rem + 1.674vw), 2.25rem);
+    --cg-font-h2: clamp(1.13rem, calc(0.828rem + 1.395vw), 1.88rem);
+    --cg-font-h3: clamp(1.05rem, calc(0.773rem + 1.302vw), 1.75rem);
+    --cg-font-h4: clamp(0.98rem, calc(0.718rem + 1.209vw), 1.63rem);
+    --cg-font-h5: clamp(0.90rem, calc(0.663rem + 1.116vw), 1.50rem);
+    --cg-font-h6: clamp(0.83rem, calc(0.608rem + 1.023vw), 1.38rem);
+    --cg-font-base: clamp(0.75rem, calc(0.552rem + 0.930vw), 1.25rem);
+    --cg-font-small: clamp(0.66rem, calc(0.483rem + 0.814vw), 1.09rem);
+    --cg-font-tiny: clamp(0.56rem, calc(0.414rem + 0.698vw), 0.94rem);
+    --cg-font-code: clamp(0.66rem, calc(0.483rem + 0.814vw), 1.09rem);
 }
 
 /* Font Family Setup */
-body, .cg-base {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+body,
+.cg-base {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
 }
 
-code, .cg-code {
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 400;
+code,
+.cg-code {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 400;
 }
 
 /* Typography Sizes with Variables */
-h1, .cg-h1 {
-  font-size: var(--cg-font-h1);
+h1,
+.cg-h1 {
+    font-size: var(--cg-font-h1);
 }
 
-h2, .cg-h2 {
-  font-size: var(--cg-font-h2);
+h2,
+.cg-h2 {
+    font-size: var(--cg-font-h2);
 }
 
-h3, .cg-h3 {
-  font-size: var(--cg-font-h3);
+h3,
+.cg-h3 {
+    font-size: var(--cg-font-h3);
 }
 
-h4, .cg-h4 {
-  font-size: var(--cg-font-h4);
+h4,
+.cg-h4 {
+    font-size: var(--cg-font-h4);
 }
 
-h5, .cg-h5 {
-  font-size: var(--cg-font-h5);
+h5,
+.cg-h5 {
+    font-size: var(--cg-font-h5);
 }
 
-h6, .cg-h6 {
-  font-size: var(--cg-font-h6);
+h6,
+.cg-h6 {
+    font-size: var(--cg-font-h6);
 }
 
-body, .cg-base {
-  font-size: var(--cg-font-base);
+body,
+.cg-base {
+    font-size: var(--cg-font-base);
 }
 
-small, .cg-small {
-  font-size: var(--cg-font-small);
+small,
+.cg-small {
+    font-size: var(--cg-font-small);
 }
 
-.tiny, .cg-tiny {
-  font-size: var(--cg-font-tiny);
+.tiny,
+.cg-tiny {
+    font-size: var(--cg-font-tiny);
 }
 
-code, .cg-code {
-  font-size: var(--cg-font-code);
+code,
+.cg-code {
+    font-size: var(--cg-font-code);
 }
 
 /* RESET & BASE ---------------------------------------------- */
@@ -186,7 +205,7 @@ body {
     display: flex;
     flex-direction: column;
     font-size: var(--cg-font-base);
-   
+
 }
 
 /* TOP & BOTTOM BARS ------------------------------------------ */
@@ -674,7 +693,7 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: lightgrey;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-tiny);
 }
 
 .pz-name {
@@ -692,6 +711,7 @@ button:active {
 
 .step-explainer {
     display: flex;
+    font-size: var(--cg-font-smmall);
     justify-content: space-between;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
@@ -700,15 +720,10 @@ button:active {
 
 .step-explainer-text {
     flex-grow: 1;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-tiny);
     padding: 0.2rem 0.4rem;
 }
 
-/*
-.step-explainer-text>span  {
-    font-weight: bold;
-}
-*/
 #tipp-accept-btn {
     background: var(--played-cell-bg-color);
     background: linear-gradient(95deg, #a5ed8d 0%, #07c025 100%);
@@ -979,7 +994,8 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 
 .progress-box {
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-small);
+
 }
 
 .progress-block {
@@ -988,13 +1004,11 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: 1fr 0.2fr 0.8fr;
     gap: 0.2rem;
-
-
 }
 
 .step-count-box {
     display: flex;
-    /* font-size: var(--cg-font-base);*/
+    font-size: var(--cg-font-small);
     width: 100%;
     background: lightgray;
     padding: 0.2rem 0.4rem;
@@ -1003,38 +1017,51 @@ Für Text: color: #222; oder color: #424242;
 .forward-backward-image {
     margin-top: 0.2rem;
     width: 1rem;
-    height: 1rem;
+
+}
+
+#search-info-box {
+    display: flex;
+    flex-direction: row;
+    font-size: var(--cg-font-small);
+    margin-top: 0.2rem;
+   
 }
 
 #search-path-container {
-    margin-top: 0.2rem;
-    padding: 0.2rem 0.4rem;
-    /* line-height: 1.4rem; */
-    display: grid;
-    grid-template-columns: 0.2fr 0.8fr;
-    gap: 0.2rem;
-    margin-top: 0.2rem;
-    width: 100%;
-    background: lightgray;
+    flex-grow: 9;
+    display: flex;
+    flex-direction: row;
+        background-color: lightgrey;
+     
 }
 
 #search-path-label {
-    text-align: left;
-    /* font-size: var(--cg-font-tiny); */
+    font-size: var(--cg-font-small);
+    padding: 0.2rem 0.4rem;
     font-weight: bold;
 }
 
 #search-path-field {
-    margin-right: 0.2rem;
-    /* font-size: var(--cg-font-tiny); */
-    white-space: normal;
-    text-align: left;
+    flex-grow: 1;
+    font-size: var(--cg-font-small);
+    white-space: nowrap;   
+}
+
+#max-depth-value {
+    flex-grow: 1;
+    margin-left: 0.4rem;
+    font-size: var(--cg-font-small);
+    background-color: lightgray;
+    color: black;
+    padding: 0.2rem 0.4rem;
+    text-align: right;
     white-space: nowrap;
-    width: 100%;
 }
 
 
 .horizontal-scroll {
+    font-size: var(--cg-font-tiny);
     scrollbar-color: red orange;
     overflow-y: hidden;
     scrollbar-width: thin;
@@ -1049,7 +1076,6 @@ Für Text: color: #222; oder color: #424242;
 
 .forward,
 .backward {
-    height: 1.4rem;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
 }
@@ -1109,26 +1135,14 @@ Für Text: color: #222; oder color: #424242;
 
 #solution-container {
     margin-top: 0.2rem;
-    /* line-height: 1.4rem; */
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 0.2rem;
-
-}
-
-
-.nr-of-solutions-field,
-#max-depth-value {
-    width: 100%;
-    /* font-size: var(--cg-font-base);*/
-    background-color: lightgray;
-    color: black;
     display: flex;
-    justify-content: left;
-    /* Vertikale Zentrierung */
+
     align-items: center;
-    height: 100%;
+    justify-content: center;
+
+    width: 100%;
     padding: 0.2rem 0.4rem;
+    background-color: var(--nested-cell-bg-color);
 }
 
 /*=======================================*/
@@ -1808,7 +1822,7 @@ label {
 .content {
     flex: 1;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.2rem;
 }
 
 /* Shared panel styling */
@@ -1825,7 +1839,7 @@ label {
 .sidebar {
     flex: 1;
     position: relative;
-     
+
 
 }
 
@@ -1854,13 +1868,13 @@ label {
         order: 1;
     }
 
-    
+
     .tableFixHead {
-    overflow-y: auto;
-    /* make the table scrollable if height is more than 200 px  */
-    height: 20rem;
-    /* gives an initial height of 200px to the table */
-}
+        overflow-y: auto;
+        /* make the table scrollable if height is more than 200 px  */
+        height: 20rem;
+        /* gives an initial height of 200px to the table */
+    }
 
 }
 
@@ -1868,14 +1882,14 @@ label {
 /* ================ LANDSCAPE ================= */
 @media (orientation: landscape) {
 
-  
+
     .app-content {
         /* width: clamp(320px, 95vw, 1024px);*/
-        width: calc(min(98vw, 800px));
+        width: calc(min(98vw, 820px));
         margin: 0 auto;
- 
+
     }
-    
+
     .content {
         flex-direction: row;
         gap: 0.8rem;
@@ -1887,7 +1901,7 @@ label {
     }
 
     .sidebar {
-        min-width: 45%;
+        /* min-width: 45%; */
     }
 
     .puzzle-table-dlg {
@@ -1899,11 +1913,11 @@ label {
         height: calc(100dvh - 15rem);
     }
 
-    
+
     .tableFixHead {
-    overflow-y: auto;
-    /* make the table scrollable if height is more than 200 px  */
-    height: 12rem;
-    /* gives an initial height of 200px to the table */
-}
+        overflow-y: auto;
+        /* make the table scrollable if height is more than 200 px  */
+        height: 12rem;
+        /* gives an initial height of 200px to the table */
+    }
 }
