@@ -2796,7 +2796,7 @@ class SudokuSolverView {
         this.solutionContainer = document.getElementById("solution-container");
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
-        this.searchPathContainer = document.getElementById("search-path-container");
+        // this.searchPathContainer = document.getElementById("search-path-container");
         this.searchPathLabel = document.getElementById("search-path-label");
         this.searchPathField = document.getElementById("search-path-field");
         this.maxDepthValueNode = document.getElementById("max-depth-value");
@@ -2827,7 +2827,7 @@ class SudokuSolverView {
 
     displayOptionPath() {
         // this.searchPathContainer.style.display = "none";
-        this.searchPathContainer.style.display = "flex";
+        // this.searchPathContainer.style.display = "flex";
         this.searchPathLabel.innerHTML = 'Suchpfad(0): ';
         this.searchPathField.innerHTML = '';
         this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
@@ -2838,7 +2838,7 @@ class SudokuSolverView {
         let tmpLevel = this.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
         if (this.mySolver.isSearching() &&
             (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar')) {
-            this.searchPathContainer.style.display = "flex";
+            // this.searchPathContainer.style.display = "flex";
             this.searchPathField.innerHTML = '';
             // Display the search path in the UI
             let optionPathHTML = [];
@@ -2868,7 +2868,7 @@ class SudokuSolverView {
 
         } else {
             // this.searchPathContainer.style.display = "none";
-            this.searchPathContainer.style.display = "flex";
+            // this.searchPathContainer.style.display = "flex";
         }
     }
     displayLastSearchProgress() {
