@@ -1826,13 +1826,8 @@ label {
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
     .app-content {
-        margin: 0 auto;
-        height: 100dvh;
+        height: 95dvh;
         aspect-ratio: 1 / 2.2;
-        /* Seitenverhältnis definieren */
-        /* Der Browser berechnet nun automatisch die passende Breite */
-        /* width auto lässt aspect-ratio arbeiten */
-        max-width: 98%;
         width: auto;
     }
 
