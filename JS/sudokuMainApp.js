@@ -2831,7 +2831,6 @@ class SudokuSolverView {
         } else {
             this.myStepExplainerView.hideExplainer();
         }
-        this.myStepExplainerView.setText('black', '');
         // Indication that the puzzle cannot be solved, if this is the case
         // this.displayProgress();
         // Display status applicability of the undo/redo buttons
@@ -3252,7 +3251,6 @@ class StepExplainerView {
     clear() {
         this.explainerTextNode.classList.remove('red');
         this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
-        //this.explainerTextNode.style.display = "none";
         this.tippOkBtn.style.display = "none";
     }
     showExplainer() {
@@ -3265,9 +3263,8 @@ class StepExplainerView {
     setText(color, text) {
         if (text == '') {
             this.explainerTextNode.classList.remove('red');
-            text = 'Schrittsbeschreibung ...';
+            this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
         } else {
-            // this.explainerTextNode.style.display = "block";
             this.explainerTextNode.innerHTML = text;
             if (color == 'red') {
                 this.explainerTextNode.classList.add('red');
