@@ -2818,7 +2818,7 @@ class SudokuSolverView {
 
     init() {
         this.myGridView.upDate();
-        this.myStepExplainerView.clear();
+        this.myStepExplainerView.hideExplainer();
     }
 
     upDate() {
@@ -2826,6 +2826,11 @@ class SudokuSolverView {
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
         this.myGridView.upDate();
+        if (sudoApp.mySolver.isSearching()) {
+            this.myStepExplainerView.showExplainer();
+        } else {
+            this.myStepExplainerView.hideExplainer();
+        }
         this.myStepExplainerView.setText('black', '');
         // Indication that the puzzle cannot be solved, if this is the case
         // this.displayProgress();
@@ -3247,13 +3252,22 @@ class StepExplainerView {
     clear() {
         this.explainerTextNode.classList.remove('red');
         this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
+        //this.explainerTextNode.style.display = "none";
         this.tippOkBtn.style.display = "none";
     }
+    showExplainer() {
+        this.explainerTextNode.style.display = "block";
+    }
+    hideExplainer() {
+        this.explainerTextNode.style.display = "none";
+    }
+
     setText(color, text) {
         if (text == '') {
             this.explainerTextNode.classList.remove('red');
             text = 'Schrittsbeschreibung ...';
         } else {
+            // this.explainerTextNode.style.display = "block";
             this.explainerTextNode.innerHTML = text;
             if (color == 'red') {
                 this.explainerTextNode.classList.add('red');
