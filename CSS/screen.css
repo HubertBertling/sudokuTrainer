@@ -341,12 +341,12 @@ button:active {
 }
 
 .sidenav a {
-    padding: 1rem 1rem 1rem 1.6rem;
+    padding: 0.8rem 1.6rem;
     text-decoration: none;
     color: #818181;
     display: block;
     transition: 0.3s;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h5);
 }
 
 .sidenav a:hover {
@@ -357,7 +357,7 @@ button:active {
     position: absolute;
     top: 0;
     right: 1.56rem;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h1);
     margin-left: 3.1rem;
 }
 
