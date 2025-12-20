@@ -985,7 +985,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .backward-count {
-    flex: 1;
+    flex: 0.8;
 }
 
 .forward-backward-image {
@@ -1002,7 +1002,7 @@ Für Text: color: #222; oder color: #424242;
     font-size: var(--cg-font-small);
     margin-top: 0.2rem;
     white-space: nowrap;
-  }
+}
 
 #search-path {
     display: grid;
@@ -1829,11 +1829,12 @@ label {
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
     .app-content {
-        height: 98dvh;
+        height: 95dvh;
         aspect-ratio: 1 / 2.1;
         width: auto;
-    
-        margin: 0 auto;}
+
+        margin: 0 auto;
+    }
 
     .content {
         flex-direction: column;
@@ -1863,17 +1864,27 @@ label {
 
 
     .app-content {
+        position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
         width: calc(min(98vw, 820px));
         margin: 0 auto;
 
     }
 
+    #loader,
+    #loader-db {
+        position: absolute;
+        top: 31%;
+        left: 15%;
+    }
+
+
     .content {
         flex-direction: row;
         gap: 0.8rem;
 
     }
+
     /*
     .main-panel {
         width: 55%;
