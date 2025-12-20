@@ -2828,12 +2828,13 @@ class SudokuSolverView {
         this.myGridView.upDate();
         this.myStepExplainerView.setText('black', '');
         // Indication that the puzzle cannot be solved, if this is the case
-        this.displayProgress();
+        // this.displayProgress();
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
         this.displaySearchInfo();
         this.displayOptionPath();
+        this.displayProgress();
     }
 
     displaySearchInfo() {
