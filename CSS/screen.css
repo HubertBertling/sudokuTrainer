@@ -980,7 +980,10 @@ Für Text: color: #222; oder color: #424242;
     padding: 0.2rem 0.4rem;
 }
 
-.step-count, 
+.step-count {
+    flex: 1.2;
+}
+
 .backward-count {
     flex: 1;
 }
@@ -1826,7 +1829,7 @@ label {
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
     .app-content {
-        height: 95dvh;
+        height: 98dvh;
         aspect-ratio: 1 / 2.1;
         width: auto;
     
