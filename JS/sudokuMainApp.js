@@ -319,8 +319,20 @@ class ProgressBar {
         let playCount = totalCount - defCount;
         let defCountProzent = Math.floor(defCount / 81 * 100);
         let playCountProzent = Math.floor(totalCount / 81 * 100);
-        this.elemDef.style.width = defCountProzent + "%";
-        this.elemPlay.style.width = playCountProzent + "%";
+
+        if (defCountProzent == 0) {
+            this.elemDef.style.display = "none";
+        } else {
+            this.elemDef.style.display = "block";
+            this.elemDef.style.width = defCountProzent + "%";
+        }
+
+        if (playCountProzent == 0) {
+            this.elemPlay.style.display = "none";
+        } else {
+            this.elemPlay.style.display = "block";
+            this.elemPlay.style.width = playCountProzent + "%";
+        }
         if (defCount < 10) {
             this.elemDef.innerHTML = '';
         } else {
@@ -2797,6 +2809,7 @@ class SudokuSolverView {
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
         // this.searchPathContainer = document.getElementById("search-path-container");
+        this.searchInfoBox = document.getElementById("search-info-box");
         this.searchPathLabel = document.getElementById("search-path-label");
         this.searchPathField = document.getElementById("search-path-field");
         this.maxDepthValueNode = document.getElementById("max-depth-value");
@@ -2813,21 +2826,48 @@ class SudokuSolverView {
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
         this.myGridView.upDate();
+        this.myStepExplainerView.setText('black', '');
         // Indication that the puzzle cannot be solved, if this is the case
         this.displayProgress();
         // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
+        this.displaySearchInfo();
         this.displayOptionPath();
-        if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
-            this.displayLastSearchProgress();
+    }
+
+    displaySearchInfo() {
+        let stepCountBox = document.getElementById("step-count-box");
+        let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
+
+        if (sudoApp.mySolver.isSearching()) {
+            this.searchInfoBox.style.display = "flex";
+            stepCountBox.style.display = "flex";
+            autoModeRadioBtns.style.display = "flex";
+
+            if (sudoApp.mySolver.myCurrentPuzzle !== undefined) {
+                let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
+
+                if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
+                    this.displayLastSearchProgress();
+                    this.displayGoneSteps(sudoApp.mySolver.myGrid.lastSearch.steps);
+                    if (tmpLevel == 'Sehr schwer') {
+                        this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
+                    } else {
+                        this.displayOptionPath();
+                        this.displayBackwardCount('none');
+                    }
+                    this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
+                }
+            }
+        } else {
+            this.searchInfoBox.style.display = "none";
+            stepCountBox.style.display = "none";
+            autoModeRadioBtns.style.display = "none";
         }
     }
 
-
     displayOptionPath() {
-        // this.searchPathContainer.style.display = "none";
-        // this.searchPathContainer.style.display = "flex";
         this.searchPathLabel.innerHTML = 'Suchpfad(0): ';
         this.searchPathField.innerHTML = '';
         this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
@@ -2878,16 +2918,7 @@ class SudokuSolverView {
         progressBlock.style.gridTemplateColumns = "1fr 0.2fr 1fr";
         stepCountBox.style.display = "flex";
         autoModeRadioBtns.style.display = "flex";
-        if (sudoApp.mySolver.myCurrentPuzzle !== undefined) {
-            let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-            this.displayGoneSteps(sudoApp.mySolver.myGrid.lastSearch.steps);
-            if (tmpLevel == 'Sehr schwer') {
-                this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
-            } else {
-                this.displayBackwardCount('none');
-            }
-            this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
-        }
+
     }
 
 
@@ -3178,14 +3209,12 @@ class SudokuSolverView {
     }
 
     displayBackwardCount(countBackwards) {
-        // countBackwards abgeschaltet
-        countBackwards = 0;
         let evalNode = document.getElementById("backward-count");
         if (countBackwards == 'none') {
             evalNode.innerHTML = '';
         } else {
-            /* evalNode.innerHTML =
-                '&nbsp <b>E-RL:</b> &nbsp' + countBackwards; */
+            evalNode.innerHTML =
+                '&nbsp <b>E-RL:</b> &nbsp' + countBackwards;
         }
     }
 
@@ -3210,7 +3239,7 @@ class SudokuSolverView {
 
 class StepExplainerView {
     constructor() {
-        this.explainerNode = document.getElementById('step-explainer');
+        this.explainer = document.getElementById('step-explainer');
         this.explainerTextNode = document.getElementById('step-explainer-text');
         this.tippOkBtn = document.getElementById("tipp-accept-btn");
     }

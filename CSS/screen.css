@@ -963,76 +963,75 @@ Für Text: color: #222; oder color: #424242;
 
 }
 
-.progress-block {
+#progress-block {
     margin-top: 0.2rem;
     display: grid;
-    grid-template-columns: 1fr 0.2fr 0.8fr;
+    grid-template-columns: 1.2fr 0.1fr 0.7fr;
     gap: 0.2rem;
 }
+
 
 .step-count-box {
     display: flex;
     font-size: var(--cg-font-small);
-    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
     background: lightgray;
     padding: 0.2rem 0.4rem;
+}
+
+.step-count, 
+.backward-count {
+    flex: 1;
 }
 
 .forward-backward-image {
     margin-top: 0.2rem;
     width: 1rem;
-
 }
 
 #search-info-box {
+    margin-top: 0.2rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
     font-size: var(--cg-font-small);
     margin-top: 0.2rem;
-    width: 100%;
+    white-space: nowrap;
+  }
 
-}
-
-/*
-#search-path-container {
-    flex-grow: 9;
-    display: flex;
-    flex-direction: row;
-     font-size: var(--cg-font-small);
-        background-color: lightgrey;
-     
-}
-*/
-#search-path-label {
-    flex: 1;
+#search-path {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    gap: 0.4rem;
     font-size: var(--cg-font-small);
-    padding: 0.2rem 0.2rem;
-    padding-right: 0.2rem;
-    font-weight: bold;
     background-color: lightgray;
+    width: 100%;
+}
+
+#search-path-label {
+    padding: 0.2rem 0.4rem;
+    font-weight: bold;
 }
 
 #search-path-field {
     font-size: var(--cg-font-small);
-    flex: 2;
+    padding: 0.2rem 0.4rem;
+    margin-right: 0.4rem;
     white-space: nowrap;
-    background-color: lightgray;
 }
 
 #max-depth-value {
-    flex: 1;
     margin-left: 0.2rem;
     font-size: var(--cg-font-small);
     background-color: lightgray;
     color: black;
     padding: 0.2rem 0.4rem;
     text-align: right;
-    white-space: nowrap;
     background-color: lightgray;
+    width: 25%;
 }
-
 
 .horizontal-scroll {
     font-size: var(--cg-font-small);
@@ -1100,6 +1099,7 @@ Für Text: color: #222; oder color: #424242;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     padding-right: 0.4rem;
+    padding-left: 0.4rem;
 }
 
 #total-bar-value {
@@ -1827,9 +1827,10 @@ label {
 @media (orientation: portrait) {
     .app-content {
         height: 95dvh;
-        aspect-ratio: 1 / 2.2;
+        aspect-ratio: 1 / 2.1;
         width: auto;
-    }
+    
+        margin: 0 auto;}
 
     .content {
         flex-direction: column;
@@ -1870,11 +1871,11 @@ label {
         gap: 0.8rem;
 
     }
-
+    /*
     .main-panel {
         width: 55%;
     }
-
+*/
     .sidebar {
         /* min-width: 45%; */
     }
