@@ -433,6 +433,7 @@ button:active {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.1rem;
+    aspect-ratio: 1 / 1;
     /* line-height: 1; */
     text-align: center;
 
@@ -492,6 +493,7 @@ button:active {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    aspect-ratio: 1 / 1;
     align-items: center;
     justify-items: center;
     width: 100%;
@@ -510,6 +512,7 @@ button:active {
 .candidate {
     font-size: var(--cg-font-small);
     /* 0.7rem */
+    aspect-ratio: 1 / 1;
     color: black;
 }
 
@@ -526,6 +529,7 @@ button:active {
     /* 0.7rem; */
     color: white;
     font-weight: bold;
+    aspect-ratio: 1 / 1;
 
 }
 
@@ -552,14 +556,16 @@ button:active {
     font-weight: bold;
     color: white;
     background-color: red;
-    padding: 0.16rem;
+    aspect-ratio: 1 / 1;
+    
 }
 
 .candidate.necessary {
     font-weight: bold;
     color: white;
     background-color: green;
-    padding: 0.16rem;
+    aspect-ratio: 1 / 1;
+    
 }
 
 .candidate.single,
@@ -568,7 +574,7 @@ button:active {
     color: white;
     font-weight: bold;
     background-color: black;
-    padding: 0.2rem;
+    aspect-ratio: 1 / 1;
 }
 
 .sudoku-grid-cell.row-selected,
@@ -994,17 +1000,15 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #search-info-box {
-    margin-top: 0.2rem;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
+    flex-direction: column;
+    margin-top: 0.2rem;
     font-size: var(--cg-font-small);
     margin-top: 0.2rem;
-    white-space: nowrap;
 }
 
 #search-path {
+    flex: 1;
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
     gap: 0.4rem;
@@ -1025,15 +1029,27 @@ Für Text: color: #222; oder color: #424242;
     white-space: nowrap;
 }
 
+#depth-backward {
+    margin-top: 0.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 #max-depth-value {
-    margin-left: 0.2rem;
+    flex: 1;
     font-size: var(--cg-font-small);
-    background-color: lightgray;
-    color: black;
     padding: 0.2rem 0.4rem;
-    text-align: right;
-    background-color: lightgray;
-    width: 25%;
+      background-color: lightgray;
+}
+
+#backward-count {
+    flex: 1;
+    font-size: var(--cg-font-small);
+    padding: 0.2rem 0.4rem;
+    margin-left: 0.2rem;
+  background-color: lightgray;
 }
 
 .horizontal-scroll {
@@ -1830,7 +1846,8 @@ label {
 @media (orientation: portrait) {
     .app-content {
         height: 95dvh;
-        aspect-ratio: 1 / 2.1;
+        max-width: 95vw;
+        aspect-ratio: 1 / 2;
         width: auto;
 
         margin: 0 auto;
