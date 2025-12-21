@@ -557,7 +557,7 @@ button:active {
     color: white;
     background-color: red;
     aspect-ratio: 1 / 1;
-    
+
 }
 
 .candidate.necessary {
@@ -565,7 +565,7 @@ button:active {
     color: white;
     background-color: green;
     aspect-ratio: 1 / 1;
-    
+
 }
 
 .candidate.single,
@@ -1895,16 +1895,6 @@ label {
     .content {
         flex-direction: row;
         gap: 0.8rem;
-
-    }
-
-    /*
-    .main-panel {
-        width: 55%;
-    }
-*/
-    .sidebar {
-        /* min-width: 45%; */
     }
 
     .puzzle-table-dlg {
