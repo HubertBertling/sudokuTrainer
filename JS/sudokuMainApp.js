@@ -3219,7 +3219,7 @@ class SudokuSolverView {
             evalNode.innerHTML = '';
         } else { */
             evalNode.innerHTML =
-                '&nbsp <b>Error-RL:</b> &nbsp' + countBackwards;
+                '<b>Error-RL:</b> &nbsp' + countBackwards;
         /* } */
     }
 

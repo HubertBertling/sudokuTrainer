@@ -987,11 +987,11 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .step-count {
-    flex: 1.2;
+    flex: 1;
 }
 
 .backward-count {
-    flex: 0.8;
+    flex: 1;
 }
 
 .forward-backward-image {
@@ -1004,7 +1004,6 @@ Für Text: color: #222; oder color: #424242;
     flex-direction: column;
     margin-top: 0.2rem;
     font-size: var(--cg-font-base);
-    margin-top: 0.2rem;
 }
 
 #search-path {
@@ -1037,19 +1036,16 @@ Für Text: color: #222; oder color: #424242;
     justify-content: space-between;
 }
 
-#max-depth-value {
-    flex: 1;
-    font-size: var(--cg-font-base);
-    padding: 0.2rem 0.4rem;
-      background-color: lightgray;
-}
-
+#max-depth-value,
 #backward-count {
     flex: 1;
     font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
+    background-color: lightgray;
+}
+
+#backward-count {
     margin-left: 0.2rem;
-  background-color: lightgray;
 }
 
 .horizontal-scroll {
