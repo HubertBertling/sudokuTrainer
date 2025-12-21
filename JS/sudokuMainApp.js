@@ -2860,7 +2860,7 @@ class SudokuSolverView {
                         this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
                     } else {
                         this.displayOptionPath();
-                        this.displayBackwardCount('none');
+                        this.displayBackwardCount('0');
                     }
                     this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
                 }
@@ -2951,9 +2951,9 @@ class SudokuSolverView {
                     this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
                         '&nbsp;' + 0;
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--nested-cell-bg-color)';
+                        'lightgray';
                     this.solutionContainer.style.backgroundColor =
-                        'var(--nested-cell-bg-color)';
+                        'lightgray';
                 }
             } else {
                 // nr == 0 and no current search
@@ -2966,9 +2966,9 @@ class SudokuSolverView {
                 } else {
                     this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--nested-cell-bg-color)';
+                        'lightgray';
                     this.solutionContainer.style.backgroundColor =
-                        'var(--nested-cell-bg-color)';
+                        'lightgray';
 
                 }
             }
@@ -2998,7 +2998,7 @@ class SudokuSolverView {
             if (tmpLevel == 'Sehr schwer') {
                 this.displayBackwardCount(mySearch.myStepper.countBackwards);
             } else {
-                this.displayBackwardCount('none');
+                this.displayBackwardCount('0');
             }
             this.displayAutoDirection(mySearch.myStepper.getAutoDirection());
         } else {
@@ -3215,12 +3215,12 @@ class SudokuSolverView {
 
     displayBackwardCount(countBackwards) {
         let evalNode = document.getElementById("backward-count");
-        if (countBackwards == 'none') {
+        /* if (countBackwards == 'none') {
             evalNode.innerHTML = '';
-        } else {
+        } else { */
             evalNode.innerHTML =
                 '&nbsp <b>Error-RL:</b> &nbsp' + countBackwards;
-        }
+        /* } */
     }
 
     startLoaderAnimation(requestedLevel) {

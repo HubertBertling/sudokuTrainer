@@ -693,7 +693,7 @@ button:active {
 
 .step-explainer-text {
     flex-grow: 1;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
 }
 
@@ -965,7 +965,7 @@ Für Text: color: #222; oder color: #424242;
 /*======================================*/
 
 .progress-box {
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
 
 }
 
@@ -979,7 +979,7 @@ Für Text: color: #222; oder color: #424242;
 
 .step-count-box {
     display: flex;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     flex-direction: row;
     justify-content: space-between;
     background: lightgray;
@@ -1003,7 +1003,7 @@ Für Text: color: #222; oder color: #424242;
     display: flex;
     flex-direction: column;
     margin-top: 0.2rem;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     margin-top: 0.2rem;
 }
 
@@ -1012,7 +1012,7 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
     gap: 0.4rem;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     background-color: lightgray;
     width: 100%;
 }
@@ -1023,7 +1023,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #search-path-field {
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
     margin-right: 0.4rem;
     white-space: nowrap;
@@ -1039,21 +1039,21 @@ Für Text: color: #222; oder color: #424242;
 
 #max-depth-value {
     flex: 1;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
       background-color: lightgray;
 }
 
 #backward-count {
     flex: 1;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
     margin-left: 0.2rem;
   background-color: lightgray;
 }
 
 .horizontal-scroll {
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     scrollbar-color: red orange;
     overflow-y: hidden;
     scrollbar-width: thin;
