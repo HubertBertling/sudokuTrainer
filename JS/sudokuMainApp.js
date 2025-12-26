@@ -2929,7 +2929,7 @@ class SudokuSolverView {
 
     setNumberOfSolutions(nr) {
         if (nr > 0) {
-            this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
+            this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> >>> Lösungen gefunden: </span> &nbsp;' + nr + ' <<<'; 
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--played-cell-bg-color)';
             this.solutionContainer.style.backgroundColor =
