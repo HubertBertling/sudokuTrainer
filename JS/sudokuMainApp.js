@@ -2931,9 +2931,9 @@ class SudokuSolverView {
         if (nr > 0) {
             this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> >>> Lösungen gefunden: </span> &nbsp;' + nr + ' <<<'; 
             this.nrOfSolutionsField.style.backgroundColor =
-                'var(--played-cell-bg-color)';
+                'var(--solutions-found)';
             this.solutionContainer.style.backgroundColor =
-                'var(--played-cell-bg-color)';
+                'var(--solutions-found)'; /* 'var(--played-cell-bg-color)'; */
 
         } else {
             // nr == 0
@@ -2943,9 +2943,9 @@ class SudokuSolverView {
                     //nr == 0 and search is completed
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--played-cell-bg-color)';
+                        'var(solutions-found)';
                     this.solutionContainer.style.backgroundColor =
-                        'var(--played-cell-bg-color)';
+                        'var(solutions-found)';
                 } else {
                     // nr == 0 and current search is in progress
                     this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
@@ -2960,9 +2960,9 @@ class SudokuSolverView {
                 if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--played-cell-bg-color)';
+                        'var(--solutions-found)'; /*'var(--played-cell-bg-color)';*/
                     this.solutionContainer.style.backgroundColor =
-                        'var(--played-cell-bg-color)';
+                        'var(--solutions-found)'; /*'var(--played-cell-bg-color)';*/
                 } else {
                     this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
                     this.nrOfSolutionsField.style.backgroundColor =
@@ -3250,7 +3250,7 @@ class StepExplainerView {
     }
     clear() {
         this.explainerTextNode.classList.remove('red');
-        this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
+        this.explainerTextNode.innerHTML = 'Schrittbeschreibung ...';
         this.tippOkBtn.style.display = "none";
     }
     showExplainer() {
@@ -3263,7 +3263,7 @@ class StepExplainerView {
     setText(color, text) {
         if (text == '') {
             this.explainerTextNode.classList.remove('red');
-            this.explainerTextNode.innerHTML = 'Schrittsbeschreibung ...';
+            this.explainerTextNode.innerHTML = 'Schrittbeschreibung ...';
         } else {
             this.explainerTextNode.innerHTML = text;
             if (color == 'red') {

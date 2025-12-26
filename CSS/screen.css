@@ -38,7 +38,9 @@
 
 
 
-    --app-header-bg-color: hsl(202 26% 25%) /* hsl(202 16% 25%) ;*/
+    --app-header-bg-color: hsl(202 26% 25%); /* hsl(202 16% 25%) ;*/
+
+    --solutions-found: hsl(25, 100%, 70%);
 }
     
 /* 
