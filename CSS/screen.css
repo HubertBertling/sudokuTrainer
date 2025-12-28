@@ -510,16 +510,16 @@ button:active {
     color: black;
     font-weight: bold;
     background-color: var(--played-cell-bg-color);
-    padding: 0.1rem;
+    padding: 0.2rem;
 }
 
 
 .special-candidate.single {
     font-size: var(--cg-font-base);
     font-weight: bold;
-    color: white;
+    color: grey;
     font-weight: bold;
-    background-color: grey;
+    background-color: var(--nested-cell-bg-color);
     padding: 0.2rem;
 }
 
