@@ -517,7 +517,7 @@ button:active {
 .special-candidate.single {
     font-size: var(--cg-font-base);
     font-weight: bold;
-    color: grey;
+    color: black;
     font-weight: bold;
     background-color: var(--nested-cell-bg-color);
     padding: 0.2rem;
