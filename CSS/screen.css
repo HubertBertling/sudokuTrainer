@@ -211,6 +211,7 @@ body {
 .topbar-title {
     border: none;
     padding: 0.4rem;
+    font-weight: bold;
 }
 
 /* CONTENT AREA ---------------------------------------------- */
@@ -313,7 +314,7 @@ button:active {
 }
 
 .sidenav a {
-    padding: 0.4rem 1.6rem;
+    padding: 0.8rem 1.2rem;
     text-decoration: none;
     color: #818181;
     display: block;
@@ -338,7 +339,7 @@ button:active {
 
 
 #appVersion {
-    margin-top: 2rem;
+    margin-top: 1.2rem;
     margin-left: 1rem;
     color: white;
 }
@@ -1518,9 +1519,9 @@ label {
 
 #db-close-btn {
     position: absolute;
-    right: 1%;
+    right: 1rem;
     color: white;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h4);
 }
 
 
