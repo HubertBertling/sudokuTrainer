@@ -40,7 +40,7 @@
 
     --app-header-bg-color: hsl(202 26% 25%); /* hsl(202 16% 25%) ;*/
 
-    --solutions-found: hsl(25, 100%, 70%);
+    --solutions-found: hsl(40 100% 60%) /* hsl(35, 100%, 70%); */
 }
     
 /* 
@@ -313,12 +313,12 @@ button:active {
 }
 
 .sidenav a {
-    padding: 0.8rem 1.6rem;
+    padding: 0.4rem 1.6rem;
     text-decoration: none;
     color: #818181;
     display: block;
     transition: 0.3s;
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h3);
 }
 
 .sidenav a:hover {
@@ -328,9 +328,9 @@ button:active {
 .sidenav .closebtn {
     position: absolute;
     top: 0;
-    right: 1.56rem;
+    right: 0.4rem;
     font-size: var(--cg-font-h1);
-    margin-left: 3.1rem;
+    /* margin-left: 3.1rem; */
 }
 
 
