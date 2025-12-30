@@ -2941,11 +2941,11 @@ class SudokuSolverView {
                 // current search exists                
                 if (this.mySolver.myCurrentSearch.isCompleted()) {
                     //nr == 0 and search is completed
-                    this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
+                    this.nrOfSolutionsNode.innerHTML = '>>> Unlösbar <<<';
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(solutions-found)';
+                        'var(--solutions-found)';
                     this.solutionContainer.style.backgroundColor =
-                        'var(solutions-found)';
+                        'var(--solutions-found)';
                 } else {
                     // nr == 0 and current search is in progress
                     this.nrOfSolutionsNode.innerHTML = 'Lösungen gefunden: ' +
