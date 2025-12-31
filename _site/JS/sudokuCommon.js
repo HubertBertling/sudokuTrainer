@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.3.6';
+let VERSION = 'v1.3.8';
 
 // ==========================================
 // Basic classes
@@ -1447,7 +1447,7 @@ class SudokuGroup {
     }
 
     getMyIndex() {
-        return this.myIndex();
+        return this.myIndex;
     }
 
     isInAdmissibleDisplayActive() {

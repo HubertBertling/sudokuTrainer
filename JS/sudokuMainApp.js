@@ -1796,6 +1796,10 @@ class SudokuBlockView extends SudokuGroupView {
         })
     }
 
+    setBorderRedSelected() {
+        this.myNode.classList.add('hover-magenta');
+    }
+
 }
 
 class SudokuRowView extends SudokuGroupView {
@@ -2648,6 +2652,10 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderRedSelected();
                     }
                 })
+                let pBlock = info.pVector.myBlock;
+                let pBlockIndex = pBlock.getMyIndex();
+                let pBlockView = sudoApp.mySolverView.myGridView.sudoBlockViews[pBlockIndex];
+                pBlockView.setBorderRedSelected();
                 sudoApp.mySolverView.displayTechnique('red', adMissibleNrSelected
                     + ' eliminierbar wegen Zeiger-Paar');
                 return;
