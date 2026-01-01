@@ -34,7 +34,7 @@
     --error-cell-bg-color: hsl(340, 82%, 52%);
     --error-cell-color: white;
 
-    --hover-magenta-cell-border-color: Magenta;
+    --hover-magenta-border-color: Magenta;
 
 
 
@@ -572,11 +572,11 @@ button:active {
 
 
 .sudoku-grid-cell.hover {
-    border: 0.2rem solid var(--hover-magenta-cell-border-color);
+    border: 0.2rem solid var(--hover-magenta-border-color);
 }
 
 .sudoku-grid-cell.hover-magenta {
-    border: 0.3rem double var(--hover-magenta-cell-border-color);
+    border: 0.3rem double var(--hover-magenta-border-color);
 }
 
 .sudoku-grid-cell.hover-green {
@@ -599,11 +599,18 @@ button:active {
     border: 0.2rem dashed black;
 }
 
-.sudoku-block.hover-magenta {
-    border: 0.2rem double var(--hover-magenta-cell-border-color);
+.sudoku-block.error-block {
+    border: 0.2rem double var(--hover-magenta-border-color);
 }
 
-.sudoku-block.err {
+.sudoku-block.hover-magenta {
+    border: 0.2rem double var(--hover-magenta-border-color);
+}
+
+
+
+.sudoku-block.err,
+.sudoku-block.error-block {
     border: 0.1rem solid var(--error-cell-bg-color);
 }
 
