@@ -31,7 +31,7 @@
     --nested-cell-bg-color: hsl(44 75% 90%) ;
     --nested-cell-color: black;
 
-    --error-cell-bg-color: hsl(340, 82%, 52%);
+    --error-cell-bg-color:red /* hsl(340, 82%, 52%) */;
     --error-cell-color: white;
 
     --hover-magenta-border-color: Magenta;
@@ -599,10 +599,6 @@ button:active {
     border: 0.2rem dashed black;
 }
 
-.sudoku-block.error-block {
-    border: 0.2rem double var(--hover-magenta-border-color);
-}
-
 .sudoku-block.hover-magenta {
     border: 0.2rem double var(--hover-magenta-border-color);
 }
@@ -611,7 +607,7 @@ button:active {
 
 .sudoku-block.err,
 .sudoku-block.error-block {
-    border: 0.1rem solid var(--error-cell-bg-color);
+    border: 0.2rem solid var(--error-cell-bg-color);
 }
 
 .sudoku-grid-cell.block-err {
@@ -1123,6 +1119,7 @@ Für Text: color: #222; oder color: #424242;
     width: 100%;
     padding: 0.2rem 0.2rem;
     background-color: var(--nested-cell-bg-color);
+    font-weight: bold;
 }
 
 /*=======================================*/

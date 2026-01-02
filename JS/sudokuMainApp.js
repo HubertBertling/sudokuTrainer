@@ -2937,11 +2937,11 @@ class SudokuSolverView {
 
     setNumberOfSolutions(nr) {
         if (nr > 0) {
-            this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> >>> Lösungen gefunden: </span> &nbsp;' + nr + ' <<<'; 
+            this.nrOfSolutionsNode.innerHTML = '>>> Lösungen gefunden: &nbsp;' + nr + ' <<<'; 
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--solutions-found)';
             this.solutionContainer.style.backgroundColor =
-                'var(--solutions-found)'; /* 'var(--played-cell-bg-color)'; */
+                'var(--solutions-found)';
 
         } else {
             // nr == 0
@@ -3521,6 +3521,7 @@ class SudokuSolverController {
                         error_rl: 0,
                         numberOfSolutions: 1
                     }
+                    sudoApp.mySolverView.setNumberOfSolutions(1);
                     sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
                         this, () => { }
                     );
