@@ -1679,19 +1679,24 @@ class SudokuGroupView {
         return this.myIndex;
     }
 
+    /*
     displayUnsolvability() {
         // Analog die Widerspruchserkennung durch zwei gleiche notwendige Nummern in der Gruppe.
+        /*
         let intNecessary = this.getMyGroup().withConflictingNecessaryNumbers();
         if (intNecessary > 0) {
-            this.displayError();
+            // this.displayError();
             sudoApp.mySolverView.displayReasonUnsolvability('In der Gruppe zwei gleiche notwendige Nummern: ' + intNecessary);
             return true;
         }
+    }
+    */
+
+    displayConflictingSingles() {
         // Die Widersprüchlichkeit des Puzzles steht schon fest, wenn in einer Gruppe, also einem Block, 
         // einer Reihe oder einer Spalte an verschiedenen Stellen das gleiche Single auftritt.
         let intSingle = this.getMyGroup().withConflictingSingles();
         if (intSingle > 0) {
-            this.displayError();
             sudoApp.mySolverView.displayReasonUnsolvability('In der Gruppe zwei gleiche Singles: ' + intSingle);
             // If a conflicting single is selected, mark filled cells, which cause the single.
             this.getMyGroup().getMyCells().forEach(sudoCell => {
@@ -1719,10 +1724,13 @@ class SudokuGroupView {
             });
             return true;
         }
+    }
+
+    displayMissingNumber() {
         // Widerspruchserkennung durch eine fehlende Nummer in der Gruppe.
         let missingNumbers = this.getMyGroup().withMissingNumber();
         if (missingNumbers.size > 0) {
-            this.displayError();
+            // this.displayError();
             const [missingNr] = missingNumbers;
             sudoApp.mySolverView.displayReasonUnsolvability('In der Gruppe fehlt die Nummer: ' + missingNr);
             this.getMyGroup().getMyCells().forEach(sudoCell => {
@@ -1738,6 +1746,7 @@ class SudokuGroupView {
         }
         return false;
     }
+
 }
 
 class SudokuBlockView extends SudokuGroupView {
@@ -1775,9 +1784,15 @@ class SudokuBlockView extends SudokuGroupView {
     }
 
     displayUnsolvability() {
-        let tmp = super.displayUnsolvability();
+        let tmp1 = super.displayConflictingSingles();
+        let tmp2 = super.displayMissingNumber();
+
+
+
+
+
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-            if (tmp) {
+            if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyBlock().getMyCells().forEach(sudoCell => {
                     if (sudoCell.getValue() == '0') {
@@ -1785,15 +1800,19 @@ class SudokuBlockView extends SudokuGroupView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayNecessaryCandidates(sudoCell.myNecessarys);
                     }
                 })
+                this.displayError();
             }
         }
-        return tmp;
+        return tmp1 || tmp2;
     }
+
     displayError() {
         this.myNode.classList.add('error-block');
+        /*
         this.getMyBlock().getMyCells().forEach(sudoCell => {
             sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayBlockError();
         })
+        */
     }
 
     setBorderRedSelected() {
@@ -1817,10 +1836,30 @@ class SudokuRowView extends SudokuGroupView {
         return this.getMyGroup();
     }
 
+    displayConflictingSingles() {
+        let intSingle = super.displayConflictingSingles();
+        if (intSingle > 0) {
+            this.displayRowError();
+            return true;
+        }
+        return false;
+    }
+
+    displayMissingNumber() {
+        let missingNumber = super.displayMissingNumber();
+        if (missingNumber > 0) {
+            this.displayRowError();
+            return true;
+        }
+        return false;
+    }
+
     displayUnsolvability() {
-        let tmp = super.displayUnsolvability();
+        let tmp1 = super.displayConflictingSingles();
+        let tmp2 = super.displayMissingNumber();
+
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-            if (tmp) {
+            if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyRow().getMyCells().forEach(sudoCell => {
                     if (sudoCell.getValue() == '0') {
@@ -1828,14 +1867,41 @@ class SudokuRowView extends SudokuGroupView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayNecessaryCandidates(sudoCell.myNecessarys);
                     }
                 })
+                this.displayError();
             }
         }
-        return tmp;
+        return tmp1 || tmp2;
     }
+
 
     displayError() {
         this.getMyRow().getMyCells().forEach(sudoCell => {
-            sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayRowError();
+            switch (IndexCalculator.colIndex(sudoCell.myIndex)) {
+                case 0: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorFirstRowCell();
+                    break;
+                }
+                case 1: 
+                case 2: 
+                case 3: 
+                case 4: 
+                case 5: 
+                case 6: 
+                case 7: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorMiddleRowCell();
+                    break;
+                }
+                case 8: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorLastRowCell();
+                    break;
+                }
+                default: {
+                    {
+                        throw new Error('Unexpected index: ' + IndexCalculator.colIndex(sudoCell.myIndex));
+                    }
+                }
+            }
+
         })
     }
 }
@@ -1856,9 +1922,11 @@ class SudokuColView extends SudokuGroupView {
     }
 
     displayUnsolvability() {
-        let tmp = super.displayUnsolvability();
+        let tmp1 = super.displayConflictingSingles();
+        let tmp2 = super.displayMissingNumber();
+
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
-            if (tmp) {
+            if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyCol().getMyCells().forEach(sudoCell => {
                     if (sudoCell.getValue() == '0') {
@@ -1866,16 +1934,43 @@ class SudokuColView extends SudokuGroupView {
                         sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayNecessaryCandidates(sudoCell.myNecessarys);
                     }
                 })
+                this.displayError();
             }
         }
-        return tmp;
+        return tmp1 || tmp2;
     }
 
     displayError() {
         this.getMyCol().getMyCells().forEach(sudoCell => {
-            sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayColError();
+            switch (IndexCalculator.rowIndex(sudoCell.myIndex)) {
+                case 0: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorFirstColCell();
+                    break;
+                }
+                case 1:
+                case 2:
+                case 3:
+                case 4: 
+                case 5: 
+                case 6: 
+                case 7: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorMiddleColCell();
+                    break;
+                }
+                case 8: {
+                    sudoApp.mySolverView.myGridView.sudoCellViews[sudoCell.myIndex].displayErrorLastColCell();
+                    break;
+                }
+                default: {
+                    {
+                        throw new Error('Unexpected index: ' + IndexCalculator.rowIndex(sudoCell.myIndex));
+                    }
+                }
+            }
+
         })
     }
+
 }
 
 class SudokuGridView {
@@ -2369,6 +2464,30 @@ class SudokuCellView {
         // this.myCellNode.setAttribute('data-value', value);
         this.myCellNode.innerHTML = value;
     }
+
+    displayErrorFirstRowCell() {
+        this.myCellNode.classList.add('row-err-first-cell')
+    }
+
+    displayErrorMiddleRowCell() {
+        this.myCellNode.classList.add('row-err-middle-cell')
+    }
+    displayErrorLastRowCell() {
+        this.myCellNode.classList.add('row-err-last-cell')
+    }
+
+
+    displayErrorFirstColCell() {
+        this.myCellNode.classList.add('col-err-first-cell')
+    }
+
+    displayErrorMiddleColCell() {
+        this.myCellNode.classList.add('col-err-middle-cell')
+    }
+    displayErrorLastColCell() {
+        this.myCellNode.classList.add('col-err-last-cell')
+    }
+
 
 
     displayCellError() {
@@ -2937,7 +3056,7 @@ class SudokuSolverView {
 
     setNumberOfSolutions(nr) {
         if (nr > 0) {
-            this.nrOfSolutionsNode.innerHTML = '>>> Lösungen gefunden: &nbsp;' + nr + ' <<<'; 
+            this.nrOfSolutionsNode.innerHTML = '>>> Lösungen gefunden: &nbsp;' + nr + ' <<<';
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--solutions-found)';
             this.solutionContainer.style.backgroundColor =
@@ -3226,8 +3345,8 @@ class SudokuSolverView {
         /* if (countBackwards == 'none') {
             evalNode.innerHTML = '';
         } else { */
-            evalNode.innerHTML =
-                '<b>Error-RL:</b> &nbsp' + countBackwards;
+        evalNode.innerHTML =
+            '<b>Error-RL:</b> &nbsp' + countBackwards;
         /* } */
     }
 
