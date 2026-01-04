@@ -2804,7 +2804,7 @@ class SudokuCellView {
                 let pairInfo = this.myCell.inAdmissibleCandidatesFromPairs.get(adMissibleNrSelected);
 
                 if (pairInfo.collection instanceof SudokuBlock) {
-                    sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta(this.myCell);
+                    sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
                 } else if (pairInfo.collection instanceof SudokuRow) {
                     sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.collection.myIndex].setBorderMagenta(this.myCell);
                 } else if (pairInfo.collection instanceof SudokuCol) {
@@ -2902,6 +2902,10 @@ class SudokuCellView {
                 // 
                 let pairArray = [];
                 const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
+
+                if (pairInfo.collection instanceof SudokuBlock) {
+                    sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
+                }
                 pairInfo.collection.myCells.forEach(cell => {
                     if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderDoubleMagenta();
@@ -2909,9 +2913,13 @@ class SudokuCellView {
                             pairArray = Array.from(cell.getTotalCandidates());
                         }
                     } else {
-                        sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
+                        if (!pairInfo.collection instanceof SudokuBlock) {
+                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
+                        }
                     }
                 });
+
+
                 sudoApp.mySolverView.displayTechnique('magenta',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Verstecktem Paar" {'
