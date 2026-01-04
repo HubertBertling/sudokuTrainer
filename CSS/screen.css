@@ -39,7 +39,7 @@
     ;
     --error-cell-color: white;
 
-    --hover-magenta-border-color: Magenta;
+    --magenta-color: hsl(323, 89%, 70%);
 
 
 
@@ -414,10 +414,12 @@ button:active {
     grid-template-rows: repeat(3, 1fr);
     gap: 0.1rem;
     aspect-ratio: 1 / 1;
-
     text-align: center;
-
 }
+.sudoku-block.magenta {
+     border: 0.3rem solid var(--magenta-color);
+}
+
 
 .overlay {
     position: absolute;
@@ -557,6 +559,10 @@ button:active {
     aspect-ratio: 1 / 1;
 }
 
+.candidate.pair-candidate {
+    border: 0.3rem double var(--magenta-color);
+}
+
 .sudoku-grid-cell.row-selected,
 .sudoku-grid-cell.col-selected,
 .sudoku-grid-cell.block-selected {
@@ -577,13 +583,17 @@ button:active {
     animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.sudoku-grid-cell.double-magenta {
+    border: 0.3rem double var(--magenta-color);
+}
 
-.sudoku-grid-cell.hover {
-    border: 0.2rem solid var(--hover-magenta-border-color);
+
+.sudoku-grid-cell.magenta {
+    border: 0.2rem solid var(--magenta-color);
 }
 
 .sudoku-grid-cell.hover-magenta {
-    border: 0.3rem double var(--hover-magenta-border-color);
+    border: 0.3rem double var(--magenta-color);
 }
 
 .sudoku-grid-cell.hover-green {
@@ -607,7 +617,7 @@ button:active {
 }
 
 .sudoku-block.hover-magenta {
-    border: 0.2rem double var(--hover-magenta-border-color);
+    border: 0.2rem double var(--magenta-color);
 }
 
 
@@ -617,54 +627,74 @@ button:active {
     border: 0.3rem solid var(--error-cell-bg-color);
 }
 
-/*
-.sudoku-grid-cell.block-err {
-    border: 0.1rem solid var(--error-cell-bg-color);
+/* row-magenta */
+.sudoku-grid-cell.row-magenta-first-cell {
+    border-top: 0.3rem solid var(--magenta-color);
+    border-bottom: 0.3rem solid var(--magenta-color);
+    border-left: 0.3rem solid var(--magenta-color);
 }
-*/
+.sudoku-grid-cell.row-magenta-middle-cell {
+    border-top: 0.3rem solid var(--magenta-color);
+    border-bottom: 0.3rem solid var(--magenta-color);
+}
+.sudoku-grid-cell.row-magenta-last-cell {
+    border-top: 0.3rem solid var(--magenta-color);
+    border-bottom: 0.3rem solid var(--magenta-color);
+    border-right: 0.3rem solid var(--magenta-color); 
+}
 
+/* col-magenta */
+.sudoku-grid-cell.col-magenta-first-cell {
+    border-top: 0.3rem solid var(--magenta-color);
+    border-right: 0.3rem solid var(--magenta-color);
+    border-left: 0.3rem solid var(--magenta-color);
+}
+.sudoku-grid-cell.col-magenta-middle-cell {
+    border-left: 0.3rem solid var(--magenta-color);
+    border-right: 0.3rem solid var(--magenta-color);
+}
+.sudoku-grid-cell.col-magenta-last-cell {
+    border-left: 0.3rem solid var(--magenta-color);
+    border-bottom: 0.3rem solid var(--magenta-color);
+    border-right: 0.3rem solid var(--magenta-color); 
+}
+
+
+/* row error */
 .sudoku-grid-cell.row-err-first-cell {
     border-top: 0.3rem solid var(--error-cell-bg-color);
     border-bottom: 0.3rem solid var(--error-cell-bg-color);
     border-left: 0.3rem solid var(--error-cell-bg-color);
-    /* border-right: 0.2rem solid var(--error-cell-bg-color); */
 }
-
 .sudoku-grid-cell.row-err-middle-cell {
     border-top: 0.3rem solid var(--error-cell-bg-color);
     border-bottom: 0.3rem solid var(--error-cell-bg-color);
 }
-
 .sudoku-grid-cell.row-err-last-cell {
     border-top: 0.3rem solid var(--error-cell-bg-color);
     border-bottom: 0.3rem solid var(--error-cell-bg-color);
     border-right: 0.3rem solid var(--error-cell-bg-color); 
 }
 
-
-
+/* col-error */
 .sudoku-grid-cell.col-err-first-cell {
     border-top: 0.3rem solid var(--error-cell-bg-color);
     border-right: 0.3rem solid var(--error-cell-bg-color);
     border-left: 0.3rem solid var(--error-cell-bg-color);
 }
-
 .sudoku-grid-cell.col-err-middle-cell {
     border-left: 0.3rem solid var(--error-cell-bg-color);
     border-right: 0.3rem solid var(--error-cell-bg-color);
 }
-
 .sudoku-grid-cell.col-err-last-cell {
     border-left: 0.3rem solid var(--error-cell-bg-color);
     border-bottom: 0.3rem solid var(--error-cell-bg-color);
     border-right: 0.3rem solid var(--error-cell-bg-color); 
-
 }
 
 
 
-
-
+/*
 .sudoku-grid-cell.col-err {
     border-top: 0.1rem solid var(--error-cell-bg-color);
     border-bottom: 0.1rem solid var(--error-cell-bg-color);
@@ -678,6 +708,7 @@ button:active {
     border-top: 0.2rem solid var(--error-cell-bg-color);
     border-bottom: 0.2rem solid var(--error-cell-bg-color);
 }
+*/
 
 .sudoku-grid-cell.err,
 .sudoku-grid-cell.wrong {
@@ -724,6 +755,16 @@ button:active {
     flex-grow: 1;
     font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
+}
+
+.step-explainer-text.magenta {
+    background-color: var(--magenta-color);
+    color: black;
+}
+
+
+.step-explainer-text.red {
+    color: red;
 }
 
 #tipp-accept-btn {
