@@ -3489,7 +3489,7 @@ class StepExplainerView {
         this.tippOkBtn.style.display = "none";
     }
     showExplainer() {
-        this.explainer.style.display = "grid";
+        this.explainer.style.display = "flex";
     }
     hideExplainer() {
         this.explainer.style.display = "none";

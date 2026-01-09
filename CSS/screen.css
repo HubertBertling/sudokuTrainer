@@ -741,22 +741,6 @@ button:active {
 
 
 
-/*
-.sudoku-grid-cell.col-err {
-    border-top: 0.1rem solid var(--error-cell-bg-color);
-    border-bottom: 0.1rem solid var(--error-cell-bg-color);
-    border-left: 0.2rem solid var(--error-cell-bg-color);
-    border-right: 0.2rem solid var(--error-cell-bg-color);
-}
-
-.sudoku-grid-cell.row-err {
-    border-left: 0.1rem solid var(--error-cell-bg-color);
-    border-right: 0.1rem solid var(--error-cell-bg-color);
-    border-top: 0.2rem solid var(--error-cell-bg-color);
-    border-bottom: 0.2rem solid var(--error-cell-bg-color);
-}
-*/
-
 .sudoku-grid-cell.err,
 .sudoku-grid-cell.wrong {
     /* background-color: var(--error-cell-bg-color); 
@@ -787,7 +771,6 @@ button:active {
     white-space: nowrap;
     padding: 0.4rem 0.4rem;
 }
-
 
 .step-explainer {
     display: flex;
