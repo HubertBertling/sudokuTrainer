@@ -2489,7 +2489,7 @@ class SudokuCellView {
         let candidateNodes = this.myCellNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
-                candidateNodes[i].classList.add('necessary');
+                candidateNodes[i].classList.add('special-candidate','necessary');
             }
         }
     }
@@ -2506,7 +2506,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('inAdmissible');
+                    candidateNodes[i].classList.add('special-candidate','inAdmissible');
                 }
             }
         }
@@ -2523,7 +2523,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('inAdmissible');
+                    candidateNodes[i].classList.add('special-candidate','inAdmissible');
                 }
             }
         }
@@ -2879,10 +2879,15 @@ class SudokuCellView {
                 // 
                 let pairArray = [];
                 const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
-
+   
                 if (pairInfo.collection instanceof SudokuBlock) {
                     sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
+                } else if (pairInfo.collection instanceof SudokuRow) {
+                    sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.collection.myIndex].setBorderMagenta();
+                } else if (pairInfo.collection instanceof SudokuCol) {
+                    sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.collection.myIndex].setBorderMagenta();
                 }
+
                 pairInfo.collection.myCells.forEach(cell => {
                     if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();

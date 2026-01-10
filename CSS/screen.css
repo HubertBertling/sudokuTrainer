@@ -41,14 +41,14 @@
 
     --magenta-color: hsl(323, 98%, 50%);
     --magenta-color-background: hsl(323, 98%, 95%);
-    --magenta-color-background-darker: hsl(323, 98%, 55%);
+    --magenta-color-background-darker: hsl(323, 98%, 75%);
     --grauton-color: hsl(202 16% 45%);
     --grauton-color-background: hsl(202 16% 80%);
     --red-color: rgb(255, 9, 58);
     --green-color: GreenYellow;
 
 
-    --app-header-bg-color: hsl(202 26% 25%);
+    --app-header-bg-color: hsl(202 26% 35%);
     /* hsl(202 16% 25%) ;*/
 
     --solutions-found: hsl(40 100% 60%)
@@ -405,7 +405,10 @@ button:active {
 .main-sudoku-grid {
     position: relative;
     flex-grow: 1;
+    background: var(--app-header-bg-color);
+    border: 0.3rem solid var(--app-header-bg-color);
 }
+/*
 
 .main-sudoku-grid.manual{
     background: var(--manual-solver);
@@ -416,11 +419,12 @@ button:active {
     background: var(--automatic-solver);
     border: 0.3rem solid var(--automatic-solver);
 }
+*/
 
 .block-container {
     position: relative;
     display: grid;
-    background: var(--manual-solver);
+    background: var(--app-header-bg-color);
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.3rem;
@@ -484,11 +488,7 @@ button:active {
     text-align: center;
 }
 
-.sudoku-block.magenta,
-.sudoku-row.magenta,
-.sudoku-col.magenta {
-    border: 0.3rem solid var(--magenta-color);
-}
+
 
 .sudoku-col,
 .sudoku-row {
@@ -498,6 +498,12 @@ button:active {
     visibility: hidden;
     width: 100%;
     height: 100%;
+}
+
+.sudoku-block.magenta,
+.sudoku-row.magenta,
+.sudoku-col.magenta {
+    border: 0.3rem solid var(--magenta-color);
 }
 
 .sudoku-block.green,
@@ -790,9 +796,9 @@ button:active {
     margin-bottom: 0.2rem;
     background-color: var(--nested-cell-bg-color);
 
-    border-bottom: 0.3rem solid var(--automatic-solver);
-    border-left: 0.3rem solid var(--automatic-solver);
-    border-right: 0.3rem solid var(--automatic-solver);
+    border-bottom: 0.3rem solid var(--app-header-bg-color);
+    border-left: 0.3rem solid var(--app-header-bg-color);
+    border-right: 0.3rem solid var(--app-header-bg-color);
 }
 
 .step-explainer-text {
@@ -803,7 +809,7 @@ button:active {
 
 .step-explainer-text.magenta {
     background-color: var(--magenta-color);
-    color: black;
+    color: white;
 }
 
 
