@@ -567,7 +567,8 @@ button:active {
     background-size: 1px 1px;
 }
 
-.sudoku-grid-cell.candidates.selected.hatching {
+.sudoku-grid-cell.candidates.selected.hatching,
+.sudoku-grid-cell.candidates.auto-selected.hatching {
     background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
     background-size: 1px 1px;
 }
@@ -604,13 +605,15 @@ button:active {
 
 
 .sudoku-grid-cell.selected {
+       background-color: black;
+}   
+.sudoku-grid-cell.auto-selected.selected {
     background-color: rgb(126, 126, 126);
 }
 
 .sudoku-grid-cell.auto-selected {
-    background-color: black;
+       background-color: rgb(80, 80, 80);
 }
-
 .candidate {
     font-size: var(--cg-font-small);
     /* 0.7rem */

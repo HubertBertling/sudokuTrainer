@@ -1751,25 +1751,6 @@ class SudokuBlockView extends SudokuGroupView {
         return this.getMyGroup();
     }
 
-    /*
-    upDate() {
-        let blockContainerNode = document.getElementById("block-container");
-        // New DOM-block
-        let blockNode = document.createElement("div");
-        blockNode.setAttribute("class", "sudoku-block");
-        // Store the new DOM-Block in this view
-        this.myNode = blockNode;
-        //Add the new DOM block to the Dom-grid
-        blockContainerNode.appendChild(blockNode);
-        this.upDateMyCellViews();
-    }
-
-    upDateMyCellViews() {
-        this.myCellViews.forEach(cellView => {
-            cellView.upDate();
-        })
-    } */
-
     displayUnsolvability() {
         let tmp1 = super.displayConflictingSingles();
         let tmp2 = super.displayMissingNumber();
@@ -2377,6 +2358,7 @@ class SudokuCellView {
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
+                candidateNode.classList.add('candidate');
                 candidateNode.classList.add('special-candidate', 'necessary');
                 this.myCellNode.appendChild(candidateNode);
             })
@@ -2397,6 +2379,7 @@ class SudokuCellView {
 
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
+            candidateNode.classList.add('candidate');
             candidateNode.classList.add('special-candidate', 'single');
             candidateNode.innerHTML = candidate;
             this.myCellNode.appendChild(candidateNode);
@@ -2418,6 +2401,7 @@ class SudokuCellView {
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.innerHTML = candidate;
+            candidateNode.classList.add('candidate');
             candidateNode.classList.add('special-candidate', 'hidden-single');
             this.myCellNode.appendChild(candidateNode);
 
@@ -2427,6 +2411,8 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', redAdmissible);
 
                 candidateNode.innerHTML = redAdmissible;
+
+                candidateNode.classList.add('candidate');
                 candidateNode.classList.add('special-candidate', 'inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
             });
