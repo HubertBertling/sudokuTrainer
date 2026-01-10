@@ -315,7 +315,7 @@ button:active {
     height: 100%;
     width: 0;
     position: absolute;
-    z-index: 5;
+    z-index: 8;
     top: 0;
     left: 0;
     background-color: #111;
@@ -435,7 +435,7 @@ button:active {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 8;
+    z-index: 7;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     gap: 0.3rem;
@@ -458,7 +458,7 @@ button:active {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 6;
+    z-index: 7;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.3rem;
@@ -527,6 +527,7 @@ button:active {
     pointer-events: none;
     /* Klicks gehen durch */
     border-radius: inherit;
+    padding: 0.1rem
 }
 
 .sudoku-row {
@@ -557,7 +558,7 @@ button:active {
     aspect-ratio: 1 / 1;
     width: 100%;
     height: 100%;
-    padding: 0.2rem;
+    padding: 0.1rem;
 }
 
 .sudoku-grid-cell.hatching {
@@ -565,7 +566,7 @@ button:active {
     background-size: 1px 1px;
 }
 
-.sudoku-grid-cell {
+.sudoku-grid-cell.candidates {
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
     font-size: var(--cg-font-h4);
@@ -592,6 +593,7 @@ button:active {
     justify-items: center;
     width: 100%;
     height: 100%;
+    padding: 0.1rem;
 }
 
 

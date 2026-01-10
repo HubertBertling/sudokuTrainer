@@ -1773,7 +1773,8 @@ class SudokuBlockView extends SudokuGroupView {
     displayUnsolvability() {
         let tmp1 = super.displayConflictingSingles();
         let tmp2 = super.displayMissingNumber();
-        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+        if ((sudoApp.mySolver.getActualEvalType() == 'lazy-invisible')
+            || (sudoApp.mySolver.getActualEvalType() == 'lazy')) {
             if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyBlock().getMyCells().forEach(sudoCell => {
@@ -1856,7 +1857,8 @@ class SudokuRowView extends SudokuGroupView {
         let tmp1 = super.displayConflictingSingles();
         let tmp2 = super.displayMissingNumber();
 
-        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+        if (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+            sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
             if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyRow().getMyCells().forEach(sudoCell => {
@@ -1920,7 +1922,8 @@ class SudokuColView extends SudokuGroupView {
         let tmp1 = super.displayConflictingSingles();
         let tmp2 = super.displayMissingNumber();
 
-        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+        if ((sudoApp.mySolver.getActualEvalType() == 'lazy-invisible')
+            || (sudoApp.mySolver.getActualEvalType() == 'lazy')) {
             if (tmp1 || tmp2) {
                 // Inhalte der Gruppe dennoch anzeigen
                 this.getMyCol().getMyCells().forEach(sudoCell => {
@@ -1966,6 +1969,8 @@ class SudokuGridView {
     }
 
     generateDomGrid() {
+        // The main grid hierarchie is created.
+        // Mainly the grid consists of three container. 
         let gridNode = document.createElement('div');
         gridNode.setAttribute('id', 'main-sudoku-grid');
         gridNode.setAttribute('class', 'main-sudoku-grid');
@@ -1977,8 +1982,13 @@ class SudokuGridView {
     }
 
     generateBlockContainer() {
+        // The block container is the main container 
+        // and holds the 9 blocks of the sudoku grid.
 
-        // The new cell views are created.
+        // Each block contains 9 cells. In order to get the usual numbering
+        // of sudoku cells we are going to create the cells first
+        // before creating the block container.
+
         // Each cell view gets a link to its cell
         for (let i = 0; i < 81; i++) {
             let tmpCell = sudoApp.mySolver.myGrid.sudoCells[i];
@@ -1986,11 +1996,13 @@ class SudokuGridView {
             this.sudoCellViews.push(cellView);
         }
 
+        // Create the block container node
         this.myBlockContainerNode = document.createElement("div");
         this.myBlockContainerNode.setAttribute("class", "block-container");
         this.myBlockContainerNode.setAttribute("id", "block-container");
         this.myNode.appendChild(this.myBlockContainerNode);
-        // fill the container with blocks
+
+        // Fill the container with blocks
         for (let i = 0; i < 9; i++) {
             this.generateSudokuBlock(this.myBlockContainerNode, i);
         }
@@ -2000,10 +2012,12 @@ class SudokuGridView {
         let blockNode = document.createElement("div");
         blockNode.setAttribute("class", "sudoku-block");
         myBlockContainerNode.appendChild(blockNode);
+
         // wrap the block node
         let block = sudoApp.mySolver.myGrid.sudoBlocks[blockNumber];
         let blockView = new SudokuBlockView(block, blockNode, blockNumber);
         this.sudoBlockViews.push(blockView);
+
         // fill the block with cells
         for (let i = 0; i < 9; i++) {
             this.generateSudokuCell(blockNode, blockNumber, i);
@@ -2027,7 +2041,9 @@ class SudokuGridView {
 
         blockNode.appendChild(myRelPositionNode);
 
-        // wrap the cell nodeblock´
+        // Wrap the cell node
+        // Notice: up to this point the generated hierarchy 
+        // does not yet contain candidate information about the cell.
         let cellIndex = IndexCalculator.getCellIndexBlock(blockNumber, cellInBlockNumber);
         let cellView = this.sudoCellViews[cellIndex];
         cellView.saveCellNodes(cellNode, myCellOverlayNode);
@@ -2116,10 +2132,12 @@ class SudokuGridView {
 
         // Replace the previous DOM-grid by a new DOM-Grid
         let oldGridNode = document.getElementById("main-sudoku-grid");
+        // Generate a new DOM-grid
         let newGridNode = this.generateDomGrid();
 
         this.gridArea.replaceChild(newGridNode, oldGridNode);
         this.myNode = newGridNode;
+
 
         this.sudoCellViews.forEach(sudoCellView => {
             sudoCellView.upDate();
@@ -2149,7 +2167,7 @@ class SudokuGridView {
             }
 
         } else {
-             this.setManual();
+            this.setManual();
         }
 
 
@@ -2309,9 +2327,6 @@ class SudokuCellView {
     }
 
     upDate() {
-        // this.upDateDOMCell();
-
-
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
             // Display numbers but not candidates
             this.upDateCellContentWithoutCandidates();
@@ -2337,42 +2352,12 @@ class SudokuCellView {
         }
     }
 
-    /*
-    upDateDOMCell() {
-        // Add a new DOM-cell to its DOM-block
-        // and set its value found in the grid-cell
-        let cellIndex = this.myIndex;
-        this.myRelPositionNode = document.createElement("div");
-        this.myRelPositionNode.style.position = "relative";
-
-        this.myCellOverlayNode = document.createElement("div");
-        this.myCellOverlayNode.classList.add("cell-overlay");
-        this.myCellOverlayNode.style.display = "none";
-
-        this.myCellNode = document.createElement("div");
-        this.myCellNode.setAttribute("class", "sudoku-grid-cell");
-
-        this.myRelPositionNode.appendChild(this.myCellOverlayNode);
-        this.myRelPositionNode.appendChild(this.myCellNode);
-
-        // Add the new DOM-cell to to its the DOM-block
-        let myBlockIndex = IndexCalculator.blockIndex(cellIndex);
-        let myBlockView = sudoApp.mySolverView.myGridView.sudoBlockViews[myBlockIndex];
-        let myBlockNode = myBlockView.myNode;
-        myBlockNode.appendChild(this.myRelPositionNode);
-
-        // Add the cell-event-handler to the new DOM-cell
-        this.myCellNode.addEventListener('click', () => {
-            sudoApp.mySolverController.sudokuCellPressed(cellIndex);
-        });
-    }
-        */
 
     upDateCellContentWithoutCandidates() {
         // Set the value in the new DOM-cell
         if (this.myCell.myValue == '0') {
             // Display empty cell
-            // this.myCellNode.classList.add('empty');
+            this.myCellNode.classList.add('candidates');
         } else {
             // Set phase and value of the new DOM-cell
             this.displayGamePhase(this.myCell.myGamePhase);
@@ -2388,6 +2373,7 @@ class SudokuCellView {
                 && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1)) {
 
             this.myCell.myNecessarys.forEach(necessaryNr => {
+
                 let candidateNode = document.createElement('div');
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
@@ -2408,6 +2394,7 @@ class SudokuCellView {
             && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
             let candidate = Array.from(tmpCandidates)[0]
+
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.classList.add('special-candidate', 'single');
@@ -2426,12 +2413,12 @@ class SudokuCellView {
         if (tmpCandidates.size == 1
             && this.myCell.isSelected
             && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
-
             let candidate = Array.from(tmpCandidates)[0];
+
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.innerHTML = candidate;
-            candidateNode.classList.add('candidate', 'hidden-single');
+            candidateNode.classList.add('special-candidate', 'hidden-single');
             this.myCellNode.appendChild(candidateNode);
 
             let redAdmissibles = this.myCell.getCandidates().difference(tmpCandidates);
@@ -2440,7 +2427,7 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', redAdmissible);
 
                 candidateNode.innerHTML = redAdmissible;
-                candidateNode.classList.add('candidate', 'inAdmissible');
+                candidateNode.classList.add('special-candidate', 'inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
             });
             //To understand the hidden single of this cell, 
@@ -2469,7 +2456,8 @@ class SudokuCellView {
     }
 
     displayCandidates() {
-        let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' || sudoApp.mySolver.getActualEvalType() == 'strict-plus');
+        let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+            sudoApp.mySolver.getActualEvalType() == 'strict-plus');
         if (inAdmissiblesVisible) {
             this.displayCandidatesInDetail(this.myCell.getCandidates());
         } else {
@@ -2480,8 +2468,11 @@ class SudokuCellView {
     }
 
     displayCandidatesInDetail(admissibles) {
-        // this.myCellNode.classList.add('nested');
         this.myCellNode.classList.add('candidates');
+        // Lösche alle bisherigen Kindknoten
+        while (this.myCellNode.firstChild) {
+            this.myCellNode.removeChild(this.myCellNode.lastChild);
+        }
         // Übertrage die berechneten Möglchen in das DOM
         admissibles.forEach(e => {
             let candidateNode = document.createElement('div');
@@ -2492,7 +2483,23 @@ class SudokuCellView {
         });
     }
 
+
+    hasCandidate(number) {
+        let childNodes = this.myCellNode.children;
+        for (let i = 0; i < childNodes.length; i++) {
+            let nodeClassList = childNodes[i].getAttribute('class');
+            let nodeValue = childNodes[i].getAttribute('data-value');
+            if (nodeClassList.has('candidate')
+                && nodeValue == number) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     displayNecessaryCandidates(myNecessarys) {
+        // Markiere die notwendigen Kandidaten
         let candidateNodes = this.myCellNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
@@ -3485,7 +3492,7 @@ class StepExplainerView {
     }
     clear() {
         this.explainerTextNode.classList.remove('magenta');
-        this.explainerTextNode.innerHTML = '..';
+        this.explainerTextNode.innerHTML = '...';
         this.tippOkBtn.style.display = "none";
     }
     showExplainer() {
