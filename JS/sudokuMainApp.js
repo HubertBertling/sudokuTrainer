@@ -2575,7 +2575,6 @@ class SudokuCellView {
 
     setSelected() {
         this.myCellNode.classList.add('selected');
-        this.setBorderSolidWhiteSelected();
     }
 
     unsetSelected() {
@@ -2613,9 +2612,7 @@ class SudokuCellView {
     setBorderWhiteSelected() {
         this.myCellNode.classList.add('hover-white');
     }
-    setBorderSolidWhiteSelected() {
-        this.myCellNode.classList.add('hover-solid-white');
-    }
+    
     setBorderBlackSelected() {
         this.myCellNode.classList.add('hover-black');
     }

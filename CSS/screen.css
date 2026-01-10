@@ -41,6 +41,7 @@
 
     --magenta-color: hsl(323, 98%, 50%);
     --magenta-color-background: hsl(323, 98%, 95%);
+    --magenta-color-background-darker: hsl(323, 98%, 55%);
     --grauton-color: hsl(202 16% 45%);
     --grauton-color-background: hsl(202 16% 80%);
     --red-color: rgb(255, 9, 58);
@@ -561,8 +562,13 @@ button:active {
     padding: 0.1rem;
 }
 
-.sudoku-grid-cell.hatching {
+.sudoku-grid-cell.candidates.hatching {
     background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
+    background-size: 1px 1px;
+}
+
+.sudoku-grid-cell.candidates.selected.hatching {
+    background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
     background-size: 1px 1px;
 }
 
