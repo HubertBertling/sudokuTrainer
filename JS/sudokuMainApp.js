@@ -2323,6 +2323,7 @@ class SudokuCellView {
             if (this.myCell.candidatesEvaluated) {
                 this.displayCandidates();
                 this.displayNecessaryCandidates(this.myCell.myNecessarys);
+                this.displaySingleCandidate();
             } else {
                 this.myCellNode.classList.add('candidates');
             }
@@ -2339,6 +2340,7 @@ class SudokuCellView {
         if (this.myCell.myValue == '0') {
             // Display empty cell
             this.myCellNode.classList.add('candidates');
+
         } else {
             // Set phase and value of the new DOM-cell
             this.displayGamePhase(this.myCell.myGamePhase);
@@ -2491,6 +2493,16 @@ class SudokuCellView {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
                 candidateNodes[i].classList.add('special-candidate','necessary');
             }
+        }
+    }
+
+    displaySingleCandidate() {
+        // Markiere den Single Kandidaten, falls vorhanden
+        let candidateNode = this.myCellNode.lastChild;
+        if (this.myCell.getCandidates().size == 1 
+            && (candidateNode.getAttribute('data-value') == 
+                Array.from(this.myCell.getCandidates())[0])) {
+            candidateNode.classList.add('special-candidate', 'single');
         }
     }
 
@@ -2704,7 +2716,7 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('', 'In die selektierte Zelle <b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('', '<b>Single</b> ' + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
             if (this.myCell.getCandidates().size == 1) {
                 let single = Array.from(this.myCell.getCandidates())[0];
                 let numberSet = new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
@@ -2728,7 +2740,7 @@ class SudokuCellView {
             return;
         }
         if (this.myCell.getTotalCandidates().size == 1) {
-            sudoApp.mySolverView.displayTechnique('', 'In die selektierte Zelle  <b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
+            sudoApp.mySolverView.displayTechnique('', '<b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                 sudoApp.breakpointPassed('hiddenSingle');
             }

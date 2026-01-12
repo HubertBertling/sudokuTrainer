@@ -644,7 +644,7 @@ button:active {
 
 }
 
-.special-candidate.necessary {
+.sudoku-grid-cell.auto-selected >.special-candidate.necessary {
     font-size: var(--cg-font-base);
     color: black;
     font-weight: bold;
@@ -652,8 +652,7 @@ button:active {
     padding: 0.2rem;
 }
 
-
-.special-candidate.single {
+.sudoku-grid-cell.auto-selected >.special-candidate.single {
     font-size: var(--cg-font-base);
     font-weight: bold;
     color: black;
