@@ -55,6 +55,8 @@ layout: default
 
 # Herzlich willkommen zur Sudoku-Trainer-App
 
+
+
 ## Die Sudoku-Grundregeln
 
 ![Given](./imagesHelp/appview0_2.png){:width="200rem"} ![Solved](./imagesHelp/appview0_1.png){:width="200rem"}
@@ -904,7 +906,8 @@ Dieses Puzzle hat genau zwei Lösungen.
 Puzzles, die mehrere Lösungen besitzen, lassen sich nicht "lösen" sondern ihre Lösungen lassen sich aufzählen. In dem besonders einfachen Fall des vorigen Beispiels gibt es nur zwei Lösungen, die unmittelbar ersichtlich sind. Es kann aber sehr viel mehr Lösungen eines Puzzles geben. So gibt es ca. 6,7 Trilliarden verschiedene, vollständig ausgefüllte 9×9-Standard-Sudokus [Wikipedia](https://de.wikipedia.org/wiki/Sudoku#Die_Anzahl_der_Sudokus). D.h. die Lösungen mehrdeutiger Puzzles lassen sich prinzipiell aufzählen. Pragmatisch stößt diese Aufzählung bei großen Lösungsmengen an ihre Grenzen.
 
 **8. Vermutung: Nicht alle Puzzles mit eindeutiger Lösung können durch logisches Schließen gelöst werden.**
-Betrachten wir das folgende Beispiel.
+Ende November 2006 behauptete der finnische Mathematiker Arto Inkala, das schwierigste Sudoku der Welt entwickelt zu haben. „Ich habe das Rätsel AI Escargot genannt, weil es wie eine Schnecke aussieht. Es zu lösen ist wie ein intellektuelles kulinarisches Vergnügen. AI sind meine Initialen”, sagte er. Siehe [AI-Escargot](https://www.sudokuwiki.org/Escargot). 
+AI-Escargot = 100007090030020008009600500005300900010080002600004000300000010040000007007000300
 
 <figure >
    <img src="./imagesHelp/logischUnloesbar.png" alt="LogischUnloesbar" style="max-width:100%">
