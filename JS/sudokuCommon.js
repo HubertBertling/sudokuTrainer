@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.08';
+let VERSION = 'v1.4.09';
 
 // ==========================================
 // Basic classes
@@ -556,7 +556,7 @@ class Search {
             sudoApp.mySolver.notifyAspect('searchIsCompleted',
                 this.getNumberOfSolutions());
         }
-        return autoStepResult.action;
+        return autoStepResult.processResult;
     }
 
     cleanUp() {
@@ -2543,8 +2543,10 @@ class SudokuGrid {
 
 
     setStepLazy() {
-        this.stepLazy = true;
-        sudoApp.mySolver.setActualEvalType('lazy');
+        if (!sudoApp.mySolver.getActualEvalType == 'lazy') {
+            this.stepLazy = true;
+            sudoApp.mySolver.setActualEvalType('lazy');
+        }
     }
     unsetStepLazy() {
         if (this.stepLazy) {
@@ -3146,6 +3148,7 @@ class SudokuGrid {
         // Calculate the grid only so far, 
         // that the next step can be done unambiguously
         this.clearEvaluations();
+        // non-candidates
         this.calculateInAdmissibles();
         if (this.calculateNextNecessary()) {
             return;
@@ -3167,6 +3170,7 @@ class SudokuGrid {
 
     evaluateGridStrict() {
         this.clearEvaluations();
+        // non-candidates
         this.calculateInAdmissibles();
         this.calculateNecessarys();
         let inAdmissiblesAdded = true;
@@ -4713,7 +4717,7 @@ class SudokuSolver {
 
     setActualEvalType(value) {
         this.currentEvalType = value;
-        // this.myGrid.evaluateMatrix();
+        this.myGrid.evaluateMatrix();
     }
 
     setAutoDirection(direction) {

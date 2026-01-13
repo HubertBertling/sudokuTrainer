@@ -2119,21 +2119,10 @@ class SudokuGridView {
         this.gridArea.replaceChild(newGridNode, oldGridNode);
         this.myNode = newGridNode;
 
-
+        // Kandidaten in allen Zellen setzen
         this.sudoCellViews.forEach(sudoCellView => {
             sudoCellView.upDate();
         });
-
-        if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
-            sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
-            this.sudoCellViews.forEach(sudoCellView => {
-                sudoCellView.classifyCandidateNodesInAdmissible();
-            });
-        } else {
-            this.sudoCellViews.forEach(sudoCellView => {
-                sudoCellView.classifyCandidateNodesDependantInAdmissible();
-            });
-        }
 
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
@@ -2145,12 +2134,24 @@ class SudokuGridView {
                 // Candidates are not displayed in the matrix
                 // except for the cell of the next step
                 this.displayCandidateInvisibleMatrix();
+            } else {
+                this.displayCandidateMatrix();
             }
-
         } else {
             this.setManual();
         }
 
+        // Rote Kandidaten hervorheben
+        if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
+            sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
+            this.sudoCellViews.forEach(sudoCellView => {
+                sudoCellView.classifyCandidateNodesInAdmissible();
+            });
+        } else {
+            this.sudoCellViews.forEach(sudoCellView => {
+                sudoCellView.classifyCandidateNodesDependantInAdmissible();
+            });
+        }
 
         // Unlösbarkeit anzeigen.
         if (sudoApp.mySolver.isSearching()
@@ -2163,9 +2164,43 @@ class SudokuGridView {
         this.displayAutoSelection();
     }
 
+    displayCandidateMatrix() {
+        if (!this.myGrid.isFinished()) {
+            // Jetzt nur noch über die Zellen iterieren
+            this.sudoCellViews.forEach(cellView => {
+                if (cellView.myCell.getValue() == '0') {
+                    let necessaryCandExists = false;
+                    let singleCandExists = false;
+                    let hiddenSingleCandExists = false;
+
+                    if (!cellView.hasCandidateOfClass('necessary')) {
+                        necessaryCandExists = cellView.upDateNecessary();
+                    }
+                    if (!cellView.hasCandidateOfClass('necessary')
+                        && !cellView.hasCandidateOfClass('single')) {
+                        singleCandExists = cellView.upDateSingle();
+                    }
+                    if (!cellView.hasCandidateOfClass('necessary')
+                        && !cellView.hasCandidateOfClass('single')
+                        && !cellView.hasCandidateOfClass('hidden-single')) {
+                        hiddenSingleCandExists = cellView.upDateHiddenSingle();
+                    }
+
+                    if (!necessaryCandExists
+                        && !singleCandExists
+                        && !hiddenSingleCandExists) {
+                        cellView.upDateMultipleOptions();
+                    }
+                }
+            });
+        }
+    }
+
     displayCandidateInvisibleMatrix() {
         // Candidates are not displayed in the matrix
         // except for the next step cell
+        // At this point candidates are not yet created.
+        // The update methods below create candidates if necessary.
         if (!this.myGrid.isFinished()) {
             let necessaryCandidateExists = false;
             let singleCandidateExists = false;
@@ -2321,11 +2356,25 @@ class SudokuCellView {
         if (this.myCell.myValue == '0') {
             // The cell is not yet set
             if (this.myCell.candidatesEvaluated) {
+                // The candidates of the cell are evaluated
+                let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+                    sudoApp.mySolver.getActualEvalType() == 'strict-plus');
+                if (inAdmissiblesVisible) {
+                    this.displayCandidatesInDetail(this.myCell.getCandidates());
+                } else {
+                    // Angezeigte inAdmissibles sind zunächst einmal Zulässige
+                    // und dürfen jetzt nicht mehr angezeigt werden
+                    this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
+                }
+
+                /*               
+// Folgende 3 Zeilen auflösen
                 this.displayCandidates();
-                this.displayNecessaryCandidates(this.myCell.myNecessarys);
-                this.displaySingleCandidate();
+                let necessary = this.displayNecessaryCandidates(this.myCell.myNecessarys);
+                this.displaySingleCandidate(necessary);
+                */
             } else {
-                this.myCellNode.classList.add('candidates');
+                this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
             }
         } else {
             // The cell is assigned a number
@@ -2339,7 +2388,7 @@ class SudokuCellView {
         // Set the value in the new DOM-cell
         if (this.myCell.myValue == '0') {
             // Display empty cell
-            this.myCellNode.classList.add('candidates');
+            this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
 
         } else {
             // Set phase and value of the new DOM-cell
@@ -2393,7 +2442,7 @@ class SudokuCellView {
 
     upDateHiddenSingle() {
         // Gebe Single Nummer aus oder leere Zelle
-        this.myCellNode.classList.add('candidates');
+        this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
         let tmpCandidates = this.myCell.getTotalCandidates();
         if (tmpCandidates.size == 1
             && this.myCell.isSelected
@@ -2429,7 +2478,7 @@ class SudokuCellView {
 
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
-        this.myCellNode.classList.add('candidates');
+        this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
         // Die Optionen sind zulässige Kandidaten
         let tmpCandidates = this.myCell.getTotalCandidates();
         // Es gibt mindestens 2 Kandidaten, sprich Optionen
@@ -2456,19 +2505,43 @@ class SudokuCellView {
     }
 
     displayCandidatesInDetail(admissibles) {
-        this.myCellNode.classList.add('candidates');
-        // Lösche alle bisherigen Kindknoten
+        this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
+        // Lösche alle bisherigen Kandidaten ????
         while (this.myCellNode.firstChild) {
             this.myCellNode.removeChild(this.myCellNode.lastChild);
         }
-        // Übertrage die berechneten Möglchen in das DOM
+        // Übertrage die berechneten Kandidaten in das DOM
         admissibles.forEach(e => {
             let candidateNode = document.createElement('div');
             candidateNode.classList.add('candidate');
             candidateNode.setAttribute('data-value', e);
             candidateNode.innerHTML = e;
+
+            if (this.myCell.myNecessarys.has(e)) {
+                candidateNode.classList.add('special-candidate', 'necessary');
+            } else if (this.myCell.getCandidates().size == 1
+                && Array.from(this.myCell.getCandidates())[0] == e) {
+                candidateNode.classList.add('special-candidate', 'single');
+            } else if (this.myCell.getTotalCandidates().size == 1
+                && Array.from(this.myCell.getTotalCandidates())[0] == e
+                && !this.hasCandidateOfClass('single')) {
+                candidateNode.classList.add('special-candidate', 'hidden-single');
+            } else if (this.myCell.hsDependent_inAdmissibles.has(e)) {
+                candidateNode.classList.add('special-candidate', 'inAdmissible');
+            }
             this.myCellNode.appendChild(candidateNode);
         });
+    }
+
+
+    hasCandidateOfClass(cl) {
+        let childNodes = this.myCellNode.children;
+        for (let i = 0; i < childNodes.length; i++) {
+            if (childNodes[i].classList.contains(cl)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -2477,7 +2550,7 @@ class SudokuCellView {
         for (let i = 0; i < childNodes.length; i++) {
             let nodeClassList = childNodes[i].getAttribute('class');
             let nodeValue = childNodes[i].getAttribute('data-value');
-            if (nodeClassList.has('candidate')
+            if (childNodes[i].classList.contains('candidate')
                 && nodeValue == number) {
                 return true;
             }
@@ -2491,16 +2564,19 @@ class SudokuCellView {
         let candidateNodes = this.myCellNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
-                candidateNodes[i].classList.add('special-candidate','necessary');
+                candidateNodes[i].classList.add('special-candidate', 'necessary');
+                return true
             }
         }
+        return false;
     }
 
-    displaySingleCandidate() {
+    displaySingleCandidate(necessaryDisplayed) {
         // Markiere den Single Kandidaten, falls vorhanden
         let candidateNode = this.myCellNode.lastChild;
-        if (this.myCell.getCandidates().size == 1 
-            && (candidateNode.getAttribute('data-value') == 
+        if (!necessaryDisplayed
+            && this.myCell.getCandidates().size == 1
+            && (candidateNode.getAttribute('data-value') ==
                 Array.from(this.myCell.getCandidates())[0])) {
             candidateNode.classList.add('special-candidate', 'single');
         }
@@ -2518,7 +2594,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate','inAdmissible');
+                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
                 }
             }
         }
@@ -2535,7 +2611,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate','inAdmissible');
+                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
                 }
             }
         }
@@ -2610,7 +2686,7 @@ class SudokuCellView {
     setBorderWhiteSelected() {
         this.myCellNode.classList.add('hover-white');
     }
-    
+
     setBorderBlackSelected() {
         this.myCellNode.classList.add('hover-black');
     }
@@ -2643,7 +2719,7 @@ class SudokuCellView {
         if (this.myCell.myValue == '0' && this.myCellNode.children.length == 0) {
             // Die Zelle ist noch nicht gesetzt
             this.displayCandidates();
-            this.displayNecessaryCandidates(this.myCell.myNecessarys);
+            // this.displayNecessaryCandidates(this.myCell.myNecessarys);
             this.classifyCandidateNodesInAdmissible();
         }
 
@@ -2695,22 +2771,6 @@ class SudokuCellView {
                 }
             });
 
-            /*
-            collection.myCells.forEach(e => {
-                if (e !== this.myCell) {
-                    if (e.getValue() == '0') {
-                        //e.myView.setBorderGreenSelected();
-                        // sudoApp.mySolverView.myGridView.sudoCellViews[e.myIndex].setBorderGreenSelected();
-                        e.myInfluencers.forEach(cell => {
-                            if (cell.getValue() == Array.from(this.myCell.myNecessarys)[0]) {
-                                //cell.myView.setBorderWhiteSelected();
-                                sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
-                            }
-                        });
-                    }
-                }
-            });
-            */
             sudoApp.mySolverView.displayTechnique('', '<b>Notwendige Nr.</b> ' + Array.from(this.myCell.myNecessarys)[0] +
                 ' setzen.');
             return;
@@ -2763,7 +2823,7 @@ class SudokuCellView {
         if (this.myCell.myNecessarys.size > 0) {
             if (adMissibleNrSelected == Array.from(this.myCell.myNecessarys)[0]) {
                 let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
-                this.myBlockView.displayNecessaryCandidate();
+                // this.myBlockView.displayNecessaryCandidate();
                 collection.myCells.forEach(e => {
                     if (e !== this.myCell) {
                         if (e.getValue() == '0') {
@@ -2776,8 +2836,9 @@ class SudokuCellView {
                         }
                     }
                 });
-                /*                sudoApp.mySolverView.displayTechnique('', 'Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
-                                    ' in der Gruppe setzen.');*/
+                // ??? richtig ????
+                // sudoApp.mySolverView.displayTechnique('', 'Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
+                // ' in der Gruppe setzen.');
                 return;
             }
         }
@@ -2891,7 +2952,7 @@ class SudokuCellView {
                 // 
                 let pairArray = [];
                 const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
-   
+
                 if (pairInfo.collection instanceof SudokuBlock) {
                     sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
                 } else if (pairInfo.collection instanceof SudokuRow) {
@@ -3427,18 +3488,15 @@ class SudokuSolverView {
     }
 
     displayTechnique(color, tech) {
-        if (this.mySolver.getActualEvalType() == 'lazy' ||
-            this.mySolver.getActualEvalType() == 'lazy-invisible') {
-            this.myStepExplainerView.setText(color, tech);
-            if (sudoApp.mySolver.isSearching()) {
-                if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
-                    this.myStepExplainerView.setOkBtn();
-                } else {
-                    this.myStepExplainerView.unsetOkBtn();
-                }
+        this.myStepExplainerView.setText(color, tech);
+        if (sudoApp.mySolver.isSearching()) {
+            if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
+                this.myStepExplainerView.setOkBtn();
             } else {
                 this.myStepExplainerView.unsetOkBtn();
             }
+        } else {
+            this.myStepExplainerView.unsetOkBtn();
         }
     }
 

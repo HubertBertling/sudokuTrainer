@@ -408,18 +408,6 @@ button:active {
     background: var(--app-header-bg-color);
     border: 0.3rem solid var(--app-header-bg-color);
 }
-/*
-
-.main-sudoku-grid.manual{
-    background: var(--manual-solver);
-    border: 0.3rem solid var(--manual-solver);
-}
-
-.main-sudoku-grid.automatic {
-    background: var(--automatic-solver);
-    border: 0.3rem solid var(--automatic-solver);
-}
-*/
 
 .block-container {
     position: relative;
@@ -492,7 +480,7 @@ button:active {
 
 .sudoku-col,
 .sudoku-row {
-
+    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
     /* Klicks gehen durch */
     border-radius: inherit;
     visibility: hidden;
@@ -611,18 +599,19 @@ button:active {
 
 
 .sudoku-grid-cell.selected {
-       background-color: black;
-}   
+    background-color: black;
+}
+
 .sudoku-grid-cell.auto-selected.selected {
     background-color: rgb(126, 126, 126);
 }
 
 .sudoku-grid-cell.auto-selected {
-       background-color: rgb(80, 80, 80);
+    background-color: rgb(80, 80, 80);
 }
+
 .candidate {
     font-size: var(--cg-font-small);
-    /* 0.7rem */
     aspect-ratio: 1 / 1;
     color: black;
 }
@@ -637,30 +626,19 @@ button:active {
 .sudoku-grid-cell.selected>.candidate,
 .sudoku-grid-cell.auto-selected>.candidate {
     font-size: var(--cg-font-small);
-    /* 0.7rem; */
     color: white;
     font-weight: bold;
     aspect-ratio: 1 / 1;
 
 }
 
-.sudoku-grid-cell.auto-selected >.special-candidate.necessary {
+.sudoku-grid-cell.auto-selected.lazy-invisible>.special-candidate {
     font-size: var(--cg-font-base);
     color: black;
     font-weight: bold;
     background-color: var(--played-cell-bg-color);
     padding: 0.2rem;
 }
-
-.sudoku-grid-cell.auto-selected >.special-candidate.single {
-    font-size: var(--cg-font-base);
-    font-weight: bold;
-    color: black;
-    font-weight: bold;
-    background-color: var(--nested-cell-bg-color);
-    padding: 0.2rem;
-}
-
 
 .candidate.inAdmissible {
     font-weight: bold;
