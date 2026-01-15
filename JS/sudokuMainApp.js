@@ -2368,7 +2368,7 @@ class SudokuCellView {
                 }
 
                 /*               
-// Folgende 3 Zeilen auflösen
+                // Folgende 3 Zeilen auflösen
                 this.displayCandidates();
                 let necessary = this.displayNecessaryCandidates(this.myCell.myNecessarys);
                 this.displaySingleCandidate(necessary);
@@ -2467,9 +2467,6 @@ class SudokuCellView {
                 candidateNode.classList.add('special-candidate', 'inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
             });
-            //To understand the hidden single of this cell, 
-            //we switch to lazy mode for this step.
-            sudoApp.mySolver.setStepLazy();
             return true;
         } else {
             return false;
@@ -2817,7 +2814,7 @@ class SudokuCellView {
     }
 
     displayReasons() {
-        let adMissibleNrSelected = this.myCell.getAdMissibleNrSelected();
+        let adMissibleNrSelected = this.myCell.getSelectedCandidate();
 
 
         if (this.myCell.myNecessarys.size > 0) {

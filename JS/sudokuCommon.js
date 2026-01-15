@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.09';
+let VERSION = 'v1.4.10';
 
 // ==========================================
 // Basic classes
@@ -2543,9 +2543,10 @@ class SudokuGrid {
 
 
     setStepLazy() {
-        if (!sudoApp.mySolver.getActualEvalType == 'lazy') {
+        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
             this.stepLazy = true;
             sudoApp.mySolver.setActualEvalType('lazy');
+            sudoApp.mySolver.notify();
         }
     }
     unsetStepLazy() {
@@ -3412,6 +3413,12 @@ class SudokuGrid {
                 this.deselect();
             } else {
                 this.setAdMissibleIndexSelected(candidateIndexSelected);
+                let sc = this.selectedCell();
+                if (sc.inAdmissibleCandidates.has(sc.getSelectedCandidate())) {
+                    //To understand the hidden single of this cell, 
+                    //we switch to lazy mode for this step.
+                    sudoApp.mySolver.setStepLazy();
+                }
             }
         } else {
             this.deselect();
@@ -3712,6 +3719,11 @@ class SudokuCell {
         let candidateIArray = Array.from(this.getCandidates());
         return candidateIArray[this.candidateIndexSelected];
     }
+
+    getSelectedCandidate() {
+        let candidateIArray = Array.from(this.getCandidates());
+        return candidateIArray[this.candidateIndexSelected];
+    }   
 
     setAdMissibleIndexSelected(nr) {
         this.candidateIndexSelected = nr;
