@@ -2135,7 +2135,8 @@ class SudokuGridView {
                 // except for the cell of the next step
                 this.displayCandidateInvisibleMatrix();
             } else {
-                this.displayCandidateMatrix();
+                // this.displayCandidateMatrix();
+                // Das geschieht schon in der obigen while-Schleife in sudoCellView.upDate()
             }
         } else {
             this.setManual();
@@ -2490,15 +2491,17 @@ class SudokuCellView {
     }
 
     displayCandidates() {
-        let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
-            sudoApp.mySolver.getActualEvalType() == 'strict-plus');
-        if (inAdmissiblesVisible) {
+      //  let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+      //      sudoApp.mySolver.getActualEvalType() == 'strict-plus');
+      //  if (inAdmissiblesVisible) {
             this.displayCandidatesInDetail(this.myCell.getCandidates());
-        } else {
+      //  } else {
             // Angezeigte inAdmissibles sind zunächst einmal Zulässige
             // und dürfen jetzt nicht mehr angezeigt werden
-            this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
-        }
+
+            // abschalten
+            // this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
+        //}
     }
 
     displayCandidatesInDetail(admissibles) {

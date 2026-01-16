@@ -44,6 +44,8 @@
     --magenta-color-background-darker: hsl(323, 98%, 75%);
     --grauton-color: hsl(202 16% 45%);
     --grauton-color-background: hsl(202 16% 80%);
+    --grauton-auto-selected: rgb(126, 126, 126);
+    --grauton-selecetd:  rgb(80, 80, 80);
     --red-color: rgb(255, 9, 58);
     --green-color: GreenYellow;
 
@@ -598,11 +600,11 @@ button:active {
 }
 
 .sudoku-grid-cell.auto-selected.selected {
-    background-color: rgb(126, 126, 126);
+    background-color: var(--grauton-selected);
 }
 
 .sudoku-grid-cell.auto-selected {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--grauton-auto-selected);
 }
 
 .sudoku-grid-cell.selected.solved,
@@ -636,7 +638,7 @@ button:active {
 }
 
 .sudoku-grid-cell.selected.auto-selected.lazy-invisible > .candidate.single {
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
     padding: 0.1rem;
     color: black;
     background-color: var(--nested-cell-bg-color)
@@ -651,7 +653,7 @@ button:active {
 */
 
 .sudoku-grid-cell.selected.auto-selected.lazy-invisible > .candidate.necessary {
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
     color: white;
     font-weight: bold;
     background-color: green;
@@ -671,7 +673,8 @@ button:active {
     color: white;
     font-weight: bold;
 }
-:not(.sudoku-grid-cell.auto-selected).sudoku-grid-cell.selected > :not(.candidate.necessary) {
+.sudoku-grid-cell.selected > .candidate {
+    font-weight: bold;
     color: white;
     background-color: black;
 }
@@ -680,7 +683,8 @@ button:active {
     border: 0.3rem double var(--magenta-color);
 }
 
-.candidate.inAdmissible {
+.candidate.inAdmissible,
+.sudoku-grid-cell.selected > .candidate.inAdmissible {
     font-weight: bold;
     color: white;
     background-color: red;
