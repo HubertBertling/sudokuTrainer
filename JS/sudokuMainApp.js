@@ -2181,11 +2181,12 @@ class SudokuGridView {
                         && !cellView.hasCandidateOfClass('single')) {
                         singleCandExists = cellView.upDateSingle();
                     }
-                    if (!cellView.hasCandidateOfClass('necessary')
+             /*     if (!cellView.hasCandidateOfClass('necessary')
                         && !cellView.hasCandidateOfClass('single')
                         && !cellView.hasCandidateOfClass('hidden-single')) {
                         hiddenSingleCandExists = cellView.upDateHiddenSingle();
                     }
+            */
 
                     if (!necessaryCandExists
                         && !singleCandExists
@@ -2231,6 +2232,7 @@ class SudokuGridView {
                 });
             }
 
+            /*
             // If there is no necessary and no single number the first hidden single number will be displayed       
             if (!necessaryCandidateExists && !singleCandidateExists) {
                 this.sudoCellViews.forEach(cellView => {
@@ -2242,6 +2244,7 @@ class SudokuGridView {
                     }
                 });
             }
+            */
 
             if (!necessaryCandidateExists
                 && !singleCandidateExists
@@ -2441,6 +2444,7 @@ class SudokuCellView {
         }
     }
 
+    /*
     upDateHiddenSingle() {
         // Gebe Single Nummer aus oder leere Zelle
         this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
@@ -2473,6 +2477,7 @@ class SudokuCellView {
             return false;
         }
     }
+    */
 
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
@@ -2965,7 +2970,8 @@ class SudokuCellView {
                     if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
                         if (pairArray.length == 0) {
-                            pairArray = Array.from(cell.getTotalCandidates());
+                            // pairArray = Array.from(cell.getTotalCandidates());
+                            pairArray = Array.from(cell.getCandidates());
                         }
                     } else {
                         if (!pairInfo.collection instanceof SudokuBlock) {
@@ -2974,13 +2980,21 @@ class SudokuCellView {
                     }
                 });
 
-
+                /*
                 sudoApp.mySolverView.displayTechnique('magenta',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Verstecktem Paar" {'
                     + pairArray[0]
                     + ', '
                     + pairArray[1] + '}');
+                */
+                    
+                sudoApp.mySolverView.displayTechnique('magenta',
+                    adMissibleNrSelected
+                    + ' eliminierbar wegen "Verstecktem Paar" {'
+                    + pairInfo.collection.hiddenPairs[0].nr1
+                    + ', '
+                    + pairInfo.collection.hiddenPairs[0].nr2 + '}');
                 return;
             }
         }

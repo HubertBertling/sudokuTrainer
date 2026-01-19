@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.13';
+let VERSION = 'v1.4.14';
 
 // ==========================================
 // Basic classes
@@ -1547,7 +1547,8 @@ class SudokuGroup {
         // Iterate over the group
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
-                let permNumbers = this.myCells[i].getTotalCandidates();
+                //let permNumbers = this.myCells[i].getTotalCandidates();
+                let permNumbers = this.myCells[i].getCandidates();
                 permNumbers.forEach(nr => {
                     let iNr = parseInt(nr);
                     // Save the indices of their occurrence for each number
