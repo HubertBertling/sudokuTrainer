@@ -44,6 +44,8 @@
     --magenta-color-background-darker: hsl(323, 98%, 75%);
     --grauton-color: hsl(202 16% 45%);
     --grauton-color-background: hsl(202 16% 80%);
+    --grauton-auto-selected: rgb(126, 126, 126);
+    --grauton-selecetd:  rgb(80, 80, 80);
     --red-color: rgb(255, 9, 58);
     --green-color: GreenYellow;
 
@@ -556,22 +558,27 @@ button:active {
     padding: 0.1rem;
 }
 
-.sudoku-grid-cell.candidates.hatching {
-    background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
-    background-size: 1px 1px;
-}
+/* Nich selektierte Zelle */
 
-.sudoku-grid-cell.candidates.selected.hatching,
-.sudoku-grid-cell.candidates.auto-selected.hatching {
+
+.sudoku-grid-cell.hatching.selected {
     background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
     background-size: 1px 1px;
 }
+
+.sudoku-grid-cell.hatching {
+    background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
+    background-size: 1px 1px;
+    
+}
+
 
 .sudoku-grid-cell.candidates {
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
     font-size: var(--cg-font-h4);
 }
+
 
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
@@ -597,76 +604,68 @@ button:active {
     padding: 0.2rem;
 }
 
-
+/* Selektierte Zelle */
 .sudoku-grid-cell.selected {
-    background-color: black;
-}
-
-.sudoku-grid-cell.auto-selected.selected {
-    background-color: rgb(126, 126, 126);
+    background-color: var(--grauton-selected);
 }
 
 .sudoku-grid-cell.auto-selected {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--grauton-auto-selected);
+}
+
+:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected) 
+.sudoku-grid-cell.solved {
+    color: white;
 }
 
 .candidate {
     font-size: var(--cg-font-small);
     aspect-ratio: 1 / 1;
+  
+ }
+
+.candidate :not(.necessary):not(.single) {
     color: black;
-}
-
-.sudoku-grid-cell.selected.solved,
-.sudoku-grid-cell.auto-selected.solved {
-    font-size: var(--cg-font-h4);
-    color: white;
-    font-weight: bold;
-}
-
-.sudoku-grid-cell.selected>.candidate,
-.sudoku-grid-cell.auto-selected>.candidate {
-    font-size: var(--cg-font-small);
-    color: white;
-    font-weight: bold;
-    aspect-ratio: 1 / 1;
-
-}
-
-.sudoku-grid-cell.auto-selected.lazy-invisible>.special-candidate {
-    font-size: var(--cg-font-base);
-    color: black;
-    font-weight: bold;
-    background-color: var(--played-cell-bg-color);
-    padding: 0.2rem;
-}
-
-.candidate.inAdmissible {
-    font-weight: bold;
-    color: white;
-    background-color: red;
-    aspect-ratio: 1 / 1;
-
 }
 
 .candidate.necessary {
-    font-weight: bold;
     color: white;
     background-color: green;
-    aspect-ratio: 1 / 1;
-
+    padding: 0.1rem;
 }
 
-.candidate.single,
-.candidate.hidden-single {
-    font-weight: bold;
+/* Selektierte Zelle */
+.sudoku-grid-cell.lazy-invisible
+        > .candidate.necessary {
+    font-size: var(--cg-font-h6);
     color: white;
     font-weight: bold;
-    background-color: black;
-    aspect-ratio: 1 / 1;
+    background-color: green;
+    padding: 0.1rem;
+}
+
+.sudoku-grid-cell :is(.lazy, .strict-plus, .struct-minus) 
+        > .candidate.necessary {
+    font-size: var(--cg-font-small);
+    color: white;
+    font-weight: bold;
+    background-color: green;
+    padding: 0.1rem;
+}
+
+:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected)
+        > :not(.candidate.necessary){
+    color: white;
 }
 
 .candidate.pair-candidate {
     border: 0.3rem double var(--magenta-color);
+}
+
+.candidate.inAdmissible {
+    color: white;
+    background-color: red;
+    aspect-ratio: 1 / 1;
 }
 
 .sudoku-grid-cell.row-selected,

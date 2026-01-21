@@ -2135,7 +2135,8 @@ class SudokuGridView {
                 // except for the cell of the next step
                 this.displayCandidateInvisibleMatrix();
             } else {
-                this.displayCandidateMatrix();
+                // this.displayCandidateMatrix();
+                // Das geschieht schon in der obigen while-Schleife in sudoCellView.upDate()
             }
         } else {
             this.setManual();
@@ -2180,11 +2181,12 @@ class SudokuGridView {
                         && !cellView.hasCandidateOfClass('single')) {
                         singleCandExists = cellView.upDateSingle();
                     }
-                    if (!cellView.hasCandidateOfClass('necessary')
+             /*     if (!cellView.hasCandidateOfClass('necessary')
                         && !cellView.hasCandidateOfClass('single')
                         && !cellView.hasCandidateOfClass('hidden-single')) {
                         hiddenSingleCandExists = cellView.upDateHiddenSingle();
                     }
+            */
 
                     if (!necessaryCandExists
                         && !singleCandExists
@@ -2230,6 +2232,7 @@ class SudokuGridView {
                 });
             }
 
+            /*
             // If there is no necessary and no single number the first hidden single number will be displayed       
             if (!necessaryCandidateExists && !singleCandidateExists) {
                 this.sudoCellViews.forEach(cellView => {
@@ -2241,6 +2244,7 @@ class SudokuGridView {
                     }
                 });
             }
+            */
 
             if (!necessaryCandidateExists
                 && !singleCandidateExists
@@ -2368,7 +2372,7 @@ class SudokuCellView {
                 }
 
                 /*               
-// Folgende 3 Zeilen auflösen
+                // Folgende 3 Zeilen auflösen
                 this.displayCandidates();
                 let necessary = this.displayNecessaryCandidates(this.myCell.myNecessarys);
                 this.displaySingleCandidate(necessary);
@@ -2410,7 +2414,7 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
                 candidateNode.classList.add('candidate');
-                candidateNode.classList.add('special-candidate', 'necessary');
+                candidateNode.classList.add('necessary');
                 this.myCellNode.appendChild(candidateNode);
             })
             return true;
@@ -2431,7 +2435,7 @@ class SudokuCellView {
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.classList.add('candidate');
-            candidateNode.classList.add('special-candidate', 'single');
+            candidateNode.classList.add('single');
             candidateNode.innerHTML = candidate;
             this.myCellNode.appendChild(candidateNode);
             return true;
@@ -2440,6 +2444,7 @@ class SudokuCellView {
         }
     }
 
+    /*
     upDateHiddenSingle() {
         // Gebe Single Nummer aus oder leere Zelle
         this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
@@ -2467,14 +2472,12 @@ class SudokuCellView {
                 candidateNode.classList.add('special-candidate', 'inAdmissible');
                 this.myCellNode.appendChild(candidateNode);
             });
-            //To understand the hidden single of this cell, 
-            //we switch to lazy mode for this step.
-            sudoApp.mySolver.setStepLazy();
             return true;
         } else {
             return false;
         }
     }
+    */
 
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
@@ -2493,15 +2496,17 @@ class SudokuCellView {
     }
 
     displayCandidates() {
-        let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
-            sudoApp.mySolver.getActualEvalType() == 'strict-plus');
-        if (inAdmissiblesVisible) {
+      //  let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+      //      sudoApp.mySolver.getActualEvalType() == 'strict-plus');
+      //  if (inAdmissiblesVisible) {
             this.displayCandidatesInDetail(this.myCell.getCandidates());
-        } else {
+      //  } else {
             // Angezeigte inAdmissibles sind zunächst einmal Zulässige
             // und dürfen jetzt nicht mehr angezeigt werden
-            this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
-        }
+
+            // abschalten
+            // this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
+        //}
     }
 
     displayCandidatesInDetail(admissibles) {
@@ -2518,16 +2523,16 @@ class SudokuCellView {
             candidateNode.innerHTML = e;
 
             if (this.myCell.myNecessarys.has(e)) {
-                candidateNode.classList.add('special-candidate', 'necessary');
+                candidateNode.classList.add('necessary');
             } else if (this.myCell.getCandidates().size == 1
                 && Array.from(this.myCell.getCandidates())[0] == e) {
-                candidateNode.classList.add('special-candidate', 'single');
-            } else if (this.myCell.getTotalCandidates().size == 1
-                && Array.from(this.myCell.getTotalCandidates())[0] == e
-                && !this.hasCandidateOfClass('single')) {
-                candidateNode.classList.add('special-candidate', 'hidden-single');
+                candidateNode.classList.add('single');
+          /*  }   else if (this.myCell.getTotalCandidates().size == 1
+                && Array.from(this.myCell.getTotalCandidat
+                */
+               // candidateNode.classList.add('hidden-single');
             } else if (this.myCell.hsDependent_inAdmissibles.has(e)) {
-                candidateNode.classList.add('special-candidate', 'inAdmissible');
+                candidateNode.classList.add('inAdmissible');
             }
             this.myCellNode.appendChild(candidateNode);
         });
@@ -2564,7 +2569,7 @@ class SudokuCellView {
         let candidateNodes = this.myCellNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
-                candidateNodes[i].classList.add('special-candidate', 'necessary');
+                candidateNodes[i].classList.add('necessary');
                 return true
             }
         }
@@ -2578,7 +2583,7 @@ class SudokuCellView {
             && this.myCell.getCandidates().size == 1
             && (candidateNode.getAttribute('data-value') ==
                 Array.from(this.myCell.getCandidates())[0])) {
-            candidateNode.classList.add('special-candidate', 'single');
+            candidateNode.classList.add('single');
         }
     }
 
@@ -2594,7 +2599,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
+                    candidateNodes[i].classList.add('inAdmissible');
                 }
             }
         }
@@ -2611,7 +2616,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
+                    candidateNodes[i].classList.add('inAdmissible');
                 }
             }
         }
@@ -2817,7 +2822,7 @@ class SudokuCellView {
     }
 
     displayReasons() {
-        let adMissibleNrSelected = this.myCell.getAdMissibleNrSelected();
+        let adMissibleNrSelected = this.myCell.getSelectedCandidate();
 
 
         if (this.myCell.myNecessarys.size > 0) {
@@ -2965,7 +2970,8 @@ class SudokuCellView {
                     if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                         sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
                         if (pairArray.length == 0) {
-                            pairArray = Array.from(cell.getTotalCandidates());
+                            // pairArray = Array.from(cell.getTotalCandidates());
+                            pairArray = Array.from(cell.getCandidates());
                         }
                     } else {
                         if (!pairInfo.collection instanceof SudokuBlock) {
@@ -2974,13 +2980,21 @@ class SudokuCellView {
                     }
                 });
 
-
+                /*
                 sudoApp.mySolverView.displayTechnique('magenta',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Verstecktem Paar" {'
                     + pairArray[0]
                     + ', '
                     + pairArray[1] + '}');
+                */
+                    
+                sudoApp.mySolverView.displayTechnique('magenta',
+                    adMissibleNrSelected
+                    + ' eliminierbar wegen "Verstecktem Paar" {'
+                    + pairInfo.collection.hiddenPairs[0].nr1
+                    + ', '
+                    + pairInfo.collection.hiddenPairs[0].nr2 + '}');
                 return;
             }
         }
