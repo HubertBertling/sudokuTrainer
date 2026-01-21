@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.15';
+let VERSION = 'v1.4.16';
 
 // ==========================================
 // Basic classes
@@ -3188,6 +3188,12 @@ class SudokuGrid {
     }
 
     derive_inAdmissiblesNew() {
+        // The order is basically arbitrary.
+        // For pragmatic reasons, however, it makes sense to
+        // execute hidden pairs last, because this makes it easier to visualize
+        // the hidden pairs. Eliminable candidates
+        // in other cells cannot have been caused by eliminable candidates
+        // in the hidden pair. 
         if (this.derive_inAdmissiblesFromNakedPairs()) return true;
         if (this.derive_inAdmissiblesFromPointingPairs()) return true;
         if (this.derive_inAdmissiblesFromIntersection()) return true;

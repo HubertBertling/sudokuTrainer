@@ -333,7 +333,7 @@ button:active {
     color: #818181;
     display: block;
     transition: 0.3s;
-    font-size: var(--cg-font-h3);
+    font-size: var(--cg-font-h5);
 }
 
 .sidenav a:hover {
@@ -555,7 +555,6 @@ button:active {
     aspect-ratio: 1 / 1;
     width: 100%;
     height: 100%;
-    padding: 0.1rem;
 }
 
 /* Nich selektierte Zelle */
@@ -572,12 +571,6 @@ button:active {
     
 }
 
-
-.sudoku-grid-cell.candidates {
-    background-color: var(--nested-cell-bg-color);
-    color: var(--nested-cell-color);
-    font-size: var(--cg-font-h4);
-}
 
 
 .sudoku-grid-cell.solved {
@@ -602,6 +595,12 @@ button:active {
     width: 100%;
     height: 100%;
     padding: 0.2rem;
+
+    background-color: var(--nested-cell-bg-color);
+    color: var(--nested-cell-color);
+    font-size: var(--cg-font-h4);
+    padding: 0.1rem;
+
 }
 
 /* Selektierte Zelle */
@@ -888,7 +887,7 @@ Für Text: color: #222; oder color: #424242;
 
 #automatic-btn-block {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 0.75fr 1.25fr 1.25fr;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.3rem;
     background: var(--automatic-solver);

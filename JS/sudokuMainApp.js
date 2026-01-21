@@ -577,9 +577,6 @@ class TrackerDialog {
     open() {
         this.manualBlock.style.display = 'none';
 
-        this.myOpen = false;
-        // sudoApp.mySolverView.reSetNumberOfSolutions();
-
         sudoApp.mySolver.notify();
         this.myOpen = true;
 
@@ -610,6 +607,7 @@ class InfoDialog {
         this.okNode = document.getElementById("infoDlg-OK-Btn");
         this.myConfirmOperation = undefined;
         this.thisPointer = undefined;
+        this.myOpen = false;
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
@@ -645,7 +643,6 @@ class InfoDialog {
             this.dlgNode.close();
             this.myOpen = false;
             this.iconNode.src = "";
-
         }
     }
 }
@@ -660,6 +657,7 @@ class SettingsDialog {
         this.okNode = document.getElementById("btn-settings-dlg-ok");
         this.cancelNode = document.getElementById("btn-settings-dlg-cancel");
 
+        this.myOpen = false;
         this.breakpointsOnly = false;
 
         // Mit der Erzeugung des Wrappers werden 
@@ -2172,7 +2170,6 @@ class SudokuGridView {
                 if (cellView.myCell.getValue() == '0') {
                     let necessaryCandExists = false;
                     let singleCandExists = false;
-                    let hiddenSingleCandExists = false;
 
                     if (!cellView.hasCandidateOfClass('necessary')) {
                         necessaryCandExists = cellView.upDateNecessary();
@@ -2181,16 +2178,8 @@ class SudokuGridView {
                         && !cellView.hasCandidateOfClass('single')) {
                         singleCandExists = cellView.upDateSingle();
                     }
-             /*     if (!cellView.hasCandidateOfClass('necessary')
-                        && !cellView.hasCandidateOfClass('single')
-                        && !cellView.hasCandidateOfClass('hidden-single')) {
-                        hiddenSingleCandExists = cellView.upDateHiddenSingle();
-                    }
-            */
-
                     if (!necessaryCandExists
-                        && !singleCandExists
-                        && !hiddenSingleCandExists) {
+                        && !singleCandExists) {
                         cellView.upDateMultipleOptions();
                     }
                 }
@@ -2232,23 +2221,8 @@ class SudokuGridView {
                 });
             }
 
-            /*
-            // If there is no necessary and no single number the first hidden single number will be displayed       
-            if (!necessaryCandidateExists && !singleCandidateExists) {
-                this.sudoCellViews.forEach(cellView => {
-                    if (cellView.myCell.getValue() == '0') {
-                        if (cellView.upDateHiddenSingle()) {
-                            hiddenSingleCandidateExists = true;
-                            return true;
-                        }
-                    }
-                });
-            }
-            */
-
             if (!necessaryCandidateExists
-                && !singleCandidateExists
-                && !hiddenSingleCandidateExists) {
+                && !singleCandidateExists) {
                 this.sudoCellViews.forEach(cellView => {
                     if (cellView.myCell.getValue() == '0') {
                         cellView.upDateMultipleOptions();
@@ -2371,12 +2345,6 @@ class SudokuCellView {
                     this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
                 }
 
-                /*               
-                // Folgende 3 Zeilen auflösen
-                this.displayCandidates();
-                let necessary = this.displayNecessaryCandidates(this.myCell.myNecessarys);
-                this.displaySingleCandidate(necessary);
-                */
             } else {
                 this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
             }
@@ -2444,41 +2412,6 @@ class SudokuCellView {
         }
     }
 
-    /*
-    upDateHiddenSingle() {
-        // Gebe Single Nummer aus oder leere Zelle
-        this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
-        let tmpCandidates = this.myCell.getTotalCandidates();
-        if (tmpCandidates.size == 1
-            && this.myCell.isSelected
-            && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1) {
-            let candidate = Array.from(tmpCandidates)[0];
-
-            let candidateNode = document.createElement('div');
-            candidateNode.setAttribute('data-value', candidate);
-            candidateNode.innerHTML = candidate;
-            candidateNode.classList.add('candidate');
-            candidateNode.classList.add('special-candidate', 'hidden-single');
-            this.myCellNode.appendChild(candidateNode);
-
-            let redAdmissibles = this.myCell.getCandidates().difference(tmpCandidates);
-            redAdmissibles.forEach(redAdmissible => {
-                let candidateNode = document.createElement('div');
-                candidateNode.setAttribute('data-value', redAdmissible);
-
-                candidateNode.innerHTML = redAdmissible;
-
-                candidateNode.classList.add('candidate');
-                candidateNode.classList.add('special-candidate', 'inAdmissible');
-                this.myCellNode.appendChild(candidateNode);
-            });
-            return true;
-        } else {
-            return false;
-        }
-    }
-    */
-
     upDateMultipleOptions() {
         // Eine selektierte Zelle mit Optionen
         this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
@@ -2527,10 +2460,6 @@ class SudokuCellView {
             } else if (this.myCell.getCandidates().size == 1
                 && Array.from(this.myCell.getCandidates())[0] == e) {
                 candidateNode.classList.add('single');
-          /*  }   else if (this.myCell.getTotalCandidates().size == 1
-                && Array.from(this.myCell.getTotalCandidat
-                */
-               // candidateNode.classList.add('hidden-single');
             } else if (this.myCell.hsDependent_inAdmissibles.has(e)) {
                 candidateNode.classList.add('inAdmissible');
             }
@@ -2980,15 +2909,6 @@ class SudokuCellView {
                     }
                 });
 
-                /*
-                sudoApp.mySolverView.displayTechnique('magenta',
-                    adMissibleNrSelected
-                    + ' eliminierbar wegen "Verstecktem Paar" {'
-                    + pairArray[0]
-                    + ', '
-                    + pairArray[1] + '}');
-                */
-                    
                 sudoApp.mySolverView.displayTechnique('magenta',
                     adMissibleNrSelected
                     + ' eliminierbar wegen "Verstecktem Paar" {'
@@ -3277,9 +3197,9 @@ class SudokuSolverView {
                 if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--solutions-found)'; /*'var(--played-cell-bg-color)';*/
+                        'var(--solutions-found)'; 
                     this.solutionContainer.style.backgroundColor =
-                        'var(--solutions-found)'; /*'var(--played-cell-bg-color)';*/
+                        'var(--solutions-found)'; 
                 } else {
                     this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
                     this.nrOfSolutionsField.style.backgroundColor =
@@ -3520,21 +3440,13 @@ class SudokuSolverView {
         if (countBackwards == 0) {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-        } else {
-            /* evalNode.innerHTML =
-                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
-                 + '<b>E-RL:</b> &nbsp' + countBackwards; */
         }
     }
 
     displayBackwardCount(countBackwards) {
         let evalNode = document.getElementById("backward-count");
-        /* if (countBackwards == 'none') {
-            evalNode.innerHTML = '';
-        } else { */
         evalNode.innerHTML =
             '<b>Error-RL:</b> &nbsp' + countBackwards;
-        /* } */
     }
 
     startLoaderAnimation(requestedLevel) {
