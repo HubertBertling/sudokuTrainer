@@ -569,6 +569,7 @@ button:active {
 .sudoku-grid-cell.hatching {
     background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
     background-size: 1px 1px;
+    
 }
 
 

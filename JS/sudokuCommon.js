@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.14';
+let VERSION = 'v1.4.15';
 
 // ==========================================
 // Basic classes
@@ -1661,7 +1661,8 @@ class SudokuGroup {
             let hiddenPair = this.hiddenPairs[k];
             // Clean up first pair cell
             let cell1 = this.myCells[hiddenPair.pos1];
-            let tmpCandidates1 = cell1.getTotalCandidates();
+            // let tmpCandidates1 = cell1.getTotalCandidates();
+            let tmpCandidates1 = cell1.getCandidates();
             let newInAdmissibles1 = tmpCandidates1.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
             if (newInAdmissibles1.size > 0) {
@@ -1684,7 +1685,8 @@ class SudokuGroup {
 
             // Clean up second pair cell
             let cell2 = this.myCells[hiddenPair.pos2];
-            let tmpCandidates2 = cell2.getTotalCandidates();
+            // let tmpCandidates2 = cell2.getTotalCandidates();
+            let tmpCandidates2 = cell2.getCandidates();
             let newInAdmissibles2 = tmpCandidates2.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
             if (newInAdmissibles2.size > 0) {
@@ -3187,9 +3189,9 @@ class SudokuGrid {
 
     derive_inAdmissiblesNew() {
         if (this.derive_inAdmissiblesFromNakedPairs()) return true;
-        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         if (this.derive_inAdmissiblesFromPointingPairs()) return true;
         if (this.derive_inAdmissiblesFromIntersection()) return true;
+        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         return false;
     }
 
@@ -3724,7 +3726,7 @@ class SudokuCell {
     getSelectedCandidate() {
         let candidateIArray = Array.from(this.getCandidates());
         return candidateIArray[this.candidateIndexSelected];
-    }   
+    }
 
     setAdMissibleIndexSelected(nr) {
         this.candidateIndexSelected = nr;

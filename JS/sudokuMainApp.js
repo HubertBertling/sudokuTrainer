@@ -2414,7 +2414,7 @@ class SudokuCellView {
                 candidateNode.setAttribute('data-value', necessaryNr);
                 candidateNode.innerHTML = necessaryNr;
                 candidateNode.classList.add('candidate');
-                candidateNode.classList.add('special-candidate', 'necessary');
+                candidateNode.classList.add('necessary');
                 this.myCellNode.appendChild(candidateNode);
             })
             return true;
@@ -2435,7 +2435,7 @@ class SudokuCellView {
             let candidateNode = document.createElement('div');
             candidateNode.setAttribute('data-value', candidate);
             candidateNode.classList.add('candidate');
-            candidateNode.classList.add('special-candidate', 'single');
+            candidateNode.classList.add('single');
             candidateNode.innerHTML = candidate;
             this.myCellNode.appendChild(candidateNode);
             return true;
@@ -2523,16 +2523,16 @@ class SudokuCellView {
             candidateNode.innerHTML = e;
 
             if (this.myCell.myNecessarys.has(e)) {
-                candidateNode.classList.add('special-candidate', 'necessary');
+                candidateNode.classList.add('necessary');
             } else if (this.myCell.getCandidates().size == 1
                 && Array.from(this.myCell.getCandidates())[0] == e) {
-                candidateNode.classList.add('special-candidate', 'single');
-            } else if (this.myCell.getTotalCandidates().size == 1
-                && Array.from(this.myCell.getTotalCandidates())[0] == e
-                && !this.hasCandidateOfClass('single')) {
-                candidateNode.classList.add('special-candidate', 'hidden-single');
+                candidateNode.classList.add('single');
+          /*  }   else if (this.myCell.getTotalCandidates().size == 1
+                && Array.from(this.myCell.getTotalCandidat
+                */
+               // candidateNode.classList.add('hidden-single');
             } else if (this.myCell.hsDependent_inAdmissibles.has(e)) {
-                candidateNode.classList.add('special-candidate', 'inAdmissible');
+                candidateNode.classList.add('inAdmissible');
             }
             this.myCellNode.appendChild(candidateNode);
         });
@@ -2569,7 +2569,7 @@ class SudokuCellView {
         let candidateNodes = this.myCellNode.children;
         for (let i = 0; i < candidateNodes.length; i++) {
             if (myNecessarys.has(candidateNodes[i].getAttribute('data-value'))) {
-                candidateNodes[i].classList.add('special-candidate', 'necessary');
+                candidateNodes[i].classList.add('necessary');
                 return true
             }
         }
@@ -2583,7 +2583,7 @@ class SudokuCellView {
             && this.myCell.getCandidates().size == 1
             && (candidateNode.getAttribute('data-value') ==
                 Array.from(this.myCell.getCandidates())[0])) {
-            candidateNode.classList.add('special-candidate', 'single');
+            candidateNode.classList.add('single');
         }
     }
 
@@ -2599,7 +2599,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
+                    candidateNodes[i].classList.add('inAdmissible');
                 }
             }
         }
@@ -2616,7 +2616,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('special-candidate', 'inAdmissible');
+                    candidateNodes[i].classList.add('inAdmissible');
                 }
             }
         }
