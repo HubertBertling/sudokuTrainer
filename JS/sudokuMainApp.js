@@ -663,11 +663,11 @@ class SettingsDialog {
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-            sudoApp.mySettingsDialog.close();
+            sudoApp.mySettingsDialog.okay();
         });
 
         this.cancelNode.addEventListener('click', () => {
-            sudoApp.mySettingsDialog.close();
+            sudoApp.mySettingsDialog.cancel();
         });
     }
     open() {
@@ -718,53 +718,58 @@ class SettingsDialog {
         this.myOpen = true;
         this.dlgNode.showModal();
     }
+
+    okay() {
+        if (this.breakpointsOnly) {
+            // The breakpoint settings dialog is a subset 
+            // of the overall settings dialog
+            let mySettings = sudoApp.getMySettings();
+            mySettings.breakpoints.contradiction =
+                document.getElementById('breakpoint-contradiction').checked;
+            mySettings.breakpoints.multipleOption =
+                document.getElementById('breakpoint-multiple-candidates').checked;
+            mySettings.breakpoints.single =
+                document.getElementById('breakpoint-single').checked;
+            mySettings.breakpoints.hiddenSingle =
+                document.getElementById('breakpoint-hidden-single').checked;
+            mySettings.breakpoints.solutionDiscovered =
+                document.getElementById('breakpoint-solution').checked;
+
+            sudoApp.setMySettings(mySettings);
+            sudoApp.mySolver.notify();
+            sudoApp.mySettingsDialog.close();
+        } else {
+            let mySettings = sudoApp.getMySettings();
+
+            let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
+            radioEvalNodes.forEach(radioNode => {
+                if (radioNode.checked) {
+                    mySettings.evalType = radioNode.getAttribute('value');
+                }
+            });
+
+            mySettings.breakpoints.contradiction =
+                document.getElementById('breakpoint-contradiction').checked;
+            mySettings.breakpoints.multipleOption =
+                document.getElementById('breakpoint-multiple-candidates').checked;
+            mySettings.breakpoints.single =
+                document.getElementById('breakpoint-single').checked;
+            mySettings.breakpoints.hiddenSingle =
+                document.getElementById('breakpoint-hidden-single').checked;
+            mySettings.breakpoints.solutionDiscovered =
+                document.getElementById('breakpoint-solution').checked;
+
+            sudoApp.setMySettings(mySettings);
+            sudoApp.activateAppSettings();
+            sudoApp.mySolver.notify();
+        }
+        this.close();
+    }
+    cancel() {
+        this.close();
+    }
     close() {
         if (this.myOpen) {
-            if (this.breakpointsOnly) {
-                // The breakpoint settings dialog is a subset 
-                // of the overall settings dialog
-                let mySettings = sudoApp.getMySettings();
-                mySettings.breakpoints.contradiction =
-                    document.getElementById('breakpoint-contradiction').checked;
-                mySettings.breakpoints.multipleOption =
-                    document.getElementById('breakpoint-multiple-candidates').checked;
-                mySettings.breakpoints.single =
-                    document.getElementById('breakpoint-single').checked;
-                mySettings.breakpoints.hiddenSingle =
-                    document.getElementById('breakpoint-hidden-single').checked;
-                mySettings.breakpoints.solutionDiscovered =
-                    document.getElementById('breakpoint-solution').checked;
-
-                sudoApp.setMySettings(mySettings);
-                sudoApp.mySolver.notify();
-                sudoApp.mySettingsDialog.close();
-            } else {
-                let mySettings = sudoApp.getMySettings();
-
-                let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
-                radioEvalNodes.forEach(radioNode => {
-                    if (radioNode.checked) {
-                        mySettings.evalType = radioNode.getAttribute('value');
-                    }
-                });
-
-                mySettings.breakpoints.contradiction =
-                    document.getElementById('breakpoint-contradiction').checked;
-                mySettings.breakpoints.multipleOption =
-                    document.getElementById('breakpoint-multiple-candidates').checked;
-                mySettings.breakpoints.single =
-                    document.getElementById('breakpoint-single').checked;
-                mySettings.breakpoints.hiddenSingle =
-                    document.getElementById('breakpoint-hidden-single').checked;
-                mySettings.breakpoints.solutionDiscovered =
-                    document.getElementById('breakpoint-solution').checked;
-
-                sudoApp.setMySettings(mySettings);
-                sudoApp.activateAppSettings();
-                sudoApp.mySolver.notify();
-            }
-
-
             this.dlgNode.close();
             this.myOpen = false;
         }
