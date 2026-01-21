@@ -663,51 +663,7 @@ class SettingsDialog {
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-
-            if (this.breakpointsOnly) {
-                // The breakpoint settings dialog is a subset 
-                // of the overall settings dialog
-                let mySettings = sudoApp.getMySettings();
-                mySettings.breakpoints.contradiction =
-                    document.getElementById('breakpoint-contradiction').checked;
-                mySettings.breakpoints.multipleOption =
-                    document.getElementById('breakpoint-multiple-candidates').checked;
-                mySettings.breakpoints.single =
-                    document.getElementById('breakpoint-single').checked;
-                mySettings.breakpoints.hiddenSingle =
-                    document.getElementById('breakpoint-hidden-single').checked;
-                mySettings.breakpoints.solutionDiscovered =
-                    document.getElementById('breakpoint-solution').checked;
-
-                sudoApp.setMySettings(mySettings);
-                sudoApp.mySolver.notify();
-                sudoApp.mySettingsDialog.close();
-            } else {
-                let mySettings = sudoApp.getMySettings();
-
-                let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
-                radioEvalNodes.forEach(radioNode => {
-                    if (radioNode.checked) {
-                        mySettings.evalType = radioNode.getAttribute('value');
-                    }
-                });
-
-                mySettings.breakpoints.contradiction =
-                    document.getElementById('breakpoint-contradiction').checked;
-                mySettings.breakpoints.multipleOption =
-                    document.getElementById('breakpoint-multiple-candidates').checked;
-                mySettings.breakpoints.single =
-                    document.getElementById('breakpoint-single').checked;
-                mySettings.breakpoints.hiddenSingle =
-                    document.getElementById('breakpoint-hidden-single').checked;
-                mySettings.breakpoints.solutionDiscovered =
-                    document.getElementById('breakpoint-solution').checked;
-
-                sudoApp.setMySettings(mySettings);
-                sudoApp.activateAppSettings();
-                sudoApp.mySolver.notify();
-                sudoApp.mySettingsDialog.close();
-            }
+            sudoApp.mySettingsDialog.close();
         });
 
         this.cancelNode.addEventListener('click', () => {
@@ -764,6 +720,51 @@ class SettingsDialog {
     }
     close() {
         if (this.myOpen) {
+            if (this.breakpointsOnly) {
+                // The breakpoint settings dialog is a subset 
+                // of the overall settings dialog
+                let mySettings = sudoApp.getMySettings();
+                mySettings.breakpoints.contradiction =
+                    document.getElementById('breakpoint-contradiction').checked;
+                mySettings.breakpoints.multipleOption =
+                    document.getElementById('breakpoint-multiple-candidates').checked;
+                mySettings.breakpoints.single =
+                    document.getElementById('breakpoint-single').checked;
+                mySettings.breakpoints.hiddenSingle =
+                    document.getElementById('breakpoint-hidden-single').checked;
+                mySettings.breakpoints.solutionDiscovered =
+                    document.getElementById('breakpoint-solution').checked;
+
+                sudoApp.setMySettings(mySettings);
+                sudoApp.mySolver.notify();
+                sudoApp.mySettingsDialog.close();
+            } else {
+                let mySettings = sudoApp.getMySettings();
+
+                let radioEvalNodes = document.querySelectorAll('.radio-eval-type');
+                radioEvalNodes.forEach(radioNode => {
+                    if (radioNode.checked) {
+                        mySettings.evalType = radioNode.getAttribute('value');
+                    }
+                });
+
+                mySettings.breakpoints.contradiction =
+                    document.getElementById('breakpoint-contradiction').checked;
+                mySettings.breakpoints.multipleOption =
+                    document.getElementById('breakpoint-multiple-candidates').checked;
+                mySettings.breakpoints.single =
+                    document.getElementById('breakpoint-single').checked;
+                mySettings.breakpoints.hiddenSingle =
+                    document.getElementById('breakpoint-hidden-single').checked;
+                mySettings.breakpoints.solutionDiscovered =
+                    document.getElementById('breakpoint-solution').checked;
+
+                sudoApp.setMySettings(mySettings);
+                sudoApp.activateAppSettings();
+                sudoApp.mySolver.notify();
+            }
+
+
             this.dlgNode.close();
             this.myOpen = false;
         }
@@ -2429,16 +2430,16 @@ class SudokuCellView {
     }
 
     displayCandidates() {
-      //  let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
-      //      sudoApp.mySolver.getActualEvalType() == 'strict-plus');
-      //  if (inAdmissiblesVisible) {
-            this.displayCandidatesInDetail(this.myCell.getCandidates());
-      //  } else {
-            // Angezeigte inAdmissibles sind zunächst einmal Zulässige
-            // und dürfen jetzt nicht mehr angezeigt werden
+        //  let inAdmissiblesVisible = (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+        //      sudoApp.mySolver.getActualEvalType() == 'strict-plus');
+        //  if (inAdmissiblesVisible) {
+        this.displayCandidatesInDetail(this.myCell.getCandidates());
+        //  } else {
+        // Angezeigte inAdmissibles sind zunächst einmal Zulässige
+        // und dürfen jetzt nicht mehr angezeigt werden
 
-            // abschalten
-            // this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
+        // abschalten
+        // this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
         //}
     }
 
@@ -3197,9 +3198,9 @@ class SudokuSolverView {
                 if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
                     this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
                     this.nrOfSolutionsField.style.backgroundColor =
-                        'var(--solutions-found)'; 
+                        'var(--solutions-found)';
                     this.solutionContainer.style.backgroundColor =
-                        'var(--solutions-found)'; 
+                        'var(--solutions-found)';
                 } else {
                     this.nrOfSolutionsNode.innerHTML = '<span style="font-weight: bold"> Lösungen gefunden: </span> &nbsp;' + nr;
                     this.nrOfSolutionsField.style.backgroundColor =
