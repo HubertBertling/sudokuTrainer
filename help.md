@@ -2,7 +2,7 @@
 layout: default
 ---
 
-1. [Herzlich willkommen zur Sudoku-Trainer-App](#herzlich-willkommen-zur-sudoku-trainer-app)
+1. [Herzlich willkommen zur Sudoku-Explorer-App](#herzlich-willkommen-zur-sudoku-explorer-app)
    1. [Die Sudoku-Grundregeln](#die-sudoku-grundregeln)
    2. [Ziele und Abgrenzung dieses Trainers](#ziele-und-abgrenzung-dieses-trainers)
    3. [Puzzles generieren](#puzzles-generieren)
@@ -53,9 +53,30 @@ layout: default
 9. [Schlussbemerkungen](#schlussbemerkungen)
 10. [Beispiel-Puzzles](#beispiel-puzzles)
 
-# Herzlich willkommen zur Sudoku-Trainer-App
+# Herzlich willkommen zur Sudoku-Explorer-App
 
-
+ Diese App ist ein Explorer für klassische 9x9-Sudokus. Besonders als Sudoku-Anfänger kann es Dir passieren, 
+    dass du bei der Lösungssuche steckenbleibst. Ein konventioneller Sudoku-Solver präsentiert Dir fertige Lösung. 
+    Du bleibst ratlos zurück mit der Frage: wie ist er auf die Lösung gekommen?
+    
+    Der vorliegende Explorer präsentiert nicht nur die fertige Lösung sondern auch einen Schritt-für-Schritt
+    Weg hin zur Lösung. Jeder Schritt wird erläutert.
+    Mit zunehmender Erfahrung wächst Dein Interesse an weitergehnden Fragestellungen: 
+    Was bedeuten eigentlch die unterschiedlichen Schwierigkeitsgrade von Sudokus? 
+    Gibt es für jedes Sudoku eine Lösung? Oder gar mehrere? 
+    Kann man alle Sudokus mit Hilfe logischer Schlussregeln lösen? Was sind überhaupt logische Schlussregeln?
+    Was bedeutet es, ein Puzzle per Backtracking zu lösen? 
+    Mit dem Explorer lernst Du die Welt des klassischen 9x9 Sudoku kennen: die Anwendung logischer Lösungstechniken,
+    die Bedeutung der Puzzle-Schwierigkeitsgrade, die Puzzle-Kategorien: "eindeutig lösbar", 
+    "mehrfach lösbar" und "unlösbar" und das Backtracking. 
+    
+    Wusstes Du, dass es 6.670.903.752.021.072.936.960 vollständig ausgefüllte 9x9 Sudokus gibt? 
+    Oder, dass die minimale Anzahl vorgegebener Zahlen in einem eindeutig lösbaren 9x9-Sudoku 17 ist? 
+    
+    Wenn Du nicht nur Interesse an der Lösung konkreter Sudoku-Puzzles sondern auch an solchen weitergehenden Fragestellungen hast, 
+    dann schau in die Hilfe und überprüfe die dort beschriebenen Einsichten mit Hilfe des Explorers.
+    
+    Viel Vergnügen mit dem Explorer beim Kennenlernen der Sudoku-Welt und natürlich auch beim Lösen konkreter Puzzles.
 
 ## Die Sudoku-Grundregeln
 
