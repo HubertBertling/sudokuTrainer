@@ -30,7 +30,7 @@
     <div class="app-content noprint">
         <div class="topbar" id="topbar">
             <div class="topbar-left">
-                <button class="modern-btn topbar-btn" id="btn-menu" onclick="NavigationBar.openNav()">
+                <button class="modern-btn-inline topbar-btn" id="btn-menu" onclick="NavigationBar.openNav()">
                     <span class="material-icons">menu</span>
                     Menü
                 </button>
@@ -38,11 +38,11 @@
             <span class="topbar-title">Sudoku-Trainer</span>
             <div class="topbar-right">
 
-                <button class="modern-btn topbar-btn" id="btn-help" onclick="sudoApp.helpFunction()">
+                <button class="modern-btn-inline topbar-btn" id="btn-help" onclick="sudoApp.helpFunction()">
                     <span class="material-icons">help</span>
                     Hilfe
                 </button>
-                <button class="modern-btn topbar-btn" id="btn-share">
+                <button class="modern-btn-inline topbar-btn" id="btn-share">
                     <span class="material-icons">share</span>
                     Teilen
                 </button>
@@ -67,7 +67,7 @@
                         <div class="step-explainer-text" id="step-explainer-text">
 
                         </div>
-                        <button class="tipp-accept-btn modern-btn" style="display:block" id="tipp-accept-btn">
+                        <button class="tipp-accept-btn modern-btn-inline" style="display:block" id="tipp-accept-btn">
                             <span class="material-symbols-outlined">
                                 check_circle
                             </span>
@@ -252,7 +252,7 @@
             <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
             <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
 
-            <button class="modern-btn btn-share" id="share-app-btn"
+            <button class="modern-btn-inline btn-share" id="share-app-btn"
                 onclick="sudoApp.mySolverController.setAppURLShareBtnEventHandler()">
                 <span class="material-icons">share</span>
                 Sudoku-Trainer URL
