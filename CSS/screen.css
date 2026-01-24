@@ -602,9 +602,7 @@ button:active {
 
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
-    font-size: var(--cg-font-h4);
-    padding: 0.1rem;
-
+ 
 }
 
 /* Selektierte Zelle */
@@ -658,8 +656,12 @@ button:active {
 }
 
 .candidate.pair-candidate {
-    border: 0.3rem double var(--magenta-color);
+    /*border: 0.1rem double var(--magenta-color);*/
+    color: white;
+    background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
+    background-size: 1px 1px;
 }
+
 
 .candidate.inAdmissible {
     color: white;
