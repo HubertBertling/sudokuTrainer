@@ -196,7 +196,7 @@ body {
     padding: 0.2rem 0.4rem;
     background: var(--app-header-bg-color);
     color: white;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h5);
 }
 
 .topbar-left {
@@ -204,6 +204,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+       font-size: inherit;
 }
 
 .topbar-right {
@@ -211,6 +212,8 @@ body {
     flex-direction: row-reverse;
     justify-content: space-around;
     align-items: center;
+    font-size: inherit;
+
 }
 
 .topbar-btn {
@@ -219,6 +222,7 @@ body {
     border: none;
     padding: 0.4rem;
     border-radius: 8px;
+    font-size: inherit;
 
 }
 
@@ -576,13 +580,13 @@ button:active {
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h5);
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
     color: var(--defined-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h5);
 }
 
 .sudoku-grid-cell.candidates {
@@ -1958,6 +1962,13 @@ label {
 
 }
 
+@media screen and (orientation: portrait) and (width >=480px) {
+
+    .candidate{
+        font-size: var(--cg-font-base);
+    }
+
+}
 
 /* ================ LANDSCAPE ================= */
 @media (orientation: landscape) {
