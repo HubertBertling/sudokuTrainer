@@ -412,7 +412,7 @@ button:active {
     position: relative;
     flex-grow: 1;
     background: var(--app-header-bg-color);
-    border: 0.3rem solid var(--app-header-bg-color);
+    border: 0.2rem solid var(--app-header-bg-color);
 }
 
 .block-container {
@@ -765,9 +765,9 @@ button:active {
     margin-bottom: 0.2rem;
     background-color: var(--nested-cell-bg-color);
 
-    border-bottom: 0.3rem solid var(--app-header-bg-color);
-    border-left: 0.3rem solid var(--app-header-bg-color);
-    border-right: 0.3rem solid var(--app-header-bg-color);
+    border-bottom: 0.2rem solid var(--app-header-bg-color);
+    border-left: 0.2rem solid var(--app-header-bg-color);
+    border-right: 0.2rem solid var(--app-header-bg-color);
 }
 
 .step-explainer-text {
