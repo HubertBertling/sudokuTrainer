@@ -45,7 +45,7 @@
     --grauton-color: hsl(202 16% 45%);
     --grauton-color-background: hsl(202 16% 80%);
     --grauton-auto-selected: rgb(126, 126, 126);
-    --grauton-selecetd:  rgb(80, 80, 80);
+    --grauton-selecetd: rgb(80, 80, 80);
     --red-color: rgb(255, 9, 58);
     --green-color: GreenYellow;
 
@@ -196,7 +196,7 @@ body {
     padding: 0.2rem 0.4rem;
     background: var(--app-header-bg-color);
     color: white;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h5);
 }
 
 .topbar-left {
@@ -204,6 +204,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    font-size: inherit;
 }
 
 .topbar-right {
@@ -211,14 +212,17 @@ body {
     flex-direction: row-reverse;
     justify-content: space-around;
     align-items: center;
+    font-size: inherit;
+
 }
 
-.topbar button {
+.topbar-btn {
     background: var(--app-header-bg-color);
     color: white;
     border: none;
     padding: 0.4rem;
     border-radius: 8px;
+    font-size: inherit;
 
 }
 
@@ -408,7 +412,7 @@ button:active {
     position: relative;
     flex-grow: 1;
     background: var(--app-header-bg-color);
-    border: 0.3rem solid var(--app-header-bg-color);
+    border: 0.2rem solid var(--app-header-bg-color);
 }
 
 .block-container {
@@ -417,7 +421,7 @@ button:active {
     background: var(--app-header-bg-color);
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.3rem;
+    /* gap: 0.3rem; */
     width: 100%;
     height: 100%;
     aspect-ratio: 1 / 1;
@@ -433,7 +437,7 @@ button:active {
     z-index: 7;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.3rem;
+    /* gap: 0.3rem; */
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -445,6 +449,7 @@ button:active {
     grid-template-rows: repeat(3, 1fr);
     gap: 0.1rem;
     pointer-events: none;
+    border: 0.2rem solid transparent;
 }
 
 .col-container {
@@ -456,7 +461,7 @@ button:active {
     z-index: 7;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.3rem;
+    /*gap: 0.3rem;*/
     width: 100%;
     height: 100%;
     aspect-ratio: 1 / 1;
@@ -467,6 +472,8 @@ button:active {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.1rem;
+    pointer-events: none;
+    border: 0.2rem solid transparent;
 }
 
 .sudoku-block {
@@ -476,14 +483,16 @@ button:active {
     gap: 0.1rem;
     aspect-ratio: 1 / 1;
     text-align: center;
+    border: 0.2rem solid transparent;
 }
 
 
 
 .sudoku-col,
 .sudoku-row {
-    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+   /* transition: background 0.2s, box-shadow 0.2s, border 0.2s;*/
     /* Klicks gehen durch */
+      pointer-events: none; 
     border-radius: inherit;
     visibility: hidden;
     width: 100%;
@@ -494,6 +503,7 @@ button:active {
 .sudoku-row.magenta,
 .sudoku-col.magenta {
     border: 0.3rem solid var(--magenta-color);
+
 }
 
 .sudoku-block.green,
@@ -527,20 +537,6 @@ button:active {
     padding: 0.1rem
 }
 
-.sudoku-row {
-    border-radius: inherit;
-    visibility: hidden;
-    width: 100%;
-    height: 100%;
-}
-
-.sudoku-col {
-    border-radius: inherit;
-    visibility: hidden;
-    width: 100%;
-    height: 100%;
-}
-
 .sudoku-grid-cell {
     /* background-color: #fff;*/
     position: relative;
@@ -568,7 +564,7 @@ button:active {
 .sudoku-grid-cell.hatching {
     background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
     background-size: 1px 1px;
-    
+
 }
 
 
@@ -576,13 +572,13 @@ button:active {
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h5);
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
     color: var(--defined-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h5);
 }
 
 .sudoku-grid-cell.candidates {
@@ -598,8 +594,6 @@ button:active {
 
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
-    font-size: var(--cg-font-h4);
-    padding: 0.1rem;
 
 }
 
@@ -612,16 +606,15 @@ button:active {
     background-color: var(--grauton-auto-selected);
 }
 
-:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected) 
-.sudoku-grid-cell.solved {
+:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected) .sudoku-grid-cell.solved {
     color: white;
 }
 
 .candidate {
     font-size: var(--cg-font-small);
     aspect-ratio: 1 / 1;
-  
- }
+
+}
 
 .candidate :not(.necessary):not(.single) {
     color: black;
@@ -634,8 +627,7 @@ button:active {
 }
 
 /* Selektierte Zelle */
-.sudoku-grid-cell.lazy-invisible
-        > .candidate.necessary {
+.sudoku-grid-cell.lazy-invisible>.candidate.necessary {
     font-size: var(--cg-font-h6);
     color: white;
     font-weight: bold;
@@ -643,8 +635,7 @@ button:active {
     padding: 0.1rem;
 }
 
-.sudoku-grid-cell :is(.lazy, .strict-plus, .struct-minus) 
-        > .candidate.necessary {
+.sudoku-grid-cell :is(.lazy, .strict-plus, .struct-minus)>.candidate.necessary {
     font-size: var(--cg-font-small);
     color: white;
     font-weight: bold;
@@ -652,14 +643,17 @@ button:active {
     padding: 0.1rem;
 }
 
-:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected)
-        > :not(.candidate.necessary){
+:is(.sudoku-grid-cell.selected, .sudoku-grid-cell.auto-selected)> :not(.candidate.necessary) {
     color: white;
 }
 
 .candidate.pair-candidate {
-    border: 0.3rem double var(--magenta-color);
+    /*border: 0.1rem double var(--magenta-color);*/
+    color: black;
+    background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
+    background-size: 1px 1px;
 }
+
 
 .candidate.inAdmissible {
     color: white;
@@ -771,9 +765,9 @@ button:active {
     margin-bottom: 0.2rem;
     background-color: var(--nested-cell-bg-color);
 
-    border-bottom: 0.3rem solid var(--app-header-bg-color);
-    border-left: 0.3rem solid var(--app-header-bg-color);
-    border-right: 0.3rem solid var(--app-header-bg-color);
+    border-bottom: 0.2rem solid var(--app-header-bg-color);
+    border-left: 0.2rem solid var(--app-header-bg-color);
+    border-right: 0.2rem solid var(--app-header-bg-color);
 }
 
 .step-explainer-text {
@@ -845,21 +839,36 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 }
 
-.modern-btn,
-.db-puzzle-btn {
+.modern-btn-inline {
     display: inline-flex;
     align-items: center;
     gap: 0.2rem;
+}
+
+.modern-btn,
+.db-puzzle-btn {
+    padding: 0.2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: var(--cg-font-base);
+    align-items: center;
+    justify-content: center;
+
     background: linear-gradient(95deg, #dce1e9 0%, #b0b3b8 100%);
     color: #222;
     border: none;
     border-radius: 0.3rem;
     /* font-weight: 600; */
+
     font-size: var(--cg-font-base);
     box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
 
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -889,29 +898,9 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: 0.75fr 1.25fr 1.25fr;
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.3rem;
-    background: var(--automatic-solver);
-    padding: 0.8rem;
-}
-
-
-#manual-btn-block .modern-btn,
-#automatic-btn-block .modern-btn {
-    display: flex;
-    flex-direction: column;
-    font-size: var(--cg-font-base);
-    align-items: center;
-    justify-content: center;
     gap: 0.4rem;
-    /*   padding: 0.2rem 0.8rem;*/
-    padding: 0.2rem 0.4rem;
-    min-width: 0;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    white-space: normal;
+    background: var(--automatic-solver);
+    margin: 1rem 2rem;
 }
 
 .number-btn {
@@ -1311,10 +1300,10 @@ label {
     left: 0;
     display: 'none';
     flex-direction: column;
-    background-color: #f5f5f5;
     border: none;
-    /* margin: 0 auto;  */
-    background: var(--screen-bg-color);
+    margin: 0 auto;
+    background-color: var(--automatic-solver);
+    width: 100%;
 }
 
 .trackerDlg::backdrop {
@@ -1967,6 +1956,13 @@ label {
 
 }
 
+@media screen and (orientation: portrait) and (width >=480px) {
+
+    .candidate {
+        font-size: var(--cg-font-base);
+    }
+
+}
 
 /* ================ LANDSCAPE ================= */
 @media (orientation: landscape) {

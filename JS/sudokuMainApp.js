@@ -613,7 +613,7 @@ class InfoDialog {
         this.okNode.addEventListener('click', () => {
             sudoApp.myInfoDialog.close();
             sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
-        });
+            });
     }
 
     open(headerText, infoModus, bodyText, thisPointer, confirmOp) {
@@ -4636,7 +4636,7 @@ class SudokuSolverController {
                 'info',
                 infoString,
                 this,
-                () => { }
+                () => {}
             );
         }
 
@@ -4704,6 +4704,7 @@ class SudokuSolverController {
     // ====================================================================================
 
     infoDlgOKPressed() {
+        // ?????????
         sudoApp.myInfoDialog.close();
     }
 
