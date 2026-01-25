@@ -612,8 +612,10 @@ class InfoDialog {
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
             sudoApp.myInfoDialog.close();
+            console.log('OK-InfoDialog: ==> vor Aufruf der Parameter-Funktion.');
             sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
-        });
+            console.log('OK-InfoDialog: ==> nach Aufruf der Parameter-Funktion.');
+            });
     }
 
     open(headerText, infoModus, bodyText, thisPointer, confirmOp) {
@@ -4636,7 +4638,7 @@ class SudokuSolverController {
                 'info',
                 infoString,
                 this,
-                () => { }
+                () => {}
             );
         }
 
@@ -4704,6 +4706,7 @@ class SudokuSolverController {
     // ====================================================================================
 
     infoDlgOKPressed() {
+        // ?????????
         sudoApp.myInfoDialog.close();
     }
 

@@ -490,8 +490,9 @@ button:active {
 
 .sudoku-col,
 .sudoku-row {
-    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+   /* transition: background 0.2s, box-shadow 0.2s, border 0.2s;*/
     /* Klicks gehen durch */
+      pointer-events: none; 
     border-radius: inherit;
     visibility: hidden;
     width: 100%;
@@ -534,20 +535,6 @@ button:active {
     /* Klicks gehen durch */
     border-radius: inherit;
     padding: 0.1rem
-}
-
-.sudoku-row {
-    border-radius: inherit;
-    visibility: hidden;
-    width: 100%;
-    height: 100%;
-}
-
-.sudoku-col {
-    border-radius: inherit;
-    visibility: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .sudoku-grid-cell {
@@ -662,7 +649,7 @@ button:active {
 
 .candidate.pair-candidate {
     /*border: 0.1rem double var(--magenta-color);*/
-    color: white;
+    color: black;
     background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
     background-size: 1px 1px;
 }

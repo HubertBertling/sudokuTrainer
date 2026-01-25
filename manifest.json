@@ -37,13 +37,6 @@
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "sudoku-trainer"
-    },
-    {
-      "src": "./images/screenshot-533x406.png",
-      "sizes": "533x406",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "sudoku-trainer"
     }
   ],
 
