@@ -222,7 +222,7 @@ body {
     border: none;
     padding: 0.4rem;
     border-radius: 8px;
-    font-size: inherit;
+    font-size: var(--cg-font-h6);
 
 }
 
@@ -273,8 +273,8 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: var(--manual-solver);
-    /* padding: 0.4rem 0.2rem;*/
-    padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem);
+    padding: 0.4rem 0.2rem;
+    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
 
@@ -284,7 +284,8 @@ button:active {
     background: var(--manual-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h6);
+    padding: 0.2rem 0.8rem;
 
 }
 
@@ -293,8 +294,9 @@ button:active {
     background: var(--automatic-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-base);
-    padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem);
+    font-size: var(--cg-font-h6);
+    padding: 0.4rem 0.8rem;
+   /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
 
@@ -572,13 +574,13 @@ button:active {
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h4);
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
     color: var(--defined-cell-color);
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h4);
 }
 
 .sudoku-grid-cell.candidates {
@@ -904,7 +906,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
 }
 
 #btn-define {
