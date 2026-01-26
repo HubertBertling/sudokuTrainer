@@ -572,13 +572,13 @@ button:active {
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h6);
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
     color: var(--defined-cell-color);
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h6);
 }
 
 .sudoku-grid-cell.candidates {
@@ -904,7 +904,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
 }
 
 #btn-define {

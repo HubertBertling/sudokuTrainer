@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.4.06';
+let VERSION = 'v1.4.26';
 
 // ==========================================
 // Basic classes
@@ -556,7 +556,7 @@ class Search {
             sudoApp.mySolver.notifyAspect('searchIsCompleted',
                 this.getNumberOfSolutions());
         }
-        return autoStepResult.action;
+        return autoStepResult.processResult;
     }
 
     cleanUp() {
@@ -1547,7 +1547,8 @@ class SudokuGroup {
         // Iterate over the group
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
-                let permNumbers = this.myCells[i].getTotalCandidates();
+                //let permNumbers = this.myCells[i].getTotalCandidates();
+                let permNumbers = this.myCells[i].getCandidates();
                 permNumbers.forEach(nr => {
                     let iNr = parseInt(nr);
                     // Save the indices of their occurrence for each number
@@ -1660,7 +1661,8 @@ class SudokuGroup {
             let hiddenPair = this.hiddenPairs[k];
             // Clean up first pair cell
             let cell1 = this.myCells[hiddenPair.pos1];
-            let tmpCandidates1 = cell1.getTotalCandidates();
+            // let tmpCandidates1 = cell1.getTotalCandidates();
+            let tmpCandidates1 = cell1.getCandidates();
             let newInAdmissibles1 = tmpCandidates1.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
             if (newInAdmissibles1.size > 0) {
@@ -1683,7 +1685,8 @@ class SudokuGroup {
 
             // Clean up second pair cell
             let cell2 = this.myCells[hiddenPair.pos2];
-            let tmpCandidates2 = cell2.getTotalCandidates();
+            // let tmpCandidates2 = cell2.getTotalCandidates();
+            let tmpCandidates2 = cell2.getCandidates();
             let newInAdmissibles2 = tmpCandidates2.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
             if (newInAdmissibles2.size > 0) {
@@ -2543,8 +2546,11 @@ class SudokuGrid {
 
 
     setStepLazy() {
-        this.stepLazy = true;
-        sudoApp.mySolver.setActualEvalType('lazy');
+        if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+            this.stepLazy = true;
+            sudoApp.mySolver.setActualEvalType('lazy');
+            sudoApp.mySolver.notify();
+        }
     }
     unsetStepLazy() {
         if (this.stepLazy) {
@@ -3146,6 +3152,7 @@ class SudokuGrid {
         // Calculate the grid only so far, 
         // that the next step can be done unambiguously
         this.clearEvaluations();
+        // non-candidates
         this.calculateInAdmissibles();
         if (this.calculateNextNecessary()) {
             return;
@@ -3167,6 +3174,7 @@ class SudokuGrid {
 
     evaluateGridStrict() {
         this.clearEvaluations();
+        // non-candidates
         this.calculateInAdmissibles();
         this.calculateNecessarys();
         let inAdmissiblesAdded = true;
@@ -3180,10 +3188,16 @@ class SudokuGrid {
     }
 
     derive_inAdmissiblesNew() {
+        // The order is basically arbitrary.
+        // For pragmatic reasons, however, it makes sense to
+        // execute hidden pairs last, because this makes it easier to visualize
+        // the hidden pairs. Eliminable candidates
+        // in other cells cannot have been caused by eliminable candidates
+        // in the hidden pair. 
         if (this.derive_inAdmissiblesFromNakedPairs()) return true;
-        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         if (this.derive_inAdmissiblesFromPointingPairs()) return true;
         if (this.derive_inAdmissiblesFromIntersection()) return true;
+        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         return false;
     }
 
@@ -3408,6 +3422,12 @@ class SudokuGrid {
                 this.deselect();
             } else {
                 this.setAdMissibleIndexSelected(candidateIndexSelected);
+                let sc = this.selectedCell();
+                if (sc.inAdmissibleCandidates.has(sc.getSelectedCandidate())) {
+                    //To understand the hidden single of this cell, 
+                    //we switch to lazy mode for this step.
+                    sudoApp.mySolver.setStepLazy();
+                }
             }
         } else {
             this.deselect();
@@ -3705,6 +3725,11 @@ class SudokuCell {
         return this.isSelected;
     }
     getAdMissibleNrSelected() {
+        let candidateIArray = Array.from(this.getCandidates());
+        return candidateIArray[this.candidateIndexSelected];
+    }
+
+    getSelectedCandidate() {
         let candidateIArray = Array.from(this.getCandidates());
         return candidateIArray[this.candidateIndexSelected];
     }
@@ -4713,7 +4738,7 @@ class SudokuSolver {
 
     setActualEvalType(value) {
         this.currentEvalType = value;
-        // this.myGrid.evaluateMatrix();
+        this.myGrid.evaluateMatrix();
     }
 
     setAutoDirection(direction) {
