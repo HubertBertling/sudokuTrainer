@@ -222,7 +222,7 @@ body {
     border: none;
     padding: 0.4rem;
     border-radius: 8px;
-    font-size: inherit;
+    font-size: var(--cg-font-h6);
 
 }
 
@@ -273,8 +273,8 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: var(--manual-solver);
-    /* padding: 0.4rem 0.2rem;*/
-    padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem);
+    padding: 0.4rem 0.2rem;
+    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
 
@@ -284,7 +284,8 @@ button:active {
     background: var(--manual-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h6);
+    padding: 0.2rem 0.8rem;
 
 }
 
@@ -293,8 +294,9 @@ button:active {
     background: var(--automatic-solver);
     color: white;
     border: none;
-    font-size: var(--cg-font-base);
-    padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem);
+    font-size: var(--cg-font-h6);
+    padding: 0.4rem 0.8rem;
+    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
 
@@ -490,9 +492,9 @@ button:active {
 
 .sudoku-col,
 .sudoku-row {
-   /* transition: background 0.2s, box-shadow 0.2s, border 0.2s;*/
+    /* transition: background 0.2s, box-shadow 0.2s, border 0.2s;*/
     /* Klicks gehen durch */
-      pointer-events: none; 
+    pointer-events: none;
     border-radius: inherit;
     visibility: hidden;
     width: 100%;
@@ -904,6 +906,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
+    font-size: var(--cg-font-h6);
     font-size: var(--cg-font-h6);
 }
 
@@ -1925,9 +1928,15 @@ label {
 
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
+
+   
     .app-content {
-        height: 95dvh;
-        max-width: 95vw;
+        overflow: hidden;
+        height: 100vh;
+        /* Verhindert in manchen Browsern das "Bounce"-Scrolling */
+
+      /*  height: 100dvh; */
+        max-width: 100vw;
         aspect-ratio: 1 / 2;
         width: auto;
 
