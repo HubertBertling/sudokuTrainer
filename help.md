@@ -59,7 +59,7 @@ layout: default
 # Herzlich willkommen zur Sudoku-Explorer-App
 
 Viele Menschen haben Spass daran, Sudoku-Puzzles zu lösen, die sie in der Zeitung finden. 
-Oft erscheint eine Lösung des Puzzles in der Zeitung am Folgetag. Besonders als Sudoku-Anfänger kann es Dir passieren,
+Oft gibt es in der Zeitung eine Lösung des Puzzles am Folgtag. Besonders als Sudoku-Anfänger kann es Dir passieren,
 dass Du bei der Lösungssuche steckenbleibst. Egal, ob die fertige Lösung am Folgetag in der Zeitung zu finden ist oder ob ein 
 konventioneller Sudoku-Solver sie präsentiert, Du bleibst ratlos zurück mit der Frage: Wie hätte ich diese Lösung finden können?
 
@@ -113,22 +113,22 @@ Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Br
 
 # Einführung in den Sudoku-Explorer
 
-Wir führen hier die Konzepte dieses Sudoku-Explorers ein. Dazu benötigen wir Grundbegriffe des 9x9-Sudokus, die wir paralllel mitdefinieren bzw. erläutern. Im Abschnitt ??? geben wir dann in einem zweiten Durchgang detaillierte Definitionen und Hintergründe.  
+Wir führen hier die Konzepte dieses Sudoku-Explorers ein. Dazu benötigen wir Grundbegriffe des 9x9-Sudokus, die wir paralllel mitdefinieren bzw. erläutern. Im Abschnitt [Die Welt der 9x9 Sudokus](#die-welt-der-9x9-sudokus) geben wir dann in einem zweiten Durchgang detaillierte Definitionen und eräutern Hintergründe.  
 
-Ein **Sudoku-Puzzle** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
+Ein **Sudoku-Puzzle**, synonym auch ein **Sudoku** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
 
 Die Givens werden blau unterlegt angezeigt. Grün unterlegte Zellen enthalten Lösungsnummern, die vom Spieler oder dem Solver gesetzt wurden.
 
 <figure>
    <img src="./imagesHelp/appView1.png" alt="App-Darstellung eines Puzzles" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic">App-Darstellung eines Puzzles</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic">Explorer-Darstellung eines Puzzles</figcaption>
 </figure>
 
 Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in den noch nicht gesetzten Zellen Kandidatennummern anzeigen lässt. Damit die Kandidatennummern angezeigt werden, muss in den Solver-Einstellungen der Parameter 'Kandidatenauswertung' auf 'Lazy' gesetzt sein.
 
 <figure >
    <img src="./imagesHelp/appViewLazy.png" alt="App-Darstellung eines Puzzles lazy" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">App-Darstellung eines Puzzles, lazy</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Explorer-Darstellung eines Puzzles, lazy</figcaption>
 </figure>
 
 ## Die möglichen Inhalte einer Sudoku-Zelle
@@ -145,11 +145,11 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 | ![No selectable candidates](./imagesHelp/nochoice.png){: width="48rem"} ![No candidates at all](./imagesHelp/nochoice2.png){:width="48rem"} | **Widerspruch - Kein Kandidat:** Für diese Zelle wurde noch keine Nummer gesetzt. Allerdings gibt es keinen Kandidat mehr, der noch gesetzt werden könnte. Die Kandidaten 4 und 8 sind unzulässig. In der zweiten dargestellten Zelle gibt es nicht mal mehr Kandidatnummern. D.h. das Puzzle ist widersprüchlich. Wenn das Puzzle noch erfolgreich gelöst werden soll, müssen ein oder mehrere der bisherigen Nummernsetzungen zurückgenommen werden. Tritt während der automatischen Ausführung eine solche Zelle auf, schaltet der Solver in den Rückwärts-Modus um.                                                                                                                                                                                                            |
 | ![NumberConflict](./imagesHelp/conflct.png){:width="48rem"}                                                                                 | **Widerspruch - Die Nummer 5 ist bereits einmal gesetzt:** Für diese Zelle wurde die Nummer 5 gesetzt. Diese Nummer ist direkt unzulässig, weil in der Spalte, Reihe oder dem Block dieser Zelle bereits eine 5 gesetzt ist. Das zweite oder dritte Auftreten der Nummer wird ebenfalls mit rotem Rand angezeigt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-| ![Automatische Selektion](./imagesHelp/autoSelected.png){:width="48rem"} | **Automatisch selektierte Zelle** mit notwendiger Nummer. Schwarzer Hintergrund.|
+| ![Automatische Selektion](./imagesHelp/autoSelected.png){:width="48rem"} | **Automatisch selektierte Zelle** mit notwendiger Nummer. Grauer Hintergrund.|
 
-| ![Automatische Selektion Lazy](./imagesHelp/autoSelectedLazy.png){:width="48rem"} | **Automatisch selektierte Zelle** im Lazy-Modus. Schwarzer Hintergrund. |
-| ![Manuelle Selektion](./imagesHelp/manualSelected.png){:width="48rem"} | **Manuell selektierte Zelle** Grauer Hintergrund|
-| ![Manuelle Selektion Lazy](./imagesHelp/manualSelectedLazy.png){:width="48rem"} | **Manuell selektierte Zelle** im Lazy-Modus. Grauer Hintergrund.|
+| ![Automatische Selektion Lazy](./imagesHelp/autoSelectedLazy.png){:width="48rem"} | **Automatisch selektierte Zelle** im Lazy-Modus. Grauer Hintergrund. |
+| ![Manuelle Selektion](./imagesHelp/manualSelected.png){:width="48rem"} | **Manuell selektierte Zelle** Schwarzer Hintergrund|
+| ![Manuelle Selektion Lazy](./imagesHelp/manualSelectedLazy.png){:width="48rem"} | **Manuell selektierte Zelle** im Lazy-Modus. Schwarzer Hintergrund.|
 
 ## Zwei Spielphasen
 
@@ -204,7 +204,7 @@ Die Sudoku-Explorer-App ist eine Progressive Web App (PWA). Wie eine native App 
     <figcaption style="font-size: 16px; font-style: italic">Tastenblock Manuell</figcaption>
 </figure>
 
-**Taste Init.** Jederzeit kann der Trainer initialisiert werden. Dabei wird das aktuell gespielte Puzzle gelöscht und der Solver initialisert. Die bereits gespeicherten Puzzles bleiben unverändert erhalten.
+**Taste Init.** Jederzeit kann der Explorer initialisiert werden. Dabei wird das aktuell gespielte Puzzle gelöscht und der Solver initialisert. Die bereits gespeicherten Puzzles bleiben unverändert erhalten.
 
 **Taste Reset.** Das aktuelle Puzzle wird zurückgesetzt auf die Aufgabenstellung. D.h. alle in der Lösungsphase gesetzten Zellen, die grünen Zellen, werden gelöscht. Die Givens bleiben erhalten. Per Undo kann diese Operation zurückgenommen werden.
 
@@ -238,7 +238,7 @@ Der Spieler kann im Dialog einen nicht leeren Schwierigkeitsgrad selektieren und
 **Taste: Prüfen.** Die gesetzten Lösungsnummern werden geprüft. Wenn sie falsch gesetzt sind, werden sie als fehlerhaft gekennzeichnet. Diese Funktion ist dann nützlich, wenn man das Puzzle manuell lösen will und man vermutet, dass man bereits einen Fehler gemacht hat.
 
 **Taste: Tipp.** Wenn man bei der manuellen Lösung nicht mehr weiter weiss, kann man diese Taste nutzen.
-Siehe [Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
+Siehe [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp).
 
 **Taste: Puzzle speichern.** Der Spielstand des aktuellen Puzzles wird in der Datenbank gespeichert. Gegebenenfalls wird das Puzzle in der DB neu angelegt und erhält dabei einen generierten Namen: 'PZ (>>Datum<<)'. Falls es schon in der Datenbank ist, wird es mit dem aktuellen Spielstand überschrieben. Der Name des Puzzles kann jederzeit umbenannt werden.
 
@@ -308,15 +308,19 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Column    | Spalte               | Spalte             |                                                                                                                       |
 | Box/Block | Block (auch: Region) | Block              | Eines der neun 3x3-Quadrate                                                                                           |
 | Unit      | Einheit              | Gruppe             | Jede Gruppe von 9 Zellen: Zeile, Spalte oder Block                                                                    |
-| Candidate | Kandidat             | Kandidat           | Eine mögliche Zahl in einer Zelle                                                                                     |
-|           |                      | Unzulässige Nummer | In dem Block, in der Reihe oder Spalte der Zelle existiert eine andere Zelle, in der diese Nummer bereits gesetzt ist |
+| Candidate | Kandidat             | Kandidat           | Eine nicht direkt unzulässige Zahl in einer Zelle                                                                                     |
+|           |                      | (Direkt) Unzulässige Nummer | In dem Block, in der Reihe oder Spalte der Zelle existiert eine andere Zelle, in der diese Nummer bereits gesetzt ist |
 | Grid      | Raster / Gitter      | Grid / Matrix      | Die gesamte Sudoku-Matrix                                                                                             |
 | Given     | Vorgabe              | Given              | Eine Zahl des eingegebenen Puzzles                                                                                    |
 
 
 ## Definitionen dieser App
 
-**Unzulässige Nummern:** Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz Kandidaten. Für eine unbelegte Zelle ist eine **Nummer unzulässig**, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. Alle anderen Nummern heißen **Kandidatnummern** oder einfach **Kandidaten** dieser Zelle. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter "Kandidatenauswertung" nicht der Wert "Keine Kandidatenanzeige" gesetzt ist.
+**Unzulässige Nummern: (Nicht-Kandidaten)****** Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz **Kandidaten**. Für eine unbelegte Zelle ist eine Nummer unzulässig, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. 
+
+
+
+Alle anderen Nummern sind **Kandidaten** dieser Zelle. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter "Kandidatenauswertung" nicht der Wert "Keine Kandidatenanzeige" gesetzt ist.
 
 **Eliminierbare Kandidaten.** Auch Kandidaten können unzulässig sein. Eine Kandidatennummer ist unzulässig bzw. eliminierbar, wenn sie das Puzzle widersprüchlich macht. Der Solver würde das sofort oder einige Schritte später aufdecken. Eliminierbare Kandidaten werden in roter Farbe angezeigt.
 
