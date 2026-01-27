@@ -1935,7 +1935,7 @@ label {
         /* Verhindert in manchen Browsern das "Bounce"-Scrolling */
 
       /*  height: 100dvh; */
-        max-width: 95vw;
+        max-width: 100vw;
         aspect-ratio: 1 / 2;
         width: auto;
 
