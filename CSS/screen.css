@@ -1928,14 +1928,12 @@ label {
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
 
-    body {
-
+   
+    .app-content {
         overflow: hidden;
         height: 100vh;
         /* Verhindert in manchen Browsern das "Bounce"-Scrolling */
-    }
 
-    .app-content {
       /*  height: 100dvh; */
         max-width: 95vw;
         aspect-ratio: 1 / 2;
