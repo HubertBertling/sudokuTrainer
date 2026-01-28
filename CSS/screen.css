@@ -574,13 +574,13 @@ button:active {
 .sudoku-grid-cell.solved {
     background-color: var(--played-cell-bg-color);
     color: var(--played-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
 }
 
 .sudoku-grid-cell.given {
     background-color: var(--defined-cell-bg-color);
     color: var(--defined-cell-color);
-    font-size: var(--cg-font-h4);
+    font-size: var(--cg-font-h6);
 }
 
 .sudoku-grid-cell.candidates {
@@ -906,6 +906,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .number-btn {
+    font-size: var(--cg-font-h6);
     font-size: var(--cg-font-h6);
 }
 
@@ -1979,7 +1980,7 @@ label {
     .app-content {
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
-        width: calc(min(98vw, 820px));
+        width: calc(min(98vw, 920px));
         margin: 0 auto;
 
     }

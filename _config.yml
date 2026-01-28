@@ -1,19 +1,18 @@
 # Site settings
 
-title: Sudoku-Trainer
+title: Sudoku-Explorer
 email: h.bertling@web.de    
 description: > # this means to ignore newlines until "baseurl:"
-    Diese App ist ein Sudoku-Trainer. Der Trainer löst jedes Puzzle
-    und zeigt darüber hinaus auch den Weg zur Lösung.
-    Spielerisch lernst Du dabei die Elemente des klassischen 9x9 Sudoku kennen: die Anwendung logischer Lösungstechniken,
-    die Bedeutung der Puzzle-Schwierigkeitsgrade, die Puzzle-Kategorien: "eindeutig lösbar", 
-    "mehrfach lösbar" und "unlösbar" und das Backtracking. 
-    In der Hilfe der App findest Du Informationen zu 9x9-Sudokus und zur Bedienung der App. Wusstes Du, 
-    dass es 6.670.903.752.021.072.936.960 vollständig ausgefüllte 9x9 Sudokus gibt? 
-    Oder, dass die minimale Anzahl vorgegebener Zahlen in einem
-    eindeutig lösbaren 9x9-Sudoku 17 ist? Wenn Dich solche Einsichten interessieren, 
-    dann schau in die Hilfe und überprüfe die Beispiel-Puzzles mit diesem Trainer.
-    Viel Vergnügen mit dem Trainer beim Sudoku-Lernen und Sudoku-Lösen.
+    
+    Diese App ist ein Explorer für klassisches 9x9-Sudokus. 
+    Mit dem Explorer kannst Du konkrete Puzzles generieren und lösen
+    und darüberhinaus die Welt des klassischen 9x9 Sudoku umfassend kennenlernen.
+
+    Viel Vergnügen mit dem Explorer!
+    
+    Hubert Bertling
+    
+    
 
 # Build settings
 theme: jekyll-theme-cayman
