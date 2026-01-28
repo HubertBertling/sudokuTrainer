@@ -4,9 +4,10 @@ title: Sudoku-Explorer
 email: h.bertling@web.de    
 description: > # this means to ignore newlines until "baseurl:"
     
-    Diese App ist ein Explorer für klassisches 9x9-Sudokus. 
-    Mit dem Explorer kannst Du konkrete Puzzles generieren und lösen
-    und darüberhinaus die Welt des klassischen 9x9 Sudoku umfassend kennenlernen.
+    Diese App ist ein Explorer für klassische 9x9-Sudokus. 
+    Mit dem Explorer kannst Du einerseits konkrete Puzzles lösen
+    und andererseits über das einzelne Puzzles hinaus die umfangreiche
+    Welt des klassischen 9x9 Sudoku umfassend kennenlernen.
 
     Viel Vergnügen mit dem Explorer!
     

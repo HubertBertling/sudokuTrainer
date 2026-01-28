@@ -1965,11 +1965,9 @@ label {
 }
 
 @media screen and (orientation: portrait) and (width >=480px) {
-
     .candidate {
-        font-size: var(--cg-font-base);
+        font-size: var(--cg-font-h6);
     }
-
 }
 
 /* ================ LANDSCAPE ================= */
