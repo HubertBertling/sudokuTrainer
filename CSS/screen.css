@@ -1980,7 +1980,7 @@ label {
     .app-content {
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
-        width: calc(min(98vw, 820px));
+        width: calc(min(98vw, 920px));
         margin: 0 auto;
 
     }

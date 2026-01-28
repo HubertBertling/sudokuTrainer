@@ -13,16 +13,20 @@ layout: default
    5. [Die Taste Teilen](#die-taste-teilen)
    6. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
    7. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
-      1. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
-5. [Die Welt der 9x9 Sudokus](#die-welt-der-9x9-sudokus)
+   8. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
+   9. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
+      1. [Operationen der Datenbank](#operationen-der-datenbank)
+      2. [Import/Export](#importexport)
+5. [Die Welt der 9x9 Sudokus im Sudoku-Explorer](#die-welt-der-9x9-sudokus-im-sudoku-explorer)
    1. [Standardbegriffe](#standardbegriffe)
-   2. [Definitionen dieser App](#definitionen-dieser-app)
+   2. [In dieser App verwendete Begriffe](#in-dieser-app-verwendete-begriffe)
    3. [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten)
-      1. [Eliminationskriterium "Nacktes Paar"](#eliminationskriterium-nacktes-paar)
-      2. [Eliminationskriterium: "Verstecktes Paar"](#eliminationskriterium-verstecktes-paar)
-      3. [Eliminationskriterium: "Überschneidung"](#eliminationskriterium-überschneidung)
-      4. [Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"](#eliminationskriterium-zeiger-paar-zeiger-triple)
-   4. [Puzzle lösen durch Scannen, Eliminieren und Backtracking](#puzzle-lösen-durch-scannen-eliminieren-und-backtracking)
+      1. [Eliminationskriterium: "Überschneidung"](#eliminationskriterium-überschneidung)
+      2. [Eliminationskriterium "Nacktes Paar"](#eliminationskriterium-nacktes-paar)
+      3. [Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"](#eliminationskriterium-zeiger-paar-zeiger-triple)
+      4. [Eliminationskriterium: "Verstecktes Paar"](#eliminationskriterium-verstecktes-paar)
+      5. [Die mehrfache Kriterien-Anwendung in einem Schritt](#die-mehrfache-kriterien-anwendung-in-einem-schritt)
+   4. [Die Lösungssuche des Explorers](#die-lösungssuche-des-explorers)
    5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
    6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
    7. [Sudoku-Puzzles](#sudoku-puzzles)
@@ -32,6 +36,7 @@ layout: default
       4. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
       5. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
    8. [Lösungsarchitektur dieses Sudoku-Explorers](#lösungsarchitektur-dieses-sudoku-explorers)
+   9. [Ziele und Abgrenzung dieses Explorers](#ziele-und-abgrenzung-dieses-explorers)
 6. [Den Sudoku-Explorer praktisch nutzen](#den-sudoku-explorer-praktisch-nutzen)
    1. [Puzzles manuell lösen](#puzzles-manuell-lösen)
       1. [Prüfen der aktuell gesetzten Nummern](#prüfen-der-aktuell-gesetzten-nummern)
@@ -39,22 +44,10 @@ layout: default
    2. [Puzzles automatisch lösen](#puzzles-automatisch-lösen)
       1. [Verschiedene Arten der automatischen Lösungssuche](#verschiedene-arten-der-automatischen-lösungssuche)
       2. [Backtracking und Such-Ende](#backtracking-und-such-ende)
-7. [Mit Hilfe des Sudoku-Explorers gewonnene Erfahrungen und Einsichten](#mit-hilfe-des-sudoku-explorers-gewonnene-erfahrungen-und-einsichten)
-   1. [Welcher Schwierigkeitsgrad für welchen Spielertyp?](#welcher-schwierigkeitsgrad-für-welchen-spielertyp)
-   2. [Tatsachen und Einsichten über klassische 9x9-Sudokus](#tatsachen-und-einsichten-über-klassische-9x9-sudokus)
+   3. [Eine Beispiel-Lösungssuche mit dem Explorer](#eine-beispiel-lösungssuche-mit-dem-explorer)
+7. [Sudoku-Explorer: Tatsachen und Einsichten über klassische 9x9-Sudokus](#sudoku-explorer-tatsachen-und-einsichten-über-klassische-9x9-sudokus)
 8. [Schlussbemerkungen](#schlussbemerkungen)
 9. [Beispiel-Puzzles](#beispiel-puzzles)
-10. [Anhang](#anhang)
-    1. [Die Sudoku-Grundregeln](#die-sudoku-grundregeln)
-    2. [Ziele und Abgrenzung dieses Trainers](#ziele-und-abgrenzung-dieses-trainers)
-    3. [Puzzles generieren](#puzzles-generieren)
-    4. [Puzzles speichern](#puzzles-speichern)
-    5. [Architektur der App](#architektur-der-app)
-11. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
-    1. [Operationen der Datenbank](#operationen-der-datenbank)
-    2. [Import/Export](#importexport)
-       1. [Puzzle teilen von SmartPhone zu SmartPhone](#puzzle-teilen-von-smartphone-zu-smartphone)
-       2. [Puzzle Datenbank vom PC auf das Smartphone übertragen](#puzzle-datenbank-vom-pc-auf-das-smartphone-übertragen)
 
 # Herzlich willkommen zur Sudoku-Explorer-App
 
@@ -74,7 +67,7 @@ Mit zunehmender Erfahrung entstehen neue, weitergehende Fragen, die über das L�
 
 Mit dem Explorer lernst Du die Welt des klassischen 9x9 Sudoku umfassend kennen. Die Anwendung logischer Lösungstechniken, die Bedeutung der Puzzle-Schwierigkeitsgrade, die Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar" und das Backtracking, all dies kannst Du mit dem Explorer durchspielen. 
 
-Und noch mehr: Wusstes Du, dass es 6.670.903.752.021.072.936.960 vollständig ausgefüllte 9x9 Sudokus gibt? Oder, dass die minimale Anzahl vorgegebener Zahlen in einem eindeutig lösbaren 9x9-Sudoku 17 ist? Wenn Du Interesse an solchen Fragen hast, dann schau in die Hilfe und überprüfe die dort beschriebenen Einsichten mit Hilfe des Explorers.
+Und noch mehr: Wusstes Du, dass es 6.670.903.752.021.072.936.960 vollständig ausgefüllte 9x9 Sudokus gibt? Oder, dass die minimale Anzahl vorgegebener Zahlen in einem eindeutig lösbaren 9x9-Sudoku 17 ist? Wenn Du Interesse an solchen Fragen hast, dann schau in diese Hilfe und überprüfe die beschriebenen Einsichten mit Hilfe des Explorers.
 
 Zusammengefasst, Sudoku macht Spaß. 
 
@@ -155,8 +148,8 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 
 | Phase                                                | Bedeutung                                                                                                                                                                                                                                                                                                                                |
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ![Eingeben](./imagesHelp/define.png){:width="200px"} | Die Taste **Phase: Definition**. Das Drücken dieser Taste versetzt den Solver in die Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Trainer. Nach der Initialisierung ist diese Taste automatisch gesetzt.                                                                 |
-| ![Lösen](./imagesHelp/play.png){:width="200px"}      | Die Taste **Phase: Lösen**. Das Drücken dieser Taste versetzt den Trainer in die Lösungsphase. Gleichzeitig ermittelt der Trainer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Taste automatisch gesetzt. |
+| ![Eingeben](./imagesHelp/define.png){:width="200px"} | Die Taste **Phase: Definition**. Das Drücken dieser Taste versetzt den Solver in die Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Explorer. Nach der Initialisierung ist diese Taste automatisch gesetzt.                                                                 |
+| ![Lösen](./imagesHelp/play.png){:width="200px"}      | Die Taste **Phase: Lösen**. Das Drücken dieser Taste versetzt den Explorer in die Lösungsphase. Gleichzeitig ermittelt der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Taste automatisch gesetzt. |
 
 Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor die Phase-Definition-Taste drücken.
 
@@ -223,7 +216,7 @@ Die Sudoku-Explorer-App ist eine Progressive Web App (PWA). Wie eine native App 
 
 </figure>
 
-**Taste: Neu** öffnet den Dialog "Neue Puzzles". Der Trainer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeitsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.
+**Taste: Neu** öffnet den Dialog "Neue Puzzles". Der Explorer besitzt einen Vorrat neuer Puzzles, für jeden Schwierigkeitsgrad mindestens 1 Puzzle. Unmittelbar nach Start der App ist dieser Vorrat noch nicht vorhanden.
 
 Die App startet im Hintergrund einen Puzzle-Generator, der solange neue Puzzles erzeugt, bis für jeden Schwierigkeitsgrad mindestens ein neues Puzzle existiert.
 
@@ -269,7 +262,7 @@ Die Tasten des automatischen Solvers haben folgende Bedeutung:
 **Reset.** Reset Puzzle, ohne den Solver zu verlassen.
 
 
-### Puzzle kopieren und einfügen via Clipboard
+## Puzzle kopieren und einfügen via Clipboard
 
 Die Textdarstellungen eignen sich für den sehr einfachen Austausch von Puzzles zwischen Spielern und zwischen Sudoku-Apps.
 
@@ -291,9 +284,52 @@ Textdarstellung 2
 
     140006800000050002000094060004000000000008036750001900000300010090000005800000700
 
-Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Trainer geladen. Beide Textformate sind anwendbar.
+Mit der Operation "Kopieren (Matrix)" der Navigationsbar wird das aktuell geladene Puzzle in der Textdarstellung 1 ins Clipboard kopiert, mit der Operation "Kopieren" in der Textdarstellung 2. Mit der Operation "Einfügen" wird das Puzzle in der Textdarstellung aus dem Clipboard in den Explorer geladen. Beide Textformate sind anwendbar.
 
-# Die Welt der 9x9 Sudokus
+
+
+## Die Puzzle-Datenbank
+
+Sudoku-Puzzles und ihre Lösungen können im lokalen Speicher des Browsers gespeichert werden, aber nur mit Einschränkungen auf dem Computer selbst. D.h. Man kann seine gespeicherten Puzzles nur in dem Browser wiederfinden, in dem sie gespeichert wurden.
+
+<figure >
+   <img src="./imagesHelp/PuzzleDB.png" alt="Puzzle Datenbank" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Puzzle Datenbank</figcaption>
+</figure>
+
+Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das aktuelle Datum. Bei Bedarf kann der Name umbenannt werden. Bezüglich der Namen gibt es keine Einschränkungen.
+
+| Attribut     | Bedeutung                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Laufende Nr. | Laufende Nr. in der Tabelle. Sie ist keine ID für Puzzles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Puzzle-Name  | Name des gespeicherten Puzzles. Muss nicht eindeutig sein.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| #Givens      | Die Zahl der Givens des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| #Gelöste     | Die Zahl der gelösten Zellen des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| #Offene      | Die Zahl der offenen, ungelösten Zellen des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Level        | Der ermittelte Schwierigkeitsgrad des gespeicherten Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| #Error-RL    | Die Anzahl der Error-Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. **Error-Rückwärtsläufe** erfolgen nach Auftreten eines Widerspruchs. Hinweis: Error-Rückwärtsläufe sind nur für sehr schwere Puzzles von Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe** nach dem Auftreten einer Lösung. Auf eine entsprechende Auswertung wird verzichtet. |
+| Datum        | Datum, an dem das Puzzle angelegt wurde.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+
+### Operationen der Datenbank
+
+| Taste              | Bedeutung                                                                                                                                                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Spaltenkopf        | **Sortieren.** Die Puzzles der Datenbank können sortiert werden nach jeder Spalte. Dazu einfach den Spaltenkopf klicken. Wiederholtes Klicken wechselt zwischen der aufsteigenden und der absteigenden Sortierung.                                                       |
+| Pfeiltasten        | **Navigieren.** Mit den Pfeiltasten kann in der Tabelle vorwärts und rückwärts navigiert werden. Durch Klicken auf eine Reihe der Tabelle kann ein Puzzle direkt selektiert werden.                                                                                      |
+| Laden              | **Puzzle laden.** Durch Drücken der Lade-Taste wird das selektierte Puzzle in den Sudoku-Solver geladen.                                                                                                                                                                 |
+| Puzzle löschen     | **Puzzle löschen.** Gespeicherte Puzzles können auch wieder gelöscht werden.                                                                                                                                                                                             |
+| DB löschen         | **DB löschen.** Die ganze DB kann gelöscht werden. Nützlich, wenn man die DB von einem anderen Gerät übernehmen will und die Übernahme nicht mit der aktuellen DB mischen will.                                                                                          |
+| Drucken            | **Puzzle drucken.** Mittels der Taste Drucken kann das aktuell selektierte Puzzle gedruckt werden. Dabei wird nur die Aufgabe, nicht aber die Lösung ausgedruckt. Dies ist besonders dann nützlich wenn man ein generiertes Puzzle von Hand auf dem Papier lösen möchte. |
+| Download Puzzle-DB | **Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                        |
+| Download Puzzle    | **Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<< in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                          |
+| Import Puzzle(s)   | **Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.                                                                                                                                         |
+
+### Import/Export
+
+Die Operationen Import/Export und Teilen sind sehr abhängig von der vorliegenden Betriebssystem- und Browser-Version. Konkret von den verfügbaren APIs. Es kann also vorkommen, dass manche der nachfolgend gezeigten Beispiele auf dem System des interessierten Anwenders nicht funktionieren.
+
+
+# Die Welt der 9x9 Sudokus im Sudoku-Explorer
 
 Es gibt eine Reihe von weitgehend akzeptierten Standardbegriffen im Bereich Sudoku – insbesondere unter Rätsellösern, Softwareentwicklern, Turnierspielern und Autoren von Sudoku-Literatur. Diese Begriffe stammen vor allem aus der englischsprachigen Community, werden aber auch im deutschsprachigen Raum verwendet, oft in eingedeutschter oder direkt übersetzter Form.
 
@@ -314,50 +350,64 @@ Hier ein Überblick über wichtige Grundbegriffe – jeweils mit englischem Orig
 | Given     | Vorgabe              | Given              | Eine Zahl des eingegebenen Puzzles                                                                                    |
 
 
-## Definitionen dieser App
+## In dieser App verwendete Begriffe
 
-**Unzulässige Nummern: (Nicht-Kandidaten)****** Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz **Kandidaten**. Für eine unbelegte Zelle ist eine Nummer unzulässig, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. 
+**Unzulässige Nummern: (Nicht-Kandidaten)** Für eine noch nicht belegte Zelle der Sudoku-Tabelle unterscheiden wir Unzulässige Nummern und Kandidatennummern, kurz **Kandidaten**. Für eine unbelegte Zelle ist eine Nummer unzulässig, wenn in dem Block, in der Reihe oder Spalte dieser Zelle eine andere Zelle existiert, in der diese Nummer bereits gesetzt ist. Im folgenden Beispiel ist die 5 in allen Zellen der rot gekennzeichneten Reihe und Spalte unzulässig, also kein Kandidat.
+
+<figure>
+   <img src="./imagesHelp/Kandidaten.png" alt="Notwendig" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Kandidaten</figcaption>
+</figure>
 
 
-
-Alle anderen Nummern sind **Kandidaten** dieser Zelle. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter "Kandidatenauswertung" nicht der Wert "Keine Kandidatenanzeige" gesetzt ist.
-
-**Eliminierbare Kandidaten.** Auch Kandidaten können unzulässig sein. Eine Kandidatennummer ist unzulässig bzw. eliminierbar, wenn sie das Puzzle widersprüchlich macht. Der Solver würde das sofort oder einige Schritte später aufdecken. Eliminierbare Kandidaten werden in roter Farbe angezeigt.
+Alle anderen Nummern sind **Kandidaten**. In einer unbelegten Zelle werden die Kandidaten der Zelle angezeigt, sofern in der Werkzeugeinstellung für den Einstellungsparameter "Kandidatenauswertung" nicht der Wert "Keine Kandidatenanzeige" gesetzt ist.
 
 **Notwendige Kandidaten**
 
+Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden.
+
 <figure>
-   <img src="./imagesHelp/lazynotwendig.png" alt="Notwendig" style="width:100%">
+   <img src="./imagesHelp/NotwendigerKandidat.png" alt="Notwendig" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Notwendiger Kandidat 1</figcaption>
 </figure>
 
-Eine Kandidatnummer in einer Zelle ist notwendig, wenn die Nummer in ihrem Block, in ihrer Reihe oder Spalte einzig ist. D.h. sie kann nur hier gesetzt werden. Im Bild ist die grüne 3 in der selektierten Zelle notwendig, weil sie in ihrem Block kein weiteres mal zulässig ist. Stuart spricht von der letzten verbleibenden Zelle für die 3 im fünften Block. Der Solver zeigt den die Notwendigkeit verursachenden Block, Spalte oder Reihe an, wenn die Zelle mit der notwendigen Nummer selektiert ist. Die Zellen mit den weiß gestrichelten Rahmen zeigen Dreien an, deretwegen in den Zellen des Blocks mit grünen Hintergründen keine 3 mehr gesetzt werden kann.
+ Im Bild ist die grüne 1 in der selektierten Zelle notwendig, weil sie in ihrem Block, grün umrandet, kein weiteres mal zulässig ist. Stuart spricht von der letzten verbleibenden Zelle für die 1 im siebten Block. Die Zellen mit den weiß gestrichelten Rahmen zeigen Einsen an, deretwegen in den Zellen des Blocks mit grünen Hintergründen keine 1 mehr gesetzt werden kann.
 
 **Singles (Einzige Kandidaten)**
 
+Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. 
+
 <figure>
    <img src="./imagesHelp/single.png" alt="Single" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Single 7</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Single 3</figcaption>
 </figure>
 
-Eine Kandidatnummer in einer Zelle heißt "Single", wenn es keine weiteren Kandidaten in der Zelle gibt. Im Beispiel ist die 7 ein einziger Kandidat. Die Nummern 1 - 6 und 8 und 9 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number_.
+Im Beispiel ist die 3 ein einziger Kandidat. Die Nummern 1 und 2 und 4 ... 9 sind in dieser Zelle keine Kandidaten. Die gestrichelt weiß umrandeten Zellen sind die Gründe für das Nicht-Kandidat-sein der jeweiligen Nummer. Stuart spricht von der _Last Possible Number.
 
-**Eliminierbare Kandidaten**
-
-Eliminierbare Kandidaten werden in roter Schrift angezeigt. Eine Kandidatennummer ist **eliminierbar**, wenn ihre Setzung in der Zelle das Puzzle widerspruchsvoll machen würde.
+**Eliminierbare Kandidaten.** Auch Kandidaten können unzulässig sein. Eine Kandidatennummer ist unzulässig bzw. eliminierbar, wenn ihre Setzung das Puzzle widersprüchlich machen würde. Der Explorer würde das sofort oder einige Suchschritte später aufdecken. Eliminierbare Kandidaten werden mit rotem Hintergrund angezeigt.
 
 <figure>
-   <img src="./imagesHelp/versteckterSingle.png" alt="Single" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Versteckter Single 4</figcaption>
+   <img src="./imagesHelp/eliminierbarerKandidat.png" alt="Single" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Eliminierbarer Kandidat 6</figcaption>
 </figure>
 
-**Versteckte Singles**
-
-Warum interessieren wir uns für eliminierbare Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (ein **versteckter Single**) eliminierbar sind, dann kann der versteckt einzige Kandidat, hier die 4, in der Zelle gesetzt werden.
+Warum interessieren wir uns für eliminierbare Kandidaten? Wenn in einer Zelle alle Kandidatennummern bis auf eine (ein **versteckter Single**) eliminierbar sind, dann kann der versteckt einzige Kandidat, hier die 8, in der Zelle gesetzt werden.
 
 ## Kriterien für die Erkennung eliminierbarer Kandidaten
 
-Egal, ob nur die 4 in diesem Trainer implementierten Kriterien zur Anwendung kommen, oder alle in der Community bekannten Kriterien. Sudokus, für die es bisher keine rein logische Lösung gibt, können immer noch durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Eliminierbarkeit von Kandidaten.
+Egal, ob nur die 4 in diesem Explorer implementierten Kriterien zur Anwendung kommen, oder alle in der Community bekannten Kriterien. Sudokus, für die es bisher keine rein logische Lösung gibt, können immer noch durch Backtracking gelöst werden. Der vorliegende Solver unterstützt nachfolgend beschriebene logische Kriterien für das Erkennen der Eliminierbarkeit von Kandidaten.
+
+### Eliminationskriterium: "Überschneidung"
+
+Auch Line-Box-Kriterium genannt. Die folgende Abbildung sagt aus, dass die Eliminierbarkeit der 6 mit dem Überschneidungskriterium begründet werden kann. Die Überschneidungsbegründung wird angezeigt, wenn man auf die selektierte Zelle ein weiteres Mal klickt. Bei mehr als einem elimiierbaren Kandidaten kann man durch Klicken die eliminíerbaren Kandidaten der Reihe nach besuchen.
+
+<figure >
+   <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Überschneidung</figcaption>
+</figure>
+
+Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 6. Bitte beachten: die beiden 6 haben einen Magenta-Hintergrund. Sie sind nicht selbst eliminierbar. Damit es am Ende in der Reihe überhaupt eine 6 gibt, muss eine 6 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 6 in dem Block jenseits der Reihe gestrichen werden müssen.
+
 
 ### Eliminationskriterium "Nacktes Paar"
 
@@ -366,7 +416,18 @@ Egal, ob nur die 4 in diesem Trainer implementierten Kriterien zur Anwendung kom
     <figcaption style="font-size: 16px; font-style: italic;">Nacktes Paar</figcaption>
 </figure>
 
-Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder Spalte Paare gibt und Nummern dieser Paare zusätzlich in weiteren Zellen dieses Blocks, dieser Spalte oder Reihe auftauchen. Im Beispiel ist das 6-8-Paar ein nacktes Paar. Das 6-8-Paar macht in seiner Reihe alle 6 und 8 unzulässig. Der Grund: Das Paar bedeutet, dass die 6 und die 8 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 6 oder die 8 links ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Reihe keine 6 oder 8 mehr vorkommen können. Die 6 und 8 sind hier eliminierbar. Diese Eliminierbarkeitsbegründung zeigt der Explorer, wenn man eine Zelle mit eliminierbaren Nummern selektiert hat.
+Im Beispiel ist das 3-4-Paar ein nacktes Paar. Das 3-4-Paar macht in seiner Reihe alle 3 und 4 unzulässig. Der Grund: Das Paar bedeutet, dass die 3 und die 4 auf jeden Fall in einer der beiden Zellen des Paares gesetzt werden muss. Aktuell steht nur noch nicht fest, ob die 3 oder die 4 links ist. Fest steht aber jetzt schon, dass in den übrigen Zellen der Reihe keine 3 oder 4 mehr vorkommen können. Die 3 und 4 sind hier eliminierbar. 
+
+### Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"
+
+Das "Zeiger-Paar", "Zeiger-Triple" wird auch **Box-Line-Kriterium** genannt. Die Box bzw. der Block bestimmt eliminierbare Kandidaten in der Zeile bzw. in der Spalte. Das Kriterium ist quasi Spiegelbild des Überschneidungskrieriums, das auch **Line-Box-Kriterium** genannt. Dort bestimmt die Line, Spalte oder Zeile, eliminierbare Kandidaten im Block.
+
+<figure >
+   <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Zeiger-Paar, Zeiger-Tripel</figcaption>
+</figure>
+
+Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den Block 7. Alle Zellen des Blocks, die die Zahl 9 enthalten könnten, befinden sich in linken Spalte. Beachte wiederum den Magenta-Hintergrund der 9. Da die Zahl 9 in diesem Block mindestens einmal vorkommen sollte, wird sie in einer der Zellen, Zelle 4 oder Zelle 7, enthalten sein. In den übrigen Zellen der ganzen ZSpalte kann daher die 9 gestrichen werden.
 
 ### Eliminationskriterium: "Verstecktes Paar"
 
@@ -375,33 +436,39 @@ Eine Kandidatnummer ist eliminierbar, wenn es in einem Block, einer Reihe oder S
     <figcaption style="font-size: 16px; font-style: italic;">Verstecktes Paar</figcaption>
 </figure>
 
-In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 1 und 7, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 1 und 7 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
+In einem Block, einer Spalte oder Reihe kann es ein verstecktes Paar geben. Ein verstecktes Paar besteht aus zwei Zellen, die zwei gemeinsame Nummern haben, im Beispiel 2 und 4, die in den übrigen Zellen nicht vorkommen. Daneben können sie weitere Nummern haben. Am Ende können in diesen beiden Zellen nur die beiden Nummern 2 und 4 untergebracht werden. Deshalb müssen die übrigen Nummern der beiden Zellen eliminiert werden.
 
-### Eliminationskriterium: "Überschneidung"
+### Die mehrfache Kriterien-Anwendung in einem Schritt
 
-Auch Line-Box-Kriterium genannt. Die Zeile führt zu Eliminationen im Block.
-
-<figure >
-   <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Überschneidung</figcaption>
-</figure>
-
-Ein Block und eine Spalte oder Reihe überschneiden sich. In der Reihe gibt es Nummern, die nur in den gemeinsamen Zellen mit dem Block auftauchen. Im Beispiel die 7. Damit es am Ende in der Reihe überhaupt eine 7 gibt, muss eine 7 in der Reihe gewählt werden. Dies wiederum bedeutet, dass die Nummern 7 in dem Block jenseits der Reihe gestrichen werden müssen.
-
-### Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"
-
-Auch Box-Line-Kriterium genannt. Der Block führt zu Eliminationen in der Zeile.
+Bei der Suche nach einem versteckten Single kommt es vor, dass in einem Suchschritt mehrere Kriterien angewendet werden müssen. Ein Beispiel:
 
 <figure >
-   <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Zeiger-Paar, Zeiger-Tripel</figcaption>
+   <img src="./imagesHelp/kriterium1.png" alt="Versteckztes Paar" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Hidden Single 9 mit zwei eliminierten Kandidaten 4 und 6</figcaption>
 </figure>
 
-Das "Pointing Pair"-Kriterium kommt zur Anwendung, wenn ein Kandidat zweimal in einem Block vorkommt und zwar so, dass sich diese Vorkommen in derselben Zeile oder Spalte befinden. Ein Beispiel. Betrachten wir den Block 9. Alle Zellen des Blocks, die die Zahl 5 enthalten könnten, befinden sich in einer Zeile. Da die Zahl 5 in diesem Block mindestens einmal vorkommen sollte, wird sie in einer der Zellen mit doppeltem Rand enthalten sein. In den übrigen Zellen der ganzen Zeile kann daher die 5 gestrichen werden.
+Wir überprüfen jetzt den Kandidaten 4, indem wir auf die selektierte Zelle {4, 6, 9} klicken. 
 
-## Puzzle lösen durch Scannen, Eliminieren und Backtracking
+<figure >
+   <img src="./imagesHelp/kriterium2.png" alt="Versteckztes Paar" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Anwendung Nacktes Paar {2, 4} </figcaption>
+</figure>
 
-Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Backtracking, sprich Trial&Error an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
+Wir ekennen, dass die 4 durch das Nackte Paar {2, 4} eliminiert wurde. Aber ist das Kriterium hier wirklich anwendbar? Liegt vielleicht ein Zirkelschluss vor? Die beiden Zellen enthalten neben den Kandidaten {2, 4} noch jeweils ein eliminierten Kandidaten. Klicken wir auf die obere Nackte-Paar-Zelle, um die 6 zu überprüfen.
+
+<figure >
+   <img src="./imagesHelp/kriterium3.png" alt="Versteckztes Paar" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">6 eliminierbar wegen Zeigerpaar </figcaption>
+</figure>
+
+Die 6 ist also korrekterweise eliminiert. Überprüfen wir nun die zweite Zelle des Nackten Paares, indem wir auf die Zelle {2, 3, 4} 2-mal klicken. Dann stoßen wir auf das Versteckte Paar {2, 4}, das wir im vorigen Abschnitt schon betrachtet haben. 
+
+Insgesamt haben wir also keinen Zirkelschluss. Die 4 in der Ausgangszelle {4, 6, 9} wurde also zurecht eliminiert.
+
+
+## Die Lösungssuche des Explorers
+
+Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein ineinander verschränktes Verfahren aus Scannen, Eliminieren und Backtracking an. Solange das Puzzle nicht gelöst ist, werden folgende Schritte durchgeführt:
 
 1. **Scanne notwendige Kandidaten:** Der Solver wählt in der Tabelle zunächst eine offene Zelle, die in der Menge ihrer Kandidaten eine notwendige Nummer hat. Diese notwendige Nummer wird dann in der Zelle gesetzt.
 2. **Scanne Singles:** Wenn es keine Zelle mit notwendigem Kandidat mehr gibt, wählt der Solver eine Zelle mit nur einem einzigen Kandidat. Er setzt diese Nummer.
@@ -434,7 +501,7 @@ Das nachfolgende Bild zeigt ein Puzzle im Strikt-Plus-Auswertungsmodus. Bei gena
     <figcaption style="font-size: 16px; font-style: italic;">Strikt-Plus</figcaption>
 </figure>
 
-Das nachfolgende Bild zeigt die vorige Tabelle im Strikt-Minus-Modus. Im Strikt-Minus-Modus ist unmittelbar sichtbar, dass alle Zellen dieses Beispiels nur noch genau eine zulässige Nummer haben. Alle Nummern sind Singles. Mit anderen Worten: wir sehen hier die Lösung des Sudokus. Der Solver präsentiert hier eine Lösung ohne Backtracking. Nur die zuvor erläuterten Kriterien für eliminierbare Kandidaten wurden angewandt.
+Das nachfolgende Bild zeigt die vorige Tabelle im Strikt-Minus-Modus. Im Strikt-Minus-Modus ist unmittelbar sichtbar, dass alle Zellen dieses Beispiels nur noch genau eine zulässige Nummer haben. Alle Nummern sind Singles. Mit anderen Worten: wir sehen hier die Lösung des Sudokus. Der Solver präsentiert hier eine Lösung ohne Backtracking. Nur die zuvor erläuterten Kriterien für eliminierbare Kandidaten wurden angewandt. Aber ... von Hand ist das kaum zu machen. Es ist eine andere Art der automatischen Lösungssuche.
 
 <figure >
    <img src="./imagesHelp/striktminus.png" alt="striktminus" style="width:100%">
@@ -503,7 +570,7 @@ Nach 140 Trial&error-Schritten wurde der Suchbaum vollständig durchlaufen, ohne
     <figcaption style="font-size: 16px; font-style: italic;">Nach abgeschlossener Suche: Keine Lösung</figcaption>
 </figure>
 
-Zusammengefasst: der Solver berechnet die Unlösbartkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, die keinen weiteren Try nach sich haben, ist das Ausgangspuzzle unlösbar.
+Zusammengefasst: der Solver berechnet die Unlösbarkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, die keinen weiteren Try nach sich haben, ist das Ausgangspuzzle unlösbar.
 
 ### Elementare Widersprüche in Zellen und Gruppen
 
@@ -540,11 +607,11 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
       <img src="./imagesHelp/widerspruchGruppeGlecheSingles.png" alt="Zwei gleiche Singles" style="display: block;
      margin-left: auto;
      margin-right: auto;
-     width: 30%;">
+     width: 60%;">
        <figcaption style="font-size: 16px; font-style: italic; text-align:center">Widerspruch - Zwei gleiche Singles</figcaption>
    </figure>
 
-   Ein Single, hier die 1, taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch zur bereits mehrfach erwähnten Sudoku-Regel.
+   Ein Single, hier die 4, taucht gleichzeitig in verschiedenen Zellen der Gruppe auf. Fordert also dieselbe Nummer mehrmals in der Gruppe zu setzen. Ein Widerspruch zur bereits mehrfach erwähnten Sudoku-Regel, dass jede Nummer exakt einmal in einer Gruppe vertreten sein muss.
 
 2. **Widerspruch - Fehlende Nummer:**
 
@@ -556,11 +623,11 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
        <figcaption style="font-size: 16px; font-style: italic; text-align:center">Widerspruch - Fehlende Nummer</figcaption>
    </figure>
 
-   In der Gruppe kommt eine Nummer überhaupt nicht vor. Hier die 3. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.
+   In der Gruppe kommt eine Nummer überhaupt nicht vor. Hier die 5. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.Bitte beachten: Der Explorer zeigt für jede noch offene Zelle der Gruppe, warum die 5 nicht gesetzt werden kann.
 
 ### Puzzles mit genau einer Lösung
 
-Für ein Puzzle mit genau einer Lösung gibt es genau eine fehlerfreie Belegung aller offenen Zellen. Deshalb kann der Trainer bei einer manuellen Lösung des Puzzles prüfen, ob alle bisher belegten Zellen korrekt belegt sind. Der Spieler bzw. die Spielerin kann die Prüfung mit der Prüfen-Taste im manuellen Tastenblock anstoßen.
+Für ein Puzzle mit genau einer Lösung gibt es genau eine fehlerfreie Belegung aller offenen Zellen. Deshalb kann der Explorer bei einer manuellen Lösung des Puzzles prüfen, ob alle bisher belegten Zellen korrekt belegt sind. Der Spieler bzw. die Spielerin kann die Prüfung mit der Prüfen-Taste im manuellen Tastenblock anstoßen.
 
 Hegt der Spieler bzw. die Spielerin Zweifel, dass das gegebene Puzzle tatsächlich nur eine Lösung hat, kann er beispielsweise mit der Taste "Suchlauf mit Haltepunkten" nach der Lieferung der ersten Lösung die Suche fortsetzen. Der Suchlauf sollte dann mit der Meldung "Keine weitere Lösung! Suche abgeschlossen" enden.
 
@@ -568,7 +635,7 @@ Puzzles mit genau einer Lösung sind die Voraussetzung für die Anwendung logisc
 
 ### Puzzles mit mehreren Lösungen
 
-Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie für logisches Schließen nicht geeignet sind. Der vorliegende Trainer liefert die Lösungen per Backtracking. Er zeigt die Backtracking-Schritte an. Reizvoll zu beobachten ist dabei, wie nah verschiedene Lösungen beieinander liegen können.
+Puzzles mit mehreren Lösungen spielen in der Praxis keine große Rolle, da sie für logisches Schließen nicht geeignet sind. Der vorliegende Explorer liefert die Lösungen per Backtracking. Er zeigt die Backtracking-Schritte an. Reizvoll zu beobachten ist dabei, wie nah verschiedene Lösungen beieinander liegen können.
 
 ### Schwierigkeitsgrade (Levels) von Puzzles
 
@@ -588,6 +655,20 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
    <img src="./imagesHelp/lösungsArchitektur.png" alt="Notwendig" style="width:100%">
     <figcaption style="font-size: 16px; font-style: italic;">Lösungsarchitektur des Sudoku-Explorers</figcaption>
 </figure>
+
+## Ziele und Abgrenzung dieses Explorers
+
+<figure >
+   <img src="./imagesHelp/appZiele.png" alt="Ziele" style="width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Ziele des Explorers</figcaption>
+</figure>
+
+Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und Sudoku-Explorer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Explorer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
+
+Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudoku-Trainer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. Es gibt Puzzles, die eine eindeutige Lösung haben, aber es wurde bisher noch keine logische Herleitung der Lösung gefunden.
+
+Das Ziel des vorliegenden Explorers ist neben der Einübung der Anwendung logischer Schlussregeln auch die Vermittlung eines Überblicks über den Raum der 9x9-Sudokus. Anders als die erwähnten Sudoku-Trainer betrachtet der vorliegende Explorer auch unlösbare Puzzles und Puzzles mit mehr als einer Lösung. Sie gehören offensichtlich zum Raum der 9x9-Sudoku dazu. Technisch wendet er ineinander verschränkt beides an, logisches Schließen und Backtracking.
+
 
 # Den Sudoku-Explorer praktisch nutzen
 
@@ -634,7 +715,7 @@ Mit dem Explorer gibt es verschiedene Arten der automatischen Lösungssuche.
 1. **Schritt für Schritt**: Manueller Anstoß jedes automatischen Schrittes.
 1. **Von Haltepunkt zu Haltepunkt**: automatische Ausführung einer Sequenz von Such- bzw. Lösungsschritten.
 1. **Verborgene Suche der nächsten Lösung**.
-1. **Von Lösung zu Lösung** (nur im Fall von 'Extrem schweren Puzzles', also Puuzles mit mehr als einer Lösung).
+1. **Von Lösung zu Lösung** (nur im Fall von 'Extrem schweren Puzzles', also Puzles mit mehr als einer Lösung).
 
 Zwischen diesen Arten der automatischen Lösungssuche kann jederzeit gewechselt werden. Gleiches gilt für die Einstellung der Kandidatenauswertung. Allerdings sind die statistischen Anzeigen bei der Lösungsfindung nicht mehr aussagekräftig. 
 
@@ -643,18 +724,27 @@ Zwischen diesen Arten der automatischen Lösungssuche kann jederzeit gewechselt 
 Bei genaueren Betrachtung ist die Ausführungsart 'Von Lösung zu Lösung' im letzten Schritt eigentlich ein Schritt von Letzter Lösung zu Such-Ende. Es gibt keine weitere Lösung mehr. Und noch einmal genau hingesehen, gilt das auch für die anderen Ausführungsarten. Der jeweilige nächste Schritt kann auf das Such-Ende stoßen.
 
 
-Beipiel Puzzle:
+## Eine Beispiel-Lösungssuche mit dem Explorer
 
 Werkzeugeinstellung:
 - **Kandidatenauswertung:** Keine Kandidatenanzeige oder Lazy.
 - **Haltepunkte:** Haltepunkte nach Bedarf zu- und abschalten.
 
-In dieser Nutzungsform zeigt der Sudoku-Explorer seinen vollen Funktionsumfang. Sie ist damit besonders lehrreich. Der Spieler beobachtet die Lösungssuche anstatt selber die Lösung zu suchen, indem er automatische Lösungsschritte ausführen lässt. Deshalb an dieser Stelle eine Übersicht über die Arten automatischer Schritte. Die folgenden Darstellungen nehmen Bezug auf das Puzzle
+Die folgenden Darstellungen nehmen Bezug auf das Puzzle
 
-**Backtrack_5:**
+**Beispiel-Puzzle**
 140006800000050002000094060004000000000008036750001900000300010090000005800000700
 
-Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer". Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste "Nächster Suchschritt" oder der Suchlauftaste "Suchlauf mit Haltepunkten". Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
+Wir kopieren die Ziffernkette und fügen sie in den Explorer ein, z.B. mit ctrl-v oder Menu/Einfügen.
+
+<figure>
+   <img src="./imagesHelp/exampleStep0.png" alt="Schritt 0" style="max-width:100%">
+    <figcaption style="font-size: 16px; font-style: italic;">Das eingefügte Puzzle</figcaption>
+</figure>
+
+Nach dm Einfügen hat der Explorer den Schwieigkeitsgrad berechnet. Siehe oben rechts: "Sehr schwer". Wir speichern das Puzzle unter dm Namen: "demo-puzzle". Danach wechseln wir in die automatische Lösungssuche.
+
+Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste "Nächster Suchschritt" oder der Suchlauftaste "Suchlauf mit Haltepunkten". Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
 
 <h3> ==> Schritttaste einmal gedrückt:</h3>
 
@@ -665,7 +755,9 @@ Dies ist ein Puzzle mit dem Schwierigkeitsgrad "Sehr schwer". Die im Folgenden d
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 1.a: Zelle mit Optionen {2, 7}</figcaption>
 </figure>
 
-Nach der Setzung der ersten Option.
+Bitte den Eintrag im Suchpfad beachten: Dort wird dokumentiert, dass in diesem Schritt die erste der beiden Optionen gewählt wurde.
+
+Nach der Setzung der ersten Option durch Drücken der Schrittaste.
 
 <figure>
    <img src="./imagesHelp/exampleStep1_b.png" alt="Schritt 1_1" style="max-width:100%">
@@ -738,17 +830,7 @@ Nach der Setzung der ersten Option.
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 224.b: Alle Zellen belegt.</figcaption>
 </figure>
 
-# Mit Hilfe des Sudoku-Explorers gewonnene Erfahrungen und Einsichten
-
-## Welcher Schwierigkeitsgrad für welchen Spielertyp?
-
-| Level                       | Spielertyp                                                                                                                                                                                                                                                                                                                                                   | Quelle der Puzzles                                                                                                                                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sehr leicht, Leicht, Mittel | **Gelegenheitsspieler**, die Puzzles in Zeitungen und Zeitschriften lösen wollen. Die beiden einfachen Regeln, Scan-1: "Notwendige Kandidaten" und Scan-2: "Einziger Kandidat", sind ohne Notizen anwendbar.                                                                                                                                                 | Puzzles in **Zeitungen und Zeitschriften** sind fast immer Sehr leicht, Leicht oder Mittel gemäß unserer Definition.                                                                                                               |
-| Schwer                      | **Hochleistungsbereite Spieler**, die mit Ehrgeiz Puzzles logisch lösen wollen. Unter Anwendung komplexer Eliminationsregeln. Den **Freaks** in dieser Community reicht auch das nicht. Sie suchen nach Puzzles, die man mit den bekannten Regeln nicht lösen kann. Und nach neuen logischen Regeln, die mehr Puzzles lösen können als die bisher bekannten. | Bei [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) gibt es eine Rubrik „**The weekly unsolvable**“. Dort findet man Puzzles, die nicht wirklich unlösbar sind, sondern für die bisher keine logische Lösung gefunden wurde. |
-| Alle Schwierig-keitsgrade   | **Alle Spieler und Interessierte**, die ihr Puzzle nicht manuell lösen wollen sondern mit Hilfe eines **beobachtbaren Backtrackers**.                                                                                                                                                                                                                        | Der vorliegende Sudoku-Explorer unterstützt die Beobachtung des Backtracking-Lösungsprozesses mit Hilfe von **benutzersetzbaren Haltepunkten**.                                                                                     |
-
-## Tatsachen und Einsichten über klassische 9x9-Sudokus
+# Sudoku-Explorer: Tatsachen und Einsichten über klassische 9x9-Sudokus
 
 Im Laufe der Entwicklung dieser App ergaben sich für den Autor zahlreiche neue Einsichten und Tatsachen über klassische 9x9-Sudokus. Viele davon stammen von Recherchen im Internet. Nicht wenige aber auch aus den Erfahrungen mit der vorliegenden App. Diese sollen in diesem Abschnitt vorgetragen werden.
 
@@ -841,9 +923,9 @@ AI-Escargot = 100007090030020008009600500005300900010080002600004000300000010040
     <figcaption style="font-size: 16px; font-style: italic;">Keine weitere Lösung</figcaption>
 </figure>
 
-Genauer gesagt bedeutet dieses Ergebnis, dass dieser Sudoku-Explorer für dieses Puzzle eine Backtrack-Lösung gefunden hat, und dass diese Lösung die einzige ist. Der vorliegende Trainer hat keine rein logische Herleitung gefunden. Deshalb bewertet er das Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".
+Genauer gesagt bedeutet dieses Ergebnis, dass dieser Sudoku-Explorer für dieses Puzzle eine Backtrack-Lösung gefunden hat, und dass diese Lösung die einzige ist. Der vorliegende Explorer hat keine rein logische Herleitung gefunden. Deshalb bewertet er das Puzzle mit dem Schwierigkeitsgrad "Sehr schwer".
 
-Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Trainer nur vier grundlegende Eliminationsregeln implementiert hat. Hingegen haben Andrew Stuart und Jan Feldmann einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
+Hinweis: Der vorliegende Solver findet weniger rein logische Herleitungen als beispielsweise die Solver von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und [Jan Feldmann](https://sudoku.coach/). Das ist nicht sehr verwunderlich, da dieser Explorer nur vier grundlegende Eliminationsregeln implementiert hat. Hingegen haben Andrew Stuart und Jan Feldmann einen riesigen Katalog von Regeln implementiert. Mit ihren Fans sind sie ständig auf der Suche nach neuen, zusätzlichen Regeln, die bisher nicht logisch herleitbare Puzzlelösungen lösbar machen. Andrew Stuart hat dafür eine Rubrik "The weekly 'Unsolvalble'" [weekly-unsolvable](https://www.sudokuwiki.org/Weekly-Sudoku.aspx).
 
 Zurück zu unserer Vermutung: "Es gibt Puzzles, die eine eindeutige Lösung haben, die aber vermutlich nicht durch logisches Schließen hergeleitet werden kann." Für unser Beispiel-Puzzle kann die vorliegende App keine logische Herleitung finden. Aber auch die Solver von Stuart und Feldmann können es nicht. Dies legt die Vermutung nahe, dass es derart schwierige Puzzles gibt, sodass sie prinzipiell nicht durch logisches Schließen gelöst werden können. Aber ein Beispiel ist kein Beweis. Deswegen können wir nur von einer Vermutung sprechen.
 
@@ -859,19 +941,19 @@ Wir haben gelernt, dass es nicht-elementar unlösbare Sudokus gibt. Siehe [Unlö
 
 Reines Backtracking aber auch die Anwendung komplexer Kandidaten-Eliminationsregeln sind ohne Computerunterstützung kaum denkbar. Mit Bleistift und Papier kann man nicht tausende von Backtrack-Schritten managen. Manuelles Kandidatenmangement und die Überprüfung der Anwendbarkeit komplexer Eliminationsregeln auf das aktuelle Kandidatenportfolio stellen ebenso eine erhebliche Herausforderung dar. Hinzu kommt, dass die Eliminationsregeln nicht überschneidungsfrei sind. Welche Regel soll zuerst angewandt werden. Ist die Reihenfolge der Regelanwendung kritisch? Brauche ich für die Regelanwendung nicht erneut einen Backtracking-Prozess?
 
-Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Trainer bei Bedarf Logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass bei der Lösungssuche die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
+Im Gegensatz zu Andrew Stuart und Jan Feldmann werden im vorliegenden Explorer bei Bedarf Logisches Schließen und BacKtracking ineinander verschränkt angewendet. Es zeigt sich, dass bei der Lösungssuche die Anwendung einfacher Schlussregeln kombiniert mit einem oder zwei Backtrack-Schritten nicht selten die Anwendung komplexer logischer Schlussregeln überflüssig macht.
 
 # Schlussbemerkungen
 
-Der vorliegende Trainer will nicht einfach nur Solver sein. Er will auf zweifache Weise Trainer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andererseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. So gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
+Der vorliegende Explorer will nicht einfach nur Solver sein. Er will auf zweifache Weise Explorer sein, einmal indem er den Spieler bei der manuellen Lösung seines Puzzles unterstützt und andererseits, indem er den interessierten Spieler seinen automatischen Lösungsprozess beobachten lässt. So gewinnt der Spieler/die Spielerin auf eher leichte Weise einen Überblick über die Welt des klassischen 9x9 Sudokus:
 
 - Die Anwendung logischer Lösungstechniken
 - Die Anwendung von Backtracking-Methoden,
 - die Bedeutung von Schwierigkeitsgraden und
 - die Bedeutung der Puzzle-Kategorien: "eindeutig lösbar", "mehrfach lösbar" und "unlösbar".
 
-Dieser Trainer macht Spaß, weil man mit ihm nachvollziehbar beliebige Sudokus lösen kann. Sehr einfach kann
-man mit allen Schwierigkeitsgraden experimentieren, weil der Trainer Sudokus für alle Schwierigkeitsgrade generieren kann. Interessante Sodokus können in der Datenbank gespeichert werden, sodass sie für spätere Vergleiche und weitere Experimente zur Verfügung stehen.
+Dieser Explorer macht Spaß, weil man mit ihm nachvollziehbar beliebige Sudokus lösen kann. Sehr einfach kann
+man mit allen Schwierigkeitsgraden experimentieren, weil der Explorer Sudokus für alle Schwierigkeitsgrade generieren kann. Interessante Sodokus können in der Datenbank gespeichert werden, sodass sie für spätere Vergleiche und weitere Experimente zur Verfügung stehen.
 
 # Beispiel-Puzzles
 
@@ -879,153 +961,11 @@ man mit allen Schwierigkeitsgraden experimentieren, weil der Trainer Sudokus fü
 
 Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_22'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
 
-1. Dieser Trainer kann sehr schwere Puzzles generieren.
+1. Dieser Explorer kann sehr schwere Puzzles generieren.
 2. Im Internet kann man zum Beispiel bei [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
 
-**Backtrack_5:**
-140006800000050002000094060004000000000008036750001900000300010090000005800000700
-
-**Backtrack_22:**
-030010009006000500100000040400003200090070008005600000800002003000090070000400100
-
-Hinweis: Kopiere die Zeichenkette des gewünschten Puzzels ins Clipboard und füge es mit "Einfügen" aus der Navigationsbar in den Trainer ein.
 
 
 
-# Anhang
 
-
-
-## Die Sudoku-Grundregeln
-
-
-Diese App ist ein Explorer für klassische 9x9-Sudokus. 
-
-
-![Given](./imagesHelp/appview0_2.png){:width="200rem"} ![Solved](./imagesHelp/appview0_1.png){:width="200rem"}
-
-Die Grundregeln des klassischen 9x9-Sudoku: Jede Zeile, jede Spalte und jeder der neun 3x3-Blöcke muss die Zahlen von 1 bis 9 jeweils genau einmal enthalten. Keine Zahl darf innerhalb einer Zeile, Spalte oder eines 3x3-Blocks wiederholt werden. Ziel des Spiels ist es, alle leeren Felder durch logisches Denken mit korrekten Zahlen so zu füllen, dass diese Regeln erfüllt sind.
-
-## Ziele und Abgrenzung dieses Trainers
-
-<figure >
-   <img src="./imagesHelp/appZiele.png" alt="Ziele" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Ziele des Trainers</figcaption>
-</figure>
-
-Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Explorer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Explorer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
-
-Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Explorer. Die Sudoku-Explorer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. Es gibt Puzzles, die eine eindeutige Lösung haben, aber es wurde bisher noch keine logische Herleitung der Lösung gefunden.
-
-Das Ziel des vorliegenden Trainers ist neben der Einübung der Anwendung logischer Schlussregeln auch die Vermittlung eines Überblicks über den Raum der 9x9-Sudokus. Anders als die erwähnten Sudoku-Explorer betrachtet der vorliegende Trainer auch unlösbare Puzzles und Puzzles mit mehr als einer Lösung. Technisch wendet er ineinander verschränkt beides an, logisches Schließen und Backtracking.
-
-## Puzzles generieren
-
-Die App besitzt einen Puzzle-Generator. Der Sudoku-Generator generiert Puzzles für alle Schwierigkeitsgrade.
-Auch unlösbare Puzzles werden generiert. So kann der Spieler miterleben, wie der Trainer die verdeckte Unlösbarkeit eines Puzzles aufdeckt.
-
-## Puzzles speichern
-
-Der Trainer kann der Spielstand von Sudoku-Puzzles speichern. Die Datenbank wird im lokalen Speicher des Browsers(!) abgelegt. D.h. installierte Web Apps sind einem Browser fest zugeordnet.
-
-## Architektur der App
-
-<figure >
-   <img src="./imagesHelp/architecture.png" alt="Architektur" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Architektur des Trainers</figcaption>
-</figure>
-
-Der Sudoku-Explorer besteht aus drei Komponenten, dem Solver, dem Generator und der Puzzle-Datenbank. Mit Hilfe des Solvers kann man beliebige Sudoku-Puzzles manuell oder automatisch lösen.
-
-Der Generator generiert Puzzles für jeden definierten Schwierigkeitsgrad. Praktisch interessant sind besonders die fairen Schwierigkeitsgrade. 'Sehr leicht', 'Leicht', 'Mittel' und 'Schwer'. Puzzle mit diesen Schwierigkeitsgraden können allein durch logisches Schließen gelöst werden. Ohne Backtracking. Mehr dazu weiter unten.
-
-Der Spielstand von Sudoku-Puzzles kann im lokalen Speicher des Browsers gespeichert werden. Die Tabelle (Datenbank) der gespeicherten Puzzles kann nach ihren Spalten sortiert werden.
-
-
-
-# Die Puzzle-Datenbank
-
-Sudoku-Puzzles und ihre Lösungen können im lokalen Speicher des Browsers gespeichert werden, aber nur mit Einschränkungen auf dem Computer selbst. D.h. Man kann seine gespeicherten Puzzles nur in dem Browser wiederfinden, in dem sie gespeichert wurden.
-
-<figure >
-   <img src="./imagesHelp/PuzzleDB.png" alt="Puzzle Datenbank" style="width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Puzzle Datenbank</figcaption>
-</figure>
-
-Beim Abspeichern erhält das gespeicherte Puzzle automatisch einen Namen, das aktuelle Datum. Bei Bedarf kann der Name umbenannt werden. Bezüglich der Namen gibt es keine Einschränkungen.
-
-| Attribut     | Bedeutung                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Laufende Nr. | Laufende Nr. in der Tabelle. Sie ist keine ID für Puzzles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Puzzle-Name  | Name des gespeicherten Puzzles. Muss nicht eindeutig sein.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| #Givens      | Die Zahl der Givens des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| #Gelöste     | Die Zahl der gelösten Zellen des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| #Offene      | Die Zahl der offenen, ungelösten Zellen des Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| Level        | Der ermittelte Schwierigkeitsgrad des gespeicherten Puzzles.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| #Error-RL    | Die Anzahl der Error-Rückwärtsläufe, die der Solver durchgeführt hat, um das Puzzle zu lösen. **Error-Rückwärtsläufe** erfolgen nach Auftreten eines Widerspruchs. Hinweis: Error-Rückwärtsläufe sind nur für sehr schwere Puzzles von Bedeutung. Sehr schwere Puzzles benötigen Backtracking für die Ermittlung ihrer eindeutigen Lösung. Leichtere Puzzles werden ohne Backtracking und damit ohne Rückwärtsläufe gelöst. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe** nach dem Auftreten einer Lösung. Auf eine entsprechende Auswertung wird verzichtet. |
-| Datum        | Datum, an dem das Puzzle angelegt wurde.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-
-## Operationen der Datenbank
-
-| Taste              | Bedeutung                                                                                                                                                                                                                                                                |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Spaltenkopf        | **Sortieren.** Die Puzzles der Datenbank können sortiert werden nach jeder Spalte. Dazu einfach den Spaltenkopf klicken. Wiederholtes Klicken wechselt zwischen der aufsteigenden und der absteigenden Sortierung.                                                       |
-| Pfeiltasten        | **Navigieren.** Mit den Pfeiltasten kann in der Tabelle vorwärts und rückwärts navigiert werden. Durch Klicken auf eine Reihe der Tabelle kann ein Puzzle direkt selektiert werden.                                                                                      |
-| Laden              | **Puzzle laden.** Durch Drücken der Lade-Taste wird das selektierte Puzzle in den Sudoku-Solver geladen.                                                                                                                                                                 |
-| Puzzle löschen     | **Puzzle löschen.** Gespeicherte Puzzles können auch wieder gelöscht werden.                                                                                                                                                                                             |
-| DB löschen         | **DB löschen.** Die ganze DB kann gelöscht werden. Nützlich, wenn man die DB von einem anderen Gerät übernehmen will und die Übernahme nicht mit der aktuellen DB mischen will.                                                                                          |
-| Drucken            | **Puzzle drucken.** Mittels der Taste Drucken kann das aktuell selektierte Puzzle gedruckt werden. Dabei wird nur die Aufgabe, nicht aber die Lösung ausgedruckt. Dies ist besonders dann nützlich wenn man ein generiertes Puzzle von Hand auf dem Papier lösen möchte. |
-| Download Puzzle-DB | **Puzzle-Datenbank exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle-Datenbank in ein txt-File 'Puzzle-DB.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                                        |
-| Download Puzzle    | **Puzzle exportieren.** Durch Drücken dieser Taste wird die aktuelle Puzzle mit dem Namen >>PuzzleName<< in ein txt-File '>>PuzzleName<<.text' ausgegeben. Es befindet sich im Download-Ordner.                                                                          |
-| Import Puzzle(s)   | **Puzzle(s) importieren.** Mit dieser Taste wird ein File-Selection-Dialog gestartet. nur txt-Files können selektiert werden.                                                                                                                                            |
-
-## Import/Export
-
-Die Operationen Import/Export und Teilen sind sehr abhängig von der vorliegenden Betriebssystem- und Browser-Version. Konkret von den verfügbaren APIs. Es kann also vorkommen, dass manche der nachfolgend gezeigten Beispiele auf dem System des interessierten Anwenders nicht funktionieren.
-
-Nachfolgend einige Beispiele für den Austausch von Puzzles zwischen Sudoku-Explorer-Apps.
-
-### Puzzle teilen von SmartPhone zu SmartPhone
-
-In diesem Beispiel wird das aktuelle Puzzle >>DemoPuzzle<< verschickt.
-
-**Absender-Smartphone**
-
-1. Teile-Taste in der Hauptansicht klicken.
-1. WhatsApp selektieren (oder eine MAIL App).
-1. Kontakt selektieren und senden.
-
-**Ziel-SmartPhone**
-
-1. WhatsApp starten.
-1. Die in der empfangenen Nachricht enthaltene Datei >>sharedPuzzle.text<< downloaden.
-1. Die App Soduku-Trainer starten.
-1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
-1. Die Taste Import-Puzzle klicken.
-1. ![Aktion Dateien](./imagesHelp/actionFiles.png){:width="auto"}
-1. Die Aktion Dateien auswählen.
-1. Die im Download-Ordner abgelegte Datei >>sharedPuzzle.text<< selektieren.
-
-### Puzzle Datenbank vom PC auf das Smartphone übertragen
-
-**Absender-PC**
-
-1. Sudoku-Explorer starten
-1. In den Datenbank-Dialog wechseln
-1. ![DownloadDB](./imagesHelp/downloadDB.png){: width="auto"}
-1. Download-Puzzle-DB-Taste in der Hauptansicht klicken.
-1. WhatsApp starten (oder eine MAIL App).
-1. Datei >>downloadedPuzzleDB.text<< in den Anhang laden.
-1. Kontakt selektieren und senden.
-
-**Ziel-SmartPhone**
-
-1. WhatsApp starten.
-1. Die in der empfangenen Nachricht enthaltene Datei downloaden.
-1. Die App Soduku-Trainer starten.
-1. In der App den Datenbank-Dialog öffnen (Menü Datenbank).
-1. Die Taste Import-Puzzle klicken.
-1. ![Aktion Dateien](./imagesHelp/actionFiles.png){:width="auto"}
-1. Die Aktion Dateien auswählen.
-1. Die im Download-Ordner abgelegte Datei >>downloadedPuzzleDB.text<< selektieren.
 
