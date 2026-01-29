@@ -403,7 +403,7 @@ Egal, ob nur die 4 in diesem Explorer implementierten Kriterien zur Anwendung ko
 
 ### Eliminationskriterium: "Überschneidung"
 
-Auch Line-Box-Kriterium genannt. Die folgende Abbildung sagt aus, dass die Eliminierbarkeit der 6 mit dem Überschneidungskriterium begründet werden kann. Die Überschneidungsbegründung wird angezeigt, wenn man auf die selektierte Zelle ein weiteres Mal klickt. Bei mehr als einem elimiierbaren Kandidaten kann man durch Klicken die eliminíerbaren Kandidaten der Reihe nach besuchen.
+Auch Line-Box-Kriterium genannt. Die folgende Abbildung sagt aus, dass die Eliminierbarkeit der 6 mit dem Überschneidungskriterium begründet werden kann. Die Überschneidungsbegründung wird angezeigt, wenn man auf die selektierte Zelle ein weiteres Mal klickt. Bei mehr als einem eliminierbaren0 Kandidaten kann man durch Klicken die eliminíerbaren Kandidaten der Reihe nach besuchen.
 
 <figure >
    <img src="./imagesHelp/ueberschneidung.png" alt="Überschneidung" style="width:100%">

@@ -8,7 +8,7 @@ description: > # this means to ignore newlines until "baseurl:"
     Mit dem Explorer kannst Du einerseits konkrete Puzzles lösen
     und andererseits über das einzelne Puzzle hinaus die Welt des 
     klassischen 9x9-Sudokus umfassend kennenlernen: 
-    Schwierigkeitsgrade, Kandidaten-Elimninierung, Eindeutige oder 
+    Schwierigkeitsgrade, Kandidaten-Eliminierung, Eindeutige oder 
     vielfache Lösungen, Backtracking.
 
     Viel Vergnügen mit dem Explorer!
