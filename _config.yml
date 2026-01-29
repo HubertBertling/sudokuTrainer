@@ -6,8 +6,10 @@ description: > # this means to ignore newlines until "baseurl:"
     
     Diese App ist ein Explorer für klassische 9x9-Sudokus. 
     Mit dem Explorer kannst Du einerseits konkrete Puzzles lösen
-    und andererseits über das einzelne Puzzles hinaus die umfangreiche
-    Welt des klassischen 9x9 Sudoku umfassend kennenlernen.
+    und andererseits über das einzelne Puzzle hinaus die Welt des 
+    klassischen 9x9-Sudokus umfassend kennenlernen: 
+    Schwierigkeitsgrade, Kandidaten-Elimninierung, Eindeutige oder 
+    vielfache Lösungen, Backtracking.
 
     Viel Vergnügen mit dem Explorer!
     

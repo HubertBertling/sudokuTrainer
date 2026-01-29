@@ -40,8 +40,12 @@ layout: default
    10. [Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?](#wo-finde-ich-sehr-schwere-oder-extrem-schwere-puzzles)
 6. [Den Sudoku-Explorer praktisch nutzen](#den-sudoku-explorer-praktisch-nutzen)
    1. [Puzzles manuell lösen](#puzzles-manuell-lösen)
-      1. [Prüfen der aktuell gesetzten Nummern](#prüfen-der-aktuell-gesetzten-nummern)
-      2. [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp)
+      1. [Puzzle eingeben](#puzzle-eingeben)
+      2. [Puzzle-Eingabe beenden](#puzzle-eingabe-beenden)
+      3. [Schwierigkeitsgrad des Puzzles prüfen](#schwierigkeitsgrad-des-puzzles-prüfen)
+      4. [Puzzle lösen](#puzzle-lösen)
+      5. [Prüfen der aktuell gesetzten Nummern](#prüfen-der-aktuell-gesetzten-nummern)
+      6. [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp)
    2. [Puzzles automatisch lösen](#puzzles-automatisch-lösen)
       1. [Verschiedene Arten der automatischen Lösungssuche](#verschiedene-arten-der-automatischen-lösungssuche)
       2. [Backtracking und Such-Ende](#backtracking-und-such-ende)
@@ -682,18 +686,31 @@ Anhand konkreter Beispiele zeigen wir, wie man den Sudoku-Explorer in der Praxis
 
 ## Puzzles manuell lösen
 
-Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Sudoku-Freaks verlangen lediglich, dass das zu lösende Sudoku eine eindeutige Lösung hat. Die Sudokus in den Zeitungen haben in der Regel einen sehr eingeschränkten Schwierigkeitsgrad: 'Sehr leicht' oder 'Leicht'. Manchmal auch noch 'Mittel' und selten 'Schwer'. Für die ersten 3 Schwierigkeitsrade kann ein Puzzle allein mit dem Scannen nach 'notwendigen' und 'single' Kandidaten gelöst werden. Es bedarf keinerlei Buchführunng von Kandidaten. 
-
-Beispiel-Puzzle 1: 
-
 Explorer-Einstellung:
 - **Kandidatenauswertung:** Keine Kandidatenanzeige
-- **Haltepunkte**: beliebig.
+- **Explorer-Status:** initialisiert.
+- **Taste "Phase Definition"** gesetzt.
 
-Der Spieler setzt jetzt Zelle für Zelle die von ihm erkannten notwendigen oder einzig gebliebenen Kandidaten in den Zellen. 
+### Puzzle eingeben
+Der Explorer befindet sich in der Phase Definition. Jetzt können die Givens des Puzzles eingegeben werden.
+
+### Puzzle-Eingabe beenden
+
+Mit der Taste "Phase: Lösen" beendest Du die Eingabe des Puzzles. Im Hintergrund berechnet der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles
+
+### Schwierigkeitsgrad des Puzzles prüfen
+
+Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Wenn Du ein Puzzle beim Warten im Wartezimmer lösen willst, sollte das eingebene Puzzle 'Sehr leicht', 'Leicht' oder 'Mittel'. Der Explorer zeigt den Schwierigkeits des eingegebenen Puzzle in der rechten obere Ecke der Matrix an.
+
+Puzzles mit einem der 3 genannten Schwierigkeitsrade können allein mit dem Scannen nach 'notwendigen' und 'single' Kandidaten gelöst werden. Es bedarf keinerlei Buchführunng von Kandidaten. 
+
+### Puzzle lösen
+
+Der Spieler setzt jetzt Zelle für Zelle die von ihm erkannten notwendigen oder einzig gebliebenen Kandidaten in den Zellen. Der Spieler kann sich darauf verlassen, dass er nur nach 'notwendigen' und 'single' Kandidaten Ausschau halten muss.
 
 ### Prüfen der aktuell gesetzten Nummern
-Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr, ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Setzungen bereits fehlerhaft sind. Der Spieler kann die Falschsetzungen zurücknehmen.
+
+Beim manuellen Lösen kann es passieren, dass eine Nummer falsch gesetzt wird. Viele Setzungen danach laufen in Abhängigkeit von dieser ersten Fehlersetzung Gefahr, ebenfalls falsch gesetzt zu werden. Mit der Prüfen-Taste kann in diesem Fall geprüft werden, ob und welche bisherigen Nummern-Setzungen bereits fehlerhaft sind. Der Spieler kann die Falschsetzungen zurücknehmen.
 
 {: style="text-align:center"}
 ![Prüfen](./imagesHelp/pruefungfehler.png){: width="400px"}
@@ -850,8 +867,8 @@ Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schw
 
 **3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
 
-Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Explorers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe
-[Puzzle manuell lösen: Anwendungsfall "Tipp"](#puzzle-manuell-lösen-anwendungsfall-tipp).
+Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Explorers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp).
+
 
 **4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindestens 17 Givens.**
 
