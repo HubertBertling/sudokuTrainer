@@ -37,6 +37,7 @@ layout: default
       5. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
    8. [Lösungsarchitektur dieses Sudoku-Explorers](#lösungsarchitektur-dieses-sudoku-explorers)
    9. [Ziele und Abgrenzung dieses Explorers](#ziele-und-abgrenzung-dieses-explorers)
+   10. [Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?](#wo-finde-ich-sehr-schwere-oder-extrem-schwere-puzzles)
 6. [Den Sudoku-Explorer praktisch nutzen](#den-sudoku-explorer-praktisch-nutzen)
    1. [Puzzles manuell lösen](#puzzles-manuell-lösen)
       1. [Prüfen der aktuell gesetzten Nummern](#prüfen-der-aktuell-gesetzten-nummern)
@@ -47,7 +48,6 @@ layout: default
    3. [Eine Beispiel-Lösungssuche mit dem Explorer](#eine-beispiel-lösungssuche-mit-dem-explorer)
 7. [Sudoku-Explorer: Tatsachen und Einsichten über klassische 9x9-Sudokus](#sudoku-explorer-tatsachen-und-einsichten-über-klassische-9x9-sudokus)
 8. [Schlussbemerkungen](#schlussbemerkungen)
-9. [Beispiel-Puzzles](#beispiel-puzzles)
 
 # Herzlich willkommen zur Sudoku-Explorer-App
 
@@ -669,6 +669,12 @@ Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudo
 
 Das Ziel des vorliegenden Explorers ist neben der Einübung der Anwendung logischer Schlussregeln auch die Vermittlung eines Überblicks über den Raum der 9x9-Sudokus. Anders als die erwähnten Sudoku-Trainer betrachtet der vorliegende Explorer auch unlösbare Puzzles und Puzzles mit mehr als einer Lösung. Sie gehören offensichtlich zum Raum der 9x9-Sudoku dazu. Technisch wendet er ineinander verschränkt beides an, logisches Schließen und Backtracking.
 
+## Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?
+
+Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
+
+1. Dieser Explorer kann sehr schwere und extrem schwere Puzzles generieren.
+2. Im Internet kann man zum Beispiel bei [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
 
 # Den Sudoku-Explorer praktisch nutzen
 
@@ -954,16 +960,6 @@ Der vorliegende Explorer will nicht einfach nur Solver sein. Er will auf zweifac
 
 Dieser Explorer macht Spaß, weil man mit ihm nachvollziehbar beliebige Sudokus lösen kann. Sehr einfach kann
 man mit allen Schwierigkeitsgraden experimentieren, weil der Explorer Sudokus für alle Schwierigkeitsgrade generieren kann. Interessante Sodokus können in der Datenbank gespeichert werden, sodass sie für spätere Vergleiche und weitere Experimente zur Verfügung stehen.
-
-# Beispiel-Puzzles
-
-**Sehr schwere Puzzles mit langen Backtracks**
-
-Nachfolgend zwei sehr schwere Puzzles, 'Backtrack_5' und 'Backtrack_22'. Also Puzzles, die dieser Solver nur mit Backtracking lösen kann. In den Zeitungen und Zeitschriften findet man solche (sehr schwere) Puzzles nicht. Woher kann man sehr schwere Puzzles bekommen?
-
-1. Dieser Explorer kann sehr schwere Puzzles generieren.
-2. Im Internet kann man zum Beispiel bei [SoEinDing](https://sudoku.soeinding.de/sudokuExtraTeuflischSchwer.php) sehr schwere Puzzles finden.
-
 
 
 
