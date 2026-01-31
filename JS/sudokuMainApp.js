@@ -3090,11 +3090,12 @@ class SudokuSolverView {
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
         this.myGridView.upDate();
-        if (sudoApp.mySolver.isSearching()) {
+        //if (sudoApp.mySolver.isSearching()
+        //    ) {
             this.myStepExplainerView.showExplainer();
-        } else {
-            this.myStepExplainerView.hideExplainer();
-        }
+        //} else {
+        //    this.myStepExplainerView.hideExplainer();
+        // }
         // Indication that the puzzle cannot be solved, if this is the case
         // this.displayProgress();
         // Display status applicability of the undo/redo buttons
@@ -3109,7 +3110,8 @@ class SudokuSolverView {
         let stepCountBox = document.getElementById("step-count-box");
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
 
-        if (sudoApp.mySolver.isSearching()) {
+        if (sudoApp.mySolver.isSearching()
+            && !sudoApp.mySolver.myCurrentSearch.isTipSearch) {
             this.searchInfoBox.style.display = "flex";
             stepCountBox.style.display = "flex";
             autoModeRadioBtns.style.display = "flex";
@@ -3145,7 +3147,8 @@ class SudokuSolverView {
             return;
         }
         let tmpLevel = this.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-        if (this.mySolver.isSearching() &&
+        if (this.mySolver.isSearching()
+            && !sudoApp.mySolver.myCurrentSearch.isTipSearch &&
             (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar')) {
             // this.searchPathContainer.style.display = "flex";
             this.searchPathField.innerHTML = '';
