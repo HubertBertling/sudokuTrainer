@@ -765,7 +765,7 @@ button:active {
     font-size: var(--cg-font-base);
     justify-content: space-between;
     margin-bottom: 0.2rem;
-    background-color: var(--nested-cell-bg-color);
+    background-color: lightgray;
 
     border-bottom: 0.2rem solid var(--app-header-bg-color);
     border-left: 0.2rem solid var(--app-header-bg-color);
