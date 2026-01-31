@@ -55,10 +55,9 @@ layout: default
 
 # Herzlich willkommen zur Sudoku-Explorer-App
 
-Viele Menschen haben Spass daran, Sudoku-Puzzles zu lösen, die sie in der Zeitung finden. 
-Oft gibt es in der Zeitung eine Lösung des Puzzles am Folgtag. Besonders als Sudoku-Anfänger kann es Dir passieren,
-dass Du bei der Lösungssuche steckenbleibst. Egal, ob die fertige Lösung am Folgetag in der Zeitung zu finden ist oder ob ein 
-konventioneller Sudoku-Solver sie präsentiert, Du bleibst ratlos zurück mit der Frage: Wie hätte ich diese Lösung finden können?
+Viele Menschen haben Spass daran, Sudoku-Puzzles zu lösen, die sie in der Zeitung finden. Nicht nur Sudoku-Anfängern kann es passieren,
+dass sie bei der Lösungssuche steckenbleiben. Egal, ob eine fertige Lösung am Folgetag in der Zeitung zu finden ist, oder ob ein 
+konventioneller Sudoku-Solver die Lösng präsentiert, Du bleibst ratlos zurück mit der Frage: Wie hätte ich diese Lösung finden können?
 
 Der vorliegende Explorer präsentiert nicht nur die fertige Lösung sondern auch einen Schritt-für-Schritt-Weg hin zur Lösung. Jeder Schritt wird erläutert. Wenn Du viele Male den Lösungsweg des Explorers beobachtet hast, wirst Du beim Lösen der Puzzles besser werden. 
 

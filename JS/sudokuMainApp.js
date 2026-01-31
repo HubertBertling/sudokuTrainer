@@ -369,6 +369,7 @@ class PuzzleDBDialog {
     }
     open() {
         this.myOpen = true;
+        this.myPuzzleDBDialogNode.close();
         this.myPuzzleDBDialogNode.showModal();
         this.myPuzzleDBView = new SudokuPuzzleDBView(sudoApp.myPuzzleDB);
         sudoApp.myPuzzleDB.attach(this.myPuzzleDBView);
@@ -399,19 +400,22 @@ class NewPuzzleDlg {
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-            sudoApp.myNewPuzzleDlg.close();
+            //sudoApp.myNewPuzzleDlg.close();
             sudoApp.myNewPuzzleDlg.myOkayOperation.call(this.thisPointer);
+            sudoApp.myNewPuzzleDlg.close();
             sudoApp.mySolver.notify();
         });
         this.cancelNode.addEventListener('click', () => {
-            sudoApp.myNewPuzzleDlg.close();
+            // sudoApp.myNewPuzzleDlg.close();
             sudoApp.myNewPuzzleDlg.myCancelOperation.call(this.thisPointer);
+            sudoApp.myNewPuzzleDlg.close();
             sudoApp.mySolver.notify();
         });
     }
     open() {
         this.myOpen = true;
         this.upDate();
+        this.myNewPuzzzeDlgNode.close();
         this.myNewPuzzzeDlgNode.showModal();
     }
     upDate() {
@@ -456,13 +460,15 @@ class ConfirmDialog {
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-            sudoApp.myConfirmDlg.close();
+            //sudoApp.myConfirmDlg.close();
             sudoApp.myConfirmDlg.myConfirmOperation.call(this.thisPointer);
+            sudoApp.myConfirmDlg.close();
             sudoApp.mySolver.notify();
         });
         this.cancelNode.addEventListener('click', () => {
-            sudoApp.myConfirmDlg.close();
+          //  sudoApp.myConfirmDlg.close();
             sudoApp.myConfirmDlg.myRejectOperation.call(this.thisPointer);
+            sudoApp.myConfirmDlg.close();
             sudoApp.mySolver.notify();
         });
     }
@@ -474,6 +480,7 @@ class ConfirmDialog {
         this.myRejectOperation = rejectOp;
         this.myHeader.innerText = header;
         this.myTextBody.innerText = question;
+        this.myConfirmDlgNode.close();
         this.myConfirmDlgNode.showModal();
     }
 
@@ -492,6 +499,7 @@ class CopyFeedbackDialog {
     }
 
     open() {
+        this.myCopyFeedbackDlgNode.close();
         this.myCopyFeedbackDlgNode.showModal();
         setTimeout(() => {
             this.myCopyFeedbackDlgNode.close();
@@ -517,6 +525,7 @@ class PuzzleSaveRenameDialog {
         this.myCurrentPuzzleNameNode.value = currentRecord.name;
         this.myId = currentRecord.id;
         this.myOpen = true;
+        this.myContentSaveDlgNode.close();
         this.myContentSaveDlgNode.showModal();
     }
 
@@ -611,27 +620,34 @@ class InfoDialog {
         // Mit der Erzeugung des Wrappers werden 
         // auch der Eventhandler OK und Abbrechen gesetzt
         this.okNode.addEventListener('click', () => {
-            sudoApp.myInfoDialog.close();
             sudoApp.myInfoDialog.myConfirmOperation.call(this.thisPointer);
-            });
+            sudoApp.myInfoDialog.close();
+        });
     }
 
     open(headerText, infoModus, bodyText, thisPointer, confirmOp) {
-        this.infoDlgHeaderNode.innerHTML = headerText;
-        if (infoModus == 'solutionDiscovered') {
-            this.iconNode.src = "images/glueckwunsch.jpg";
-        } else if (infoModus == 'positiv') {
-            this.iconNode.src = "images/ok.png";
-        } else if (infoModus == 'negativ') {
-            this.iconNode.src = "images/fail.png";
-        } else if (infoModus == 'info') {
-            this.iconNode.src = "images/info.png";
+        if (!this.myOpen) {
+            this.infoDlgHeaderNode.innerHTML = headerText;
+            if (infoModus == 'solutionDiscovered') {
+                this.iconNode.src = "images/glueckwunsch.jpg";
+            } else if (infoModus == 'positiv') {
+                this.iconNode.src = "images/ok.png";
+            } else if (infoModus == 'negativ') {
+                this.iconNode.src = "images/fail.png";
+            } else if (infoModus == 'info') {
+                this.iconNode.src = "images/info.png";
+            }
+            this.infoDlgBodyNode.innerHTML = bodyText;
+            this.myOpen = true;
+            this.thisPointer = thisPointer;
+            this.myConfirmOperation = confirmOp;
+            this.dlgNode.close();
+            this.dlgNode.showModal();
+            console.log('InfoDialog. bodyText: ' + bodyText);
         }
-        this.infoDlgBodyNode.innerHTML = bodyText;
-        this.myOpen = true;
-        this.thisPointer = thisPointer;
-        this.myConfirmOperation = confirmOp;
-        this.dlgNode.showModal();
+        else {
+            console.log('Abgefangener Doppelter InfoDialog. bodyText: ' + bodyText);
+        }
     }
 
     isOpen() {
@@ -696,6 +712,7 @@ class SettingsDialog {
         this.topicBreakpoints.style.display = 'block';
 
         this.myOpen = true;
+        this.dlgNode.close();
         this.dlgNode.showModal();
     }
     openTopicBreakpoints() {
@@ -716,6 +733,7 @@ class SettingsDialog {
         this.topicBreakpoints.style.display = 'block';
 
         this.myOpen = true;
+        this.dlgNode.close();
         this.dlgNode.showModal();
     }
 
@@ -1496,7 +1514,7 @@ class SudokuPuzzleDBController {
     }
 
     renamePuzzleDlgOKPressed() {
-        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
+        // sudoApp.myCurrentPuzzleSaveRenameDlg.close();
         let uid = sudoApp.myCurrentPuzzleSaveRenameDlg.myId;
         let name = sudoApp.myCurrentPuzzleSaveRenameDlg.getPuzzleName();
         let selectedDBPuzzle = sudoApp.myPuzzleDB.getPuzzleRecord(uid);
@@ -1507,6 +1525,7 @@ class SudokuPuzzleDBController {
             sudoApp.mySolver.setLoadedPuzzleName(name);
             sudoApp.mySolver.notify();
         }
+        sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
 
     renamePuzzleDlgCancelPressed() {
@@ -3048,6 +3067,7 @@ class SudokuSolverView {
         this.myStepExplainerView = new StepExplainerView();
 
         this.solutionNumber = undefined;
+        // this.publishedSearchIsCompleted = false;
 
         this.solutionContainer = document.getElementById("solution-container");
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
@@ -3331,11 +3351,15 @@ class SudokuSolverView {
     }
 
     publishSearchIsCompleted(nrSol) {
+        // if (!this.publishedSearchIsCompleted) {
         if (nrSol == 0) {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
+            this.publishedSearchIsCompleted = true;
         } else {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
+            this.publishedSearchIsCompleted = true;
         }
+        // }
     }
 
     displayUndoRedo() {
@@ -4543,6 +4567,7 @@ class SudokuSolverController {
 
     // Button Nächster Suchschritt
     trackerDlgStepPressed() {
+        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
         let action = undefined;
         // Nächster Suchschritt
@@ -4568,6 +4593,7 @@ class SudokuSolverController {
     // Button Suchlauf mit Haltepunkten
     trackerDlgStepSequencePressed() {
         // Suchlauf mit Haltepunkten
+        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepSequencePressed';
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4597,6 +4623,7 @@ class SudokuSolverController {
 
     // Button Weitere Lösung anzeigen
     trackerDlgFastStepPressed() {
+        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgFastStepPressed';
         // Weitere Lösung
         if (sudoApp.myClockedRunner.isRunning()) {
@@ -4619,6 +4646,7 @@ class SudokuSolverController {
     }
 
     trackerDlgFastStep() {
+        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         // Called by trackerDlgFastStepPressed()
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4636,7 +4664,7 @@ class SudokuSolverController {
                 'info',
                 infoString,
                 this,
-                () => {}
+                () => { }
             );
         }
 
@@ -4644,6 +4672,7 @@ class SudokuSolverController {
 
 
     trackerDlgCountSolutionsPressed() {
+        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         // Button Lösungen zählen ...
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgCountSolutionsPressed';
 
@@ -4702,11 +4731,6 @@ class SudokuSolverController {
     }
 
     // ====================================================================================
-
-    infoDlgOKPressed() {
-        // ?????????
-        sudoApp.myInfoDialog.close();
-    }
 
     puzzleIOcheckboxOnchange() {
         let pIOcheckbox = document.getElementById('puzzle-io');
