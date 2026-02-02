@@ -1063,8 +1063,6 @@ Für Text: color: #222; oder color: #424242;
 .step-count-box,
 #max-depth-value,
 #backward-count {
-    display: inline-flex;
-    flex-wrap: wrap;
     background: lightgray;
     padding: 0.2rem 0.2rem;
     
@@ -1089,11 +1087,10 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #search-path {
-    flex: 1;
+    flex-grow: 4;
     display: grid;
     grid-template-columns: 0.4fr 1.6fr;
     gap: 0.2rem;
-    font-size: var(--cg-font-base);
     background-color: lightgray;
     width: 100%;
 }
@@ -1104,9 +1101,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #search-path-field {
-    font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
-    white-space: nowrap;
 }
 
 
