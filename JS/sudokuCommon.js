@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.7.02';
+let VERSION = 'v1.7.03';
 
 // ==========================================
 // Basic classes
@@ -5007,6 +5007,7 @@ class SudokuMainApp {
             '<b>AppVersion:</b> &nbsp' + VERSION;
     }
     helpFunction() {
-        window.open('./help.html');
+        // window.open('./help.html');
+        window.open("./help.html", "explorerWindow", "popup");
     }
 }
