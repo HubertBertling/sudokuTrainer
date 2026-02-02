@@ -131,7 +131,10 @@ function setPuzzleShareBtnEventHandler() {
         shareButton.addEventListener("click", async () => {
             if (sudoApp.mySolver.getGamePhase() == 'define') {
                 sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
-                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.");
+                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
+                         this,
+                        () => { }
+                );
             } else {
                 let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
