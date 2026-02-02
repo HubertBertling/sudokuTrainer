@@ -1102,6 +1102,7 @@ Für Text: color: #222; oder color: #424242;
 
 #search-path-field {
     padding: 0.2rem 0.4rem;
+    white-space: nowrap;
 }
 
 
