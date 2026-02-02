@@ -339,7 +339,7 @@ button:active {
     color: #818181;
     display: block;
     transition: 0.3s;
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h3);
 }
 
 .sidenav a:hover {
@@ -765,7 +765,7 @@ button:active {
     font-size: var(--cg-font-base);
     justify-content: space-between;
     margin-bottom: 0.2rem;
-    background-color:  var(--screen-bg-color);
+    background-color: var(--screen-bg-color);
     border-bottom: 0.2rem solid var(--app-header-bg-color);
     border-left: 0.2rem solid var(--app-header-bg-color);
     border-right: 0.2rem solid var(--app-header-bg-color);
@@ -901,7 +901,7 @@ Für Text: color: #222; oder color: #424242;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
     background: var(--automatic-solver);
-    margin: 1rem 2rem;
+    margin: 0.8rem 2rem;
 }
 
 .number-btn {
@@ -1050,89 +1050,65 @@ Für Text: color: #222; oder color: #424242;
 /* Progress box block */
 /*======================================*/
 
-.progress-box {
+.tracker-dashboard {
     font-size: var(--cg-font-base);
-
-}
-
-#progress-block {
-    margin-top: 0.2rem;
-    display: grid;
-    grid-template-columns: 1.2fr 0.1fr 0.7fr;
+    padding: 0.8rem;
+    display: inline-flex;
+    flex-wrap: wrap;
     gap: 0.2rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
 }
 
-
-.step-count-box {
-    display: flex;
-    font-size: var(--cg-font-base);
-    flex-direction: row;
-    justify-content: space-between;
+.step-count-box,
+#max-depth-value,
+#backward-count {
+    display: inline-flex;
+    flex-wrap: wrap;
     background: lightgray;
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 0.2rem;
+    
 }
 
-.step-count {
-    flex: 1;
-}
-
-.backward-count {
-    flex: 1;
-}
 
 .forward-backward-image {
+    width: 0.6rem;
+    height: 1rem;
     margin-top: 0.2rem;
-    width: 1rem;
+
 }
 
-#search-info-box {
-    display: flex;
-    flex-direction: column;
-    margin-top: 0.2rem;
-    font-size: var(--cg-font-base);
+.forward,
+.backward {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+}
+
+.autoMode-radio-btns {
+    background-color: lightgrey;
 }
 
 #search-path {
     flex: 1;
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr;
-    gap: 0.4rem;
+    grid-template-columns: 0.4fr 1.6fr;
+    gap: 0.2rem;
     font-size: var(--cg-font-base);
     background-color: lightgray;
     width: 100%;
 }
 
 #search-path-label {
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 0.2rem;
     font-weight: bold;
 }
 
 #search-path-field {
     font-size: var(--cg-font-base);
     padding: 0.2rem 0.4rem;
-    margin-right: 0.4rem;
     white-space: nowrap;
 }
 
-#depth-backward {
-    margin-top: 0.2rem;
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-#max-depth-value,
-#backward-count {
-    flex: 1;
-    font-size: var(--cg-font-base);
-    padding: 0.2rem 0.4rem;
-    background-color: lightgray;
-}
-
-#backward-count {
-    margin-left: 0.2rem;
-}
 
 .horizontal-scroll {
     font-size: var(--cg-font-base);
@@ -1148,18 +1124,6 @@ Für Text: color: #222; oder color: #424242;
 }
 
 
-.forward,
-.backward {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-}
-
-.autoMode-radio-btns {
-    place-items: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background-color: lightgrey;
-}
 
 .forward.checked,
 .backward.checked {
