@@ -1064,7 +1064,7 @@ Für Text: color: #222; oder color: #424242;
 #max-depth-value,
 #backward-count {
     background: lightgray;
-    padding: 0.2rem 0.2rem;
+    padding: 0.2rem 0.4rem;
     
 }
 
@@ -1078,8 +1078,8 @@ Für Text: color: #222; oder color: #424242;
 
 .forward,
 .backward {
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
 }
 
 .autoMode-radio-btns {
