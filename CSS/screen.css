@@ -1941,7 +1941,7 @@ label {
     .app-content {
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
-        width: calc(min(98vw, 920px));
+        width: calc(min(98vw, 1024px));
         margin: 0 auto;
 
     }
