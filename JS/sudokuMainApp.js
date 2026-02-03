@@ -378,10 +378,8 @@ class PuzzleDBDialog {
         sudoApp.myPuzzleDB.attach(this.myPuzzleDBView);
     }
     close() {
-        if (this.myOpen) {
             this.myPuzzleDBDialogNode.close();
             this.myOpen = false;
-        }
     }
 }
 
@@ -432,10 +430,8 @@ class NewPuzzleDlg {
         }
     }
     close() {
-        if (this.myOpen) {
             this.myNewPuzzzeDlgNode.close();
             this.myOpen = false;
-        }
     }
 
     startLoaderAnimation() {
@@ -488,10 +484,8 @@ class ConfirmDialog {
     }
 
     close() {
-        if (this.myOpen) {
             this.myConfirmDlgNode.close();
             this.myOpen = false;
-        }
     }
 }
 
@@ -533,12 +527,10 @@ class PuzzleSaveRenameDialog {
     }
 
     close() {
-        if (this.myOpen) {
             this.okNode.removeEventListener('click', this.okHandler);
             this.cancelNode.removeEventListener('click', this.cancelHandler);
             this.myContentSaveDlgNode.close();
             this.myOpen = false;
-        }
     }
 
     getPuzzleName() {
@@ -598,7 +590,6 @@ class TrackerDialog {
         return this.myOpen;
     }
     close() {
-        if (this.myOpen) {
             sudoApp.myClockedRunner.stop('cancelled');
             sudoApp.mySyncRunner.stop('cancelled');
 
@@ -606,7 +597,6 @@ class TrackerDialog {
             this.trackerDlg.close();
             this.manualBlock.style.display = "inline-block";
             this.myOpen = false;
-        }
     }
 }
 
@@ -629,7 +619,9 @@ class InfoDialog {
     }
 
     open(headerText, infoModus, bodyText, thisPointer, confirmOp) {
-        if (!this.myOpen) {
+        // if (this.myOpen) {
+        //     console.log('Doppelter InfoDialog. bodyText: ' + bodyText);
+        //}
             this.infoDlgHeaderNode.innerHTML = headerText;
             if (infoModus == 'solutionDiscovered') {
                 this.iconNode.src = "images/glueckwunsch.jpg";
@@ -646,11 +638,12 @@ class InfoDialog {
             this.myConfirmOperation = confirmOp;
             this.dlgNode.close();
             this.dlgNode.showModal();
-            console.log('InfoDialog. bodyText: ' + bodyText);
-        }
-        else {
-            console.log('Abgefangener Doppelter InfoDialog. bodyText: ' + bodyText);
-        }
+      //      console.log('');
+      //      console.log('==============> InfoDialog.open(). bodyText: ' + bodyText);
+      //  }
+      //)  else {
+      //      console.log('Abgefangener Doppelter InfoDialog. bodyText: ' + bodyText);
+      //  }
     }
 
     isOpen() {
@@ -658,11 +651,9 @@ class InfoDialog {
     }
 
     close() {
-        if (this.myOpen) {
             this.dlgNode.close();
             this.myOpen = false;
             this.iconNode.src = "";
-        }
     }
 }
 
@@ -790,10 +781,8 @@ class SettingsDialog {
         this.close();
     }
     close() {
-        if (this.myOpen) {
             this.dlgNode.close();
             this.myOpen = false;
-        }
     }
 }
 
@@ -3747,6 +3736,7 @@ class SudokuSolverController {
             case 'BODY': {
                 let tmpIndex = sudoApp.mySolver.myGrid.indexSelected;
                 this.handleNumberPressed(event.key);
+                console.log('handleKeyNumberPressed. tmpIndex: ' + tmpIndex);
                 sudoApp.mySolver.myGrid.setCurrentSelection(tmpIndex);
                 sudoApp.mySolver.notify();
                 break;

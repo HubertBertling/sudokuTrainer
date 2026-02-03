@@ -764,7 +764,7 @@ Wir kopieren die Ziffernkette und fügen sie in den Explorer ein, z.B. mit ctrl-
     <figcaption style="font-size: 16px; font-style: italic;">Das eingefügte Puzzle</figcaption>
 </figure>
 
-Nach dm Einfügen hat der Explorer den Schwieigkeitsgrad berechnet. Siehe oben rechts: "Sehr schwer". Wir speichern das Puzzle unter dm Namen: "demo-puzzle". Danach wechseln wir in die automatische Lösungssuche.
+Nach dem Einfügen hat der Explorer den Schwieigkeitsgrad berechnet. Siehe oben rechts: "Sehr schwer". Wir speichern das Puzzle unter dm Namen: "demo-puzzle". Danach wechseln wir in die automatische Lösungssuche.
 
 Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste "Nächster Suchschritt" oder der Suchlauftaste "Suchlauf mit Haltepunkten". Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
 
@@ -793,7 +793,7 @@ Nach der Setzung der ersten Option durch Drücken der Schrittaste.
     <figcaption style="font-size: 16px; font-style: italic;">Schritt 4.a</figcaption>
 </figure>
 
-**Schritt 4: Zelle mit notwendiger Nummer.** Im vierten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 3. Sie ist notwendig, weil in dem Block in allen freien Zellen, einen grünen Hintergrund haben und keine 3 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle diese Zellen tragen die Nummer 3.
+**Schritt 4: Zelle mit notwendiger Nummer.** Im vierten Schritt selektiert der Solver eine Zelle mit notwendiger Nummer 3. Sie ist notwendig, weil in dem Block in allen freien Zellen, einen grünen Hintergrund haben und keine 3 mehr gesetzt werden kann. Die weiß gerahmten Zellen liefern die Begründung. Das heißt alle weiß gerahmten Zellen tragen die Nummer 3.
 
 <figure>
    <img src="./imagesHelp/schritt4_2.png" alt="Schritt 4_2" style="max-width:100%">
@@ -802,7 +802,7 @@ Nach der Setzung der ersten Option durch Drücken der Schrittaste.
 
 <h3> ==> Haltepunkt "Bei Single" gesetzt. Suchlauftaste gedrückt: </h3>
 
-**Schritt 13: Zelle mit Single.** Im Schritt 13.a selektiert der Solver eine Zelle mit nur einem Kandidaten, die 7, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern die Bedingung dafür. Das heißt, für jede Zahl außer 7 gibt es eine solche Zelle.
+**Schritt 13: Zelle mit Single.** Im Schritt 13.a selektiert der Solver eine Zelle mit nur einem Kandidaten, die 7, einem Single. Alle anderen Nummern sind in dieser Zelle unzulässig. Die Zellen mit gestricheltem weißen Rand liefern den Grund dafür. Das heißt, für jede Zahl außer 7 gibt es eine solche weiß gerahmte Zelle.
 
 <figure>
    <img src="./imagesHelp/schritt13_a.png" alt="Schritt 13_a" style="max-width:100%">
@@ -829,7 +829,7 @@ Nach der Setzung der ersten Option durch Drücken der Schrittaste.
 
 <h3> ==> Haltepunkt "Bei Selektionsoptionen" gesetzt und "Bei Widerspruch" zurückgenommen. Suchlauftaste gedrückt:</h3>
 
-**Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7.
+**Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7. Im Suchpfad ist nun sichtbar, dass die beiden Optionen dieses Schrittes abgearbeitet sind. Beide sind grün.
 
 <figure>
    <img src="./imagesHelp/Schritt43_aNew.png" alt="Schritt 43_a" style="max-width:100%">
