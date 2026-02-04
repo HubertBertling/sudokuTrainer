@@ -519,7 +519,14 @@ Wir vergleichen die jeweiligen Vorteile der Auswertungsmodi.
 
 Im Lazy-Modus wird die Verursachung notwendiger Nummern oder eliminierbarer Kandidaten angezeigt durch gestrichelte Rahmen, wenn die Zelle der notwendigen Nummer oder eliminierbaren Nummer selektiert ist. Durch erneutes Klicken der selektierten Zelle können die Ursachen der notwendigen und eliminierbaren Kandidaten der Reihe nach jeweils angezeigt werden. Wenn alle Kandidaten angezeigt wurden, führt das erneute Klicken der Zelle zur Deselektion der Zelle.
 
-**Vorteil der strikten Auswertung: Lösung des Puzzles mit weniger Schritten.** Im Auswertungsmodus Strikt benötigt der Solver im Allgemeinen weniger Schritte bis zur Lösung des Puzzles als im Ausführungsmodus Lazy. Im Lazy-Modus braucht der Solver für die Lösung des Puzzles 'Backtrack_10' 224 Schritte und 5 Rückwärtsläufe. Im Strikt-Modus dagegen nur 76 Schritte.
+**Vorteil der strikten Auswertung: Lösung des Puzzles mit weniger Schritten.** Im Auswertungsmodus Strikt benötigt der Solver im Allgemeinen weniger Schritte bis zur Lösung des Puzzles als im Ausführungsmodus Lazy. 
+
+AI-Escargot: 100007090030020008009600500005300900010080002600004000300000010040000007007000300
+
+[https://www.sudokuwiki.org/Escargot](https://www.sudokuwiki.org/Escargot) " ... the world's hardest Sudoku?" Im Lazy-Modus braucht der Solver für die Lösung des schwersten Puzzles überhaupt 204 Schritte bis zur Lösung 2016 Schritte bis zur Festtellung der Eindeutigkeit (Keine weitere Lösung), und 46 Error-Rückläufe
+
+Im Strikt-Modus dagegen 110 Schritte bis zur Lösung
+622 Schritte bis zur Festtellung der Eindeutigkeit (Keine weitere Lösung) und 46 Error-Rückläufe.
 
 Woran liegt das? Es liegt daran, dass der Solver im Ausführungsmodus Strikt sehr viel früher die Widersprüchlichkeit, falls vorhanden, der aktuellen Nummernbelegungen feststellt. Dies wiederum führt dazu, dass die Anzahl der Vorwärts- und Rückwärtsschritte entsprechend geringer wird und damit die Anzahl der Schritte insgesamt. Die Anzahl der Rückwärtsläufe bleibt in beiden Ausführungsmodi gleich. Der Solver untersucht in beiden Auswertungsmodi dieselben möglichen Nummernsetzungen.
 
