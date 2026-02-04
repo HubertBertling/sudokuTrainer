@@ -521,11 +521,12 @@ Im Lazy-Modus wird die Verursachung notwendiger Nummern oder eliminierbarer Kand
 
 **Vorteil der strikten Auswertung: Lösung des Puzzles mit weniger Schritten.** Im Auswertungsmodus Strikt benötigt der Solver im Allgemeinen weniger Schritte bis zur Lösung des Puzzles als im Ausführungsmodus Lazy. 
 
-AI-Escargot: 100007090030020008009600500005300900010080002600004000300000010040000007007000300
+AI-Escargot: [https://www.sudokuwiki.org/Escargot](https://www.sudokuwiki.org/Escargot) " ... the world's hardest Sudoku?" 
+100007090030020008009600500005300900010080002600004000300000010040000007007000300
 
-[https://www.sudokuwiki.org/Escargot](https://www.sudokuwiki.org/Escargot) " ... the world's hardest Sudoku?" Im Lazy-Modus braucht der Solver für die Lösung des schwersten Puzzles überhaupt 204 Schritte bis zur Lösung 2016 Schritte bis zur Festtellung der Eindeutigkeit (Keine weitere Lösung), und 46 Error-Rückläufe
+Im Lazy-Modus braucht der Solver für die Lösung des schwersten Puzzles überhaupt 204 Schritte bis zur Lösung, 2016 Schritte bis zur Festtellung der Eindeutigkeit (Keine weitere Lösung) und 46 Error-Rückläufe.
 
-Im Strikt-Modus dagegen 110 Schritte bis zur Lösung
+Im Strikt-Modus dagegen 110 Schritte bis zur Lösung,
 622 Schritte bis zur Festtellung der Eindeutigkeit (Keine weitere Lösung) und 46 Error-Rückläufe.
 
 Woran liegt das? Es liegt daran, dass der Solver im Ausführungsmodus Strikt sehr viel früher die Widersprüchlichkeit, falls vorhanden, der aktuellen Nummernbelegungen feststellt. Dies wiederum führt dazu, dass die Anzahl der Vorwärts- und Rückwärtsschritte entsprechend geringer wird und damit die Anzahl der Schritte insgesamt. Die Anzahl der Rückwärtsläufe bleibt in beiden Ausführungsmodi gleich. Der Solver untersucht in beiden Auswertungsmodi dieselben möglichen Nummernsetzungen.
