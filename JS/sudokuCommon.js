@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.7.09';
+let VERSION = 'v1.7.10';
 
 // ==========================================
 // Basic classes
@@ -3194,9 +3194,9 @@ class SudokuGrid {
         // the hidden pairs. Eliminable candidates
         // in other cells cannot have been caused by eliminable candidates
         // in the hidden pair. 
-        if (this.derive_inAdmissiblesFromNakedPairs()) return true;
         if (this.derive_inAdmissiblesFromPointingPairs()) return true;
         if (this.derive_inAdmissiblesFromIntersection()) return true;
+        if (this.derive_inAdmissiblesFromNakedPairs()) return true;
         if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         return false;
     }
