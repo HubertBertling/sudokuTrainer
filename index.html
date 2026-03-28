@@ -106,540 +106,582 @@
                             Automatisch
                         </button>
                     </div>
-                    <div class="manual-btn-block" id="manual-btn-block">
-                        <button class="modern-btn btn-save" id="btn-save">
-                            <span class="material-icons">save</span>
-                            Speichern
-                        </button>
-                        <button class="modern-btn btn-delete-cell" id="btn-delete-cell">X</button>
-                        <button class="modern-btn number-btn" value="7">7</button>
-                        <button class="modern-btn number-btn" value="8">8</button>
-                        <button class="modern-btn number-btn" value="9">9</button>
+                    <div class="manual-btn-body-block" id="manual-btn-body-block">
 
-                        <button class="modern-btn btn-define" id="btn-define">Phase: Definition</button>
-                        <button class="modern-btn btn-undo" id="btn-undo">
-                            <span class="material-icons">undo</span>
-                            Undo
-                        </button>
-                        <button class="modern-btn number-btn" value="4">4</button>
-                        <button class="modern-btn number-btn" value="5">5</button>
-                        <button class="modern-btn number-btn" value="6">6</button>
+                        <div class="manual-btn-block" id="manual-btn-block">
 
-                        <button class="modern-btn btn-play" id="btn-play">Phase: Lösen</button>
-                        <button class="modern-btn btn-redo" id="btn-redo">
-                            <span class="material-icons">redo</span>
-                            Redo
-                        </button>
-                        <button class="modern-btn number-btn" value="1">1</button>
-                        <button class="modern-btn number-btn" value="2">2</button>
-                        <button class="modern-btn number-btn" value="3">3</button>
+                            <!-- From Uiverse.io by Bodyhc -->
+                            <div class="checkbox-wrapper-35" id="checkbox-wrapper-35">
+                                <input value="private" name="switch" id="switch" type="checkbox" class="switch">
+                                <label for="switch">
+                                    <span class="switch-x-text">Puzzle </span>
+                                    <span class="switch-x-toggletext">
+                                        <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked:
+                                            </span>eingeben</span>
+                                        <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Checked:
+                                            </span>spielen</span>
+                                    </span>
+                                </label>
+                            </div>
 
-                        <button class="modern-btn btn-run-old" id="btn-run-old"
-                            onclick="sudoApp.mySolverController.initLinkPressed()">
-                            <span class="material-symbols-outlined">
-                                start
-                            </span>
-                            Init
-                        </button>
-                        <button class="modern-btn btn-reset" id="btn-reset">
-                            <span class="material-icons">autorenew</span>
-                            Reset
-                        </button>
-                        <button class="modern-btn btn-run-old" id="btn-run-old"
-                            onclick="sudoApp.mySolverController.newLinkPressed()">
-                            <span class="material-symbols-outlined">
-                                Add
-                            </span>
-                            Neu
-                        </button>
-                        <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
-                            <span class="material-symbols-outlined">
-                                data_check
-                            </span>
-                            Prüfen
-                        </button>
+                            <!-- <fieldset class="phase-fieldset" id="phase-fieldset">
+                            <legend class="phase-legend">
+                                Puzzle
+                            </legend>
+                            <div class="phase">
+                                <input type="radio" id="btn-define" name="phase" value="define">
+                                <label for="btn-define">Eingeben</label>
+                            </div>
+                            <div class="phase">
+                                <input type="radio" id="btn-play" name="phase" value="play">
+                                <label for="btn-play">Spielen</label>
+                            </div>
+                        </fieldset>
+                        -->
+                            <button class="modern-btn btn-reset" id="btn-reset">
+                                <span class="material-icons">autorenew</span>
+                                Reset
+                            </button>
+                            <button class="modern-btn btn-init" id="btn-init"
+                                onclick="sudoApp.mySolverController.initLinkPressed()">
+                                <span class="material-symbols-outlined">
+                                    start
+                                </span>
+                                Init
+                            </button>
 
-                        <button class="modern-btn btn-tip" id="btn-tip">
-                            <span class="material-symbols-outlined">
-                                lightbulb_2
-                            </span>
-                            Tipp
+                            <button class="modern-btn btn-new" id="btn-new"
+                                onclick="sudoApp.mySolverController.newLinkPressed()">
+                                <span class="material-symbols-outlined">
+                                    Add
+                                </span>
+                                Neu
+                            </button>
+
+
+
+                            <!-- <div class="manual-btn-block" id="manual-btn-block"> -->
+                            <button class="modern-btn btn-delete-cell" id="btn-delete-cell">X</button>
+                            <button class="modern-btn number-btn" id="number-btn-1" value="1">1</button>
+                            <button class="modern-btn number-btn" id="number-btn-2" value="2">2</button>
+                            <button class="modern-btn number-btn" id="number-btn-3" value="3">3</button>
+                            <button class="modern-btn number-btn" id="number-btn-4" value="4">4</button>
+                            <button class="modern-btn number-btn" id="number-btn-5" value="5">5</button>
+                            <button class="modern-btn number-btn" id="number-btn-6" value="6">6</button>
+                            <button class="modern-btn number-btn" id="number-btn-7" value="7">7</button>
+                            <button class="modern-btn number-btn" id="number-btn-8" value="8">8</button>
+                            <button class="modern-btn number-btn" id="number-btn-9" value="9">9</button>
+
+                            <!--<div class="manual-btn-block-1" id="manual-btn-block-1"> -->
+                            <button class="modern-btn btn-undo" id="btn-undo">
+                                <span class="material-icons">undo</span>
+                            </button>
+
+                            <button class="modern-btn btn-redo" id="btn-redo">
+                                <span class="material-icons">redo</span>
+                            </button>
+
+                            <button class="modern-btn btn-showWrongNumbers" id="btn-showWrongNumbers">
+                                <span class="material-symbols-outlined">
+                                    data_check
+                                </span>
+                                Prüfen
+                            </button>
+
+                            <button class="modern-btn btn-tip" id="btn-tip">
+                                <span class="material-symbols-outlined">
+                                    lightbulb_2
+                                </span>
+                                Tipp
+                            </button>
+
+                            <button class="modern-btn btn-save" id="btn-save">
+                                <span class="material-icons">save</span>
+                                Speichern
+                            </button>
+
+                        </div>
+                    </div>
+                    <dialog class="trackerDlg noprint" id="trackerDlg">
+                        <div class="tracker-dlg-header">
+                            <span> Automatisch lösen</span>
+                            <button class="btn-backtrack-stop" id="btn-backtrack-stop">
+                                <span class="material-symbols-outlined">
+                                    stop_circle
+                                </span>
+                                Stopp
+                            </button>
+                        </div>
+
+
+                        <div class="tracker-dashboard" id="tracker-dashboard">
+                            <div class="step-count-box" id="step-count-box">
+                                <div class="step-count" id="step-count">
+                                </div>
+                            </div>
+                            <div class="autoMode-radio-btns" id="autoMode-radio-btns">
+                                <div class="backward" id="radio-backward">
+                                    <img title="backward" src="images/pfeilrueckwaerts.png"
+                                        class="forward-backward-image">
+                                </div>
+                                <div class="forward" id="radio-forward">
+                                    <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
+                                </div>
+                            </div>
+                            <div class="max-depth-value" id="max-depth-value">
+                            </div>
+                            <div class="backward-count" id="backward-count">
+                                &nbsp; <b>Error-RL:</b> &nbsp;0
+                            </div>
+                            <div class="search-path" id="search-path">
+                                <div class="search-path-label" id="search-path-label">
+                                    Suchpfad:
+                                </div>
+                                <div class="search-path-field horizontal-scroll" id="search-path-field">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="automatic-btn-block" id="automatic-btn-block">
+                            <button class="modern-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
+                                <span class="material-symbols-outlined">
+                                    settings
+                                </span>
+                                Halte-punkte
+                            </button>
+                            <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
+                                <span class="material-symbols-outlined">
+                                    check
+                                </span>
+                                Nächster Suchschritt
+                            </button>
+                            <button class="modern-btn btn-backtrack-continue" id="btn-backtrack-continue">
+                                <span class="material-symbols-outlined">
+                                    sweep
+                                </span>
+                                Suchlauf mit Haltepunkten
+                            </button>
+                            <button class="modern-btn search-reset-btn" id="search-reset-btn">
+                                <span class="material-icons">autorenew</span>
+                                Reset
+                            </button>
+                            <button class="modern-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
+                                <span class="material-symbols-outlined">
+                                    keyboard_arrow_right
+                                </span>
+                                (Nächste) Lösung
+                            </button>
+                            <button class="modern-btn btn-backtrack-fast" id="btn-backtrack-fast">
+                                <span class="material-symbols-outlined">
+                                    keyboard_double_arrow_right
+                                </span>
+                                Lösungen zählen ...
+                            </button>
+
+                        </div>
+                    </dialog>
+                </div>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="NavigationBar.closeNav()">&times;</a>
+
+                <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
+                <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
+                <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
+                <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
+                <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
+                <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
+
+                <button class="modern-btn-inline btn-share" id="share-app-btn"
+                    onclick="sudoApp.mySolverController.setAppURLShareBtnEventHandler()">
+                    <span class="material-icons">share</span>
+                    Sudoku-Trainer URL
+                </button>
+
+                <div class="result navbar-element"></div>
+
+
+                <div id="appVersion" class="navbar-element">
+
+                </div>
+
+            </div>
+        </div>
+
+        <!--Ausblendbare Elemente -->
+
+
+        <!--Dialoge -->
+
+
+        <dialog class="new-puzzle-dlg noprint" id="new-puzzle-dlg">
+            <div class="dlg-header-plus-rotator">
+                <div class="dlg-new-puzzle-header">
+                    Neue Puzzles generieren
+                </div>
+                <div id="loader-new-puzzle">
+                </div>
+            </div>
+            <div class="new-puzzle-selection" id="new-puzzle-selection">
+                <fieldset class="level-fieldset">
+                    <legend class="new-puzzle-selection-legend">
+                        Schwierigkeitsgrad
+                    </legend>
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-unsolvable" class="level" name="level" value="Unlösbar">
+                        <div class="label-text text-spacing prefix">Unlösbar</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="unsolvable">
+                                <div id="unsolvable-Bar">20%</div>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-very-simple" class="level" name="level" value="Sehr leicht">
+                        <div class="label-text text-spacing prefix">Sehr leicht</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="very-simple">
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-simple" class="level" name="level" value="Leicht">
+                        <div class="label-text text-spacing prefix">Leicht</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="simple">
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-medium" class="level" name="level" value="Mittel">
+                        <div class="label-text text-spacing prefix">Mittel</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="medium">
+                                <div id="medium-Bar">20%</div>
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-heavy" class="level" name="level" value="Schwer">
+                        <div class="label-text text-spacing prefix">Schwer</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="heavy">
+                                <div id="heavy-Bar">20%</div>
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-very-heavy" class="level" name="level" value="Sehr schwer">
+                        <div class="label-text text-spacing prefix">Sehr schwer</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="very-heavy">
+                                <div id="very-heavy-Bar">20%</div>
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="label-container first-label-container">
+                        <input type="radio" id="level-extreme-heavy" class="level" name="level" value="Extrem schwer">
+                        <div class="label-text text-spacing prefix">Extrem schwer</div>
+                        <div class="label-text text-spacing">
+                            <div class="new-puzzle-bar" id="extreme-heavy">
+                                <div id="extreme-heavy-Bar">20%</div>
+                            </div>
+                        </div>
+                    </label>
+
+                </fieldset>
+            </div>
+
+
+            <div id="new-puzzle-ok-cancel-btns">
+                <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-ok" name="OK"
+                    value="Puzzle laden" />
+                <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-cancel" name="Cancel"
+                    value="Abbrechen" />
+            </div>
+        </dialog>
+
+        <dialog class="puzzle-table-dlg noprint" id="puzzle-table-dlg">
+            <div class="db-puzzle-root">
+                <div class="db-puzzle-header">
+                    <div class="title"> Puzzle Datenbank </div>
+                    <div id="db-close-btn">&times;</div>
+                </div>
+                <div class="tableFixHead">
+                    <table class="db-puzzle-table " id="db-puzzle-table">
+                        <!--Die Datenbanktabelle-->
+                        <thead class="db-puzzle-thead">
+                            <tr>
+                                <th style="cursor:pointer">Nr</th>
+                                <th id="col-name" style="cursor:pointer">Puzzle-Name </th>
+                                <th id="col-status-given" style="cursor:pointer"># Givens</th>
+                                <th id="col-status-solved" style="cursor:pointer"># Gelöste</th>
+                                <th id="col-status-open" style="cursor:pointer"># Offene</th>
+                                <th id="col-level" style="cursor:pointer">Level</th>
+                                <th id="col-backTracks" style="cursor:pointer"># Error-RL</th>
+                                <th id="col-countSolutions" style="cursor:pointer"># Lösungen</th>
+                                <th id="col-date" style="cursor:pointer">Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody class="db-puzzle-tbody" id="db-puzzle-tbody">
+                            <!--Der Inhalt der Datenbanktabelle wird per JS aus dem Local-Store geladen-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container-puzzle-buttons">
+                    <div class="db-puzzle-btns " id="db-puzzle-btns">
+                        <!--Die buttons unterhalb der Puzzle-Datenbanktabelle -->
+                        <button class="db-puzzle-button noprint" id="pz-btn-load"><img title="upload"
+                                src="images/upload.png" class="btn-image">Laden</button>
+                        <button class="db-puzzle-button noprint" id="pz-btn-rename"><img title="rename"
+                                src="images/rename.png" class="btn-image">Umbenennen</button>
+                        <button class="db-puzzle-button noprint" id="pz-btn-previous"><img title="backward"
+                                src="images/pfeilrueckwaerts.png" class="btn-image">Zurück</button>
+                        <button class="db-puzzle-button noprint" id="pz-btn-next"><img title="forward"
+                                src="images/pfeilvorwaerts.png" class="btn-image">Vor</button>
+                        <button class="db-puzzle-button noprint" id="pz-btn-delete"><img title="delete"
+                                src="images/times200.png" class="btn-image">
+                            <div>Puzzle löschen</div>
+                        </button>
+                        <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img title="db-delete"
+                                src="images/times200.png" class="btn-image">
+                            <div>DB löschen</div>
+                        </button>
+                        <button class="db-puzzle-button" id="db-puzzle-btn-print"><img title="printer"
+                                src="images/drucker.png" class="btn-image">Drucken
+                        </button>
+                        <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-pz"><img title="pz-download"
+                                src="images/download.png" class="btn-image">
+                            <div>Download Puzzle</div>
+                        </button>
+                        <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img title="db-download"
+                                src="images/download.png" class="btn-image">
+                            <div>Download Puzzle-DB</div>
+                        </button>
+                        <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img title="import"
+                                src="images/import.png" class="btn-image">
+                            <div>Import Puzzle(s)</div>
+                        </button>
+                        <input title="file-input" type="file" style="display:none" id="asText">
+                        <button class="db-puzzle-button noprint" id="pz-btn-ok"><img title="stop"
+                                src="images/stop-96.png" class="btn-image">
+                            <div>Schließen</div>
                         </button>
                     </div>
                 </div>
-                <dialog class="trackerDlg noprint" id="trackerDlg">
-                    <div class="tracker-dlg-header">
-                        <span> Automatisch lösen</span>
-                        <button class="btn-backtrack-stop" id="btn-backtrack-stop">
-                            <span class="material-symbols-outlined">
-                                stop_circle
-                            </span>
-                            Stopp
-                        </button>
-                    </div>
-
-
-                    <div class="tracker-dashboard" id="tracker-dashboard">
-                        <div class="step-count-box" id="step-count-box">
-                            <div class="step-count" id="step-count">
-                            </div>
-                        </div>
-                        <div class="autoMode-radio-btns" id="autoMode-radio-btns">
-                            <div class="backward" id="radio-backward">
-                                <img title="backward" src="images/pfeilrueckwaerts.png" class="forward-backward-image">
-                            </div>
-                            <div class="forward" id="radio-forward">
-                                <img title="forward" src="images/pfeilvorwaerts.png" class="forward-backward-image">
-                            </div>
-                        </div>
-                        <div class="max-depth-value" id="max-depth-value">
-                        </div>
-                        <div class="backward-count" id="backward-count">
-                            &nbsp; <b>Error-RL:</b> &nbsp;0
-                        </div>
-                        <div class="search-path" id="search-path">
-                            <div class="search-path-label" id="search-path-label">
-                                Suchpfad:
-                            </div>
-                            <div class="search-path-field horizontal-scroll" id="search-path-field">
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="automatic-btn-block" id="automatic-btn-block">
-                        <button class="modern-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
-                            <span class="material-symbols-outlined">
-                                settings
-                            </span>
-                            Halte-punkte
-                        </button>
-                        <button class="modern-btn btn-backtrack-step" id="btn-backtrack-step">
-                            <span class="material-symbols-outlined">
-                                check
-                            </span>
-                            Nächster Suchschritt
-                        </button>
-                        <button class="modern-btn btn-backtrack-continue" id="btn-backtrack-continue">
-                            <span class="material-symbols-outlined">
-                                sweep
-                            </span>
-                            Suchlauf mit Haltepunkten
-                        </button>
-                        <button class="modern-btn search-reset-btn" id="search-reset-btn">
-                            <span class="material-icons">autorenew</span>
-                            Reset
-                        </button>
-                        <button class="modern-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
-                            <span class="material-symbols-outlined">
-                                keyboard_arrow_right
-                            </span>
-                            (Nächste) Lösung
-                        </button>
-                        <button class="modern-btn btn-backtrack-fast" id="btn-backtrack-fast">
-                            <span class="material-symbols-outlined">
-                                keyboard_double_arrow_right
-                            </span>
-                            Lösungen zählen ...
-                        </button>
-
-                    </div>
-                </dialog>
-            </div>
-        </div>
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="NavigationBar.closeNav()">&times;</a>
-
-            <a href="#" onclick="sudoApp.mySolverController.copyLinkPressed()">Kopieren</a>
-            <a href="#" onclick="sudoApp.mySolverController.copyMatrixLinkPressed()">Kopieren (Matrix)</a>
-            <a href="#" onclick="sudoApp.mySolverController.pasteLinkPressed()">Einfügen</a>
-            <a href="#" onclick="sudoApp.mySolverController.printLinkPressed()">Drucken</a>
-            <a href="#" onclick="sudoApp.mySolverController.openDBLinkPressed()">Datenbank</a>
-            <a href="#" onclick="sudoApp.mySolverController.openSettingsDlgPressed()">Einstellungen</a>
-
-            <button class="modern-btn-inline btn-share" id="share-app-btn"
-                onclick="sudoApp.mySolverController.setAppURLShareBtnEventHandler()">
-                <span class="material-icons">share</span>
-                Sudoku-Trainer URL
-            </button>
-
-            <div class="result navbar-element"></div>
-
-
-            <div id="appVersion" class="navbar-element">
 
             </div>
+        </dialog>
 
-        </div>
-    </div>
+        <dialog class="confirm-dlg noprint" id="confirm-dlg">
+            <div class="confirm-dlg-header" id="confirm-dlg-header">
 
-    <!--Ausblendbare Elemente -->
-
-
-    <!--Dialoge -->
-
-
-    <dialog class="new-puzzle-dlg noprint" id="new-puzzle-dlg">
-        <div class="dlg-header-plus-rotator">
-            <div class="dlg-new-puzzle-header">
-                Neue Puzzles generieren
             </div>
-            <div id="loader-new-puzzle">
-            </div>
-        </div>
-        <div class="new-puzzle-selection" id="new-puzzle-selection">
-            <fieldset class="level-fieldset">
-                <legend class="new-puzzle-selection-legend">
-                    Schwierigkeitsgrad
-                </legend>
+            <div class="infoDlgBodyRow">
+                <img title="questionmark" src="images/questionMark.png" class="confirm-icon" id="comfirm-icon">
+                <div class="confirm-dlg-body" id="confirm-dlg-body">
 
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-unsolvable" class="level" name="level" value="Unlösbar">
-                    <div class="label-text text-spacing prefix">Unlösbar</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="unsolvable">
-                            <div id="unsolvable-Bar">20%</div>
-                        </div>
-                    </div>
-                </label>
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-very-simple" class="level" name="level" value="Sehr leicht">
-                    <div class="label-text text-spacing prefix">Sehr leicht</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="very-simple">
-                        </div>
-                    </div>
-                </label>
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-simple" class="level" name="level" value="Leicht">
-                    <div class="label-text text-spacing prefix">Leicht</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="simple">
-                        </div>
-                    </div>
-                </label>
-
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-medium" class="level" name="level" value="Mittel">
-                    <div class="label-text text-spacing prefix">Mittel</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="medium">
-                            <div id="medium-Bar">20%</div>
-                        </div>
-                    </div>
-                </label>
-
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-heavy" class="level" name="level" value="Schwer">
-                    <div class="label-text text-spacing prefix">Schwer</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="heavy">
-                            <div id="heavy-Bar">20%</div>
-                        </div>
-                    </div>
-                </label>
-
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-very-heavy" class="level" name="level" value="Sehr schwer">
-                    <div class="label-text text-spacing prefix">Sehr schwer</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="very-heavy">
-                            <div id="very-heavy-Bar">20%</div>
-                        </div>
-                    </div>
-                </label>
-
-
-                <label class="label-container first-label-container">
-                    <input type="radio" id="level-extreme-heavy" class="level" name="level" value="Extrem schwer">
-                    <div class="label-text text-spacing prefix">Extrem schwer</div>
-                    <div class="label-text text-spacing">
-                        <div class="new-puzzle-bar" id="extreme-heavy">
-                            <div id="extreme-heavy-Bar">20%</div>
-                        </div>
-                    </div>
-                </label>
-
-            </fieldset>
-        </div>
-
-
-        <div id="new-puzzle-ok-cancel-btns">
-            <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-ok" name="OK"
-                value="Puzzle laden" />
-            <input type="button" class="main-btn ok-cancel-btn " id="btn-new-puzzle-cancel" name="Cancel"
-                value="Abbrechen" />
-        </div>
-    </dialog>
-
-    <dialog class="puzzle-table-dlg noprint" id="puzzle-table-dlg">
-        <div class="db-puzzle-root">
-            <div class="db-puzzle-header">
-                <div class="title"> Puzzle Datenbank </div>
-                <div id="db-close-btn">&times;</div>
-            </div>
-            <div class="tableFixHead">
-                <table class="db-puzzle-table " id="db-puzzle-table">
-                    <!--Die Datenbanktabelle-->
-                    <thead class="db-puzzle-thead">
-                        <tr>
-                            <th style="cursor:pointer">Nr</th>
-                            <th id="col-name" style="cursor:pointer">Puzzle-Name </th>
-                            <th id="col-status-given" style="cursor:pointer"># Givens</th>
-                            <th id="col-status-solved" style="cursor:pointer"># Gelöste</th>
-                            <th id="col-status-open" style="cursor:pointer"># Offene</th>
-                            <th id="col-level" style="cursor:pointer">Level</th>
-                            <th id="col-backTracks" style="cursor:pointer"># Error-RL</th>
-                            <th id="col-countSolutions" style="cursor:pointer"># Lösungen</th>
-                            <th id="col-date" style="cursor:pointer">Datum</th>
-                        </tr>
-                    </thead>
-                    <tbody class="db-puzzle-tbody" id="db-puzzle-tbody">
-                        <!--Der Inhalt der Datenbanktabelle wird per JS aus dem Local-Store geladen-->
-                    </tbody>
-                </table>
-            </div>
-            <div class="container-puzzle-buttons">
-                <div class="db-puzzle-btns " id="db-puzzle-btns">
-                    <!--Die buttons unterhalb der Puzzle-Datenbanktabelle -->
-                    <button class="db-puzzle-button noprint" id="pz-btn-load"><img title="upload"
-                            src="images/upload.png" class="btn-image">Laden</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-rename"><img title="rename"
-                            src="images/rename.png" class="btn-image">Umbenennen</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-previous"><img title="backward"
-                            src="images/pfeilrueckwaerts.png" class="btn-image">Zurück</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-next"><img title="forward"
-                            src="images/pfeilvorwaerts.png" class="btn-image">Vor</button>
-                    <button class="db-puzzle-button noprint" id="pz-btn-delete"><img title="delete"
-                            src="images/times200.png" class="btn-image">
-                        <div>Puzzle löschen</div>
-                    </button>
-                    <button class="db-puzzle-button noprint" id="db-pz-btn-init"><img title="db-delete"
-                            src="images/times200.png" class="btn-image">
-                        <div>DB löschen</div>
-                    </button>
-                    <button class="db-puzzle-button" id="db-puzzle-btn-print"><img title="printer"
-                            src="images/drucker.png" class="btn-image">Drucken
-                    </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-pz"><img title="pz-download"
-                            src="images/download.png" class="btn-image">
-                        <div>Download Puzzle</div>
-                    </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-download-db"><img title="db-download"
-                            src="images/download.png" class="btn-image">
-                        <div>Download Puzzle-DB</div>
-                    </button>
-                    <button class="db-puzzle-button noprint" id="db-puzzle-btn-upload"><img title="import"
-                            src="images/import.png" class="btn-image">
-                        <div>Import Puzzle(s)</div>
-                    </button>
-                    <input title="file-input" type="file" style="display:none" id="asText">
-                    <button class="db-puzzle-button noprint" id="pz-btn-ok"><img title="stop" src="images/stop-96.png"
-                            class="btn-image">
-                        <div>Schließen</div>
-                    </button>
                 </div>
             </div>
 
-        </div>
-    </dialog>
-
-    <dialog class="confirm-dlg noprint" id="confirm-dlg">
-        <div class="confirm-dlg-header" id="confirm-dlg-header">
-
-        </div>
-        <div class="infoDlgBodyRow">
-            <img title="questionmark" src="images/questionMark.png" class="confirm-icon" id="comfirm-icon">
-            <div class="confirm-dlg-body" id="confirm-dlg-body">
-
+            <div id="confirm-ok-cancel-btns">
+                <input type="button" class="main-btn ok-cancel-btn" id="btn-confirm-ok" name="OK" value="Ja" />
+                <input type="button" class="main-btn ok-cancel-btn" id="btn-confirm-cancel" name="Cancel"
+                    value="Nein" />
             </div>
-        </div>
+        </dialog>
 
-        <div id="confirm-ok-cancel-btns">
-            <input type="button" class="main-btn ok-cancel-btn" id="btn-confirm-ok" name="OK" value="Ja" />
-            <input type="button" class="main-btn ok-cancel-btn" id="btn-confirm-cancel" name="Cancel" value="Nein" />
-        </div>
-    </dialog>
+        <dialog class="puzzle-dlg noprint" id="contentSaveDlg">
+            <div class="dlg-header" id="contentSaveDlgHeader">
+                Puzzle speichern unter ...
+            </div>
+            <label for="puzzle-name">Puzzle-Name:</label>
+            <input type="text" class="puzzle-name-input-dlg" id="puzzle-name" name="puzzle-name">
 
-    <dialog class="puzzle-dlg noprint" id="contentSaveDlg">
-        <div class="dlg-header" id="contentSaveDlgHeader">
-            Puzzle speichern unter ...
-        </div>
-        <label for="puzzle-name">Puzzle-Name:</label>
-        <input type="text" class="puzzle-name-input-dlg" id="puzzle-name" name="puzzle-name">
+            <div class="ok-cancel-btns">
+                <input type="button" class="main-btn ok-cancel-btn" id="btn-saveStorageOK" name="OK" value="OK" />
+                <input type="button" class="main-btn ok-cancel-btn" id="btn-saveStorageCancel" name="Cancel"
+                    value="Abbrechen" />
+            </div>
+        </dialog>
 
-        <div class="ok-cancel-btns">
-            <input type="button" class="main-btn ok-cancel-btn" id="btn-saveStorageOK" name="OK" value="OK" />
-            <input type="button" class="main-btn ok-cancel-btn" id="btn-saveStorageCancel" name="Cancel"
-                value="Abbrechen" />
-        </div>
-    </dialog>
+        <dialog class="puzzle-dlg noprint" id="puzzle-rename-dlg">
+            <div class="dlg-header" id="puzzle-rename-dlg-header">
+                Puzzle umbenennen ...
+            </div>
 
-    <dialog class="puzzle-dlg noprint" id="puzzle-rename-dlg">
-        <div class="dlg-header" id="puzzle-rename-dlg-header">
-            Puzzle umbenennen ...
-        </div>
+            <label for="puzzle-name" class="label-dlg">Neuer Puzzle-Name:</label>
+            <input title="puzzle-name-renamed" class="puzzle-name-input-dlg" id="puzzle-name-renamed" name="puzzle-name"
+                maxlength="30">
 
-        <label for="puzzle-name" class="label-dlg">Neuer Puzzle-Name:</label>
-        <input title="puzzle-name-renamed" class="puzzle-name-input-dlg" id="puzzle-name-renamed" name="puzzle-name"
-            maxlength="30">
+            <div class="ok-cancel-btns">
+                <input type="button" class="main-btn ok-cancel-btn" id="pz-rename-ok-btn" name="OK" value="OK" />
+                <input type="button" class="main-btn ok-cancel-btn" id="pz-rename-cancel-btn" name="Cancel"
+                    value="Abbrechen" />
+            </div>
+        </dialog>
 
-        <div class="ok-cancel-btns">
-            <input type="button" class="main-btn ok-cancel-btn" id="pz-rename-ok-btn" name="OK" value="OK" />
-            <input type="button" class="main-btn ok-cancel-btn" id="pz-rename-cancel-btn" name="Cancel"
-                value="Abbrechen" />
-        </div>
-    </dialog>
-
-    <dialog class="infoDlg noprint" id="infoDlg">
-        <div class="infoDlgHeader" id="infoDlgHeader">
-            Information
-        </div>
-        <div class="infoDlgBodyRow">
-            <img title="info" src="" class="infoIcon" id="infoIcon">
-            <div class="infoDlgBody" id="infoDlgBody">
+        <dialog class="infoDlg noprint" id="infoDlg">
+            <div class="infoDlgHeader" id="infoDlgHeader">
                 Information
             </div>
-        </div>
-        <button class="infoDlg-OK-Btn" id="infoDlg-OK-Btn">OK</button>
-    </dialog>
-
-    <dialog class="copyFeedback-dlg noprint" id="copyFeedback-dlg">
-        <div class="copyFeedback-dlg-body">
-            Puzzle kopiert.
-        </div>
-    </dialog>
-
-    <dialog class="settings-dlg noprint" id="settings-dlg">
-        <div class="settings-dlg-area">
-            <div class="dlg-header">
-                Einstellungen
+            <div class="infoDlgBodyRow">
+                <img title="info" src="" class="infoIcon" id="infoIcon">
+                <div class="infoDlgBody" id="infoDlgBody">
+                    Information
+                </div>
             </div>
-            <div class="pc-eval" id="pc-eval">
-                <fieldset class="eval-fieldset">
-                    <legend class="eval-legend">
-                        Kandidatenauswertung
-                    </legend>
-                    <label class="label-container first-label-container">
-                        <input type="radio" id="pc-no-eval" class="radio-eval-type" value="lazy-invisible"
-                            name="pc-auswertung">
-                        <div class="label-text text-spacing prefix">Keine Kandidatenanzeige</div>
-                        <div class="label-text text-spacing">Im Hintergrund erfolgt die Kandidatenauswertung
-                            im
-                            Lazy-Modus.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" name="pc-auswertung">
-                        <div class="label-text text-spacing prefix">Lazy</div>
-                        <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine
-                            verzögerte
-                            Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer
-                            oder
-                            die
-                            nächste Single-Nummer oder die nächste versteckte Single-Nummer bestimmt ist.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="radio" id="pc-strict-plus" class="radio-eval-type" value="strict-plus"
-                            name="pc-auswertung">
-                        <div class="label-text text-spacing prefix">Strikt + (Strikt-Plus)</div>
-                        <div class="label-text text-spacing">Diese Auswertungsmethode führt eine
-                            vollständige
-                            Auswertung durch.
-                            Alle notwendigen Nummern, alle Singles und alle aktuell eliminierbaren
-                            Kandidaten werden ermittelt und angezeigt.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="radio" id="pc-strict-minus" class="radio-eval-type" value="strict-minus"
-                            name="pc-auswertung">
-                        <div class="label-text text-spacing prefix">Strikt - (Strikt-Minus)</div>
-                        <div class="label-text text-spacing">Wie
-                            Strikt +. Jedoch werden die errechneten eliminierbaren Kandidaten ausgeblendet.
-                        </div>
-                    </label>
-                </fieldset>
-            </div>
+            <button class="infoDlg-OK-Btn" id="infoDlg-OK-Btn">OK</button>
+        </dialog>
 
-            <div class="breakpoint-settings" id="breakpoint-settings">
-                <fieldset class="breakpoint-fieldset">
-                    <legend class="play-mode-legend">
-                        Haltepunkte
-                    </legend>
-
-                    <label class="label-container first-label-container">
-                        <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Single.
-                        </div>
-                        <div class="label-text text-spacing">Wenn im Lösungslauf ein Schritt mit einem
-                            einzigen Kandidaten auftritt, hat das Puzzle den Schwierigkeitsgrad 'Mittel'.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="checkbox" id="breakpoint-hidden-single" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei verstecktem Single.
-                        </div>
-                        <div class="label-text text-spacing"> Zelle mit einem versteckten Single. Durch
-                            Klicken auf
-                            die selektierte Zelle wird das Eliminationskriterium für den ersten roten
-                            Kandidaten der
-                            Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch
-                            erneutes
-                            Klicken nach und nach besucht.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Mehroptionszelle (trial).
-                        </div>
-                        <div class="label-text text-spacing">Haltepunkt ohne eindeutigen nächsten
-                            Kandidaten. Schon
-                            erprobte Kandidaten werden mit Unterstrich angezeigt.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="checkbox" id="breakpoint-contradiction" class="breakpoint" name="breakpoint">
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch (error)</div>
-                        <div class="label-text text-spacing">Zelle oder Gruppe, die einen Widerspruch
-                            anzeigt. Die
-                            Widerspruchsursache kann eine gewählte Option (trial) in einer Mehroptionszelle
-                            sein
-                            oder ein unlösbares Ausgangspuzzle.
-                        </div>
-                    </label>
-                    <label class="label-container">
-                        <input type="checkbox" id="breakpoint-solution" class="breakpoint" name="breakpoint" checked>
-                        <div class="label-text text-spacing prefix">Haltepunkt bei Lösung</div>
-                        <div class="label-text text-spacing">Das gelöste Puzzle wird angezeigt.
-                        </div>
-                    </label>
-                </fieldset>
+        <dialog class="copyFeedback-dlg noprint" id="copyFeedback-dlg">
+            <div class="copyFeedback-dlg-body">
+                Puzzle kopiert.
             </div>
-            <div id="settings-ok-cancel-btns">
-                <button class="btn-settings-dlg-ok" id="btn-settings-dlg-ok">OK</button>
-                <button class="btn-settings-dlg-cancel" id="btn-settings-dlg-cancel">Abbrechen</button>
+        </dialog>
+
+        <dialog class="settings-dlg noprint" id="settings-dlg">
+            <div class="settings-dlg-area">
+                <div class="dlg-header">
+                    Einstellungen
+                </div>
+                <div class="pc-eval" id="pc-eval">
+                    <fieldset class="eval-fieldset">
+                        <legend class="eval-legend">
+                            Kandidatenauswertung
+                        </legend>
+                        <label class="label-container first-label-container">
+                            <input type="radio" id="pc-no-eval" class="radio-eval-type" value="lazy-invisible"
+                                name="pc-auswertung">
+                            <div class="label-text text-spacing prefix">Keine Kandidatenanzeige</div>
+                            <div class="label-text text-spacing">Im Hintergrund erfolgt die Kandidatenauswertung
+                                im
+                                Lazy-Modus.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="radio" id="pc-lazy" class="radio-eval-type" value="lazy" name="pc-auswertung">
+                            <div class="label-text text-spacing prefix">Lazy</div>
+                            <div class="label-text text-spacing">Die Lazy-Auswertungsmethode praktiziert eine
+                                verzögerte
+                                Auswertung. Die Auswertung erfolgt nur soweit, bis die nächste notwendige Nummer
+                                oder
+                                die
+                                nächste Single-Nummer oder die nächste versteckte Single-Nummer bestimmt ist.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="radio" id="pc-strict-plus" class="radio-eval-type" value="strict-plus"
+                                name="pc-auswertung">
+                            <div class="label-text text-spacing prefix">Strikt + (Strikt-Plus)</div>
+                            <div class="label-text text-spacing">Diese Auswertungsmethode führt eine
+                                vollständige
+                                Auswertung durch.
+                                Alle notwendigen Nummern, alle Singles und alle aktuell eliminierbaren
+                                Kandidaten werden ermittelt und angezeigt.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="radio" id="pc-strict-minus" class="radio-eval-type" value="strict-minus"
+                                name="pc-auswertung">
+                            <div class="label-text text-spacing prefix">Strikt - (Strikt-Minus)</div>
+                            <div class="label-text text-spacing">Wie
+                                Strikt +. Jedoch werden die errechneten eliminierbaren Kandidaten ausgeblendet.
+                            </div>
+                        </label>
+                    </fieldset>
+                </div>
+
+                <div class="breakpoint-settings" id="breakpoint-settings">
+                    <fieldset class="breakpoint-fieldset">
+                        <legend class="play-mode-legend">
+                            Haltepunkte
+                        </legend>
+
+                        <label class="label-container first-label-container">
+                            <input type="checkbox" id="breakpoint-single" class="breakpoint" name="breakpoint">
+                            <div class="label-text text-spacing prefix">Haltepunkt bei Single.
+                            </div>
+                            <div class="label-text text-spacing">Wenn im Lösungslauf ein Schritt mit einem
+                                einzigen Kandidaten auftritt, hat das Puzzle den Schwierigkeitsgrad 'Mittel'.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="checkbox" id="breakpoint-hidden-single" class="breakpoint" name="breakpoint">
+                            <div class="label-text text-spacing prefix">Haltepunkt bei verstecktem Single.
+                            </div>
+                            <div class="label-text text-spacing"> Zelle mit einem versteckten Single. Durch
+                                Klicken auf
+                                die selektierte Zelle wird das Eliminationskriterium für den ersten roten
+                                Kandidaten der
+                                Zelle angezeigt. Falls es mehrere rote Kandidaten gibt, werden diese durch
+                                erneutes
+                                Klicken nach und nach besucht.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="checkbox" id="breakpoint-multiple-candidates" class="breakpoint"
+                                name="breakpoint">
+                            <div class="label-text text-spacing prefix">Haltepunkt bei Mehroptionszelle (trial).
+                            </div>
+                            <div class="label-text text-spacing">Haltepunkt ohne eindeutigen nächsten
+                                Kandidaten. Schon
+                                erprobte Kandidaten werden mit Unterstrich angezeigt.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="checkbox" id="breakpoint-contradiction" class="breakpoint" name="breakpoint">
+                            <div class="label-text text-spacing prefix">Haltepunkt bei Widerspruch (error)</div>
+                            <div class="label-text text-spacing">Zelle oder Gruppe, die einen Widerspruch
+                                anzeigt. Die
+                                Widerspruchsursache kann eine gewählte Option (trial) in einer Mehroptionszelle
+                                sein
+                                oder ein unlösbares Ausgangspuzzle.
+                            </div>
+                        </label>
+                        <label class="label-container">
+                            <input type="checkbox" id="breakpoint-solution" class="breakpoint" name="breakpoint"
+                                checked>
+                            <div class="label-text text-spacing prefix">Haltepunkt bei Lösung</div>
+                            <div class="label-text text-spacing">Das gelöste Puzzle wird angezeigt.
+                            </div>
+                        </label>
+                    </fieldset>
+                </div>
+                <div id="settings-ok-cancel-btns">
+                    <button class="btn-settings-dlg-ok" id="btn-settings-dlg-ok">OK</button>
+                    <button class="btn-settings-dlg-cancel" id="btn-settings-dlg-cancel">Abbrechen</button>
+                </div>
+            </div>
+        </dialog>
+
+        <div class="print-content">
+            <div class="print-puzzle-header">
+                <!--Id und Name des aktuell geladenen Puzzles werden als String via JS erzeugt-->
+                <div class="print-pz-id-row" id="print-pz-id-row">0</div>
+            </div>
+            <div class="print-puzzle-line">
+                <div class="print-pz-table" id="print-pz-table">
+                </div>
             </div>
         </div>
-    </dialog>
 
-    <div class="print-content">
-        <div class="print-puzzle-header">
-            <!--Id und Name des aktuell geladenen Puzzles werden als String via JS erzeugt-->
-            <div class="print-pz-id-row" id="print-pz-id-row">0</div>
-        </div>
-        <div class="print-puzzle-line">
-            <div class="print-pz-table" id="print-pz-table">
-            </div>
-        </div>
-    </div>
-    <script src="./JS/sudokuCommon.js"></script>
-    <script src="./JS/sudokuMainApp.js"></script>
+
+
+        <script src="./JS/sudokuCommon.js"></script>
+        <script src="./JS/sudokuMainApp.js"></script>
 </body>
 
 </html>
