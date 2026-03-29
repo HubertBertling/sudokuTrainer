@@ -132,8 +132,8 @@ function setPuzzleShareBtnEventHandler() {
             if (sudoApp.mySolver.getGamePhase() == 'define') {
                 sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
                     "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
-                         this,
-                        () => { }
+                    this,
+                    () => { }
                 );
             } else {
                 let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
@@ -378,8 +378,8 @@ class PuzzleDBDialog {
         sudoApp.myPuzzleDB.attach(this.myPuzzleDBView);
     }
     close() {
-            this.myPuzzleDBDialogNode.close();
-            this.myOpen = false;
+        this.myPuzzleDBDialogNode.close();
+        this.myOpen = false;
     }
 }
 
@@ -430,8 +430,8 @@ class NewPuzzleDlg {
         }
     }
     close() {
-            this.myNewPuzzzeDlgNode.close();
-            this.myOpen = false;
+        this.myNewPuzzzeDlgNode.close();
+        this.myOpen = false;
     }
 
     startLoaderAnimation() {
@@ -465,7 +465,7 @@ class ConfirmDialog {
             sudoApp.mySolver.notify();
         });
         this.cancelNode.addEventListener('click', () => {
-          //  sudoApp.myConfirmDlg.close();
+            //  sudoApp.myConfirmDlg.close();
             sudoApp.myConfirmDlg.myRejectOperation.call(this.thisPointer);
             sudoApp.myConfirmDlg.close();
             sudoApp.mySolver.notify();
@@ -484,8 +484,8 @@ class ConfirmDialog {
     }
 
     close() {
-            this.myConfirmDlgNode.close();
-            this.myOpen = false;
+        this.myConfirmDlgNode.close();
+        this.myOpen = false;
     }
 }
 
@@ -527,10 +527,10 @@ class PuzzleSaveRenameDialog {
     }
 
     close() {
-            this.okNode.removeEventListener('click', this.okHandler);
-            this.cancelNode.removeEventListener('click', this.cancelHandler);
-            this.myContentSaveDlgNode.close();
-            this.myOpen = false;
+        this.okNode.removeEventListener('click', this.okHandler);
+        this.cancelNode.removeEventListener('click', this.cancelHandler);
+        this.myContentSaveDlgNode.close();
+        this.myOpen = false;
     }
 
     getPuzzleName() {
@@ -590,13 +590,13 @@ class TrackerDialog {
         return this.myOpen;
     }
     close() {
-            sudoApp.myClockedRunner.stop('cancelled');
-            sudoApp.mySyncRunner.stop('cancelled');
+        sudoApp.myClockedRunner.stop('cancelled');
+        sudoApp.mySyncRunner.stop('cancelled');
 
-            sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
-            this.trackerDlg.close();
-            this.manualBlock.style.display = "inline-block";
-            this.myOpen = false;
+        sudoApp.mySolver.cleanUpAndDeleteCurrentSearch();
+        this.trackerDlg.close();
+        this.manualBlock.style.display = "inline-block";
+        this.myOpen = false;
     }
 }
 
@@ -622,28 +622,28 @@ class InfoDialog {
         // if (this.myOpen) {
         //     console.log('Doppelter InfoDialog. bodyText: ' + bodyText);
         //}
-            this.infoDlgHeaderNode.innerHTML = headerText;
-            if (infoModus == 'solutionDiscovered') {
-                this.iconNode.src = "images/glueckwunsch.jpg";
-            } else if (infoModus == 'positiv') {
-                this.iconNode.src = "images/ok.png";
-            } else if (infoModus == 'negativ') {
-                this.iconNode.src = "images/fail.png";
-            } else if (infoModus == 'info') {
-                this.iconNode.src = "images/info.png";
-            }
-            this.infoDlgBodyNode.innerHTML = bodyText;
-            this.myOpen = true;
-            this.thisPointer = thisPointer;
-            this.myConfirmOperation = confirmOp;
-            this.dlgNode.close();
-            this.dlgNode.showModal();
-      //      console.log('');
-      //      console.log('==============> InfoDialog.open(). bodyText: ' + bodyText);
-      //  }
-      //)  else {
-      //      console.log('Abgefangener Doppelter InfoDialog. bodyText: ' + bodyText);
-      //  }
+        this.infoDlgHeaderNode.innerHTML = headerText;
+        if (infoModus == 'solutionDiscovered') {
+            this.iconNode.src = "images/glueckwunsch.jpg";
+        } else if (infoModus == 'positiv') {
+            this.iconNode.src = "images/ok.png";
+        } else if (infoModus == 'negativ') {
+            this.iconNode.src = "images/fail.png";
+        } else if (infoModus == 'info') {
+            this.iconNode.src = "images/info.png";
+        }
+        this.infoDlgBodyNode.innerHTML = bodyText;
+        this.myOpen = true;
+        this.thisPointer = thisPointer;
+        this.myConfirmOperation = confirmOp;
+        this.dlgNode.close();
+        this.dlgNode.showModal();
+        //      console.log('');
+        //      console.log('==============> InfoDialog.open(). bodyText: ' + bodyText);
+        //  }
+        //)  else {
+        //      console.log('Abgefangener Doppelter InfoDialog. bodyText: ' + bodyText);
+        //  }
     }
 
     isOpen() {
@@ -651,9 +651,9 @@ class InfoDialog {
     }
 
     close() {
-            this.dlgNode.close();
-            this.myOpen = false;
-            this.iconNode.src = "";
+        this.dlgNode.close();
+        this.myOpen = false;
+        this.iconNode.src = "";
     }
 }
 
@@ -781,8 +781,8 @@ class SettingsDialog {
         this.close();
     }
     close() {
-            this.dlgNode.close();
-            this.myOpen = false;
+        this.dlgNode.close();
+        this.myOpen = false;
     }
 }
 
@@ -3084,7 +3084,7 @@ class SudokuSolverView {
         this.myGridView.upDate();
         //if (sudoApp.mySolver.isSearching()
         //    ) {
-            this.myStepExplainerView.showExplainer();
+        this.myStepExplainerView.showExplainer();
         //} else {
         //    this.myStepExplainerView.hideExplainer();
         // }
@@ -3378,7 +3378,10 @@ class SudokuSolverView {
         // 'define' and 'play' by displaying the respective button 
         // in the pressed status
         let gamePhase = this.mySolver.getGamePhase();
+        var checkBox = document.getElementById("switch-btn");
         if (gamePhase == 'play') {
+            checkBox.checked = true;
+            /*
             this.btns = document.querySelectorAll('.btn-define');
             this.btns.forEach(btn => {
                 btn.classList.remove('pressed');
@@ -3386,9 +3389,11 @@ class SudokuSolverView {
             this.btns = document.querySelectorAll('.btn-play');
             this.btns.forEach(btn => {
                 btn.classList.add('pressed');
-            });
+            }); */
         } else if (gamePhase == 'define') {
-            this.btns = document.querySelectorAll('.btn-define');
+            checkBox.checked = false;
+       
+            /*this.btns = document.querySelectorAll('.btn-define');
             this.btns.forEach(btn => {
                 btn.classList.add('pressed');
             });
@@ -3396,6 +3401,7 @@ class SudokuSolverView {
             this.btns.forEach(btn => {
                 btn.classList.remove('pressed');
             });
+            */
         }
     }
 
@@ -3636,6 +3642,8 @@ class SudokuSolverController {
 
 
         // Click-Events for both define buttons, desktop and mobile
+
+
         this.btns = document.querySelectorAll('.btn-define');
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -3713,6 +3721,12 @@ class SudokuSolverController {
         tippOkBtn.addEventListener('click', () => {
             this.tippOkBtnPressed();
         });
+
+        let switchBtn = document.getElementById("switch-btn" );
+        switchBtn.addEventListener('click', () => {
+            this.toggleSwitch();
+        });
+
     }
 
     // ===============================================================
@@ -3761,6 +3775,14 @@ class SudokuSolverController {
         delBtns[0].click();
     }
 
+    async toggleSwitch() {
+        var checkBox = document.getElementById("switch-btn" );
+        if (checkBox.checked == true) {
+            await this.playBtnPressed();
+        } else {
+            this.defineBtnPressed();
+        }
+    }
 
 
     handleNumberPressed(nr) {

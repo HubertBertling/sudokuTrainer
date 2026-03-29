@@ -879,7 +879,16 @@ Für Text: color: #222; oder color: #424242;
     width: 100%;
     height: 100%;
 }
-
+    
+.automatic-btn {
+     border-radius: 0.8rem;
+     padding: 0.2rem;
+}
+.material-symbols-outlined {
+    font-size: var(--cg-font-h6);
+    color: black;
+    vertical-align: top;
+}
 
 .modern-btn:focus {
     outline: none;
@@ -892,7 +901,6 @@ Für Text: color: #222; oder color: #424242;
     background: var(--manual-solver);
     padding: 1rem;
 }
-
 
 #checkbox-wrapper-35 {
     grid-column-start: 1;
@@ -1107,6 +1115,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .label-container {
+    margin-left: 1rem;
     margin-top: 0.1rem;
     display: inline-grid;
     grid-template-columns: auto 1fr;
@@ -1154,9 +1163,6 @@ Für Text: color: #222; oder color: #424242;
     margin-right: 2rem;
 }
 
-
-
-
 .pc-floatBlock,
 .breakpoint,
 .puzzle-io,
@@ -1190,12 +1196,14 @@ Für Text: color: #222; oder color: #424242;
 
 .tracker-dashboard {
     font-size: var(--cg-font-base);
-    padding: 0.8rem;
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.2rem;
+    padding: 0.2rem;
     margin-left: 0.2rem;
     margin-right: 0.2rem;
+}
+
+.first-line-tracker-dashboard {
+    display: inline-flex;
+    white-space: nowrap;
 }
 
 .step-count-box,
@@ -1203,15 +1211,11 @@ Für Text: color: #222; oder color: #424242;
 #backward-count {
     background: lightgray;
     padding: 0.2rem 0.4rem;
-
 }
-
-
 .forward-backward-image {
     width: 1rem;
     height: 1rem;
     margin-top: 0.2rem;
-
 }
 
 .forward,
@@ -1360,12 +1364,13 @@ Für Text: color: #222; oder color: #424242;
     text-align: center;
 }
 
+/*
 label {
     font-size: var(--cg-font-small);
     margin-left: 1.2rem;
     margin-bottom: 0.2rem;
 }
-
+*/
 .checkbox-wrapper-35 > label {
     font-size: var(--cg-font-small);
     margin-left: 0.2rem;
@@ -1523,6 +1528,8 @@ label {
 
 .level-fieldset {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .new-puzzle-selection-legend {
