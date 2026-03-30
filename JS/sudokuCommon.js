@@ -941,6 +941,7 @@ class StepperOnGrid {
         let selectionList = [];
         for (let i = 0; i < 81; i++) {
             if (sudoApp.mySolver.myGrid.sudoCells[i].getValue() == '0') {
+                 // && (sudoApp.mySolver.myGrid.sudoCells[i].getCandidates().size < 3)) {
                 let selection = {
                     index: i,
                     options: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getTotalCandidates()),
@@ -3973,8 +3974,12 @@ class SudokuCell {
         let tmpWeight = 0;
         let summand = 0;
         let tmpCandidates = this.getTotalCandidates();
-        if (tmpCandidates.size == 2) {
+        if (this.getCandidates().size == 2) {
+            tmpCandidates = this.getCandidates();
             tmpWeight = 300;
+        } else if (this.getTotalCandidates().size == 2) {
+            tmpCandidates = this.getTotalCandidates();
+            tmpWeight = 290;
         }
         // Den Kontext der Zelle betrachten
         this.myInfluencers.forEach(influencer => {

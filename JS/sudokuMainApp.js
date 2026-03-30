@@ -2433,7 +2433,8 @@ class SudokuCellView {
         // Eine selektierte Zelle mit Optionen
         this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
         // Die Optionen sind zulässige Kandidaten
-        let tmpCandidates = this.myCell.getTotalCandidates();
+        // let tmpCandidates = this.myCell.getTotalCandidates();
+        let tmpCandidates = this.myCell.getCandidates();
         // Es gibt mindestens 2 Kandidaten, sprich Optionen
         if (tmpCandidates.size > 1
             && this.myCell.isSelected
