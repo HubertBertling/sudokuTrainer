@@ -2477,7 +2477,7 @@ class SudokuCellView {
             } else if (this.myCell.getCandidates().size == 1
                 && Array.from(this.myCell.getCandidates())[0] == e) {
                 candidateNode.classList.add('single');
-            } else if (this.myCell.hsDependent_inAdmissibles.has(e)) {
+            } else if (this.myCell.inAdmissibleCandidates.has(e)) {
                 candidateNode.classList.add('inAdmissible');
             }
             this.myCellNode.appendChild(candidateNode);
