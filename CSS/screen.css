@@ -834,10 +834,10 @@ Für Text: color: #222; oder color: #424242;
 
 .material-icons,
 .material-symbols-outlined {
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h5);
     color: black;
     vertical-align: middle;
-    margin-right: 0.4rem;
+    padding: 0.2rem;
 }
 
 #btn-help .material-icons,
@@ -858,7 +858,6 @@ Für Text: color: #222; oder color: #424242;
 
 .modern-btn,
 .db-puzzle-btn {
-    padding: 0.4rem 0.4em;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
@@ -882,7 +881,7 @@ Für Text: color: #222; oder color: #424242;
 
 .automatic-btn {
     border-radius: 0.8rem;
-    padding: 0.2rem;
+    padding: 0.2rem 0rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
@@ -893,7 +892,6 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .material-symbols-outlined {
-    font-size: var(--cg-font-h6);
     color: black;
     padding-left: 0.4rem;
     vertical-align: top;
@@ -911,12 +909,16 @@ Für Text: color: #222; oder color: #424242;
     padding: 1rem;
 }
 
+.manual-btn {
+    font-size: var(--cg-font-base);
+    padding: 0.4rem;
+}
+
 #checkbox-wrapper-35 {
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 1;
-    justify-content: center;
 }
 
 #btn-init {
@@ -943,8 +945,8 @@ Für Text: color: #222; oder color: #424242;
 #btn-delete-cell {
     grid-column-start: 1;
     grid-column-end: 1;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 
     background: var(--delete-btn-bg-color);
     color: var(--delete-btn-color);
@@ -954,102 +956,102 @@ Für Text: color: #222; oder color: #424242;
 #number-btn-1 {
     grid-column-start: 2;
     grid-column-end: 2;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-2 {
     grid-column-start: 3;
     grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-3 {
     grid-column-start: 4;
     grid-column-end: 4;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-4 {
     grid-column-start: 5;
     grid-column-end: 5;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-5 {
     grid-column-start: 6;
     grid-column-end: 6;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-6 {
     grid-column-start: 7;
     grid-column-end: 7;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-7 {
     grid-column-start: 8;
     grid-column-end: 8;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-8 {
     grid-column-start: 9;
     grid-column-end: 9;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #number-btn-9 {
     grid-column-start: 10;
     grid-column-end: 10;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
 }
 
 #btn-undo {
     grid-column-start: 1;
     grid-column-end: 1;
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 #btn-redo {
     grid-column-start: 2;
     grid-column-end: 2;
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 #btn-showWrongNumbers {
     grid-column-start: 3;
-    grid-column-end: 5;
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-column-end: 6;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 
 
 #btn-tip {
-    grid-column-start: 5;
+    grid-column-start: 6;
     grid-column-end: 8;
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 
 #btn-save {
     grid-column-start: 8;
     grid-column-end: 11;
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 #automatic-btn-block {
@@ -1065,29 +1067,6 @@ Für Text: color: #222; oder color: #424242;
     font-size: var(--cg-font-h6);
     aspect-ratio: 1 / 1;
 }
-
-/*
-#btn-define {
-    font-size: var(--cg-font-base);
-    background: var(--defined-cell-bg-color);
-    color: var(--defined-cell-color);
-}
-
-#btn-play {
-    font-size: var(--cg-font-base);
-    background: var(--played-cell-bg-color);
-    color: var(--played-cell-color);
-}
-
-.btn-define.pressed {
-    /* transform: translate(0.2rem, 0.2rem); 
-    border: 0.3rem solid white;
-}
-
-.btn-play.pressed {
-    border: 0.3rem solid white;
-}
-*/
 
 
 
