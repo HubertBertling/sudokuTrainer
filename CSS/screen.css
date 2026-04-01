@@ -272,7 +272,7 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: var(--manual-solver);
-    padding: 0.4rem 0.2rem;
+    padding: 0.2rem 0.2rem;
     /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
@@ -294,7 +294,7 @@ button:active {
     color: white;
     border: none;
     font-size: var(--cg-font-h6);
-    padding: 0.4rem 0.8rem;
+    padding: 0.2rem 0.8rem;
     /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
@@ -884,14 +884,14 @@ Für Text: color: #222; oder color: #424242;
 
 .automatic-btn {
     border-radius: 0.8rem;
-    padding: 0.2rem 0rem;
+    padding: 0rem 0.6rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
     font-size: var(--cg-font-base);
     align-items: center;
     justify-content: center;
-  
+
 }
 
 .material-symbols-outlined {
@@ -1057,13 +1057,19 @@ Für Text: color: #222; oder color: #424242;
     grid-row-end: 2;
 }
 
+.tracker-dashboard {
+    background-color: var(--screen-bg-color);
+    border: 0.4rem solid var(--app-header-bg-color);
+    font-size: var(--cg-font-base);
+}
+
 #automatic-btn-block {
     display: grid;
     grid-template-columns: 0.75fr 1.25fr 1.25fr;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
     background: var(--automatic-solver);
-    margin: 0.8rem 2rem;
+    margin: 0.2rem 2rem;
 }
 
 .number-btn {
@@ -1187,7 +1193,6 @@ Für Text: color: #222; oder color: #424242;
 
 .tracker-dashboard {
     font-size: var(--cg-font-base);
-    padding: 0.2rem;
     margin-left: 0.2rem;
     margin-right: 0.2rem;
 }
@@ -1200,8 +1205,8 @@ Für Text: color: #222; oder color: #424242;
 .step-count-box,
 #max-depth-value,
 #backward-count {
-    background: lightgray;
-    padding: 0.2rem 0.4rem;
+    background-color: var(--screen-bg-color);
+    padding: 0.2rem 0.2rem;
 }
 
 .forward-backward-image {
@@ -1225,7 +1230,7 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: 0.4fr 1.6fr;
     gap: 0.2rem;
-    background-color: lightgray;
+    background-color: var(--screen-bg-color);
     width: 100%;
 }
 
@@ -2135,12 +2140,6 @@ label {
 
 /* CONTENT AREA ---------------------------------------------- */
 
-.content {
-    flex: 1;
-    display: flex;
-    gap: 0.2rem;
-}
-
 /* Shared panel styling */
 .panel {
     background-color: var(--screen-bg-color);
@@ -2160,8 +2159,6 @@ label {
 
 /* ================ PORTRAIT ================= */
 @media (orientation: portrait) {
-
-
     .app-content {
         overflow: hidden;
         height: 100vh;
@@ -2173,10 +2170,6 @@ label {
         width: auto;
 
         margin: 0 auto;
-    }
-
-    .content {
-        flex-direction: column;
     }
 
     .sidebar {
@@ -2200,11 +2193,6 @@ label {
 @media screen and (orientation: portrait) and (width >=480px) {
     .candidate {
         font-size: var(--cg-font-h6);
-    }
-
-    .modern-btn,
-    .db-puzzle-button {
-        padding: 0.8rem;
     }
 }
 

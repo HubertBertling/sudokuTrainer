@@ -3151,7 +3151,7 @@ class SudokuSolverView {
     displayOptionPath() {
         this.searchPathLabel.innerHTML = 'Suchpfad(0): ';
         this.searchPathField.innerHTML = '';
-        this.maxDepthValueNode.innerHTML = '<span style="font-weight: bold"> Max.-Tiefe: </span> &nbsp;' + 0;
+        this.maxDepthValueNode.innerHTML = '<b>Max.-Tiefe:</b> &nbsp;' + 0;
 
         if (this.mySolver.myCurrentPuzzle === undefined) {
             return;
