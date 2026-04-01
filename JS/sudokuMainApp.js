@@ -3083,20 +3083,37 @@ class SudokuSolverView {
         // Display puzzle name and difficulty 
         sudoApp.mySolverView.myGridView.displayNameAndDifficulty();
         this.myGridView.upDate();
-        //if (sudoApp.mySolver.isSearching()
-        //    ) {
         this.myStepExplainerView.showExplainer();
-        //} else {
-        //    this.myStepExplainerView.hideExplainer();
-        // }
-        // Indication that the puzzle cannot be solved, if this is the case
-        // this.displayProgress();
-        // Display status applicability of the undo/redo buttons
         this.displayUndoRedo();
         this.displayGamePhase();
         this.displaySearchInfo();
         this.displayOptionPath();
         this.displayProgress();
+
+        let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
+        let maxDepthValueNode = document.getElementById("max-depth-value");
+        let backwardCountNode = document.getElementById("backward-count");
+        let searchPathNode = document.getElementById("search-path");
+
+        if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
+            autoModeRadioBtns.style.visibility = "hidden";
+            maxDepthValueNode.style.visibility = "hidden";
+            backwardCountNode.style.visibility = "hidden";
+            searchPathNode.style.visibility = "hidden";
+        } else {
+            let currentLevel = sudoApp.mySolver.myCurrentPuzzle.getLevel();
+            if (currentLevel == 'Sehr schwer' || currentLevel == 'Extrem schwer') {
+                autoModeRadioBtns.style.visibility = "visible";
+                maxDepthValueNode.style.visibility = "visible";
+                backwardCountNode.style.visibility = "visible";
+                searchPathNode.style.visibility = "visible";
+            } else {
+                autoModeRadioBtns.style.visibility = "hidden";
+                maxDepthValueNode.style.visibility = "hidden";
+                backwardCountNode.style.visibility = "hidden";
+                searchPathNode.style.visibility = "hidden";
+            }
+        }
     }
 
     displaySearchInfo() {
@@ -3393,7 +3410,7 @@ class SudokuSolverView {
             }); */
         } else if (gamePhase == 'define') {
             checkBox.checked = false;
-       
+
             /*this.btns = document.querySelectorAll('.btn-define');
             this.btns.forEach(btn => {
                 btn.classList.add('pressed');
@@ -3642,25 +3659,6 @@ class SudokuSolverController {
         });
 
 
-        // Click-Events for both define buttons, desktop and mobile
-
-
-        this.btns = document.querySelectorAll('.btn-define');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.defineBtnPressed();
-            })
-        });
-
-        // Click-Events for both play buttons, desktop and mobile
-        this.btns = document.querySelectorAll('.btn-play');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.playBtnPressed();
-            })
-        });
-
-        // Click-Events for both run buttons, desktop and mobile
         this.btns = document.querySelectorAll('.btn-run');
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -3691,12 +3689,12 @@ class SudokuSolverController {
         });
 
         // Click-Events for both showWrongNumbers buttons, desktop and mobile
-        this.btns = document.querySelectorAll('.btn-showWrongNumbers');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.showWrongNumbersBtnPressed();
-            })
+        let showWrongNumbersBtn = document.getElementById('btn-showWrongNumbers');
+        showWrongNumbersBtn.addEventListener('click', () => {
+            this.showWrongNumbersBtnPressed();
         });
+
+
 
         this.btns = document.querySelectorAll('.btn-reset');
         this.btns.forEach(btn => {
@@ -3711,19 +3709,18 @@ class SudokuSolverController {
         });
 
 
-        this.btns = document.querySelectorAll('.btn-tip');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.tipPressed();
-            })
+        let tipBtn = document.getElementById("btn-tip");
+        tipBtn.addEventListener('click', () => {
+            this.tipPressed();
         });
+
 
         let tippOkBtn = document.getElementById("tipp-accept-btn");
         tippOkBtn.addEventListener('click', () => {
             this.tippOkBtnPressed();
         });
 
-        let switchBtn = document.getElementById("switch-btn" );
+        let switchBtn = document.getElementById("switch-btn");
         switchBtn.addEventListener('click', () => {
             this.toggleSwitch();
         });
@@ -3777,7 +3774,7 @@ class SudokuSolverController {
     }
 
     async toggleSwitch() {
-        var checkBox = document.getElementById("switch-btn" );
+        var checkBox = document.getElementById("switch-btn");
         if (checkBox.checked == true) {
             await this.playBtnPressed();
         } else {

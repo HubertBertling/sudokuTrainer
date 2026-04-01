@@ -773,7 +773,7 @@ button:active {
 .step-explainer-text {
     flex-grow: 1;
     font-size: var(--cg-font-base);
-    padding: 0.2rem 0.4rem;
+    padding: 0.4rem;
 }
 
 .step-explainer-text.magenta {
@@ -789,7 +789,7 @@ button:active {
 #btn-tip {
 
 
-    padding: 0.4rem 0.4em;
+    padding: 0.2rem 0.4rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
@@ -834,7 +834,7 @@ Für Text: color: #222; oder color: #424242;
 
 .material-icons,
 .material-symbols-outlined {
-    font-size: var(--cg-font-h5);
+    font-size: var(--cg-font-h6);
     color: black;
     vertical-align: middle;
     padding: 0.2rem;
@@ -850,10 +850,13 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 }
 
-.modern-btn-inline {
+#tipp-accept-btn {
+    background-color: var(--played-cell-bg-color);
     display: inline-flex;
     align-items: center;
-    gap: 0.8rem;
+    justify-content: center;
+    padding-right: 0.8rem;
+    border-radius: 0.8rem;
 }
 
 .modern-btn,
