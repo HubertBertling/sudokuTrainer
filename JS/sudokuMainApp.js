@@ -2,10 +2,12 @@ function startMainApp() {
     startSudokuServiceWorker();
     startSudokuFileReader();
     startSudokuFileHandlingAPI();
-    setAppURLShareBtnEventHandler();
-    setPuzzleShareBtnEventHandler();
+    
     sudoApp = new SudokuMainApp();
     sudoApp.init();
+    sudoApp.mySolverController.setAppURLShareBtnEventHandler();
+    sudoApp.mySolverController.setPuzzleShareBtnEventHandler();
+  
 }
 
 function startSudokuServiceWorker() {
@@ -93,67 +95,8 @@ async function handleFiles(files) {
 // to share to.
 // ==========================================================================
 
-function setAppURLShareBtnEventHandler() {
-    // Share sudokuTrainer URL
-    let btn = document.getElementById('share-app-btn');
-    const resultPara = document.querySelector(".result");
-    if (navigator.share && navigator.canShare) {
-        // Web Share API ist Verfügbar!
-        btn.addEventListener("click", async () => {
 
-            if (navigator.canShare) {
-                navigator.share(
-                    {
-                        title: "Sudoku-Trainer",
-                        text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
-                        url: "https://hubertbertling.github.io/sudokuTrainer",
-                    }
-                )
-                    .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
-                    .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
-            } else {
-                resultPara.textContent = `Your system doesn't support sharing.`;
-            }
-        });
-    } else {
-        resultPara.textContent = `Web Share API not supported.`;
-    }
-    console.log(resultPara.textContent);
-}
 
-function setPuzzleShareBtnEventHandler() {
-    // ==========================================================================
-    // Share SudokuTrainer File
-    // ==========================================================================
-    let shareButton = document.getElementById('btn-share');
-    if (navigator.share && navigator.canShare) {
-        // Web Share API ist Verfügbar!
-        shareButton.addEventListener("click", async () => {
-            if (sudoApp.mySolver.getGamePhase() == 'define') {
-                sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
-                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
-                    this,
-                    () => { }
-                );
-            } else {
-                let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: 'Puzzle teilen',
-                        text: 'Puzzle',
-                    })
-                        .then(() => console.log('Share was successful.'))
-                        .catch((error) => console.log('Sharing failed', error));
-                } else {
-                    console.log(`Your system doesn't support sharing files.`);
-                }
-            }
-        });
-    } else {
-        console.log(`Web Share API not supported.`);
-    }
-}
 
 // ==========================================
 // Navigation and Dialogs 
@@ -4565,6 +4508,69 @@ class SudokuSolverController {
             }
         }
     }
+
+    setAppURLShareBtnEventHandler() {
+    // Share sudokuTrainer URL
+    let btn = document.getElementById('share-app-btn');
+    const resultPara = document.querySelector(".result");
+    if (navigator.share && navigator.canShare) {
+        // Web Share API ist Verfügbar!
+        btn.addEventListener("click", async () => {
+
+            if (navigator.canShare) {
+                navigator.share(
+                    {
+                        title: "Sudoku-Trainer",
+                        text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
+                        url: "https://hubertbertling.github.io/sudokuTrainer",
+                    }
+                )
+                    .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
+                    .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
+            } else {
+                resultPara.textContent = `Your system doesn't support sharing.`;
+            }
+        });
+    } else {
+        resultPara.textContent = `Web Share API not supported.`;
+    }
+    console.log(resultPara.textContent);
+}
+
+setPuzzleShareBtnEventHandler() {
+    // ==========================================================================
+    // Share SudokuTrainer File
+    // ==========================================================================
+    let shareButton = document.getElementById('btn-share');
+    if (navigator.share && navigator.canShare) {
+        // Web Share API ist Verfügbar!
+        shareButton.addEventListener("click", async () => {
+            if (sudoApp.mySolver.getGamePhase() == 'define') {
+                sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
+                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
+                    this,
+                    () => { }
+                );
+            } else {
+                let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Puzzle teilen',
+                        text: 'Puzzle',
+                    })
+                        .then(() => console.log('Share was successful.'))
+                        .catch((error) => console.log('Sharing failed', error));
+                } else {
+                    console.log(`Your system doesn't support sharing files.`);
+                }
+            }
+        });
+    } else {
+        console.log(`Web Share API not supported.`);
+    }
+}
+
 
     // ===============================================================================================
     // Solver buttons
