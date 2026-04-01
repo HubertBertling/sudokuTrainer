@@ -3659,34 +3659,27 @@ class SudokuSolverController {
         });
 
 
-        this.btns = document.querySelectorAll('.btn-run');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
+        let btnRun = document.getElementById('btn-run');
+            btnRun.addEventListener('click', () => {
                 this.startBtnPressed();
             })
-        });
-
+        
         // Click-Events for both pause buttons, desktop and mobile
-        this.btns = document.querySelectorAll('.btn-save');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.saveBtnPressed();
-            })
+        let btnSave = document.getElementById('btn-save');
+        btnSave.addEventListener('click', () => {
+            this.saveBtnPressed();
         });
 
         // Click-Events for both init buttons, desktop and mobile
-        this.btns = document.querySelectorAll('.btn-undo');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.undoBtnPressed();
-            })
-        });
-        this.btns = document.querySelectorAll('.btn-redo');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.redoBtnPressed();
-            })
-        });
+        let btnUndo = document.getElementById('btn-undo');
+        btnUndo.addEventListener('click', () => {
+            this.undoBtnPressed();
+        })
+
+        let btnRedo = document.getElementById('btn-redo');
+        btnRedo.addEventListener('click', () => {
+            this.redoBtnPressed();
+        })
 
         // Click-Events for both showWrongNumbers buttons, desktop and mobile
         let showWrongNumbersBtn = document.getElementById('btn-showWrongNumbers');
@@ -3694,14 +3687,10 @@ class SudokuSolverController {
             this.showWrongNumbersBtnPressed();
         });
 
-
-
-        this.btns = document.querySelectorAll('.btn-reset');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.resetBtnPressed();
-            })
-        });
+        let btnReset = document.getElementById('btn-reset');
+        btnReset.addEventListener('click', () => {
+            this.resetBtnPressed();
+        })
 
         let resetButton = document.getElementById('search-reset-btn');
         resetButton.addEventListener('click', () => {

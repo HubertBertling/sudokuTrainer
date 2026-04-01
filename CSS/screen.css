@@ -266,13 +266,20 @@ button:active {
     color: white;
 }
 
+.manual-block {
+
+    width: 100%;
+
+}
+.manual-btn-body-block {
+    width: 100%;
+}
 
 
 .manual-solver-header {
     display: flex;
     justify-content: space-between;
     background-color: var(--manual-solver);
-    padding: 0.2rem 0.2rem;
     /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
 }
 
@@ -1631,9 +1638,10 @@ label {
     grid-template-columns: 1fr 1fr;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    margin-left: 1rem;
     gap: 1rem;
-    margin-right: 1rem;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto; 
 }
 
 #btn-settings-dlg-ok,
