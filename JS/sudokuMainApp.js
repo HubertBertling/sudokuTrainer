@@ -3552,12 +3552,10 @@ class SudokuSolverController {
         });
 
         //Click-Events for both delete buttons, desktop and mobile
-        this.btns = document.querySelectorAll('.btn-delete-cell');
-        this.btns.forEach(btn => {
-            btn.addEventListener('click', () => {
+        let btnDeleteCell = document.getElementById('btn-delete-cell');
+            btnDeleteCell.addEventListener('click', () => {
                 this.handleDeletePressed();
             })
-        });
         // Events of keys on the keyboard
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
