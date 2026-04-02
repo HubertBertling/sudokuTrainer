@@ -375,6 +375,7 @@ button:active {
     margin-top: 1rem;
     margin-left: 1rem;
     padding: 0.4rem;
+    border-radius: 0.8rem;
 }
 
 .share-imageURL {
