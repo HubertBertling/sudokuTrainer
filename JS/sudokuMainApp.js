@@ -488,7 +488,7 @@ class TrackerDialog {
         // this.automaticBtnBlock = document.getElementById("automatic-btn-block");
         // this.trackerDlgSolution = document.getElementById("tracker-dlg-solution");
         //,this.trackerNrOfSolutions = document.getElementById("number-of-solutions");
-        this.trackerDlg = document.getElementById("trackerDlg");
+        this.trackerDlg = document.getElementById("tracker-dlg");
         this.trackerImage = document.getElementById("trackerImg");
         this.backtrackOptions = document.getElementById("backtrack-options");
         this.btnContinueNode = document.getElementById("btn-backtrack-continue");

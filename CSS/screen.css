@@ -311,7 +311,8 @@ button:active {
     display: flex;
     justify-content: space-between;
     background-color: var(--automatic-solver);
-
+    width: 100%;
+    padding: 0.2rem 0.8rem;
 }
 
 .btn-undo-offset {
@@ -1068,8 +1069,10 @@ Für Text: color: #222; oder color: #424242;
 
 .tracker-dashboard {
     background-color: var(--screen-bg-color);
-    border: 0.4rem solid var(--app-header-bg-color);
     font-size: var(--cg-font-base);
+    width: 90%;
+    height: 3.3rem;
+    overflow-y: auto;
 }
 
 #automatic-btn-block {
@@ -1078,7 +1081,7 @@ Für Text: color: #222; oder color: #424242;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
     background: var(--automatic-solver);
-    margin: 0.4rem 2rem;
+    margin: 0.5rem 2rem;
 }
 
 .number-btn {
@@ -1429,19 +1432,20 @@ label {
 /*=======================================*/
 
 
-.trackerDlg {
+.tracker-dlg {
     position: absolute;
     top: 0;
     left: 0;
     display: 'none';
     flex-direction: column;
+        place-items: center;
     border: none;
     margin: 0 auto;
     background-color: var(--automatic-solver);
     width: 100%;
 }
 
-.trackerDlg::backdrop {
+.tracker-dlg::backdrop {
     background: hsl(201 50% 40% /.1);
 }
 
