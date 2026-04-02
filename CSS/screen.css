@@ -1368,6 +1368,10 @@ Für Text: color: #222; oder color: #424242;
     text-align: center;
 }
 
+#contentSaveDlg > label {
+    font-size: var(--cg-font-base);
+    margin-left: 1.2rem;
+}
 /*
 label {
     font-size: var(--cg-font-small);
@@ -1687,6 +1691,7 @@ label {
     box-sizing: border-box;
 
     position: absolute;
+    margin-top: auto; 
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
