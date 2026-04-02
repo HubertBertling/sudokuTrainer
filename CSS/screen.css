@@ -271,6 +271,7 @@ button:active {
     width: 100%;
 
 }
+
 .manual-btn-body-block {
     width: 100%;
 }
@@ -1368,10 +1369,11 @@ Für Text: color: #222; oder color: #424242;
     text-align: center;
 }
 
-#contentSaveDlg > label {
+#contentSaveDlg>label {
     font-size: var(--cg-font-base);
-    margin-left: 1.2rem;
+    
 }
+
 /*
 label {
     font-size: var(--cg-font-small);
@@ -1391,16 +1393,25 @@ label {
 }
 
 .puzzle-name-input-dlg {
-    width: 90%;
-    margin-top: 0.8rem;
-    margin-left: 0.8rem;
+    width: 80%;
     padding: 0.2rem;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label-input-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
 }
 
 .ok-cancel-btns {
-    font-size: var(--cg-font-small);
-    margin: 2.4rem;
+    font-size: var(--cg-font-base);
+    margin: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
@@ -1408,8 +1419,8 @@ label {
 
 .ok-cancel-btn {
 
-    padding-left: 0.8em;
-    padding-right: 0.8em;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
 }
 
 /*=======================================*/
@@ -1478,6 +1489,7 @@ label {
     margin-left: auto;
     margin-right: auto;
     max-width: 20rem;
+      border-radius: 1rem;
 }
 
 .infoDlgHeader {
@@ -1613,6 +1625,7 @@ label {
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
+      border-radius: 1rem;
 }
 
 .confirm-dlg-header {
@@ -1645,7 +1658,7 @@ label {
     gap: 1rem;
     width: 50%;
     margin-left: auto;
-    margin-right: auto; 
+    margin-right: auto;
 }
 
 #btn-settings-dlg-ok,
@@ -1668,6 +1681,7 @@ label {
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
+      border-radius: 1rem;
 }
 
 .copyFeedback-dlg-body {
@@ -1691,11 +1705,12 @@ label {
     box-sizing: border-box;
 
     position: absolute;
-    margin-top: auto; 
+    margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
+    border-radius: 1rem;
 
 }
 
@@ -1710,6 +1725,7 @@ label {
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
+    border-radius: 1rem;
 
 }
 
@@ -2045,7 +2061,7 @@ label {
     display: -ms-flexbox;
     display: flex;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--cg-font-small);
+    font-size: var(--cg-font-base);
     line-height: 15px;
     position: relative;
     -webkit-user-select: none;
