@@ -919,7 +919,9 @@ Für Text: color: #222; oder color: #424242;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
     grid-gap: 0.4rem;
     background: var(--manual-solver);
-    padding: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
 }
 
 .manual-btn {
@@ -955,9 +957,28 @@ Für Text: color: #222; oder color: #424242;
     grid-row-end: 1;
 }
 
+#inner-manual-btn-block {
+     display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.4rem;
+    width: 100%;
+     background: var(--manual-solver);
+     padding-top: 0.4rem;
+     padding-left: 1rem;
+     padding-right: 1rem;
+     padding-bottom: 1rem;
+}
+
+
+#btn-delete-cell {
+    background: var(--delete-btn-bg-color);
+    color: var(--delete-btn-color);
+}
+/*
 #btn-delete-cell {
     grid-column-start: 1;
-    grid-column-end: 1;
+    grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 3;
 
@@ -967,67 +988,68 @@ Für Text: color: #222; oder color: #424242;
 
 
 #number-btn-1 {
-    grid-column-start: 2;
-    grid-column-end: 2;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-2 {
     grid-column-start: 3;
-    grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-3 {
-    grid-column-start: 4;
-    grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-4 {
-    grid-column-start: 5;
     grid-column-end: 5;
     grid-row-start: 3;
     grid-row-end: 3;
 }
 
-#number-btn-5 {
-    grid-column-start: 6;
-    grid-column-end: 6;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-6 {
-    grid-column-start: 7;
+#number-btn-2 {
+    grid-column-start: 5;
     grid-column-end: 7;
     grid-row-start: 3;
     grid-row-end: 3;
 }
 
-#number-btn-7 {
-    grid-column-start: 8;
-    grid-column-end: 8;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-8 {
-    grid-column-start: 9;
+#number-btn-3 {
+    grid-column-start: 7;
     grid-column-end: 9;
     grid-row-start: 3;
     grid-row-end: 3;
 }
 
-#number-btn-9 {
-    grid-column-start: 10;
-    grid-column-end: 10;
+#number-btn-4 {
+    grid-column-start: 9;
+    grid-column-end: 11;
     grid-row-start: 3;
     grid-row-end: 3;
 }
+
+#number-btn-5 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+#number-btn-6 {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+#number-btn-7 {
+    grid-column-start: 5;
+    grid-column-end: 7;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+#number-btn-8 {
+    grid-column-start: 7;
+    grid-column-end: 9;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+#number-btn-9 {
+    grid-column-start: 9;
+    grid-column-end: 11;
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+    */
 
 #btn-undo {
     grid-column-start: 1;
@@ -1086,7 +1108,7 @@ Für Text: color: #222; oder color: #424242;
 
 .number-btn {
     font-size: var(--cg-font-h6);
-    aspect-ratio: 1 / 1;
+    /* aspect-ratio: 2 / 1; */
 }
 
 
