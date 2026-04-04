@@ -1095,7 +1095,6 @@ Für Text: color: #222; oder color: #424242;
     font-size: var(--cg-font-base);
     width: 90%;
     height: 3.3rem;
-    overflow-y: auto;
 }
 
 #automatic-btn-block {
