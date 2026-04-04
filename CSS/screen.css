@@ -958,16 +958,16 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #inner-manual-btn-block {
-     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
     width: 100%;
-     background: var(--manual-solver);
-     padding-top: 0.4rem;
-     padding-left: 1rem;
-     padding-right: 1rem;
-     padding-bottom: 1rem;
+    background: var(--manual-solver);
+    padding-top: 0.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
 }
 
 
@@ -975,6 +975,7 @@ Für Text: color: #222; oder color: #424242;
     background: var(--delete-btn-bg-color);
     color: var(--delete-btn-color);
 }
+
 /*
 #btn-delete-cell {
     grid-column-start: 1;
@@ -1103,7 +1104,7 @@ Für Text: color: #222; oder color: #424242;
     grid-template-rows: repeat(2, 1fr);
     gap: 0.4rem;
     background: var(--automatic-solver);
-    margin: 0.5rem 2rem;
+    margin: 1rem 2rem;
 }
 
 .number-btn {
@@ -1397,7 +1398,7 @@ Für Text: color: #222; oder color: #424242;
 
 #contentSaveDlg>label {
     font-size: var(--cg-font-base);
-    
+
 }
 
 /*
@@ -1460,7 +1461,7 @@ label {
     left: 0;
     display: 'none';
     flex-direction: column;
-        place-items: center;
+    place-items: center;
     border: none;
     margin: 0 auto;
     background-color: var(--automatic-solver);
@@ -1516,7 +1517,7 @@ label {
     margin-left: auto;
     margin-right: auto;
     max-width: 20rem;
-      border-radius: 1rem;
+    border-radius: 1rem;
 }
 
 .infoDlgHeader {
@@ -1652,7 +1653,7 @@ label {
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
-      border-radius: 1rem;
+    border-radius: 1rem;
 }
 
 .confirm-dlg-header {
@@ -1708,7 +1709,7 @@ label {
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
-      border-radius: 1rem;
+    border-radius: 1rem;
 }
 
 .copyFeedback-dlg-body {
@@ -2228,18 +2229,26 @@ label {
 
         /*  height: 100dvh; */
         max-width: 100vw;
-        aspect-ratio: 1 / 2;
         width: auto;
 
         margin: 0 auto;
     }
 
     .content {
+        display: flex;
         flex-direction: column;
+        height: 90vh;
+        /* Gesamthöhe */
     }
 
     .sidebar {
         order: 2;
+
+        flex: 1;
+        /* Nimmt restlichen Platz ein */
+        overflow-y: auto;
+        /* Scrollt, wenn Inhalt zu lang */
+
     }
 
     .main-panel {
