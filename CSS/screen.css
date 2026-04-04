@@ -894,7 +894,7 @@ Für Text: color: #222; oder color: #424242;
 
 .automatic-btn {
     border-radius: 0.8rem;
-    padding: 0rem 0.8rem;
+    padding: 0.2rem 0.8rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
