@@ -2241,8 +2241,6 @@ Für Text: color: #222; oder color: #424242;
         /* Nimmt restlichen Platz ein */
         overflow-y: auto;
         /* Scrollt, wenn Inhalt zu lang */
-        height: 13.4rem;
-
     }
 
     .main-panel {
