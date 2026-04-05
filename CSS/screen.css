@@ -1401,13 +1401,6 @@ Für Text: color: #222; oder color: #424242;
 
 }
 
-/*
-label {
-    font-size: var(--cg-font-small);
-    margin-left: 1.2rem;
-    margin-bottom: 0.2rem;
-}
-*/
 .checkbox-wrapper-35>label {
     font-size: var(--cg-font-small);
     margin-left: 0.2rem;
@@ -2248,6 +2241,7 @@ label {
         /* Nimmt restlichen Platz ein */
         overflow-y: auto;
         /* Scrollt, wenn Inhalt zu lang */
+        height: 13.4rem;
 
     }
 
