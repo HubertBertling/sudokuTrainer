@@ -2220,7 +2220,7 @@ Für Text: color: #222; oder color: #424242;
 
         /*  height: 100dvh; */
         max-width: 100vw;
-        aspect-ratio: 1 / 2;
+        aspect-ratio: 1 / 1.8;
         width: auto;
 
         margin: 0 auto;
@@ -2229,7 +2229,7 @@ Für Text: color: #222; oder color: #424242;
     .content {
         display: flex;
         flex-direction: column;
-        height: 90vh;
+        height: 95vh;
         /* Gesamthöhe */
         
     }
