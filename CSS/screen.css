@@ -532,7 +532,7 @@ button:active {
 }
 
 
-
+/*
 .cell-overlay {
     position: absolute;
     top: 0;
@@ -540,15 +540,16 @@ button:active {
     right: 0;
     bottom: 0;
     background: rgba(167, 218, 164, 0.708);
-    /* Weiß, 60% Deckkraft */
+    /* Weiß, 60% Deckkraft 
     backdrop-filter: blur(6px);
-    /* Milchiger Effekt */
+    /* Milchiger Effekt 
     z-index: 5;
     pointer-events: none;
-    /* Klicks gehen durch */
+    /* Klicks gehen durch 
     border-radius: inherit;
     padding: 0.1rem
 }
+*/ 
 
 .sudoku-grid-cell {
     /* background-color: #fff;*/
@@ -896,7 +897,7 @@ Für Text: color: #222; oder color: #424242;
 
 .automatic-btn {
     border-radius: 0.8rem;
-    padding: 0.2rem 0.8rem;
+    padding: 0.4rem 0.8rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
@@ -977,82 +978,6 @@ Für Text: color: #222; oder color: #424242;
     background: var(--delete-btn-bg-color);
     color: var(--delete-btn-color);
 }
-
-/*
-#btn-delete-cell {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 3;
-
-    background: var(--delete-btn-bg-color);
-    color: var(--delete-btn-color);
-}
-
-
-#number-btn-1 {
-    grid-column-start: 3;
-    grid-column-end: 5;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-2 {
-    grid-column-start: 5;
-    grid-column-end: 7;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-3 {
-    grid-column-start: 7;
-    grid-column-end: 9;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-4 {
-    grid-column-start: 9;
-    grid-column-end: 11;
-    grid-row-start: 3;
-    grid-row-end: 3;
-}
-
-#number-btn-5 {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-
-#number-btn-6 {
-    grid-column-start: 3;
-    grid-column-end: 5;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-
-#number-btn-7 {
-    grid-column-start: 5;
-    grid-column-end: 7;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-
-#number-btn-8 {
-    grid-column-start: 7;
-    grid-column-end: 9;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-
-#number-btn-9 {
-    grid-column-start: 9;
-    grid-column-end: 11;
-    grid-row-start: 4;
-    grid-row-end: 4;
-}
-    */
 
 #btn-undo {
     grid-column-start: 1;

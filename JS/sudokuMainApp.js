@@ -2,12 +2,12 @@ function startMainApp() {
     startSudokuServiceWorker();
     startSudokuFileReader();
     startSudokuFileHandlingAPI();
-    
+
     sudoApp = new SudokuMainApp();
     sudoApp.init();
     sudoApp.mySolverController.setAppURLShareBtnEventHandler();
     sudoApp.mySolverController.setPuzzleShareBtnEventHandler();
-  
+
 }
 
 function startSudokuServiceWorker() {
@@ -1967,15 +1967,17 @@ class SudokuGridView {
         let myRelPositionNode = document.createElement("div");
         myRelPositionNode.style.position = "relative";
 
+        /*
         let myCellOverlayNode = document.createElement("div");
         myCellOverlayNode.classList.add("cell-overlay");
         myCellOverlayNode.style.display = "none";
         myRelPositionNode.appendChild(myCellOverlayNode);
+        */
 
         let cellNode = document.createElement("div");
         cellNode.setAttribute("class", "sudoku-grid-cell");
 
-        myRelPositionNode.appendChild(myCellOverlayNode);
+        // myRelPositionNode.appendChild(myCellOverlayNode);
         myRelPositionNode.appendChild(cellNode);
 
         blockNode.appendChild(myRelPositionNode);
@@ -1985,7 +1987,8 @@ class SudokuGridView {
         // does not yet contain candidate information about the cell.
         let cellIndex = IndexCalculator.getCellIndexBlock(blockNumber, cellInBlockNumber);
         let cellView = this.sudoCellViews[cellIndex];
-        cellView.saveCellNodes(cellNode, myCellOverlayNode);
+        // cellView.saveCellNodes(cellNode, myCellOverlayNode);
+        cellView.saveCellNodes(cellNode);
 
         // Add the cell-event-handler to the new DOM-cell
         cellNode.addEventListener('click', () => {
@@ -2272,13 +2275,19 @@ class SudokuCellView {
         this.myCell = cell;
         this.myRelPositionNode = undefined;
         this.myCellNode = undefined;
-        this.myCellOverlayNode = undefined;
+        // this.myCellOverlayNode = undefined;
     }
 
+    /*
     saveCellNodes(cellNode, cellOverlayNode) {
         this.myCellNode = cellNode;
         this.myCellOverlayNode = cellOverlayNode;
     }
+*/
+    saveCellNodes(cellNode) {
+        this.myCellNode = cellNode;
+    }
+
 
     upDate() {
         if (sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
@@ -2567,16 +2576,18 @@ class SudokuCellView {
         this.myCellNode.classList.add('hatching');
     }
 
+    /*
     setOverlay() {
         this.myCellOverlayNode.style.display = "block";
     }
     unsetOverlay() {
         this.myCellOverlayNode.style.display = "none";
     }
+        */
 
     setBorderGreenSelected() {
         this.myCellNode.classList.add('hover-green');
-        this.myCellOverlayNode.style.display = "block";
+        // this.myCellOverlayNode.style.display = "block";
     }
     setBorderWhiteSelected() {
         this.myCellNode.classList.add('hover-white');
@@ -2656,7 +2667,7 @@ class SudokuCellView {
             collection.myCells.forEach(e => {
                 if (e !== this.myCell) {
                     if (e.getValue() == '0') {
-                        sudoApp.mySolverView.myGridView.sudoCellViews[e.myIndex].setOverlay();
+                        // sudoApp.mySolverView.myGridView.sudoCellViews[e.myIndex].setOverlay();
                         e.myInfluencers.forEach(cell => {
                             if (cell.getValue() == Array.from(this.myCell.myNecessarys)[0]) {
                                 sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
@@ -2718,11 +2729,10 @@ class SudokuCellView {
         if (this.myCell.myNecessarys.size > 0) {
             if (adMissibleNrSelected == Array.from(this.myCell.myNecessarys)[0]) {
                 let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
-                // this.myBlockView.displayNecessaryCandidate();
                 collection.myCells.forEach(e => {
                     if (e !== this.myCell) {
                         if (e.getValue() == '0') {
-                            sudoApp.mySolverView.myGridView.sudoCellViews[e.myIndex].setOverlay();
+                            // sudoApp.mySolverView.myGridView.sudoCellViews[e.myIndex].setOverlay();
                             e.myInfluencers.forEach(cell => {
                                 if (cell.getValue() == Array.from(this.myCell.myNecessarys)[0]) {
                                     sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderWhiteSelected();
@@ -2731,9 +2741,6 @@ class SudokuCellView {
                         }
                     }
                 });
-                // ??? richtig ????
-                // sudoApp.mySolverView.displayTechnique('', 'Notwendige ' + Array.from(this.myCell.myNecessarys)[0] +
-                // ' in der Gruppe setzen.');
                 return;
             }
         }
@@ -2903,6 +2910,14 @@ class SudokuCellView {
             } else if (sudoApp.mySolver.getAutoDirection() == 'backward') {
                 if (this.myCell.getValue() !== '0') {
                     sudoApp.mySolverView.displayTechnique('', '<b>Backtracking: </b>Löschen der selektierten Zelle.');
+                }
+            }
+        } else {
+            if (this.myCell.getValue() == '0') {
+                if (this.myCell.candidateIndexSelected > -1) {
+                    this.displayReasons();
+                } else {
+                    this.displayTasks();
                 }
             }
         }
@@ -3424,6 +3439,7 @@ class SudokuSolverView {
         } else {
             this.myStepExplainerView.unsetOkBtn();
         }
+
     }
 
     displayLoadedBenchmark(levelOfDifficulty, countBackwards) {
@@ -3553,9 +3569,9 @@ class SudokuSolverController {
 
         //Click-Events for both delete buttons, desktop and mobile
         let btnDeleteCell = document.getElementById('btn-delete-cell');
-            btnDeleteCell.addEventListener('click', () => {
-                this.handleDeletePressed();
-            })
+        btnDeleteCell.addEventListener('click', () => {
+            this.handleDeletePressed();
+        })
         // Events of keys on the keyboard
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
@@ -3601,10 +3617,10 @@ class SudokuSolverController {
 
 
         let btnRun = document.getElementById('btn-run');
-            btnRun.addEventListener('click', () => {
-                this.startBtnPressed();
-            })
-        
+        btnRun.addEventListener('click', () => {
+            this.startBtnPressed();
+        })
+
         // Click-Events for both pause buttons, desktop and mobile
         let btnSave = document.getElementById('btn-save');
         btnSave.addEventListener('click', () => {
@@ -3714,36 +3730,37 @@ class SudokuSolverController {
 
 
     handleNumberPressed(nr) {
-        if (!this.mySolver.isSearching()) {
-            // Prevent setting a number when a tip is shown.
-            let action = {
-                operation: 'setNr',
-                cellIndex: this.mySolver.myGrid.indexSelected,
-                cellValue: nr
+        // if (!this.mySolver.isSearching()) {
+        // Prevent setting a number when a tip is shown.
+        let action = {
+            operation: 'setNr',
+            cellIndex: this.mySolver.myGrid.indexSelected,
+            cellValue: nr
+        }
+        if (action.cellIndex > -1) {
+            this.mySolver.atCurrentSelectionSetNumber(nr);
+            this.myUndoActionStack.push(action);
+            if (this.mySolver.succeeds()) {
+                sudoApp.mySolver.myGrid.lastSearch = {
+                    steps: 0,
+                    error_rl: 0,
+                    numberOfSolutions: 1
+                }
+                sudoApp.mySolverView.setNumberOfSolutions(1);
+                sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
+                    this, () => { }
+                );
             }
-            if (action.cellIndex > -1) {
-                this.mySolver.atCurrentSelectionSetNumber(nr);
-                this.myUndoActionStack.push(action);
-                if (this.mySolver.succeeds()) {
-                    sudoApp.mySolver.myGrid.lastSearch = {
-                        steps: 0,
-                        error_rl: 0,
-                        numberOfSolutions: 1
-                    }
-                    sudoApp.mySolverView.setNumberOfSolutions(1);
-                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
-                        this, () => { }
-                    );
-                }
-                if (this.mySolver.isSearching()) {
-                    this.mySolver.cleanUpAndDeleteCurrentSearch();
-                    this.mySolver.notify();
-                }
-                this.mySolver.myGrid.unsetStepLazy();
-                this.mySolver.deselect();
+            if (this.mySolver.isSearching()) {
+                this.mySolver.cleanUpAndDeleteCurrentSearch();
                 this.mySolver.notify();
             }
+            sudoApp.mySolverView.myStepExplainerView.unsetOkBtn();
+            this.mySolver.myGrid.unsetStepLazy();
+            this.mySolver.deselect();
+            this.mySolver.notify();
         }
+        // }
     }
 
     handleDeleteKeyPressed(event) {
@@ -4508,66 +4525,66 @@ class SudokuSolverController {
     }
 
     setAppURLShareBtnEventHandler() {
-    // Share sudokuTrainer URL
-    let btn = document.getElementById('share-app-btn');
-    const resultPara = document.querySelector(".result");
-    if (navigator.share && navigator.canShare) {
-        // Web Share API ist Verfügbar!
-        btn.addEventListener("click", async () => {
+        // Share sudokuTrainer URL
+        let btn = document.getElementById('share-app-btn');
+        const resultPara = document.querySelector(".result");
+        if (navigator.share && navigator.canShare) {
+            // Web Share API ist Verfügbar!
+            btn.addEventListener("click", async () => {
 
-            if (navigator.canShare) {
-                navigator.share(
-                    {
-                        title: "Sudoku-Trainer",
-                        text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
-                        url: "https://hubertbertling.github.io/sudokuTrainer",
-                    }
-                )
-                    .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
-                    .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
-            } else {
-                resultPara.textContent = `Your system doesn't support sharing.`;
-            }
-        });
-    } else {
-        resultPara.textContent = `Web Share API not supported.`;
-    }
-    console.log(resultPara.textContent);
-}
-
-setPuzzleShareBtnEventHandler() {
-    // ==========================================================================
-    // Share SudokuTrainer File
-    // ==========================================================================
-    let shareButton = document.getElementById('btn-share');
-    if (navigator.share && navigator.canShare) {
-        // Web Share API ist Verfügbar!
-        shareButton.addEventListener("click", async () => {
-            if (sudoApp.mySolver.getGamePhase() == 'define') {
-                sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
-                    "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
-                    this,
-                    () => { }
-                );
-            } else {
-                let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: 'Puzzle teilen',
-                        text: 'Puzzle',
-                    })
-                        .then(() => console.log('Share was successful.'))
-                        .catch((error) => console.log('Sharing failed', error));
+                if (navigator.canShare) {
+                    navigator.share(
+                        {
+                            title: "Sudoku-Trainer",
+                            text: "Üben und Lösen von Puzzles mit der Sudoku-Trainer-App",
+                            url: "https://hubertbertling.github.io/sudokuTrainer",
+                        }
+                    )
+                        .then(() => resultPara.textContent = "Sudoku-Trainer shared successfully")
+                        .catch((error) => resultPara.textContent = 'Sharing failed:' + error);
                 } else {
-                    console.log(`Your system doesn't support sharing files.`);
+                    resultPara.textContent = `Your system doesn't support sharing.`;
                 }
-            }
-        });
-    } else {
-        console.log(`Web Share API not supported.`);
+            });
+        } else {
+            resultPara.textContent = `Web Share API not supported.`;
+        }
+        console.log(resultPara.textContent);
     }
-}
+
+    setPuzzleShareBtnEventHandler() {
+        // ==========================================================================
+        // Share SudokuTrainer File
+        // ==========================================================================
+        let shareButton = document.getElementById('btn-share');
+        if (navigator.share && navigator.canShare) {
+            // Web Share API ist Verfügbar!
+            shareButton.addEventListener("click", async () => {
+                if (sudoApp.mySolver.getGamePhase() == 'define') {
+                    sudoApp.myInfoDialog.open("Puzzle teilen", "negativ",
+                        "Das Puzzle ist noch in der Definition. Daher kann es noch nicht geteilt werden.",
+                        this,
+                        () => { }
+                    );
+                } else {
+                    let file = sudoApp.myPuzzleDB.getCurrentPuzzleFile();
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'Puzzle teilen',
+                            text: 'Puzzle',
+                        })
+                            .then(() => console.log('Share was successful.'))
+                            .catch((error) => console.log('Sharing failed', error));
+                    } else {
+                        console.log(`Your system doesn't support sharing files.`);
+                    }
+                }
+            });
+        } else {
+            console.log(`Web Share API not supported.`);
+        }
+    }
 
 
     // ===============================================================================================
