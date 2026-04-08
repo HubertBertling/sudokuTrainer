@@ -2913,7 +2913,9 @@ class SudokuCellView {
                 }
             }
         } else {
-            if (this.myCell.getValue() == '0') {
+            if (this.myCell.getValue() == '0'
+                && !(sudoApp.mySolver.getActualEvalType() == 'strict-plus'
+                    || sudoApp.mySolver.getActualEvalType() == 'strict-minus')) {
                 if (this.myCell.candidateIndexSelected > -1) {
                     this.displayReasons();
                 } else {
@@ -3730,37 +3732,40 @@ class SudokuSolverController {
 
 
     handleNumberPressed(nr) {
-        // if (!this.mySolver.isSearching()) {
-        // Prevent setting a number when a tip is shown.
-        let action = {
-            operation: 'setNr',
-            cellIndex: this.mySolver.myGrid.indexSelected,
-            cellValue: nr
-        }
-        if (action.cellIndex > -1) {
-            this.mySolver.atCurrentSelectionSetNumber(nr);
-            this.myUndoActionStack.push(action);
-            if (this.mySolver.succeeds()) {
-                sudoApp.mySolver.myGrid.lastSearch = {
-                    steps: 0,
-                    error_rl: 0,
-                    numberOfSolutions: 1
-                }
-                sudoApp.mySolverView.setNumberOfSolutions(1);
-                sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
-                    this, () => { }
-                );
+        if (this.mySolver.isSearching() && !this.mySolver.myCurrentSearch.isTipSearch) {
+            // Number button pressed during automatic execution
+            sudoApp.myInfoDialog.open("Nummer setzen", "negativ",
+                "Während der Solver-Ausführung kann manuell keine Zelle mit einer Nummer belegt werden.", this, () => { });
+        } else {
+            let action = {
+                operation: 'setNr',
+                cellIndex: this.mySolver.myGrid.indexSelected,
+                cellValue: nr
             }
-            if (this.mySolver.isSearching()) {
-                this.mySolver.cleanUpAndDeleteCurrentSearch();
+            if (action.cellIndex > -1) {
+                this.mySolver.atCurrentSelectionSetNumber(nr);
+                this.myUndoActionStack.push(action);
+                if (this.mySolver.succeeds()) {
+                    sudoApp.mySolver.myGrid.lastSearch = {
+                        steps: 0,
+                        error_rl: 0,
+                        numberOfSolutions: 1
+                    }
+                    sudoApp.mySolverView.setNumberOfSolutions(1);
+                    sudoApp.myInfoDialog.open("Herzlichen Glückwunsch!", 'solutionDiscovered', "Du hast das Puzzle erfolgreich gelöst!",
+                        this, () => { }
+                    );
+                }
+                if (this.mySolver.isSearching()) {
+                    this.mySolver.cleanUpAndDeleteCurrentSearch();
+                    this.mySolver.notify();
+                }
+                sudoApp.mySolverView.myStepExplainerView.clear();
+                this.mySolver.myGrid.unsetStepLazy();
+                this.mySolver.deselect();
                 this.mySolver.notify();
             }
-            sudoApp.mySolverView.myStepExplainerView.unsetOkBtn();
-            this.mySolver.myGrid.unsetStepLazy();
-            this.mySolver.deselect();
-            this.mySolver.notify();
         }
-        // }
     }
 
     handleDeleteKeyPressed(event) {
@@ -3849,7 +3854,7 @@ class SudokuSolverController {
     }
 
     handleDeletePressed() {
-        if (this.mySolver.isSearching()) {
+        if (this.mySolver.isSearching() && !this.mySolver.myCurrentSearch.isTipSearch) {
             // Number button pressed during automatic execution
             sudoApp.myInfoDialog.open("Nummer löschen", "negativ",
                 "Während der Solver-Ausführung kann manuell keine Zelle gelöscht werden.", this, () => { });
