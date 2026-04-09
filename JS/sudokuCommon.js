@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.29';
+let VERSION = 'v1.8.30';
 
 // ==========================================
 // Basic classes
@@ -4863,7 +4863,7 @@ class SudokuSolver {
                 sudoApp.mySolverController.resetConfirmed,
                 sudoApp.mySolverController.resetRejected,
                 "Puzzle zurücksetzen?",
-                "Wenn Puzzles beim Start des Solvers bereits partiell gelöst sind, kann der Solver die Lösung fortsetzen, weil jede partielle Lösung für sehr leichte, leichte, mittlere und schwerere Puzzles korrekt ist. \n \n Für sehr schwere und extrem schwere Puzzles kann der Backtracking-Prozess nicht an beliebigen Stellen wieder aufgesetzt werden. Die Korrektheit von Aussagen über Lösungen (keine Lösung, Anzahl der Lösungen, Anzahl der benötigten Schritte) kann nicht mehr garantiert werden. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
+                "Wenn ein Puzzle beim Start des Solvers bereits partiell gelöst ist, kann der Solver die Lösung fortsetzen, wenn das Puzzle sehr leicht, leicht, mittel oder schwer ist. In jedem Schritt ist die Teillösung Teil der späteren vollständigen Lösung. \n \n Für sehr schwere und extrem schwere Puzzles kann ein abgebrochener Backtrack-Prozess nicht fehlerfrei wieder aufgesetzt werden. Startet man den Lösungsprozess auf der Teillösung neu, kann die Korrektheit von Aussagen über Lösungen (keine Lösung, Anzahl der Lösungen, Anzahl der benötigten Schritte) nicht mehr garantiert werden. Empfehlung: Puzzle vor dem Start zurücksetzen. \n\nJetzt zurücksetzen?");
         }
     }
 

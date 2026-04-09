@@ -2200,6 +2200,16 @@ Für Text: color: #222; oder color: #424242;
 
     }
 
+    #automatic-btn-block {
+    margin: 2rem 2rem;
+}
+
+
+.tracker-dashboard {
+     margin: 0.6rem 0.2rem;
+    height: 3.4rem;
+}
+
     #loader,
     #loader-db {
         position: absolute;
