@@ -937,6 +937,14 @@ Für Text: color: #222; oder color: #424242;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 1;
+    background-color: lightgray    ;
+    color: black;
+    border-radius: 0.4rem;
+   
+}
+
+#checkbox-wrapper-35 > label {
+    color: black;
 }
 
 #btn-init {
