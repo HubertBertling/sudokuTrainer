@@ -2209,7 +2209,7 @@ Für Text: color: #222; oder color: #424242;
     }
 
     #automatic-btn-block {
-    margin: 2rem 2rem;
+    margin: 1.2rem 1.2rem;
 }
 
 
@@ -2228,7 +2228,7 @@ Für Text: color: #222; oder color: #424242;
 
     .content {
         flex-direction: row;
-        gap: 0.8rem;
+        gap: 0.2rem;
     }
 
     .puzzle-table-dlg {
