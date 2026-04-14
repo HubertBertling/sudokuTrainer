@@ -2653,8 +2653,8 @@ class SudokuCellView {
 
     displayTasks() {
         if (sudoApp.mySolver.isSearching()) {
-
-            if (this.myCell.myNecessarys.size > 0) {
+        // Anzeige von Anwenderaktionen nur im Fall der automatischen Ausführung sinnvoll.
+                if (this.myCell.myNecessarys.size > 0) {
                 let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
                 if (collection instanceof SudokuBlock) {
                     sudoApp.mySolverView.myGridView.sudoBlockViews[collection.myIndex].setBorderGreen();
@@ -2726,10 +2726,8 @@ class SudokuCellView {
 
     displayReasons() {
         if (sudoApp.mySolver.isSearching()) {
-
+            // Anzeige automatisch selektierter Kandidaten nur im Fall der automatischen Suche möglich.
             let adMissibleNrSelected = this.myCell.getSelectedCandidate();
-
-
             if (this.myCell.myNecessarys.size > 0) {
                 if (adMissibleNrSelected == Array.from(this.myCell.myNecessarys)[0]) {
                     let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
@@ -2919,7 +2917,6 @@ class SudokuCellView {
             }
         } else {
             if (this.myCell.getValue() == '0'
-                // ?????
                 && !(sudoApp.mySolver.getActualEvalType() == 'strict-plus'
                     || sudoApp.mySolver.getActualEvalType() == 'strict-minus')) {
                 if (this.myCell.candidateIndexSelected > -1) {
