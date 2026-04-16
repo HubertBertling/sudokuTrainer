@@ -2653,8 +2653,8 @@ class SudokuCellView {
 
     displayTasks() {
         if (sudoApp.mySolver.isSearching()) {
-        // Anzeige von Anwenderaktionen nur im Fall der automatischen Ausführung sinnvoll.
-                if (this.myCell.myNecessarys.size > 0) {
+            // Anzeige von Anwenderaktionen nur im Fall der automatischen Ausführung sinnvoll.
+            if (this.myCell.myNecessarys.size > 0) {
                 let collection = this.myCell.myNecessaryGroups.get(Array.from(this.myCell.myNecessarys)[0]);
                 if (collection instanceof SudokuBlock) {
                     sudoApp.mySolverView.myGridView.sudoBlockViews[collection.myIndex].setBorderGreen();
@@ -3888,6 +3888,15 @@ class SudokuSolverController {
     }
 
     defineBtnPressed() {
+        let puzzleRec = this.mySolver.myCurrentPuzzle.myRecord;
+        let action = {
+            operation: 'define',
+            pzRecord: puzzleRec,
+            pzArray: this.mySolver.myGrid.getPuzzleArray(),
+            lastSearch: this.mySolver.myGrid.lastSearch
+        }
+        this.myUndoActionStack.push(action);
+
         this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
         this.mySolver.unsetCurrentPuzzle();
