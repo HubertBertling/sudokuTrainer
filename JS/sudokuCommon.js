@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.36';
+let VERSION = 'v1.8.37';
 
 // ==========================================
 // Basic classes
