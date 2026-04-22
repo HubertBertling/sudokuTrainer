@@ -30,11 +30,12 @@ layout: default
    5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
    6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
    7. [Sudoku-Puzzles](#sudoku-puzzles)
-      1. [Unlösbare Puzzles](#unlösbare-puzzles)
-      2. [Elementare Widersprüche in Zellen und Gruppen](#elementare-widersprüche-in-zellen-und-gruppen)
-      3. [Puzzles mit genau einer Lösung](#puzzles-mit-genau-einer-lösung)
-      4. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
-      5. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
+      1. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
+      2. [Unlösbare Puzzles](#unlösbare-puzzles)
+      3. [Beispiele widerspruchsvoller Puzzles](#beispiele-widerspruchsvoller-puzzles)
+      4. [Puzzles mit genau einer Lösung](#puzzles-mit-genau-einer-lösung)
+      5. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
+      6. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
    8. [Lösungsarchitektur dieses Sudoku-Explorers](#lösungsarchitektur-dieses-sudoku-explorers)
    9. [Ziele und Abgrenzung dieses Explorers](#ziele-und-abgrenzung-dieses-explorers)
    10. [Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?](#wo-finde-ich-sehr-schwere-oder-extrem-schwere-puzzles)
@@ -537,18 +538,18 @@ Dieser Sudoku-Explorer zeichnet sich in erster Linie durch seine nachvollziehbar
 
 Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
-1. Unlösbare Puzzles
+1. Widerspruchsvolle und unlösbare Puzzles
 2. Puzzles mit genau einer Lösung
 3. Puzzles mit mehr als einer Lösung
 
-### Unlösbare Puzzles
+### Widerspruchsvolle Puzzles
 
 Ein Puzzle ist **widerspruchsvoll**, wenn es
 
 1. eine widerspruchsvolle Zelle besitzt, oder
-1. eine widerspruchsvollen Gruppe.
+1. eine widerspruchsvolle Gruppe.
 
-Es können mehrere dieser Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.
+Es können mehrere Bedingungen gleichzeitig vorliegen. Der vorliegende Solver zeigt der Übersichtlichkeit halber immer nur eine Widerspruchsbedingung an.
 
 **Widerspruchsvolle Zellen**
 
@@ -594,9 +595,13 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
 
    In der Gruppe kommt eine Nummer überhaupt nicht vor. Hier die 5. Tritt während der automatischen Ausführung eine solche widerspruchsvolle Gruppe auf, schaltet der Solver in den Rückwärts-Modus um.Bitte beachten: Der Explorer zeigt für jede noch offene Zelle der Gruppe, warum die 5 nicht gesetzt werden kann.
 
-Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Jedes widerspruchvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle ist widerspruchsvoll.
+### Unlösbare Puzzles
+
+Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Jedes gemäß der obigen Definition widerspruchvolle Puzzle ist unlösbar. Denn für alle Arten des Widerspruchs gilt, das ein widerspruchvolles Puzzle nicht vervollständigt werden kann. Aber nicht jedes unlösbare Puzzle ist widerspruchsvoll.
 
 Ist ein Puzzle widerspruchsvoll, dann ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+
+### Beispiele widerspruchsvoller Puzzles
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
@@ -634,9 +639,7 @@ Nach 140 Trial&error-Schritten wurde der Suchbaum vollständig durchlaufen, ohne
 
 Zusammengefasst: der Solver berechnet die Unlösbarkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, die keinen weiteren Try nach sich haben, ist das Ausgangspuzzle unlösbar.
 
-### Elementare Widersprüche in Zellen und Gruppen
-
-Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku unlösbar ist. Ein Puzzle ist nachgewiesen unlösbar, wenn es widerspruchsvolle Zellen oder Gruppen enthält, oder wenn im Laufe der Lösungssuche widerspruchsvolle Zellen oder Gruppen entstehen. 
+Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku widerspruchsvoll ist.
 
 ### Puzzles mit genau einer Lösung
 
