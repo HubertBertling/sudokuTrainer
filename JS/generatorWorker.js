@@ -118,14 +118,14 @@ class NewPuzzleGenerator {
             // Case simple puzzle generated
             let simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
             command = await this.send2Main(simpleSend1);
-            if (command !== 'stopGeneration') {
+            if (command == 'proceedGeneration') {
                 // A simple puzzle can be made into a very simple puzzle 
                 // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
                 let verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, simpleSend1);
                 verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
                 command = await this.send2Main(verySimpleSend2);
             }
-            if (command !== 'stopGeneration') {
+            if (command == 'proceedGeneration') {
                 // A simple puzzle can be made to extremeHeavy by deleting one given
                 let extremeHeavySend3 = this.deleteOnePuzzleCell(simpleSend1);
                 extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -135,7 +135,8 @@ class NewPuzzleGenerator {
             // Case very heavy puzzle generated
             let veryHeavySend = JSON.parse(JSON.stringify(puzzleRecord));
             command = await this.send2Main(veryHeavySend);
-            if (command !== 'stopGeneration') {
+          
+            if (command == 'proceedGeneration') {
                 // A very heavy puzzle can be made into a unsolvable puzzle 
                 // by adding a changed solved cell to the givens.
                 let unsolvableSend = this.changedSolvedCell2given(veryHeavySend);
