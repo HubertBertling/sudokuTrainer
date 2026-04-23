@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.39';
+let VERSION = 'v1.8.40';
 
 // ==========================================
 // Basic classes
@@ -941,7 +941,7 @@ class StepperOnGrid {
         let selectionList = [];
         for (let i = 0; i < 81; i++) {
             if (sudoApp.mySolver.myGrid.sudoCells[i].getValue() == '0') {
-                 // && (sudoApp.mySolver.myGrid.sudoCells[i].getCandidates().size < 3)) {
+                // && (sudoApp.mySolver.myGrid.sudoCells[i].getCandidates().size < 3)) {
                 let selection = {
                     index: i,
                     options: Array.from(sudoApp.mySolver.myGrid.sudoCells[i].getTotalCandidates()),
@@ -4203,98 +4203,85 @@ class NewPuzzleBuffer {
         );
     }
 
+
+
+
     onPuzzleGenerated(event) {
         // The puzzle generator worker has sent new puzzle
         let request = JSON.parse(event.data);
-        if (request.name == 'puzzleGenerated') {
-            try {
-                let puzzleRecord = request.value;
-                // console.log('--- push ---level---(vorher)    ' + puzzleRecord.preRunRecord.level);
-                switch (puzzleRecord.preRunRecord.level) {
-                    case 'Unlösbar': {
-                        sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-                        break;
-                    }
-                    case 'Sehr leicht': {
-                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-                        break;
-                    }
-                    case 'Leicht': {
-                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-                        break;
-                    }
-                    case 'Mittel': {
-                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
 
-                        break;
-                    }
-                    case 'Schwer': {
-                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-
-                        break;
-                    }
-                    case 'Sehr schwer': {
-                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-
-                        break;
-                    }
-                    case 'Extrem schwer': {
-                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.push(puzzleRecord);
-                        if (sudoApp.myNewPuzzleDlg.myOpen) {
-                            sudoApp.myNewPuzzleDlg.upDate();
-                        }
-                        break;
-                    }
-                    default: {
-                        throw new Error('Unexpected difficulty: '
-                            + puzzleRecord.preRunRecord.level);
-                    }
+        try {
+            switch (request.name) {
+                case 'puzzleGenerated_Unlösbar': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.push(puzzleRecord);
+                    break;
                 }
-                // sudoApp.myNewPuzzleBuffer.logPuzzleStore('--- ' + puzzleRecord.preRunRecord.level + ' ---');
-                // console.log('--- push ---level---    ' + puzzleRecord.preRunRecord.level);
-                let response = undefined;
-                if (sudoApp.myNewPuzzleBuffer.isFilled()) {
-                    sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
+                case 'puzzleGenerated_Sehr_leicht': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.push(puzzleRecord);
+                    break;
                 }
-                //Trailing messages may not take back the first stop message
-                if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
-                    response = {
-                        name: 'stopGeneration',
-                        value: ''
-                    }
-                } else {
-                    response = {
-                        name: 'proceedGeneration',
-                        value: ''
-                    }
+                case 'puzzleGenerated_Leicht': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.mySimplePuzzles.push(puzzleRecord);
+                    break;
                 }
-                if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
-                let str_response = JSON.stringify(response);
-                // The serialized puzzle is sent as a message to Main
-                // respond on the received port
-                event.ports[0].postMessage({ result: str_response });
-                event.ports[0].close();
-            } catch (event) {
-                event.ports[0].postMessage({ error: e });
+                case 'puzzleGenerated_Mittel': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myMediumPuzzles.push(puzzleRecord);
+                    break;
+                }
+                case 'puzzleGenerated_Schwer': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.push(puzzleRecord);
+                    break;
+                }
+                case 'puzzleGenerated_Sehr_schwer': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.push(puzzleRecord);
+                    break;
+                }
+                case 'puzzleGenerated_Extrem_schwer': {
+                    let puzzleRecord = request.value;
+                    sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.push(puzzleRecord);
+                    break;
+                }
+                default: {
+                    throw new Error('Unexpected message name: '
+                        + request.name);
+                }
             }
+
+            // console.log('-----> onPuzzleGenerated: ' + request.name);
+            if (sudoApp.myNewPuzzleDlg.myOpen) {
+                sudoApp.myNewPuzzleDlg.upDate();
+            }
+
+            let response = undefined;
+            if (sudoApp.myNewPuzzleBuffer.isFilled()) {
+                sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
+            }
+            //Trailing messages may not take back the first stop message
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
+                response = {
+                    name: 'stopGeneration',
+                    value: ''
+                }
+            } else {
+                response = {
+                    name: 'proceedGeneration',
+                    value: ''
+                }
+            }
+            if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
+            let str_response = JSON.stringify(response);
+            // The serialized puzzle is sent as a message to Main
+            // respond on the received port
+            event.ports[0].postMessage({ result: str_response });
+            event.ports[0].close();
+        } catch (event) {
+            event.ports[0].postMessage({ error: e });
         }
     }
 
@@ -4340,7 +4327,7 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-       
+
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
     }
 

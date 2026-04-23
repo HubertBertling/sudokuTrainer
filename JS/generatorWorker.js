@@ -20,7 +20,6 @@ class SudokuGeneratorApp {
     }
 
     startPuzzleGenerator() {
-        ;
         this.myNewPuzzleGenerator.start();
     }
 
@@ -135,7 +134,7 @@ class NewPuzzleGenerator {
             // Case very heavy puzzle generated
             let veryHeavySend = JSON.parse(JSON.stringify(puzzleRecord));
             command = await this.send2Main(veryHeavySend);
-          
+
             if (command == 'proceedGeneration') {
                 // A very heavy puzzle can be made into a unsolvable puzzle 
                 // by adding a changed solved cell to the givens.
@@ -165,8 +164,43 @@ class NewPuzzleGenerator {
             };
             // Post the newly generated puzzle to main
             let request = {
-                name: 'puzzleGenerated',
+                name: '',
                 value: puzzleRecord
+            }
+
+            switch (puzzleRecord.preRunRecord.level) {
+                case 'Unlösbar': {
+                    request.name = 'puzzleGenerated_Unlösbar';
+                    break;
+                }
+                case 'Sehr leicht': {
+                    request.name = 'puzzleGenerated_Sehr_leicht';
+                    break;
+                }
+                case 'Leicht': {
+                    request.name = 'puzzleGenerated_Leicht';
+                    break;
+                }
+                case 'Mittel': {
+                    request.name = 'puzzleGenerated_Mittel';
+                    break;
+                }
+                case 'Schwer': {
+                    request.name = 'puzzleGenerated_Schwer';
+                    break;
+                }
+                case 'Sehr schwer': {
+                    request.name = 'puzzleGenerated_Sehr_schwer';
+                    break;
+                }
+                case 'Extrem schwer': {
+                    request.name = 'puzzleGenerated_Extrem_schwer';
+                    break;
+                }
+                default: {
+                    throw new Error('Unexpected difficulty: '
+                        + puzzleRecord.preRunRecord.level);
+                }
             }
             let str_request = JSON.stringify(request);
             self.postMessage(str_request, [channel.port2]);
