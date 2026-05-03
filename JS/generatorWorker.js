@@ -121,11 +121,15 @@ class NewPuzzleGenerator {
     }
 
     async generatePz() {
-        if (this.myPuzzleRecordBuffer.length == 0) {
+        if (this.myPuzzleRecordBuffer.length < 2) {
             // Generate the next puzzle while waiting for the cammand from main.
             this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+            // console.log('PUSH: ' + this.myPuzzleRecordBuffer.length);
+    
         }
         let puzzleRecord = this.myPuzzleRecordBuffer.shift();
+        //console.log('SHIFT: ' + this.myPuzzleRecordBuffer.length);
+
         let command = undefined;
 
         if (puzzleRecord.preRunRecord.level == 'Leicht') {
@@ -148,6 +152,8 @@ class NewPuzzleGenerator {
 
             // Generate the next puzzle while waiting for the cammand from main.
             this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+            // console.log('PUSH: ' + this.myPuzzleRecordBuffer.length);
+     
             command = await commandPromiseSimplePuzzle;
             command = await commandPromiseVerySimplePuzzle;
             command = await commandPromiseExtremeHeavyRecord;
@@ -174,12 +180,16 @@ class NewPuzzleGenerator {
             let commandPromiseNormalPuzzleRecord = this.send2Main(normalPuzzleRecord);
 
             // Generate the next puzzle while waiting for the cammand from main.
-            this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+            if (this.myPuzzleRecordBuffer.length < 2) {
+                // Generate the next puzzle while waiting for the cammand from main.
+                this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+                // console.log('PUSH: ' + this.myPuzzleRecordBuffer.length);
+            }
             command = await commandPromiseNormalPuzzleRecord;
         }
         return command;
     }
-    
+
     async send2Main(puzzleRecord) {
         if (puzzleRecord !== undefined) {
             let sendToMain = () => new Promise(function (myResolve, myReject) {
