@@ -35,6 +35,8 @@ class SudokuGeneratorApp {
 
 class NewPuzzleGenerator {
     constructor() {
+        this.myPuzzleRecordBuffer = [];
+
     }
 
     simplifyPuzzleByNrOfCells(nr, puzzleRecord) {
@@ -95,10 +97,18 @@ class NewPuzzleGenerator {
         }
     }
 
+    /*
+    Start: generieren 
+               senden generieren warten 
+
+     Stopp: stop 
+     Continue: senden-generieren-warten
+     */
+
     async start() {
-        let commandFromMain = 'proceedGeneration';
+        let commandFromMain = undefined;
         while (commandFromMain == 'proceedGeneration'
-            || commandFromMain == undefined
+            || commandFromMain == undefined // The first time, there is no command from main, but the generator should start anyway.
         ) {
             commandFromMain = await this.generatePz();
         }
@@ -111,104 +121,132 @@ class NewPuzzleGenerator {
     }
 
     async generatePz() {
-        let puzzleRecord = sudoApp.mySolver.generatePuzzle();
-        let command = 'proceedGeneration';
+        if (this.myPuzzleRecordBuffer.length == 0) {
+            // Generate the next puzzle while waiting for the cammand from main.
+            this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+        }
+        let puzzleRecord = this.myPuzzleRecordBuffer.shift();
+        let command = undefined;
+
         if (puzzleRecord.preRunRecord.level == 'Leicht') {
             // Case simple puzzle generated
-            let simpleSend1 = JSON.parse(JSON.stringify(puzzleRecord));
-            command = await this.send2Main(simpleSend1);
-            if (command == 'proceedGeneration') {
-                // A simple puzzle can be made into a very simple puzzle 
-                // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-                let verySimpleSend2 = this.simplifyPuzzleByNrOfCells(7, simpleSend1);
-                verySimpleSend2.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(verySimpleSend2);
-            }
-            if (command == 'proceedGeneration') {
-                // A simple puzzle can be made to extremeHeavy by deleting one given
-                let extremeHeavySend3 = this.deleteOnePuzzleCell(simpleSend1);
-                extremeHeavySend3.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(extremeHeavySend3);
-            }
+
+            let simplePuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
+            simplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            let commandPromiseSimplePuzzle = this.send2Main(simplePuzzleRecord);
+
+            // A simple puzzle can be made into a very simple puzzle 
+            // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
+            let verySimplePuzzleRecord = this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
+            verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            let commandPromiseVerySimplePuzzle = this.send2Main(verySimplePuzzleRecord);
+
+            // A simple puzzle can be made to extremeHeavy by deleting one given
+            let extremeHeavyRecord = this.deleteOnePuzzleCell(simplePuzzleRecord);
+            extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            let commandPromiseExtremeHeavyRecord = this.send2Main(extremeHeavyRecord);
+
+            // Generate the next puzzle while waiting for the cammand from main.
+            this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+            command = await commandPromiseSimplePuzzle;
+            command = await commandPromiseVerySimplePuzzle;
+            command = await commandPromiseExtremeHeavyRecord;
+
         } else if (puzzleRecord.preRunRecord.level == 'Sehr schwer') {
             // Case very heavy puzzle generated
-            let veryHeavySend = JSON.parse(JSON.stringify(puzzleRecord));
-            command = await this.send2Main(veryHeavySend);
+            let veryHeavyRecord = JSON.parse(JSON.stringify(puzzleRecord));
+            // A very heavy puzzle can be made into a unsolvable puzzle 
+            // by adding a changed solved cell to the givens.
+            let unsolvableRecord = this.changedSolvedCell2given(veryHeavyRecord);
+            unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-            if (command == 'proceedGeneration') {
-                // A very heavy puzzle can be made into a unsolvable puzzle 
-                // by adding a changed solved cell to the givens.
-                let unsolvableSend = this.changedSolvedCell2given(veryHeavySend);
-                unsolvableSend.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(unsolvableSend);
-            }
+            let commandPromiseVeryHeavyRecord = this.send2Main(veryHeavyRecord);
+            let commandPromiseUnsolvableRecord = this.send2Main(unsolvableRecord);
+            // Generate the next puzzle while waiting for the cammand from main.
+
+            command = await commandPromiseVeryHeavyRecord;
+            command = await commandPromiseUnsolvableRecord;
         }
         else if (puzzleRecord.preRunRecord.level !== 'Unlösbar'
             && puzzleRecord.preRunRecord.level !== 'Keine Angabe') {
             // The normal case
-            command = await this.send2Main(puzzleRecord);
+            let normalPuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
+            let commandPromiseNormalPuzzleRecord = this.send2Main(normalPuzzleRecord);
+
+            // Generate the next puzzle while waiting for the cammand from main.
+            this.myPuzzleRecordBuffer.push(sudoApp.mySolver.generatePuzzle());
+            command = await commandPromiseNormalPuzzleRecord;
         }
         return command;
     }
-
+    
     async send2Main(puzzleRecord) {
-        let sendToMain = () => new Promise(function (myResolve, myReject) {
-            const channel = new MessageChannel();
-            channel.port1.onmessage = ({ data }) => {
-                channel.port1.close();
-                if (data.error) {
-                    myReject(data.error);
-                } else {
-                    myResolve(data.result);
+        if (puzzleRecord !== undefined) {
+            let sendToMain = () => new Promise(function (myResolve, myReject) {
+                const channel = new MessageChannel();
+                channel.port1.onmessage = ({ data }) => {
+                    channel.port1.close();
+                    if (data.error) {
+                        myReject(data.error);
+                    } else {
+                        myResolve(data.result);
+                    }
+                };
+                // Post the newly generated puzzle to main
+                let request = {
+                    name: '',
+                    value: puzzleRecord
                 }
-            };
-            // Post the newly generated puzzle to main
-            let request = {
-                name: '',
-                value: puzzleRecord
-            }
 
-            switch (puzzleRecord.preRunRecord.level) {
-                case 'Unlösbar': {
-                    request.name = 'puzzleGenerated_Unlösbar';
-                    break;
+                switch (puzzleRecord.preRunRecord.level) {
+                    case 'Unlösbar': {
+                        request.name = 'puzzleGenerated_Unlösbar';
+                        break;
+                    }
+                    case 'Sehr leicht': {
+                        request.name = 'puzzleGenerated_Sehr_leicht';
+                        break;
+                    }
+                    case 'Leicht': {
+                        request.name = 'puzzleGenerated_Leicht';
+                        break;
+                    }
+                    case 'Mittel': {
+                        request.name = 'puzzleGenerated_Mittel';
+                        break;
+                    }
+                    case 'Schwer': {
+                        request.name = 'puzzleGenerated_Schwer';
+                        break;
+                    }
+                    case 'Sehr schwer': {
+                        request.name = 'puzzleGenerated_Sehr_schwer';
+                        break;
+                    }
+                    case 'Extrem schwer': {
+                        request.name = 'puzzleGenerated_Extrem_schwer';
+                        break;
+                    }
+                    case 'Keine Angabe': {
+                        request.name = 'puzzleGenerated_Keine_Angabe';
+                        break;
+                    }
+                    default: {
+                        throw new Error('Unexpected difficulty: '
+                            + puzzleRecord.preRunRecord.level);
+                    }
                 }
-                case 'Sehr leicht': {
-                    request.name = 'puzzleGenerated_Sehr_leicht';
-                    break;
-                }
-                case 'Leicht': {
-                    request.name = 'puzzleGenerated_Leicht';
-                    break;
-                }
-                case 'Mittel': {
-                    request.name = 'puzzleGenerated_Mittel';
-                    break;
-                }
-                case 'Schwer': {
-                    request.name = 'puzzleGenerated_Schwer';
-                    break;
-                }
-                case 'Sehr schwer': {
-                    request.name = 'puzzleGenerated_Sehr_schwer';
-                    break;
-                }
-                case 'Extrem schwer': {
-                    request.name = 'puzzleGenerated_Extrem_schwer';
-                    break;
-                }
-                default: {
-                    throw new Error('Unexpected difficulty: '
-                        + puzzleRecord.preRunRecord.level);
-                }
-            }
-            let str_request = JSON.stringify(request);
-            self.postMessage(str_request, [channel.port2]);
-        });
-        //Receive main command 'proceedGeneration' or 'stopGeneration'
-        let str_response = await sendToMain();
-        let response = JSON.parse(str_response);
-        return response.name;
+
+                let str_request = JSON.stringify(request);
+                self.postMessage(str_request, [channel.port2]);
+            });
+            //Receive main command 'proceedGeneration' or 'stopGeneration'
+            let str_response = await sendToMain();
+            let response = JSON.parse(str_response);
+            return response.name;
+        } else {
+            throw new Error('puzzleRecord: ' + puzzleRecord);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.40';
+let VERSION = 'v1.8.41';
 
 // ==========================================
 // Basic classes
@@ -495,18 +495,37 @@ class Search {
     }
 
     getLevel() {
-        if (this.isCompleted() && this.getNumberOfSolutions() == 0) {
-            return 'Unlösbar';
-        } else if (this.isCompleted() && this.getNumberOfSolutions() > 1) {
-            return 'Extrem schwer';
-        } else if (this.isCompleted()
-            && this.myStepper.maxSelectionDifficulty == 'Leicht'
-            && sudoApp.mySolver.myGrid.canTakeBackGivenCells()) {
-            return 'Sehr leicht';
-        } else {
-            return this.myStepper.maxSelectionDifficulty;
+        if (this.isCompleted()) {
+            if (this.getNumberOfSolutions() == 0) {
+                return 'Unlösbar';
+            } else if (this.getNumberOfSolutions() > 1) {
+                return 'Extrem schwer';
+            } else if (this.getNumberOfSolutions() == 1) {
+                switch (this.myStepper.maxSelectionDifficulty) {
+                    case 'msd_Leicht': {
+                        if (sudoApp.mySolver.myGrid.canTakeBackGivenCells()) {
+                            return 'Sehr leicht';
+                        } else {
+                            return 'Leicht'
+                        }
+                    }
+                    case 'msd_Mittel': {
+                        return 'Mittel';
+                    }
+                    case 'msd_Schwer': {
+                        return 'Schwer';
+                    }
+                    case 'msd_Sehr_schwer': {
+                        return 'Sehr schwer';
+                    }
+                    default: {
+                        throw new Error('Unexpected maxSelectionDifficulty: ' + this.myStepper.maxSelectionDifficulty);
+                    }
+                }
+            }
         }
     }
+
     getOptionPath() {
         return this.myStepper.getOptionPath();
     }
@@ -578,7 +597,7 @@ class StepperOnGrid {
         this.lastSearch = undefined;
         this.myBackTracker;
         this.goneSteps = 0;
-        this.maxSelectionDifficulty = 'Leicht';
+        this.maxSelectionDifficulty = 'msd_Leicht';
         this.countBackwards = 0;
         this.autoDirection = 'forward';
         this.init();
@@ -588,7 +607,7 @@ class StepperOnGrid {
         this.lastNumberSet = '0';
         this.countBackwards = 0;
         this.autoDirection = 'forward';
-        this.maxSelectionDifficulty = 'Leicht';
+        this.maxSelectionDifficulty = 'msd_Leicht';
         // The stepper always owns an actual backTracker
         this.myBackTracker = new BackTracker();
     }
@@ -968,7 +987,7 @@ class StepperOnGrid {
             return emptySelection;
         }
         // maxSelectionDifficulty one of 
-        // {'Leicht','Mittel','Schwer','Sehr schwer'}.
+        // {'msd_Leicht','Mittel','Schwer','Sehr schwer'}.
         // Hint: do not confuse puzzle level with maxSelectionDifficulty.
         // The puzzle level has two more values:'Sehr leicht' and 'Extrem schwer'.
         let tmpNeccessary = this.calculateNeccesarySelectionFrom(optionList);
@@ -979,8 +998,8 @@ class StepperOnGrid {
         let tmpLevel_0_single = this.calculateLevel_0_SinglesSelectionFrom(optionList);
         if (tmpLevel_0_single.index !== -1) {
             switch (this.maxSelectionDifficulty) {
-                case 'Leicht': {
-                    this.maxSelectionDifficulty = 'Mittel';
+                case 'msd_Leicht': {
+                    this.maxSelectionDifficulty = 'msd_Mittel';
                     break;
                 }
                 default: {
@@ -995,9 +1014,9 @@ class StepperOnGrid {
         let oneOption = this.calculateOneOptionSelectionFrom(optionList);
         if (oneOption.index !== -1) {
             switch (this.maxSelectionDifficulty) {
-                case 'Leicht':
-                case 'Mittel': {
-                    this.maxSelectionDifficulty = 'Schwer';
+                case 'msd_Leicht':
+                case 'msd_Mittel': {
+                    this.maxSelectionDifficulty = 'msd_Schwer';
                     break;
                 }
                 default: {
@@ -1013,10 +1032,10 @@ class StepperOnGrid {
         // This cell is not unique
         // This cell can be one with the full option set
         switch (this.maxSelectionDifficulty) {
-            case 'Leicht':
-            case 'Mittel':
-            case 'Schwer': {
-                this.maxSelectionDifficulty = 'Sehr schwer';
+            case 'msd_Leicht':
+            case 'msd_Mittel':
+            case 'msd_Schwer': {
+                this.maxSelectionDifficulty = 'msd_Sehr_schwer';
                 break;
             }
             default: {
@@ -4080,10 +4099,10 @@ class NewPuzzleBuffer {
         this.webworkerGenerator_1 = null;
         this.webworkerGenerator_2 = null;
         this.webworkerGenerator_3 = null;
-        this.webworkerGenerator_4 = null;
+        /* this.webworkerGenerator_4 = null;
         this.webworkerGenerator_5 = null;
         this.webworkerGenerator_6 = null;
-
+        */
         this.webworkerGeneratorStopRequested = false;
     }
 
@@ -4306,7 +4325,7 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-
+        /*
         this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
         console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
         this.webworkerGenerator_4.addEventListener(
@@ -4327,7 +4346,7 @@ class NewPuzzleBuffer {
             "message",
             this.onPuzzleGenerated,
             false);
-
+        */
         sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
     }
 
@@ -4565,10 +4584,11 @@ class SudokuSolver {
 
     computePreRunRecord() {
         let preRunRecord = this.computeBasicPreRunRecord();
-        if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
-            // A non-minimal simple puzzle is called very simple.
-            preRunRecord.level = 'Sehr leicht';
-        }
+        /*    if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
+                // A non-minimal simple puzzle is called very simple.
+                preRunRecord.level = 'Sehr leicht';
+            }
+                */
         return preRunRecord;
     }
 
