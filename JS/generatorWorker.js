@@ -148,9 +148,9 @@ class NewPuzzleGenerator {
 
         let simplePuzzleRecord = undefined;
         if (puzzleRecord.preRunRecord.level == 'Leicht') {
+            simplePuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
+            simplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
             if (main_simplePuzzles < 1) {
-                simplePuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
-                simplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
                 command = await this.send2Main(simplePuzzleRecord);
             }
             if (main_verySimplePuzzles < 1) {

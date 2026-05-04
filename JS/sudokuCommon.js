@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.45';
+let VERSION = 'v1.8.46';
 
 // ==========================================
 // Basic classes
@@ -4270,6 +4270,10 @@ class NewPuzzleBuffer {
                     throw new Error('Unexpected message name: '
                         + request.name);
                 }
+            }
+
+            if (sudoApp.myNewPuzzleBuffer.isFilled()) {
+                sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
             }
 
             // console.log('-----> onPuzzleGenerated: ' + request.name);
