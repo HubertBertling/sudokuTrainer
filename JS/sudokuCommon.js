@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.42';
+let VERSION = 'v1.8.43';
 
 // ==========================================
 // Basic classes
@@ -4285,12 +4285,28 @@ class NewPuzzleBuffer {
             if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
                 response = {
                     name: 'stopGeneration',
-                    value: ''
+                    value: [
+                        sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length
+                    ]
                 }
             } else {
                 response = {
                     name: 'proceedGeneration',
-                    value: ''
+                    value: [
+                        sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length,
+                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length
+                    ]
                 }
             }
             if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
