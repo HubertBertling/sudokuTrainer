@@ -102,36 +102,25 @@ class NewPuzzleGenerator {
             name: 'proceedGeneration',
             value: [0, 0, 0, 0, 0, 0, 0]
         }
-        while (!this.mainBufferisFilled(commandFromMain.value)) {
-            commandFromMain = await this.generatePz(commandFromMain.value);
-        }
-        console.log('---> generatorWorker <--- has been stopped.')
-        self.close();
-    }
-
-    mainBufferisFilled(mainBuffer) {
-        for (let i = 0; i < mainBuffer.length; i++) {
-            if (mainBuffer[i] < 1) {
-                return false;
+        while (true) {
+            let command = await this.generatePz(commandFromMain);
+            if (command.name == 'stopGeneration') {
+                console.log('---> generatorWorker <--- has been stopped.')
+                self.close();
+            } else if (command.name == 'proceedGeneration') {
+                commandFromMain = command;
             }
         }
-        return true;
     }
 
-
-    async generatePz(commandValue) {
-        let command = {
-            name: 'proceedGeneration',
-            value: commandValue
-        };
-
+    async generatePz(previousCommand) {
         let [main_unsolvablePuzzles,
             main_verySimplePuzzles,
             main_simplePuzzles,
             main_mediumPuzzles,
             main_heavyPuzzles,
             main_veryHeavyPuzzles,
-            main_extremeHeavyPuzzles] = commandValue;
+            main_extremeHeavyPuzzles] = previousCommand.value;
 
         // If the local buffer of generated puzzles is empty, generate a new puzzle.
         if (this.myPuzzleRecordBuffer.length < 2) {
@@ -141,6 +130,10 @@ class NewPuzzleGenerator {
 
         }
 
+        let newCommand = {
+            name: 'proceedGeneration',
+            value: [0, 0, 0, 0, 0, 0, 0]
+        }
         // Take the first puzzle record from the local buffer and send it to main.
         let puzzleRecord = this.myPuzzleRecordBuffer.shift();
         // console.log('SHIFT: ' + this.myPuzzleRecordBuffer.length);
@@ -151,47 +144,53 @@ class NewPuzzleGenerator {
             simplePuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
             simplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
             if (main_simplePuzzles < 1) {
-                command = await this.send2Main(simplePuzzleRecord);
+                newCommand = await this.send2Main(simplePuzzleRecord);
             }
             if (main_verySimplePuzzles < 1) {
                 // A simple puzzle can be made into a very simple puzzle 
                 // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
                 let verySimplePuzzleRecord = this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
                 verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(verySimplePuzzleRecord);
+                newCommand = await this.send2Main(verySimplePuzzleRecord);
             }
             if (main_extremeHeavyPuzzles < 1) {
                 // A simple puzzle can be made to extremeHeavy by deleting one given
                 let extremeHeavyRecord = this.deleteOnePuzzleCell(simplePuzzleRecord);
                 extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(extremeHeavyRecord);
+                newCommand = await this.send2Main(extremeHeavyRecord);
             }
         } else if (puzzleRecord.preRunRecord.level == 'Sehr schwer') {
-            let veryHeavyRecord = undefined;
-            let unsolvableRecord = undefined;
+            // Case very heavy puzzle generated
+            let veryHeavyRecord = JSON.parse(JSON.stringify(puzzleRecord));
+            veryHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            // A very heavy puzzle can be made into a unsolvable puzzle 
+            // by adding a changed solved cell to the givens.
+            let unsolvableRecord = this.changedSolvedCell2given(veryHeavyRecord);
+            unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
             if (main_veryHeavyPuzzles < 1) {
-                // Case very heavy puzzle generated
-                veryHeavyRecord = JSON.parse(JSON.stringify(puzzleRecord));
-                // A very heavy puzzle can be made into a unsolvable puzzle 
-                // by adding a changed solved cell to the givens.
-                unsolvableRecord = this.changedSolvedCell2given(veryHeavyRecord);
-                unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                command = await this.send2Main(veryHeavyRecord);
+                newCommand = await this.send2Main(veryHeavyRecord);
             }
             if (main_unsolvablePuzzles < 1) {
-                command = await this.send2Main(unsolvableRecord);
+                newCommand = await this.send2Main(unsolvableRecord);
             }
         }
-        else if (main_mediumPuzzles < 1 && puzzleRecord.preRunRecord.level == 'Mittel') {
+        else if (puzzleRecord.preRunRecord.level == 'Mittel') {
             // Case medium puzzle generated
             let mediumPuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
-            command = await this.send2Main(mediumPuzzleRecord);
-        } else if (main_heavyPuzzles < 1 && puzzleRecord.preRunRecord.level == 'Schwer') {
+            mediumPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            if (main_mediumPuzzles < 1) {
+                newCommand = await this.send2Main(mediumPuzzleRecord);
+            }
+        } else if (puzzleRecord.preRunRecord.level == 'Schwer') {
             // Case heavy puzzle generated
             let heavyPuzzleRecord = JSON.parse(JSON.stringify(puzzleRecord));
-            command = await this.send2Main(heavyPuzzleRecord);
+            heavyPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+            if (main_heavyPuzzles < 1) {
+                newCommand = await this.send2Main(heavyPuzzleRecord);
+            }
         }
-        return command;
+        return newCommand;
     }
 
     async send2Main(puzzleRecord) {
@@ -256,10 +255,9 @@ class NewPuzzleGenerator {
                 // console.log('Request ' + request.name);
             });
             //Receive main command 'proceedGeneration' or 'stopGeneration'
-            let str_response = await sendToMain();
-            let response = JSON.parse(str_response);
-            // return response.name;
-            return response;
+            let str_commandFromMain = await sendToMain();
+            let commandFromMain = JSON.parse(str_commandFromMain);
+            return commandFromMain;
         } else {
             throw new Error('puzzleRecord: ' + puzzleRecord);
         }
