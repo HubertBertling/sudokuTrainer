@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.8.44';
+let VERSION = 'v1.8.45';
 
 // ==========================================
 // Basic classes
@@ -4277,39 +4277,20 @@ class NewPuzzleBuffer {
                 sudoApp.myNewPuzzleDlg.upDate();
             }
 
-            let response = undefined;
-            if (sudoApp.myNewPuzzleBuffer.isFilled()) {
-                sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = true;
+            let response = {
+                name: 'proceedGeneration',
+                value: [
+                    sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length,
+                    sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length
+                ]
             }
-            //Trailing messages may not take back the first stop message
-            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
-                response = {
-                    name: 'stopGeneration',
-                    value: [
-                        sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length
-                    ]
-                }
-            } else {
-                response = {
-                    name: 'proceedGeneration',
-                    value: [
-                        sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myVerySimplePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.mySimplePuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myMediumPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myHeavyPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myVeryHeavyPuzzles.length,
-                        sudoApp.myNewPuzzleBuffer.myExtremeHeavyPuzzles.length
-                    ]
-                }
-            }
-            if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
+
+            //    if (response == undefined) { console.log('-----> onPuzzleGenerated response == undefined') };
             let str_response = JSON.stringify(response);
             // The serialized puzzle is sent as a message to Main
             // respond on the received port

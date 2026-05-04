@@ -102,16 +102,22 @@ class NewPuzzleGenerator {
             name: 'proceedGeneration',
             value: [0, 0, 0, 0, 0, 0, 0]
         }
-        while (commandFromMain.name == 'proceedGeneration') {
+        while (!this.mainBufferisFilled(commandFromMain.value)) {
             commandFromMain = await this.generatePz(commandFromMain.value);
         }
-        if (commandFromMain.name == 'stopGeneration') {
-            console.log('---> generatorWorker <--- has been stopped.')
-            self.close();
-        } else {
-            console.log('GENERATOR: Unexpected Command from main: ' + commandFromMain);
-        }
+        console.log('---> generatorWorker <--- has been stopped.')
+        self.close();
     }
+
+    mainBufferisFilled(mainBuffer) {
+        for (let i = 0; i < mainBuffer.length; i++) {
+            if (mainBuffer[i] < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     async generatePz(commandValue) {
         let command = {
@@ -187,7 +193,7 @@ class NewPuzzleGenerator {
         }
         return command;
     }
-    
+
     async send2Main(puzzleRecord) {
         if (puzzleRecord !== undefined) {
             let sendToMain = () => new Promise(function (myResolve, myReject) {
