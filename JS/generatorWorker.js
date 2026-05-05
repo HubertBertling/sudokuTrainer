@@ -104,10 +104,7 @@ class NewPuzzleGenerator {
         }
         while (true) {
             let command = await this.generatePz(commandFromMain);
-            if (command.name == 'stopGeneration') {
-                console.log('---> generatorWorker <--- has been stopped.')
-                self.close();
-            } else if (command.name == 'proceedGeneration') {
+            if (command.name == 'proceedGeneration') {
                 commandFromMain = command;
             }
         }
@@ -145,6 +142,10 @@ class NewPuzzleGenerator {
             simplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
             if (main_simplePuzzles < 1) {
                 newCommand = await this.send2Main(simplePuzzleRecord);
+                if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
             }
             if (main_verySimplePuzzles < 1) {
                 // A simple puzzle can be made into a very simple puzzle 
@@ -152,12 +153,21 @@ class NewPuzzleGenerator {
                 let verySimplePuzzleRecord = this.simplifyPuzzleByNrOfCells(7, simplePuzzleRecord);
                 verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
                 newCommand = await this.send2Main(verySimplePuzzleRecord);
+                    if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
             }
             if (main_extremeHeavyPuzzles < 1) {
                 // A simple puzzle can be made to extremeHeavy by deleting one given
                 let extremeHeavyRecord = this.deleteOnePuzzleCell(simplePuzzleRecord);
                 extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
                 newCommand = await this.send2Main(extremeHeavyRecord);
+                    if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
+          
             }
         } else if (puzzleRecord.preRunRecord.level == 'Sehr schwer') {
             // Case very heavy puzzle generated
@@ -170,9 +180,18 @@ class NewPuzzleGenerator {
 
             if (main_veryHeavyPuzzles < 1) {
                 newCommand = await this.send2Main(veryHeavyRecord);
+                    if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
+          
             }
             if (main_unsolvablePuzzles < 1) {
                 newCommand = await this.send2Main(unsolvableRecord);
+                if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
             }
         }
         else if (puzzleRecord.preRunRecord.level == 'Mittel') {
@@ -181,6 +200,10 @@ class NewPuzzleGenerator {
             mediumPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
             if (main_mediumPuzzles < 1) {
                 newCommand = await this.send2Main(mediumPuzzleRecord);
+                if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
             }
         } else if (puzzleRecord.preRunRecord.level == 'Schwer') {
             // Case heavy puzzle generated
@@ -188,6 +211,10 @@ class NewPuzzleGenerator {
             heavyPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
             if (main_heavyPuzzles < 1) {
                 newCommand = await this.send2Main(heavyPuzzleRecord);
+                if (newCommand.name == 'stopGeneration') {
+                    console.log('---> generatorWorker <--- has been stopped.')
+                    self.close();
+                }
             }
         }
         return newCommand;
