@@ -274,6 +274,9 @@ button:active {
 
 .manual-btn-body-block {
     width: 100%;
+    flex: 1;
+    overflow-y: auto;
+   
 }
 
 
@@ -920,7 +923,7 @@ Für Text: color: #222; oder color: #424242;
 #manual-btn-block {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-    grid-gap: 0.4rem;
+    grid-gap: 0.6rem;
     background: var(--manual-solver);
     padding-left: 1rem;
     padding-right: 1rem;
@@ -972,10 +975,10 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.4rem;
+    gap: 0.6rem;
     width: 100%;
     background: var(--manual-solver);
-    padding-top: 0.4rem;
+    padding-top: 0.6rem;
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 1rem;
@@ -2152,9 +2155,9 @@ Für Text: color: #222; oder color: #424242;
         /* Verhindert in manchen Browsern das "Bounce"-Scrolling */
 
         /*  height: 100dvh; */
-        max-width: 100vw;
-        aspect-ratio: 1 / 1.8;
-        width: auto;
+        /* max-width: 880px; */
+        aspect-ratio: 1 / 1.9;
+        max-width: calc(min(880px, 98dvw));
 
         margin: 0 auto;
     }
@@ -2203,9 +2206,8 @@ Für Text: color: #222; oder color: #424242;
     .app-content {
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
-        width: calc(min(98vw, 1024px));
         margin: 0 auto;
-
+        min-width: 880px;
     }
 
     #automatic-btn-block {
