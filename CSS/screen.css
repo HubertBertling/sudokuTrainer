@@ -2207,7 +2207,7 @@ Für Text: color: #222; oder color: #424242;
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
         margin: 0 auto;
-        min-width: 880px;
+        min-width: 940px;
     }
 
     #automatic-btn-block {
