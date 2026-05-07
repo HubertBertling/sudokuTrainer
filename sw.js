@@ -9,7 +9,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1.8.50';
+var VERSION = 'version_1.8.51';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -62,94 +62,94 @@ var URLS = [
   `${GHPATH}/images/undo.png`,
   `${GHPATH}/images/upload.png`,
   `${GHPATH}/images/zahnrad.png`,
-  `${GHPATH}/imagesHelp/actionFiles.png`, 
-  `${GHPATH}/imagesHelp/appView1.png`, 
-  `${GHPATH}/imagesHelp/appView2.png`, 
-  `${GHPATH}/imagesHelp/appView3.png`, 
+  `${GHPATH}/imagesHelp/actionFiles.png`,
+  `${GHPATH}/imagesHelp/appView1.png`,
+  `${GHPATH}/imagesHelp/appView2.png`,
+  `${GHPATH}/imagesHelp/appView3.png`,
   `${GHPATH}/imagesHelp/appZiele.png`,
-  `${GHPATH}/imagesHelp/architecture.png`, 
+  `${GHPATH}/imagesHelp/architecture.png`,
   `${GHPATH}/imagesHelp/autoSelected.png`,
   `${GHPATH}/imagesHelp/autoSelectedLazy.png`,
-  `${GHPATH}/imagesHelp/breakpointSettings.png`, 
-  `${GHPATH}/imagesHelp/closeSolver.png`, 
-  `${GHPATH}/imagesHelp/conflct.png`, 
+  `${GHPATH}/imagesHelp/breakpointSettings.png`,
+  `${GHPATH}/imagesHelp/closeSolver.png`,
+  `${GHPATH}/imagesHelp/conflct.png`,
   `${GHPATH}/imagesHelp/chromeInstall1.png`,
-  `${GHPATH}/imagesHelp/define.png`, 
-  `${GHPATH}/imagesHelp/definedCell.png`, 
-  `${GHPATH}/imagesHelp/downloadDB.png`, 
-  `${GHPATH}/imagesHelp/einstellungKandidatenAuswertung.png`, 
-  `${GHPATH}/imagesHelp/eliminierbarerKandidat.png`, 
-  `${GHPATH}/imagesHelp/exampleStep0.png`, 
-  `${GHPATH}/imagesHelp/exampleStep1_a.png`, 
-  `${GHPATH}/imagesHelp/exampleStep1_b.png`, 
-  `${GHPATH}/imagesHelp/generatingOnGoing.png`, 
-  `${GHPATH}/imagesHelp/generatingStopped.png`, 
-  `${GHPATH}/imagesHelp/given17geloest.png`, 
-  `${GHPATH}/imagesHelp/given17leicht.png`, 
+  `${GHPATH}/imagesHelp/define.png`,
+  `${GHPATH}/imagesHelp/definedCell.png`,
+  `${GHPATH}/imagesHelp/downloadDB.png`,
+  `${GHPATH}/imagesHelp/einstellungKandidatenAuswertung.png`,
+  `${GHPATH}/imagesHelp/eliminierbarerKandidat.png`,
+  `${GHPATH}/imagesHelp/exampleStep0.png`,
+  `${GHPATH}/imagesHelp/exampleStep1_a.png`,
+  `${GHPATH}/imagesHelp/exampleStep1_b.png`,
+  `${GHPATH}/imagesHelp/generatingOnGoing.png`,
+  `${GHPATH}/imagesHelp/generatingStopped.png`,
+  `${GHPATH}/imagesHelp/given17geloest.png`,
+  `${GHPATH}/imagesHelp/given17leicht.png`,
   `${GHPATH}/imagesHelp/given77extremSchwer.png`,
-  `${GHPATH}/imagesHelp/given77keineWeitereLoesung.png`, 
-  `${GHPATH}/imagesHelp/given77loesung1.png`, 
-  `${GHPATH}/imagesHelp/given77loesung2.png`, 
-  `${GHPATH}/imagesHelp/haltePunkteTaste.png`, 
-  `${GHPATH}/imagesHelp/hiddenpair.png`, 
-  `${GHPATH}/imagesHelp/indirect.png`, 
-  `${GHPATH}/imagesHelp/indirekterSingle.png`, 
-  `${GHPATH}/imagesHelp/indirektWegenPairing.png`, 
-  `${GHPATH}/imagesHelp/initialsieren.png`, 
-  `${GHPATH}/imagesHelp/install.png`, 
-  `${GHPATH}/imagesHelp/install2.png`, 
-  `${GHPATH}/imagesHelp/keineLoesung.png`, 
-  `${GHPATH}/imagesHelp/Kandidaten.png`, 
-  `${GHPATH}/imagesHelp/kriterium1.png`, 
-  `${GHPATH}/imagesHelp/kriterium2.png`, 
-  `${GHPATH}/imagesHelp/kriterium3.png`, 
-  `${GHPATH}/imagesHelp/lazynotwendig.png`, 
-  `${GHPATH}/imagesHelp/logischUnloesbar.png`, 
-  `${GHPATH}/imagesHelp/logischUnloesbarEindeutig.png`, 
-  `${GHPATH}/imagesHelp/logischUnloesbarKeineWeitereLoesung.png`, 
-  `${GHPATH}/imagesHelp/manualSelected.png`, 
+  `${GHPATH}/imagesHelp/given77keineWeitereLoesung.png`,
+  `${GHPATH}/imagesHelp/given77loesung1.png`,
+  `${GHPATH}/imagesHelp/given77loesung2.png`,
+  `${GHPATH}/imagesHelp/haltePunkteTaste.png`,
+  `${GHPATH}/imagesHelp/hiddenpair.png`,
+  `${GHPATH}/imagesHelp/indirect.png`,
+  `${GHPATH}/imagesHelp/indirekterSingle.png`,
+  `${GHPATH}/imagesHelp/indirektWegenPairing.png`,
+  `${GHPATH}/imagesHelp/initialsieren.png`,
+  `${GHPATH}/imagesHelp/install.png`,
+  `${GHPATH}/imagesHelp/install2.png`,
+  `${GHPATH}/imagesHelp/keineLoesung.png`,
+  `${GHPATH}/imagesHelp/Kandidaten.png`,
+  `${GHPATH}/imagesHelp/kriterium1.png`,
+  `${GHPATH}/imagesHelp/kriterium2.png`,
+  `${GHPATH}/imagesHelp/kriterium3.png`,
+  `${GHPATH}/imagesHelp/lazynotwendig.png`,
+  `${GHPATH}/imagesHelp/logischUnloesbar.png`,
+  `${GHPATH}/imagesHelp/logischUnloesbarEindeutig.png`,
+  `${GHPATH}/imagesHelp/logischUnloesbarKeineWeitereLoesung.png`,
+  `${GHPATH}/imagesHelp/manualSelected.png`,
   `${GHPATH}/imagesHelp/manualSelectedLazy.png`,
-  `${GHPATH}/imagesHelp/naechsterSchritt.png`, 
-  `${GHPATH}/imagesHelp/nakedSingle.png`, 
-  `${GHPATH}/imagesHelp/neccessary.png`, 
-  `${GHPATH}/imagesHelp/nextSolution.png`, 
-  `${GHPATH}/imagesHelp/nochoice.png`, 
-  `${GHPATH}/imagesHelp/nochoice2.png`, 
-  `${GHPATH}/imagesHelp/NotwendigerKandidat.png`, 
-  `${GHPATH}/imagesHelp/optionCell.png`, 
-  `${GHPATH}/imagesHelp/play.png`, 
-  `${GHPATH}/imagesHelp/playedCell.png`, 
-  `${GHPATH}/imagesHelp/pointingPair.png`, 
-  `${GHPATH}/imagesHelp/pruefungfehler.png`, 
-  `${GHPATH}/imagesHelp/PuzzleDB.png`, 
-  `${GHPATH}/imagesHelp/puzzlePrintDisplay.png`, 
-  `${GHPATH}/imagesHelp/schritt4_1.png`, 
-  `${GHPATH}/imagesHelp/schritt4_2.png`, 
-  `${GHPATH}/imagesHelp/schritt13_a.png`, 
-  `${GHPATH}/imagesHelp/schritt22_b.png`, 
-  `${GHPATH}/imagesHelp/schritt23_a.png`, 
-  `${GHPATH}/imagesHelp/Schritt43_a.png`, 
-  `${GHPATH}/imagesHelp/schritt43_b.png`, 
-  `${GHPATH}/imagesHelp/schritt224_b.png`, 
-  `${GHPATH}/imagesHelp/schrittSequenz.png`, 
-  `${GHPATH}/imagesHelp/shareButton.png`, 
-  `${GHPATH}/imagesHelp/single.png`, 
-  `${GHPATH}/imagesHelp/solutionSequenceBtn.png`, 
-  `${GHPATH}/imagesHelp/strictplus.png`, 
-  `${GHPATH}/imagesHelp/striktminus.png`, 
+  `${GHPATH}/imagesHelp/naechsterSchritt.png`,
+  `${GHPATH}/imagesHelp/nakedSingle.png`,
+  `${GHPATH}/imagesHelp/neccessary.png`,
+  `${GHPATH}/imagesHelp/nextSolution.png`,
+  `${GHPATH}/imagesHelp/nochoice.png`,
+  `${GHPATH}/imagesHelp/nochoice2.png`,
+  `${GHPATH}/imagesHelp/NotwendigerKandidat.png`,
+  `${GHPATH}/imagesHelp/optionCell.png`,
+  `${GHPATH}/imagesHelp/play.png`,
+  `${GHPATH}/imagesHelp/playedCell.png`,
+  `${GHPATH}/imagesHelp/pointingPair.png`,
+  `${GHPATH}/imagesHelp/pruefungfehler.png`,
+  `${GHPATH}/imagesHelp/PuzzleDB.png`,
+  `${GHPATH}/imagesHelp/puzzlePrintDisplay.png`,
+  `${GHPATH}/imagesHelp/schritt4_1.png`,
+  `${GHPATH}/imagesHelp/schritt4_2.png`,
+  `${GHPATH}/imagesHelp/schritt13_a.png`,
+  `${GHPATH}/imagesHelp/schritt22_b.png`,
+  `${GHPATH}/imagesHelp/schritt23_a.png`,
+  `${GHPATH}/imagesHelp/Schritt43_a.png`,
+  `${GHPATH}/imagesHelp/schritt43_b.png`,
+  `${GHPATH}/imagesHelp/schritt224_b.png`,
+  `${GHPATH}/imagesHelp/schrittSequenz.png`,
+  `${GHPATH}/imagesHelp/shareButton.png`,
+  `${GHPATH}/imagesHelp/single.png`,
+  `${GHPATH}/imagesHelp/solutionSequenceBtn.png`,
+  `${GHPATH}/imagesHelp/strictplus.png`,
+  `${GHPATH}/imagesHelp/striktminus.png`,
   `${GHPATH}/imagesHelp/tastenauswahlAutomatik.png`,
-  `${GHPATH}/imagesHelp/tastenauswahlManual.png`, 
+  `${GHPATH}/imagesHelp/tastenauswahlManual.png`,
   `${GHPATH}/imagesHelp/tastenBlockAutomatic.png`,
-  `${GHPATH}/imagesHelp/tasteResetfürSolver.png`, 
-  `${GHPATH}/imagesHelp/teilenURLApp.png`, 
-  `${GHPATH}/imagesHelp/teilenURLApp2.png`, 
-  `${GHPATH}/imagesHelp/tippOk.png`, 
-  `${GHPATH}/imagesHelp/twoNeccessary.png`, 
-  `${GHPATH}/imagesHelp/ueberschneidung.png`, 
-  `${GHPATH}/imagesHelp/unloesbar_Widerspruch.png`, 
+  `${GHPATH}/imagesHelp/tasteResetfürSolver.png`,
+  `${GHPATH}/imagesHelp/teilenURLApp.png`,
+  `${GHPATH}/imagesHelp/teilenURLApp2.png`,
+  `${GHPATH}/imagesHelp/tippOk.png`,
+  `${GHPATH}/imagesHelp/twoNeccessary.png`,
+  `${GHPATH}/imagesHelp/ueberschneidung.png`,
+  `${GHPATH}/imagesHelp/unloesbar_Widerspruch.png`,
   `${GHPATH}/imagesHelp/unloesbar24Schritte.png`,
   `${GHPATH}/imagesHelp/unloesbarExample2.png`,
-  `${GHPATH}/imagesHelp/unloesbarOffensichtlich.png`, 
+  `${GHPATH}/imagesHelp/unloesbarOffensichtlich.png`,
   `${GHPATH}/imagesHelp/unloesbarSchoen.png`,
   `${GHPATH}/imagesHelp/versteckterSingle.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeGlecheSingles.png`,
@@ -207,6 +207,24 @@ self.addEventListener('fetch', event => {
 });
 */
 
+// const assetsToCache = ['/', '/styles/main.css', '/missing-file.js'];
+
+self.addEventListener('install', function (e) {
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const url of URLS) {
+        try {
+          await cache.add(url);
+        } catch (err) {
+          console.warn(`Failed to cache: ${url}`, err);
+        }
+      }
+    })
+  );
+})
+
+/*
 self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
@@ -215,6 +233,7 @@ self.addEventListener('install', function (e) {
     })
   )
 })
+*/
 
 self.addEventListener('activate', function (e) {
   e.waitUntil(
