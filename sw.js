@@ -9,18 +9,16 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1.8.52';
+var VERSION = 'version_1.8.53';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
 var URLS = [
   `${GHPATH}/`,
-  `${GHPATH}/_config.yml`,
   `${GHPATH}/CSS/screen.css`,
   `${GHPATH}/CSS/print.css`,
   `${GHPATH}/index.html`,
   `${GHPATH}/manifest.json`,
-  `${GHPATH}/help.md`,
   `${GHPATH}/help.html`,
   `${GHPATH}/JS/sudokuMainApp.js`,
   `${GHPATH}/JS/fastSolverWorker.js`,
@@ -48,8 +46,6 @@ var URLS = [
   `${GHPATH}/images/s512.png`,
   `${GHPATH}/images/s1024.png`,
   `${GHPATH}/images/save.png`,
-  `${GHPATH}/images/screenshotHandy.png`,
-  `${GHPATH}/images/screenshot-527x434.png`,
   `${GHPATH}/images/share.png`,
   `${GHPATH}/images/solution.png`,
   `${GHPATH}/images/solutionsequence.png`,
@@ -64,8 +60,6 @@ var URLS = [
   `${GHPATH}/images/zahnrad.png`,
   `${GHPATH}/imagesHelp/actionFiles.png`,
   `${GHPATH}/imagesHelp/appView1.png`,
-  `${GHPATH}/imagesHelp/appView2.png`,
-  `${GHPATH}/imagesHelp/appView3.png`,
   `${GHPATH}/imagesHelp/appZiele.png`,
   `${GHPATH}/imagesHelp/architecture.png`,
   `${GHPATH}/imagesHelp/autoSelected.png`,
@@ -139,7 +133,6 @@ var URLS = [
   `${GHPATH}/imagesHelp/striktminus.png`,
   `${GHPATH}/imagesHelp/tastenauswahlAutomatik.png`,
   `${GHPATH}/imagesHelp/tastenauswahlManual.png`,
-  `${GHPATH}/imagesHelp/tastenBlockAutomatic.png`,
   `${GHPATH}/imagesHelp/tasteResetfürSolver.png`,
   `${GHPATH}/imagesHelp/teilenURLApp.png`,
   `${GHPATH}/imagesHelp/teilenURLApp2.png`,
@@ -153,8 +146,7 @@ var URLS = [
   `${GHPATH}/imagesHelp/unloesbarSchoen.png`,
   `${GHPATH}/imagesHelp/versteckterSingle.png`,
   `${GHPATH}/imagesHelp/widerspruchGruppeGlecheSingles.png`,
-  `${GHPATH}/imagesHelp/widerspruchGruppeFehlendeNr.png`,
-  `${GHPATH}/imagesHelp/ziele.png`
+  `${GHPATH}/imagesHelp/widerspruchGruppeFehlendeNr.png`
 ]
 
 const CACHE_NAME = APP_PREFIX + VERSION
