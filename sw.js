@@ -9,7 +9,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1.8.51';
+var VERSION = 'version_1.8.52';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -211,7 +211,7 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('install', function (e) {
 
-  event.waitUntil(
+  e.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
       for (const url of URLS) {
         try {
