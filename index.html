@@ -32,7 +32,7 @@
         <div class="topbar" id="topbar">
             <div class="topbar-left">
                 <button class="modern-btn-inline topbar-btn" id="btn-menu" onclick="NavigationBar.openNav()">
-                    <span class="material-icons">menu</span>
+                    <img title="menu" src="images/menu_24.png" class="btn-image">
                     Menü
                 </button>
             </div>
@@ -40,11 +40,11 @@
             <div class="topbar-right">
 
                 <button class="modern-btn-inline topbar-btn" id="btn-help" onclick="sudoApp.helpFunction()">
-                    <span class="material-icons">help</span>
+                     <img title="help" src="images/help_24.png" class="btn-image">
                     Hilfe
                 </button>
                 <button class="modern-btn-inline topbar-btn" id="btn-share">
-                    <span class="material-icons">share</span>
+                      <img title="share" src="images/share_24weis.png" class="btn-image">     
                     Teilen
                 </button>
             </div>
@@ -69,10 +69,8 @@
 
                         </div>
                         <button class="tipp-accept-btn" style="display:block" id="tipp-accept-btn">
-                            <span class="material-symbols-outlined">
-                                check_circle
-                            </span>
-                            Tipp OK
+                            <img title="check_circle" src="images/check_circle_24.png" class="btn-image">     
+                             Tipp OK
                         </button>
                     </div>
                     <div class="progress-box" id="progress-box">
@@ -102,9 +100,7 @@
                     <div class="manual-solver-header" id="manual-solver-header">
                         <span>Manuell lösen</span>
                         <button class="btn-run" id="btn-run">
-                            <span class="material-symbols-outlined">
-                                play_circle
-                            </span>
+                            <img title="play_circle" src="images/play_circle_24.png" class="btn-image">     
                             Automatisch
                         </button>
                     </div>
@@ -127,50 +123,42 @@
                             </div>
 
                             <button class="modern-btn manual-btn" id="btn-reset">
-                                <span class="material-icons">autorenew</span>
+                                <img title="autorenew" src="images/autorenew_24.png" class="btn-image">     
                                 Reset
                             </button>
                             <button class="modern-btn  manual-btn btn-init" id="btn-init"
                                 onclick="sudoApp.mySolverController.initLinkPressed()">
-                                <span class="material-symbols-outlined">
-                                    start
-                                </span>
+                                 <img title="start" src="images/start_24.png" class="btn-image">     
                                 Init
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-new"
                                 onclick="sudoApp.mySolverController.newLinkPressed()">
-                                <span class="material-symbols-outlined">
-                                    Add
-                                </span>
+                                 <img title="add" src="images/add_24.png" class="btn-image">     
                                 Neu
                             </button>
 
                             <!--<div class="manual-btn-block-1" id="manual-btn-block-1"> -->
                             <button class="modern-btn manual-btn" id="btn-undo">
-                                <span class="material-icons">undo</span>
+                                <img title="undo" src="images/undo_24.png" class="btn-image">     
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-redo">
-                                <span class="material-icons">redo</span>
+                                <img title="redo" src="images/redo_24.png" class="btn-image">     
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-showWrongNumbers">
-                                <span class="material-symbols-outlined">
-                                    data_check
-                                </span>
+                               <img title="data_check" src="images/data_check_24.png" class="btn-image">     
                                 Prüfen
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-tip">
-                                <span class="material-symbols-outlined">
-                                    lightbulb_2
-                                </span>
+                               <img title="tip" src="images/lightbulb_2_24.png" class="btn-image">
                                 Tipp
                             </button>
 
                             <button class="modern-btn  manual-btn" id="btn-save">
-                                <span class="material-icons">save</span>
+                                <img title="save" src="images/save_24.png" class="btn-image">
                                 Speichern
                             </button>
                         </div>
@@ -195,9 +183,7 @@
                     <div class="tracker-dlg-header">
                         <span> Automatisch lösen</span>
                         <button class="btn-backtrack-stop" id="btn-backtrack-stop">
-                            <span class="material-symbols-outlined">
-                                stop_circle
-                            </span>
+                            <img title="stop" src="images/stop_circle_24.png" class="btn-image">
                             Stopp
                         </button>
                     </div>
@@ -237,37 +223,27 @@
                     </div>
                     <div class="automatic-btn-block" id="automatic-btn-block">
                         <button class="modern-btn automatic-btn btn-breakpoint-settings" id="btn-breakpoint-settings">
-                            <span class="material-symbols-outlined">
-                                settings
-                            </span>
+                            <img title="settings" src="images/settings_24.png" class="btn-image">
                             Halte-punkte
                         </button>
                         <button class="modern-btn automatic-btn btn-backtrack-step" id="btn-backtrack-step">
-                            <span class="material-symbols-outlined">
-                                check
-                            </span>
+                            <img title="check" src="images/check_24.png" class="btn-image">
                             Nächster Suchschritt
                         </button>
                         <button class="modern-btn automatic-btn btn-backtrack-continue" id="btn-backtrack-continue">
-                            <span class="material-symbols-outlined">
-                                sweep
-                            </span>
+                            <img title="sweep" src="images/sweep_24.png" class="btn-image">
                             Suchlauf mit Haltepunkten
                         </button>
                         <button class="modern-btn automatic-btn btn-search-reset" id="search-reset-btn">
-                            <span class="material-icons">autorenew</span>
+                            <img title="autorenew" src="images/autorenew_24.png" class="btn-image">
                             Reset
                         </button>
                         <button class="modern-btn automatic-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
-                            <span class="material-symbols-outlined">
-                                keyboard_arrow_right
-                            </span>
+                            <img title="keyboard_arrow_right" src="images/keyboard_arrow_right_24.png" class="btn-image">
                             (Nächste) Lösung
                         </button>
                         <button class="modern-btn  automatic-btn btn-backtrack-fast" id="btn-backtrack-fast">
-                            <span class="material-symbols-outlined">
-                                keyboard_double_arrow_right
-                            </span>
+                            <img title="keyboard_double_arrow_right" src="images/keyboard_double_arrow_right_24.png" class="btn-image">
                             Lösungen zählen ...
                         </button>
 
@@ -286,7 +262,7 @@
 
                 <button class="btn btn-share" id="share-app-btn"
                     onclick="sudoApp.mySolverController.setAppURLShareBtnEventHandler()">
-                    <span class="material-icons">share</span>
+                    <img src="images/share_24.png" class="btn-image">
                     Sudoku-Trainer URL
                 </button>
 
