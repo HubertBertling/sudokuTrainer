@@ -928,8 +928,8 @@ Für Text: color: #222; oder color: #424242;
 
 #manual-btn-block {
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-    grid-gap: 0.6rem;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 0.4rem;
     background: var(--manual-solver);
     padding-left: 1rem;
     padding-right: 1rem;
@@ -938,7 +938,7 @@ Für Text: color: #222; oder color: #424242;
 
 .manual-btn {
     font-size: var(--cg-font-base);
-    padding: 0.4rem;
+    padding: 0.2rem;
 }
 
 #checkbox-wrapper-35 {
@@ -981,7 +981,7 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.6rem;
+    gap: 0.4rem;
     width: 100%;
     background: var(--manual-solver);
     padding-top: 0.6rem;
@@ -2006,6 +2006,55 @@ Für Text: color: #222; oder color: #424242;
 
 /* From Uiverse.io by Bodyhc */
 
+
+/* From Uiverse.io by Yaya12085 */ 
+.switch-btn {
+  position: relative;
+  height: 1.2rem;
+  width: 2.4rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 9999px;
+  background-color: var(--defined-cell-bg-color); /* rgba(100, 116, 139, 0.377);*/
+  transition: all .3s ease;
+}
+
+.switch-btn:checked {
+  background-color: var(--played-cell-bg-color); /*rgba(236, 72, 153, 1); */
+}
+
+.switch-btn::before {
+  position: absolute;
+  content: "";
+  left: calc(1.5rem - 1.6rem);
+  top: calc(1.5rem - 1.6rem);
+  display: block;
+  height: 1.2rem;
+  width: 1.2rem;
+  cursor: pointer;
+  border: 1px solid rgba(100, 116, 139, 0.527);
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
+  transition: all .3s ease;
+}
+
+.switch-btn:hover::before {
+  box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
+}
+
+.switch-btn:checked:hover::before {
+  box-shadow: 0 0 0px 8px rgba(236, 72, 153, .15)
+}
+
+.switch-btn:checked:before {
+  transform: translateX(100%);
+  border-color: var(--def) /* rgba(236, 72, 153, 1);*/
+}
+
+/*
+
 .checkbox-wrapper-35 .switch {
     display: none;
 }
@@ -2016,7 +2065,7 @@ Für Text: color: #222; oder color: #424242;
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    /* color: #78768d; */
+    /* color: #78768d; 
     color: white;
     cursor: pointer;
     display: -webkit-box;
@@ -2024,7 +2073,7 @@ Für Text: color: #222; oder color: #424242;
     display: -ms-flexbox;
     display: flex;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--cg-font-base);
+    font-size: 18px;
     line-height: 15px;
     position: relative;
     -webkit-user-select: none;
@@ -2040,7 +2089,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .checkbox-wrapper-35 .switch+label::before {
-    /* background-color: #05012c; */
+    /* background-color: #05012c; 
     background-color: var(--defined-cell-bg-color);
     border-radius: 500px;
     height: 15px;
@@ -2062,7 +2111,7 @@ Für Text: color: #222; oder color: #424242;
     transition: -webkit-transform 0.125s ease-out;
     transition: transform 0.125s ease-out;
     transition: transform 0.125s ease-out, -webkit-transform 0.125s ease-out;
-    width: 13px;
+    width: 15px;
 }
 
 .checkbox-wrapper-35 .switch+label .switch-x-text {
@@ -2127,7 +2176,7 @@ Für Text: color: #222; oder color: #424242;
     transform: none;
 }
 
-
+*/
 
 
 /* CONTENT AREA ---------------------------------------------- */

@@ -40,11 +40,11 @@
             <div class="topbar-right">
 
                 <button class="modern-btn-inline topbar-btn" id="btn-help" onclick="sudoApp.helpFunction()">
-                     <img title="help" src="images/help_24.png" class="btn-image">
+                    <img title="help" src="images/help_24.png" class="btn-image">
                     Hilfe
                 </button>
                 <button class="modern-btn-inline topbar-btn" id="btn-share">
-                      <img title="share" src="images/share_24weis.png" class="btn-image">     
+                    <img title="share" src="images/share_24weis.png" class="btn-image">
                     Teilen
                 </button>
             </div>
@@ -69,8 +69,8 @@
 
                         </div>
                         <button class="tipp-accept-btn" style="display:block" id="tipp-accept-btn">
-                            <img title="check_circle" src="images/check_circle_24.png" class="btn-image">     
-                             Tipp OK
+                            <img title="check_circle" src="images/check_circle_24.png" class="btn-image">
+                            Tipp OK
                         </button>
                     </div>
                     <div class="progress-box" id="progress-box">
@@ -100,7 +100,7 @@
                     <div class="manual-solver-header" id="manual-solver-header">
                         <span>Manuell lösen</span>
                         <button class="btn-run" id="btn-run">
-                            <img title="play_circle" src="images/play_circle_24.png" class="btn-image">     
+                            <img title="play_circle" src="images/play_circle_24.png" class="btn-image">
                             Automatisch
                         </button>
                     </div>
@@ -109,6 +109,12 @@
                         <div class="manual-btn-block" id="manual-btn-block">
 
                             <!-- From Uiverse.io by Bodyhc -->
+
+                            <!-- From Uiverse.io by Yaya12085 -->
+                            <span class="manual-btn" style="color: white">Eingeben</span>
+                            <input class="switch-btn manual-btn" id="switch-btn" type="checkbox" checked="true">
+                            <span class="manual-btn"style="color: white"> Lösen</span>
+                            <!---
                             <div class="checkbox-wrapper-35 manual-btn" id="checkbox-wrapper-35">
                                 <input value="private" name="switch" id="switch-btn" type="checkbox" class="switch">
                                 <label for="switch-btn">
@@ -121,39 +127,39 @@
                                     </span>
                                 </label>
                             </div>
-
+                            -->
                             <button class="modern-btn manual-btn" id="btn-reset">
-                                <img title="autorenew" src="images/autorenew_24.png" class="btn-image">     
+                                <img title="autorenew" src="images/autorenew_24.png" class="btn-image">
                                 Reset
                             </button>
                             <button class="modern-btn  manual-btn btn-init" id="btn-init"
                                 onclick="sudoApp.mySolverController.initLinkPressed()">
-                                 <img title="start" src="images/start_24.png" class="btn-image">     
+                                <img title="start" src="images/start_24.png" class="btn-image">
                                 Init
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-new"
                                 onclick="sudoApp.mySolverController.newLinkPressed()">
-                                 <img title="add" src="images/add_24.png" class="btn-image">     
+                                <img title="add" src="images/add_24.png" class="btn-image">
                                 Neu
                             </button>
 
                             <!--<div class="manual-btn-block-1" id="manual-btn-block-1"> -->
                             <button class="modern-btn manual-btn" id="btn-undo">
-                                <img title="undo" src="images/undo_24.png" class="btn-image">     
+                                <img title="undo" src="images/undo_24.png" class="btn-image">
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-redo">
-                                <img title="redo" src="images/redo_24.png" class="btn-image">     
+                                <img title="redo" src="images/redo_24.png" class="btn-image">
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-showWrongNumbers">
-                               <img title="data_check" src="images/data_check_24.png" class="btn-image">     
+                                <img title="data_check" src="images/data_check_24.png" class="btn-image">
                                 Prüfen
                             </button>
 
                             <button class="modern-btn manual-btn" id="btn-tip">
-                               <img title="tip" src="images/lightbulb_2_24.png" class="btn-image">
+                                <img title="tip" src="images/lightbulb_2_24.png" class="btn-image">
                                 Tipp
                             </button>
 
@@ -239,11 +245,13 @@
                             Reset
                         </button>
                         <button class="modern-btn automatic-btn btn-backtrack-fast-step" id="btn-backtrack-fast-step">
-                            <img title="keyboard_arrow_right" src="images/keyboard_arrow_right_24.png" class="btn-image">
+                            <img title="keyboard_arrow_right" src="images/keyboard_arrow_right_24.png"
+                                class="btn-image">
                             (Nächste) Lösung
                         </button>
                         <button class="modern-btn  automatic-btn btn-backtrack-fast" id="btn-backtrack-fast">
-                            <img title="keyboard_double_arrow_right" src="images/keyboard_double_arrow_right_24.png" class="btn-image">
+                            <img title="keyboard_double_arrow_right" src="images/keyboard_double_arrow_right_24.png"
+                                class="btn-image">
                             Lösungen zählen ...
                         </button>
 

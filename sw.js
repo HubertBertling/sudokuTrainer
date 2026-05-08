@@ -9,7 +9,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1.9.06';
+var VERSION = 'version_1.9.07';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -17,7 +17,6 @@ var URLS = [
   `${GHPATH}/`,
   `${GHPATH}/CSS/screen.css`,
   `${GHPATH}/CSS/print.css`,
-
   `${GHPATH}/index.html`,
   `${GHPATH}/manifest.json`,
   `${GHPATH}/help.html`,
@@ -25,28 +24,26 @@ var URLS = [
   `${GHPATH}/JS/fastSolverWorker.js`,
   `${GHPATH}/JS/generatorWorker.js`,
   `${GHPATH}/JS/sudokuCommon.js`,
-
- `${GHPATH}/images/menu_24.png`,
- `${GHPATH}/images/check_circle_24.png`,
- `${GHPATH}/images/autorenew_24.png`,
- `${GHPATH}/images/sweep_24.png`,
- `${GHPATH}/images/check_24.png`,
- `${GHPATH}/images/settings_24.png`,
- `${GHPATH}/images/stop_circle_24.png`,
- `${GHPATH}/images/save_24.png`,
- `${GHPATH}/images/lightbulb_2_24.png`,
- `${GHPATH}/images/data_check_24.png`,
- `${GHPATH}/images/redo_24.png`,
- `${GHPATH}/images/undo_24.png`,
- `${GHPATH}/images/share_24.png`,
- `${GHPATH}/images/help_24.png`,
- `${GHPATH}/images/share_24weis.png`,
- `${GHPATH}/images/play_circle_24.png`,
- `${GHPATH}/images/add_24.png`,
- `${GHPATH}/images/start_24.png`
- `${GHPATH}/images/keyboard_arrow_right_24.png`,
- `${GHPATH}/images/keyboard_double_arrow_right_24.png`, 
-
+  `${GHPATH}/images/menu_24.png`,
+  `${GHPATH}/images/check_circle_24.png`,
+  `${GHPATH}/images/autorenew_24.png`,
+  `${GHPATH}/images/sweep_24.png`,
+  `${GHPATH}/images/check_24.png`,
+  `${GHPATH}/images/settings_24.png`,
+  `${GHPATH}/images/stop_circle_24.png`,
+  `${GHPATH}/images/save_24.png`,
+  `${GHPATH}/images/lightbulb_2_24.png`,
+  `${GHPATH}/images/data_check_24.png`,
+  `${GHPATH}/images/redo_24.png`,
+  `${GHPATH}/images/undo_24.png`,
+  `${GHPATH}/images/share_24.png`,
+  `${GHPATH}/images/help_24.png`,
+  `${GHPATH}/images/share_24weis.png`,
+  `${GHPATH}/images/play_circle_24.png`,
+  `${GHPATH}/images/add_24.png`,
+  `${GHPATH}/images/start_24.png`,
+  `${GHPATH}/images/keyboard_arrow_right_24.png`,
+  `${GHPATH}/images/keyboard_double_arrow_right_24.png`,
   `${GHPATH}/images/caret-down.png`,
   `${GHPATH}/images/download.png`,
   `${GHPATH}/images/drucker.png`,
