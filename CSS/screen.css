@@ -929,25 +929,29 @@ Für Text: color: #222; oder color: #424242;
 #manual-btn-block {
     display: grid;
     grid-template-columns: auto auto auto auto auto;
-    grid-gap: 0.4rem;
+    grid-gap: 0.6rem;
     background: var(--manual-solver);
     padding-left: 1rem;
     padding-right: 1rem;
 
 }
 
-.manual-btn {
-    font-size: var(--cg-font-base);
-    padding: 0.2rem;
+.switch-container {
+    display: flex;
+    align-items: center;
 }
 
-#checkbox-wrapper-35 {
+
+.manual-btn {
+    font-size: var(--cg-font-base);
+    padding: 0.6rem;
+}
+
+#switch-container {
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 1;
-    background-color: lightgray    ;
-    color: black;
     border-radius: 0.4rem;
    
 }
@@ -981,7 +985,7 @@ Für Text: color: #222; oder color: #424242;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 0.4rem;
+    gap: 0.6rem;
     width: 100%;
     background: var(--manual-solver);
     padding-top: 0.6rem;
