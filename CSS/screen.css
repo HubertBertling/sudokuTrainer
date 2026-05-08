@@ -187,10 +187,15 @@ body {
 
 }
 
+
 .btn-image {
+    width: 0.8rem;
+    height:0.8rem;
+}
+
+.automatic-btn-image {
     width: 1.2rem;
-    height:1.2rem;
-    margin-right:0.2rem; 
+    height: 1.2rem;
 }
 
 /* TOP & BOTTOM BARS ------------------------------------------ */
@@ -199,6 +204,7 @@ body {
 .topbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0.2rem 0.4rem;
     background: var(--app-header-bg-color);
     color: white;
@@ -208,7 +214,7 @@ body {
 .topbar-left {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     font-size: inherit;
 }
@@ -216,7 +222,7 @@ body {
 .topbar-right {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     font-size: inherit;
 
@@ -233,6 +239,8 @@ body {
 }
 
 .topbar-title {
+       align-items: center;
+ 
     border: none;
     padding: 0.4rem;
 }
@@ -905,15 +913,12 @@ Für Text: color: #222; oder color: #424242;
 }
 
 .automatic-btn {
-    border-radius: 0.8rem;
-    padding: 0.4rem 0.8rem;
     display: flex;
-    /* flex-direction: column;*/
-    flex-direction: row;
     font-size: var(--cg-font-base);
-    align-items: center;
     justify-content: center;
-
+    gap: 0.2rem;
+    border-radius: 0.8rem;
+    padding: 0.6rem 0.8rem;
 }
 
 .material-symbols-outlined {
@@ -944,6 +949,9 @@ Für Text: color: #222; oder color: #424242;
 
 .manual-btn {
     font-size: var(--cg-font-base);
+    display:flex;
+    justify-content: center;
+    gap: 0.2rem;
     padding: 0.6rem;
 }
 
@@ -954,10 +962,6 @@ Für Text: color: #222; oder color: #424242;
     grid-row-end: 1;
     border-radius: 0.4rem;
    
-}
-
-#checkbox-wrapper-35 > label {
-    color: black;
 }
 
 #btn-init {
@@ -1071,11 +1075,6 @@ Für Text: color: #222; oder color: #424242;
     grid-column-end: 6;
     grid-row-start: 4;
     grid-row-end: 4;
-}
-
-.btn-image {
-    width: 0.8rem;
-    height: 0.8rem;
 }
 
 .breakpoint-setting-image {
