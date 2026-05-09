@@ -424,7 +424,7 @@ Im Beispiel ist das 3-4-Paar ein nacktes Paar. Das 3-4-Paar macht in seiner Reih
 
 ### Eliminationskriterium: "Zeiger-Paar", "Zeiger-Triple"
 
-Das "Zeiger-Paar", "Zeiger-Triple" wird auch **Box-Line-Kriterium** genannt. Die Box bzw. der Block bestimmt eliminierbare Kandidaten in der Zeile bzw. in der Spalte. Das Kriterium ist quasi Spiegelbild des Überschneidungskrieriums, das auch **Line-Box-Kriterium** genannt. Dort bestimmt die Line, Spalte oder Zeile, eliminierbare Kandidaten im Block.
+Das "Zeiger-Paar", "Zeiger-Triple" wird auch **Box-Line-Kriterium** genannt. Die Box bzw. der Block bestimmt eliminierbare Kandidaten in der Zeile bzw. in der Spalte. Das Kriterium ist quasi Spiegelbild des Überschneidungskrieriums, das auch **Line-Box-Kriterium** genannt wird. Dort bestimmt die Line, Spalte oder Zeile, eliminierbare Kandidaten im Block.
 
 <figure >
    <img src="./imagesHelp/pointingPair.png" alt="pointingPair" style="width:100%">
@@ -538,13 +538,13 @@ Dieser Sudoku-Explorer zeichnet sich in erster Linie durch seine nachvollziehbar
 
 Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
-1. Widerspruchsvolle und unlösbare Puzzles
+1. Widerspruchsvolle und damit unlösbare Puzzles
 2. Puzzles mit genau einer Lösung
 3. Puzzles mit mehr als einer Lösung
 
 ### Widerspruchsvolle Puzzles
 
-Ein Puzzle ist **widerspruchsvoll**, wenn es
+Im Folgenden unterscheiden wir widerspruchsvolle und unlösbare Puzzles. Es gilt: jedes widerspruchsvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle zeigt unmittelbar einen Widerspruch. Nach endlich vielen Lösungsschritten eines unlösbaren Puzzles erscheint garantiert ein partiell gelöstes Puzzle, das widerspruchsvoll ist. Ein Puzzle ist **widerspruchsvoll**, wenn es
 
 1. eine widerspruchsvolle Zelle besitzt, oder
 1. eine widerspruchsvolle Gruppe.
@@ -597,9 +597,7 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
 
 ### Unlösbare Puzzles
 
-Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Jedes gemäß der obigen Definition widerspruchvolle Puzzle ist unlösbar. Denn für alle Arten des Widerspruchs gilt, das ein widerspruchvolles Puzzle nicht vervollständigt werden kann. Aber nicht jedes unlösbare Puzzle ist widerspruchsvoll.
-
-Ist ein Puzzle widerspruchsvoll, dann ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Jedes gemäß der obigen Definition widerspruchvolle Puzzle ist unlösbar. Denn für ein widerspruchvolles ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
 
 ### Beispiele widerspruchsvoller Puzzles
 
@@ -637,9 +635,9 @@ Nach 140 Trial&error-Schritten wurde der Suchbaum vollständig durchlaufen, ohne
     <figcaption style="font-size: 16px; font-style: italic;">Nach abgeschlossener Suche: Keine Lösung</figcaption>
 </figure>
 
-Zusammengefasst: der Solver berechnet die Unlösbarkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, die keinen weiteren Try nach sich haben, ist das Ausgangspuzzle unlösbar.
+Zusammengefasst: der Solver berechnet die Unlösbarkeit von Puzzles, indem er sie zu lösen versucht: Stößt er dabei auf elementare Widersprüche, ist das Ausgangspuzzle unlösbar.
 
-Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das Sudoku widerspruchsvoll ist.
+Der automatische Solver setzt solange weitere Nummern in der Tabelle, bis er entweder alle Zellen gesetzt hat (das Sudoku ist gelöst), oder er erkennt, dass das partiell gelöste Sudoku widerspruchsvoll ist.
 
 ### Puzzles mit genau einer Lösung
 
@@ -708,11 +706,11 @@ Der Explorer befindet sich in der Phase Definition. Jetzt können die Givens des
 
 ### Puzzle-Eingabe beenden
 
-Mit der Taste "Phase: Lösen" beendest Du die Eingabe des Puzzles. Im Hintergrund berechnet der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles
+Du verschiebst die Schiebetaste von "Eingeben" auf "Lösen". Im Hintergrund berechnet der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles und zeigt diesen oben rechts über der Matrix an.
 
 ### Schwierigkeitsgrad des Puzzles prüfen
 
-Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Wenn Du ein Puzzle beim Warten im Wartezimmer lösen willst, sollte das eingebene Puzzle 'Sehr leicht', 'Leicht' oder 'Mittel'. Der Explorer zeigt den Schwierigkeits des eingegebenen Puzzle in der rechten obere Ecke der Matrix an.
+Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Wenn Du ein Puzzle beim Warten im Wartezimmer lösen willst, sollte das eingebene Puzzle 'Sehr leicht', 'Leicht' oder 'Mittel'sein. 
 
 Puzzles mit einem der 3 genannten Schwierigkeitsrade können allein mit dem Scannen nach 'notwendigen' und 'single' Kandidaten gelöst werden. Es bedarf keinerlei Buchführunng von Kandidaten. 
 
