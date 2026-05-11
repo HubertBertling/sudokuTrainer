@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.11';
+let VERSION = 'v1.9.12';
 
 // ==========================================
 // Basic classes
@@ -438,7 +438,7 @@ class Search {
     // is completed.
     constructor() {
         this.isTipSearch = false;
-        this.myStepper = new StepperOnGrid();
+        this.myStepper = new StepperOnGrid(this);
         sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
         sudoApp.mySolver.myGrid.deselect();
         this.myStepper.init();
@@ -458,6 +458,10 @@ class Search {
             countMultipleOptionsFirstTry: 0,
             countMultipleOptionsSecondTryAndMore: 0
         }
+
+        // maxSelectionDifficulty one of
+        // {'msd_Leicht','msd_Mittel','msd_Schwer','msd_Sehr schwer'}.
+        this.maxSelectionDifficulty = 'msd_Leicht';
 
         this.nakedPairs = new RuleSet();
         this.hiddenPairs = new RuleSet();
@@ -501,7 +505,7 @@ class Search {
             } else if (this.getNumberOfSolutions() > 1) {
                 return 'Extrem schwer';
             } else if (this.getNumberOfSolutions() == 1) {
-                switch (this.myStepper.maxSelectionDifficulty) {
+                switch (this.maxSelectionDifficulty) {
                     case 'msd_Leicht': {
                         if (sudoApp.mySolver.myGrid.canTakeBackGivenCells()) {
                             return 'Sehr leicht';
@@ -546,6 +550,11 @@ class Search {
                 // Fair puuzles have exact one solution.
                 // This is the first solution in the search.
                 this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
+                if (this.maxSelectionDifficulty == 'msd_Leicht'
+                    || this.maxSelectionDifficulty == 'msd_Mittel'
+                    || this.maxSelectionDifficulty == 'msd_Schwer') {
+                    this.setCompleted();
+                }
             }
             let nr = this.getNumberOfSolutions();
             sudoApp.mySolver.notifyAspect('solutionDiscovered', nr);
@@ -591,13 +600,13 @@ class StepperOnGrid {
     // A forward step is a pair of actions (select cell, set number),
     // a backward step is a pair (select cell, reset set number)
 
-    constructor() {
+    constructor(search) {
+        this.mySearch = search;
         this.lastNumberSet = '0';
         this.indexSelected = -1;
         this.lastSearch = undefined;
         this.myBackTracker;
         this.goneSteps = 0;
-        this.maxSelectionDifficulty = 'msd_Leicht';
         this.countBackwards = 0;
         this.autoDirection = 'forward';
         this.init();
@@ -607,7 +616,6 @@ class StepperOnGrid {
         this.lastNumberSet = '0';
         this.countBackwards = 0;
         this.autoDirection = 'forward';
-        this.maxSelectionDifficulty = 'msd_Leicht';
         // The stepper always owns an actual backTracker
         this.myBackTracker = new BackTracker();
     }
@@ -987,7 +995,7 @@ class StepperOnGrid {
             return emptySelection;
         }
         // maxSelectionDifficulty one of 
-        // {'msd_Leicht','Mittel','Schwer','Sehr schwer'}.
+        // {'msd_Leicht',''msd_Mittel',''msd_Schwer',''msd_Sehr schwer'}.
         // Hint: do not confuse puzzle level with maxSelectionDifficulty.
         // The puzzle level has two more values:'Sehr leicht' and 'Extrem schwer'.
         let tmpNeccessary = this.calculateNeccesarySelectionFrom(optionList);
@@ -997,9 +1005,9 @@ class StepperOnGrid {
         // Determines the next cell with single
         let tmpLevel_0_single = this.calculateLevel_0_SinglesSelectionFrom(optionList);
         if (tmpLevel_0_single.index !== -1) {
-            switch (this.maxSelectionDifficulty) {
+            switch (this.mySearch.maxSelectionDifficulty) {
                 case 'msd_Leicht': {
-                    this.maxSelectionDifficulty = 'msd_Mittel';
+                    this.mySearch.maxSelectionDifficulty = 'msd_Mittel';
                     break;
                 }
                 default: {
@@ -1013,10 +1021,10 @@ class StepperOnGrid {
         // using indirectly invalid numbers
         let oneOption = this.calculateOneOptionSelectionFrom(optionList);
         if (oneOption.index !== -1) {
-            switch (this.maxSelectionDifficulty) {
+            switch (this.mySearch.maxSelectionDifficulty) {
                 case 'msd_Leicht':
                 case 'msd_Mittel': {
-                    this.maxSelectionDifficulty = 'msd_Schwer';
+                    this.mySearch.maxSelectionDifficulty = 'msd_Schwer';
                     break;
                 }
                 default: {
@@ -1031,11 +1039,11 @@ class StepperOnGrid {
         // Determine a next cell with minimum number of allowed numbers
         // This cell is not unique
         // This cell can be one with the full option set
-        switch (this.maxSelectionDifficulty) {
+        switch (this.mySearch.maxSelectionDifficulty) {
             case 'msd_Leicht':
             case 'msd_Mittel':
             case 'msd_Schwer': {
-                this.maxSelectionDifficulty = 'msd_Sehr_schwer';
+                this.mySearch.maxSelectionDifficulty = 'msd_Sehr_schwer';
                 break;
             }
             default: {
