@@ -4067,6 +4067,7 @@ class SudokuSolverController {
 
 
     newPuzzleOkay() {
+        sudoApp.mySolver.reInit();
         var ele = document.getElementsByName('level');
         for (let i = 0; i < ele.length; i++) {
             if (ele[i].checked) {
