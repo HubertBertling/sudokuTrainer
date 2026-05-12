@@ -201,6 +201,8 @@ Die Sudoku-Explorer-App ist eine Progressive Web App (PWA). Wie eine native App 
     <figcaption style="font-size: 16px; font-style: italic">Tastenblock Manuell</figcaption>
 </figure>
 
+**Schiebetaste "Eingeben" - "Lösen".** Für das Eingeben eines Puzzles muss dieser Schalter auf "Eingeben" gestzt werden. Nach Beendigung der Eingabe wird der Schalter auf "Lösen" gesetzt. Im Hintergrund berechnet der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles und zeigt diesen oben rechts über der Matrix an.
+
 **Taste Init.** Jederzeit kann der Explorer initialisiert werden. Dabei wird das aktuell gespielte Puzzle gelöscht und der Solver initialisert. Die bereits gespeicherten Puzzles bleiben unverändert erhalten.
 
 **Taste Reset.** Das aktuelle Puzzle wird zurückgesetzt auf die Aufgabenstellung. D.h. alle in der Lösungsphase gesetzten Zellen, die grünen Zellen, werden gelöscht. Die Givens bleiben erhalten. Per Undo kann diese Operation zurückgenommen werden.

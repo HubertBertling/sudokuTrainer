@@ -2113,7 +2113,6 @@ Für Text: color: #222; oder color: #424242;
 /* ================ LANDSCAPE ================= */
 @media (orientation: landscape) {
 
-
     .app-content {
         position: relative;
         /* width: clamp(320px, 95vw, 1024px);*/
@@ -2153,11 +2152,10 @@ Für Text: color: #222; oder color: #424242;
         height: calc(100dvh - 15rem);
     }
 
-
     .tableFixHead {
         overflow-y: auto;
         /* make the table scrollable if height is more than 200 px  */
-        height: 12rem;
+        height: 20rem;
         /* gives an initial height of 200px to the table */
     }
 }
