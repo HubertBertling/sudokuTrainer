@@ -2165,8 +2165,8 @@ Für Text: color: #222; oder color: #424242;
 
     .puzzle-table-dlg {
         position: absolute;
-        top: 0;
-        left:0;
+        top: 1%;
+        left:1%;
         margin: auto;
         /*max-width: 800px;*/
         max-width: 880px;
