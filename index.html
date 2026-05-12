@@ -11,7 +11,7 @@
     <title>Sudoku</title>
     <meta name="google-site-verification" content="LH0Rw7nrbXxB3_gDB3adJ9jzVcKCcY3e1BNSr1SjqF4" />
     <link rel="shortcut icon" href="./images/sudoku.png" type="image/x-icon">
-    
+
     <link rel="canonical" href="https://hubertbertling.github.io/sudokuTrainer/" />
     <link rel="manifest" href="manifest.json">
 
@@ -105,7 +105,7 @@
                                 <input class="switch-btn manual-btn" id="switch-btn" type="checkbox" checked="true">
                                 <span class="manual-btn" style="color: white"> Lösen</span>
                             </div>
-                           
+
                             <button class="modern-btn manual-btn" id="btn-reset">
                                 <img title="autorenew" src="images/autorenew_24.png" class="btn-image">
                                 Reset
@@ -621,21 +621,20 @@
             </div>
         </dialog>
 
-        <div class="print-content">
-            <div class="print-puzzle-header">
-                <!--Id und Name des aktuell geladenen Puzzles werden als String via JS erzeugt-->
-                <div class="print-pz-id-row" id="print-pz-id-row">0</div>
-            </div>
-            <div class="print-puzzle-line">
-                <div class="print-pz-table" id="print-pz-table">
-                </div>
+    </div>
+    <div class="print-content">
+        <div class="print-puzzle-header">
+            <!--Id und Name des aktuell geladenen Puzzles werden als String via JS erzeugt-->
+            <div class="print-pz-id-row" id="print-pz-id-row">0</div>
+        </div>
+        <div class="print-puzzle-line">
+            <div class="print-pz-table" id="print-pz-table">
             </div>
         </div>
+    </div>
 
-
-
-        <script src="./JS/sudokuCommon.js"></script>
-        <script src="./JS/sudokuMainApp.js"></script>
+    <script src="./JS/sudokuCommon.js"></script>
+    <script src="./JS/sudokuMainApp.js"></script>
 </body>
 
 </html>
