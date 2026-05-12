@@ -30,9 +30,9 @@ layout: default
    5. [Lazy und strikte Kandidatenauswertung](#lazy-und-strikte-kandidatenauswertung)
    6. [Vergleich der Auswertungsmodi Lazy und Strikt](#vergleich-der-auswertungsmodi-lazy-und-strikt)
    7. [Sudoku-Puzzles](#sudoku-puzzles)
-      1. [Widerspruchsvolle Puzzles](#widerspruchsvolle-puzzles)
+      1. [Widerspruchsvolle partiell gelöste Puzzles](#widerspruchsvolle-partiell-gelöste-puzzles)
       2. [Unlösbare Puzzles](#unlösbare-puzzles)
-      3. [Beispiele widerspruchsvoller Puzzles](#beispiele-widerspruchsvoller-puzzles)
+      3. [Beispiele widerspruchsvoller, partiell gelöster, Puzzles](#beispiele-widerspruchsvoller-partiell-gelöster-puzzles)
       4. [Puzzles mit genau einer Lösung](#puzzles-mit-genau-einer-lösung)
       5. [Puzzles mit mehreren Lösungen](#puzzles-mit-mehreren-lösungen)
       6. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
@@ -538,13 +538,13 @@ Dieser Sudoku-Explorer zeichnet sich in erster Linie durch seine nachvollziehbar
 
 Wir unterscheiden drei Kategorien von Sudoku-Puzzles
 
-1. Widerspruchsvolle und damit unlösbare Puzzles
+1. Unlösbare Puzzles
 2. Puzzles mit genau einer Lösung
 3. Puzzles mit mehr als einer Lösung
 
-### Widerspruchsvolle Puzzles
+### Widerspruchsvolle partiell gelöste Puzzles
 
-Im Folgenden unterscheiden wir widerspruchsvolle und unlösbare Puzzles. Es gilt: jedes widerspruchsvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle zeigt unmittelbar einen Widerspruch. Nach endlich vielen Lösungsschritten eines unlösbaren Puzzles erscheint garantiert ein partiell gelöstes Puzzle, das widerspruchsvoll ist. Ein Puzzle ist **widerspruchsvoll**, wenn es
+Im Folgenden unterscheiden wir widerspruchsvolle und unlösbare Puzzles. Es gilt: jedes widerspruchsvolle Puzzle ist unlösbar. Aber nicht jedes unlösbare Puzzle zeigt unmittelbar einen Widerspruch. Nach endlich vielen Lösungsschritten eines unlösbaren Puzzles erscheint garantiert ein partiell gelöstes Puzzle, das widerspruchsvoll ist. Ein partiell gelöstes Puzzle ist **widerspruchsvoll**, wenn es
 
 1. eine widerspruchsvolle Zelle besitzt, oder
 1. eine widerspruchsvolle Gruppe.
@@ -597,9 +597,11 @@ Wir betrachten hier die abstrakte Gruppe. Eine konkrete Gruppe ist immer entwede
 
 ### Unlösbare Puzzles
 
-Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. Jedes gemäß der obigen Definition widerspruchvolle Puzzle ist unlösbar. Denn für ein widerspruchvolles ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+Ein Puzzle ist **unlösbar**, wenn es keine Belegung aller offenen Zellen des Puzzles gibt, sodass alle Sudoku-Regeln erfüllt sind. 
 
-### Beispiele widerspruchsvoller Puzzles
+Jedes gemäß der obigen Definition widerspruchvolle (partiell gelöste) Puzzle ist unlösbar. Denn für ein widerspruchvolles, parttiell gelöstes, Puzzle ist das Setzen weiterer Zellen nicht mehr sinnvoll, da dadurch der schon bestehende Widerspruch nicht mehr aufgehoben werden kann. Oft gibt es mehrere Widersprüchlichkeiten gleichzeitig. Sie brauchen nicht alle ermittelt zu werden, da sie an der Unlösbarkeit nichts mehr ändern.
+
+### Beispiele widerspruchsvoller, partiell gelöster, Puzzles
 
 <figure >
    <img src="./imagesHelp/unloesbarOffensichtlich.png" alt="UnloesbarOffensichtlich" style="max-width:100%">
@@ -624,7 +626,7 @@ Puzzle: 000000000000002000000001000021000000000000000000000120000100000000200000
 
 Im Schritt 1 wird die notwendige 1 gesetzt. Danach ergibt sich der Widerspruch im Block 5: Im Block 5 kann keine 2 mehr gesetzt werden. D.h. der Block 5 wird ohne die Ziffer 2 bleiben. Ein Widerspruch zur Sudoku-Regel, dass in jedem Block jede Ziffer genau einmal vorkommen muss. Es gibt keine weitere Option mehr. Die Suche ist abgeschlossen. Das Puzzle hat keine Lösung.
 
-Die beiden Beispiel-Puzzles zeigen Widersprüche zu den Sudoku-Regeln. Sie sind deshalb unlösbar. Es gibt aber auch unlösbare Puzzles, die (noch) nicht widerspruchsvoll sind. Sie erweisen sich erst nach vielen Suchschritten als widerspruchsvoll.
+Die beiden Beispiel-Puzzles zeigen Widersprüche zu den Sudoku-Regeln. Sie sind deshalb unlösbar. Es gibt aber auch unlösbare Puzzles, die (noch)  keinen Widerspruch zeigen. Erst nach vielen Suchschritten erreichen sie eine partielle Lösung, die widerspruchsvoll ist.
 
 Puzzle = 040000900000000012080090000924000008600008000500201070050079823000005090700000004
 
@@ -660,7 +662,7 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 1. **Leicht:** Wie Sehr Leicht, jedoch ist die Anzahl der Givens minimal.
 1. **Mittel:** Neben dem Scannen notwendiger Kandidaten benötigt der Solver mindestens einen Scann-Single-Schritt, um das Puzzle zu lösen. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne eine Kandidatenbuchführung auskommt.
 1. **Schwer:** Bei diesem Schwierigkeitsgrad benötigt der Solver mindestens ein Verstecktes-Single, um das Puzzle zu lösen. Für die Bestimmung des versteckten Singles müssen eliminierbare Kandidaten (rot dargestellt) bestimmt werden mit Hilfe der [Kriterien für die Erkennung eliminierbarer Kandidaten](#kriterien-für-die-erkennung-eliminierbarer-kandidaten). Dies unterscheidet diesen Schwierigkeitsgrad vom Schwierigkeitsgrad 'Mittel'. Zugleich ist dies der höchste Schwierigkeitsgrad, der ohne Backtracking auskommt.
-1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial&Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL)durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
+1. **Sehr Schwer:** Bei diesem Schwierigkeitsgrad muss der Solver für mindestens eine Zelle ein Trial&Error durchführen, also eine Nummer raten und ausprobieren. "Backtracking" ist das dazugehörige Stichwort. Der Solver führt für die Berechnung der eindeutigen Lösung unter Umständen zahlreiche Error-Rückwärtsläufe (Error-RL) durch. Die Anzahl der für die (eindeutige) Lösung nötigen Rückwärtsläufe '# Error-RL' wird in der Datenbanktabelle angezeigt.
 1. **Extrem Schwer**: 'Extrem schwer' sind Puzzles, die mehrere Lösungen haben. Mit der Taste 'Lösungen zählen ...' kann die Suche nach den Lösungen angestoßen werden. Wenn alle Lösungen aufgezählt sind, hält der Suchprozess an und zeigt die Anzahl der gefundenen Lösungen an. Aber Achtung: Die Anzahl der Lösungen kann sehr groß werden. Betrachten wir beispielsweise das vollständig leere Puzzle. Es hat überhaupt keine Givens. Die Menge der Lösungen dieses Puzzles entspricht der Menge der verschiedenen, vollständig ausgefüllten 9×9-Standard-Sudokus. Die Größe dieser Menge liegt bei ca. 6,7 Trilliarden. Siehe Wikipedia Abschnitt "Die Anzahl der Sudokus". [https://de.wikipedia.org/wiki/Sudoku](https://de.wikipedia.org/wiki/Sudoku). Wenn die Anzahl der Lösungen sehr groß ist, wird der Spieler den automatischen Suchprozess sinnvollerweise abbrechen.
 
 ## Lösungsarchitektur dieses Sudoku-Explorers
@@ -702,7 +704,7 @@ Explorer-Einstellung:
 - **Taste "Phase Definition"** gesetzt.
 
 ### Puzzle eingeben
-Der Explorer befindet sich in der Phase Definition. Jetzt können die Givens des Puzzles eingegeben werden.
+Der Explorer befindet sich in der Phase Eingeben. Jetzt können die Givens des Puzzles eingegeben werden.
 
 ### Puzzle-Eingabe beenden
 
