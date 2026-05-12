@@ -239,8 +239,8 @@ body {
 }
 
 .topbar-title {
-       align-items: center;
- 
+    align-items: center;
+
     border: none;
     padding: 0.4rem;
 }
@@ -290,7 +290,7 @@ button:active {
     width: 100%;
     flex: 1;
     overflow-y: auto;
-   
+
 }
 
 
@@ -311,7 +311,7 @@ button:active {
     border: none;
     font-size: var(--cg-font-h6);
     padding: 0.4rem 0.8rem;
-  
+
 
 }
 
@@ -927,7 +927,7 @@ Für Text: color: #222; oder color: #424242;
 
 .manual-btn {
     font-size: var(--cg-font-base);
-    display:flex;
+    display: flex;
     justify-content: center;
     gap: 0.2rem;
     padding: 0.6rem;
@@ -939,7 +939,7 @@ Für Text: color: #222; oder color: #424242;
     grid-row-start: 1;
     grid-row-end: 1;
     border-radius: 0.4rem;
-   
+
 }
 
 #btn-init {
@@ -1988,50 +1988,53 @@ Für Text: color: #222; oder color: #424242;
 /* From Uiverse.io by Bodyhc */
 
 
-/* From Uiverse.io by Yaya12085 */ 
+/* From Uiverse.io by Yaya12085 */
 .switch-btn {
-  position: relative;
-  height: 1.2rem;
-  width: 2.4rem;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 9999px;
-  background-color: var(--defined-cell-bg-color); /* rgba(100, 116, 139, 0.377);*/
-  transition: all .3s ease;
+    position: relative;
+    height: 1.2rem;
+    width: 2.4rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 9999px;
+    background-color: var(--defined-cell-bg-color);
+    /* rgba(100, 116, 139, 0.377);*/
+    transition: all .3s ease;
 }
 
 .switch-btn:checked {
-  background-color: var(--played-cell-bg-color); /*rgba(236, 72, 153, 1); */
+    background-color: var(--played-cell-bg-color);
+    /*rgba(236, 72, 153, 1); */
 }
 
 .switch-btn::before {
-  position: absolute;
-  content: "";
-  left: calc(1.5rem - 1.6rem);
-  top: calc(1.5rem - 1.6rem);
-  display: block;
-  height: 1.2rem;
-  width: 1.2rem;
-  cursor: pointer;
-  border: 1px solid rgba(100, 116, 139, 0.527);
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
-  transition: all .3s ease;
+    position: absolute;
+    content: "";
+    left: calc(1.5rem - 1.6rem);
+    top: calc(1.5rem - 1.6rem);
+    display: block;
+    height: 1.2rem;
+    width: 1.2rem;
+    cursor: pointer;
+    border: 1px solid rgba(100, 116, 139, 0.527);
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
+    transition: all .3s ease;
 }
 
 .switch-btn:hover::before {
-  box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
+    box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
 }
 
 .switch-btn:checked:hover::before {
-  box-shadow: 0 0 0px 8px rgba(236, 72, 153, .15)
+    box-shadow: 0 0 0px 8px rgba(236, 72, 153, .15)
 }
 
 .switch-btn:checked:before {
-  transform: translateX(100%);
-  border-color: var(--def) /* rgba(236, 72, 153, 1);*/
+    transform: translateX(100%);
+    border-color: var(--def)
+        /* rgba(236, 72, 153, 1);*/
 }
 
 
@@ -2078,7 +2081,7 @@ Für Text: color: #222; oder color: #424242;
         flex-direction: column;
         height: 95vh;
         /* Gesamthöhe */
-        
+
     }
 
     .sidebar {
@@ -2092,6 +2095,14 @@ Für Text: color: #222; oder color: #424242;
 
     .main-panel {
         order: 1;
+    }
+
+    #loader,
+    #loader-db {
+        display: none;
+        position: absolute;
+        top: 28%;
+        left: 34%;
     }
 
 
@@ -2108,6 +2119,14 @@ Für Text: color: #222; oder color: #424242;
     .candidate {
         font-size: var(--cg-font-h6);
     }
+
+    #loader,
+    #loader-db {
+        display: none;
+        position: absolute;
+        top: 28%;
+        left: 34%;
+    }
 }
 
 /* ================ LANDSCAPE ================= */
@@ -2121,14 +2140,14 @@ Für Text: color: #222; oder color: #424242;
     }
 
     #automatic-btn-block {
-    margin: 1.2rem 1.2rem;
-}
+        margin: 1.2rem 1.2rem;
+    }
 
 
-.tracker-dashboard {
-     margin: 0.6rem 0.2rem;
-    height: 3.4rem;
-}
+    .tracker-dashboard {
+        margin: 0.6rem 0.2rem;
+        height: 3.4rem;
+    }
 
     #loader,
     #loader-db {

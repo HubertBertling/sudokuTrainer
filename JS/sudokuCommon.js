@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.16';
+let VERSION = 'v1.9.18';
 
 // ==========================================
 // Basic classes
@@ -547,9 +547,14 @@ class Search {
         if (this.searchStepResult == 'solutionDiscovered') {
             this.incrementNumberOfSolutions();
             if (this.getNumberOfSolutions() == 1) {
-                // Fair puuzles have exact one solution.
                 // This is the first solution in the search.
                 this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
+                // If only easy, medium, or hard steps have appeared 
+                // in the sequence leading up to this solution,
+                // then each step had a unique numbering.
+                // There were no steps with multiple options. This also means that the puzzle has only
+                // exactly the one solution provided. Therefore, the search can be
+                // terminated at this point.
                 if (this.maxSelectionDifficulty == 'msd_Leicht'
                     || this.maxSelectionDifficulty == 'msd_Mittel'
                     || this.maxSelectionDifficulty == 'msd_Schwer') {
