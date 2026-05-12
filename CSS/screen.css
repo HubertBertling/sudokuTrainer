@@ -2137,6 +2137,7 @@ Für Text: color: #222; oder color: #424242;
         /* width: clamp(320px, 95vw, 1024px);*/
         margin: 0 auto;
         min-width: 980px;
+        max-width: calc(min(1024px, 98dvw));
     }
 
     #automatic-btn-block {
@@ -2163,12 +2164,14 @@ Für Text: color: #222; oder color: #424242;
     }
 
     .puzzle-table-dlg {
+         position: absolute;
+        top: 1rem;
+        left: 2rem;
         margin: auto;
         /*max-width: 800px;*/
-        max-width: 100%;
-        max-height: 95dvh;
+        max-width: 880px;
+        max-height: 600px;
         background-color: #500;
-        height: calc(100dvh - 15rem);
     }
 
     .tableFixHead {
