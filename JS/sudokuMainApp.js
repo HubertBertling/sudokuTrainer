@@ -4690,7 +4690,6 @@ class SudokuSolverController {
     }
 
     trackerDlgFastStep() {
-        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         // Called by trackerDlgFastStepPressed()
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');

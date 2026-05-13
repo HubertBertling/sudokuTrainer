@@ -2024,7 +2024,7 @@ Für Text: color: #222; oder color: #424242;
     box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
     transition: all .3s ease;
 }
-
+/*
 .switch-btn:hover::before {
     box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
 }
@@ -2032,6 +2032,7 @@ Für Text: color: #222; oder color: #424242;
 .switch-btn:checked:hover::before {
     box-shadow: 0 0 0px 8px rgba(236, 72, 153, .15)
 }
+*/
 
 .switch-btn:checked:before {
     transform: translateX(100%);

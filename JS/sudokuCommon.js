@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.23';
+let VERSION = 'v1.9.24';
 
 // ==========================================
 // Basic classes
@@ -535,6 +535,7 @@ class Search {
     }
     performStep() {
         // The previous step result is undefined or 'inProgress'
+        // Returns one of: {'solutionDiscovered', 'searchCompleted', 'inProgress'}
         // Make the grid selection equal to the stepper selection
         if (this.myStepper.indexSelected !== sudoApp.mySolver.myGrid.indexSelected
             && this.myStepper.indexSelected !== -1) {
@@ -543,51 +544,61 @@ class Search {
         // perform the next automated step
 
         let autoStepResult = this.myStepper.autoStep();
-        this.searchStepResult = autoStepResult.processResult;
-        if (this.searchStepResult == 'solutionDiscovered') {
-            this.incrementNumberOfSolutions();
-            if (this.getNumberOfSolutions() == 1) {
-                // This is the first solution in the search.
-                this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
-                // If only easy, medium, or hard steps have appeared 
-                // in the sequence leading up to this solution,
-                // then each step had a unique numbering.
-                // There were no steps with multiple options. This also means that the puzzle has only
-                // exactly the one solution provided. Therefore, the search can be
-                // terminated at this point.
-                if (this.maxSelectionDifficulty == 'msd_Leicht'
-                    || this.maxSelectionDifficulty == 'msd_Mittel'
-                    || this.maxSelectionDifficulty == 'msd_Schwer') {
-                    this.setCompleted();
+        switch (autoStepResult.processResult) {
+            case 'inProgress': {
+                break;
+            }
+            case 'solutionDiscovered': {
+                this.incrementNumberOfSolutions();
+                if (this.getNumberOfSolutions() == 1) {
+                    // This is the first solution in the search.
+                    this.myFirstSolution = sudoApp.mySolver.getSolutionFromGrid();
+                    // If only easy, medium, or hard steps have appeared 
+                    // in the sequence leading up to this solution,
+                    // then each step had a unique numbering.
+                    // There were no steps with multiple options. This also means that the puzzle has only
+                    // exactly the one solution provided. Therefore, the search can be
+                    // terminated at this point.
+                    if (this.maxSelectionDifficulty == 'msd_Leicht'
+                        || this.maxSelectionDifficulty == 'msd_Mittel'
+                        || this.maxSelectionDifficulty == 'msd_Schwer') {
+                        this.setCompleted();
+                    }
                 }
+                let nr = this.getNumberOfSolutions();
+                sudoApp.mySolver.notifyAspect('solutionDiscovered', nr);
+                sudoApp.mySolver.myGrid.lastSearch =
+                {
+                    steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
+                    error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                    numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
+                }
+                sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
+                sudoApp.breakpointPassed('solutionDiscovered');
+                // Prepare the search for further solutions in the next steps
+                // by changing the stepper direction to 'backward'.
+                this.myStepper.setAutoDirection('backward');
+                break;
             }
-            let nr = this.getNumberOfSolutions();
-            sudoApp.mySolver.notifyAspect('solutionDiscovered', nr);
-            sudoApp.mySolver.myGrid.lastSearch =
-            {
-                steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
-                error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
-                numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
-            }
-            sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
-            sudoApp.breakpointPassed('solutionDiscovered');
-            // Prepare the search for further solutions in the next steps
-            // by changing the stepper direction to 'backward'.
-            this.myStepper.setAutoDirection('backward');
-        } else if (this.searchStepResult == 'searchCompleted') {
-            sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
-            sudoApp.breakpointPassed('searchCompleted');
-            this.setCompleted();
-            sudoApp.mySolver.myGrid.lastSearch =
-            {
-                steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
-                error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
-                numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
-            }
+            case 'searchCompleted': {
+                sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
+                sudoApp.breakpointPassed('searchCompleted');
+                this.setCompleted();
+                sudoApp.mySolver.myGrid.lastSearch =
+                {
+                    steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
+                    error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                    numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
+                }
 
-            sudoApp.mySolver.myGrid.deselect();
-            sudoApp.mySolver.notifyAspect('searchIsCompleted',
-                this.getNumberOfSolutions());
+                sudoApp.mySolver.myGrid.deselect();
+                sudoApp.mySolver.notifyAspect('searchIsCompleted',
+                    this.getNumberOfSolutions());
+                break;
+            }
+            default: {
+                throw new Error('Unexpected autoStepResult: ' + autoStepResult.processResult);
+            }
         }
         return autoStepResult.processResult;
     }
@@ -4721,7 +4732,7 @@ class SudokuSolver {
         sudoApp.mySyncRunner.start(sudoApp.mySolver,
             sudoApp.mySolver.performSearchStep);
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
-        let action = sudoApp.mySolver.performSearchStep();
+        // let action = sudoApp.mySolver.performSearchStep();
         return stoppingBreakpoint;
     }
 
