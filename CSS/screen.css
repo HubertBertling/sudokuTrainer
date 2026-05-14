@@ -2024,6 +2024,7 @@ Für Text: color: #222; oder color: #424242;
     box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
     transition: all .3s ease;
 }
+
 /*
 .switch-btn:hover::before {
     box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
@@ -2121,6 +2122,10 @@ Für Text: color: #222; oder color: #424242;
 @media screen and (orientation: portrait) and (width >=480px) {
     .candidate {
         font-size: var(--cg-font-h6);
+    }
+
+    #automatic-btn-block {
+        margin: 1.2rem 3rem;
     }
 
     #loader,
