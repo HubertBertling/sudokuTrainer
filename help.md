@@ -38,7 +38,8 @@ layout: default
       6. [Schwierigkeitsgrade (Levels) von Puzzles](#schwierigkeitsgrade-levels-von-puzzles)
    8. [Lösungsarchitektur dieses Sudoku-Explorers](#lösungsarchitektur-dieses-sudoku-explorers)
    9. [Ziele und Abgrenzung dieses Explorers](#ziele-und-abgrenzung-dieses-explorers)
-   10. [Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?](#wo-finde-ich-sehr-schwere-oder-extrem-schwere-puzzles)
+   10. [Programm der Sudoku-Freaks](#programm-der-sudoku-freaks)
+   11. [Wo finde ich 'Sehr schwere' oder 'Extrem schwere' Puzzles?](#wo-finde-ich-sehr-schwere-oder-extrem-schwere-puzzles)
 6. [Den Sudoku-Explorer praktisch nutzen](#den-sudoku-explorer-praktisch-nutzen)
    1. [Puzzles manuell lösen](#puzzles-manuell-lösen)
       1. [Puzzle eingeben](#puzzle-eingeben)
@@ -682,6 +683,8 @@ Der Schwierigkeitsgrad eines Sudoku-Puzzles kann auf verschiedene Weisen definie
 </figure>
 
 Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen ein gegebenes Sudoku-Puzzle automatisch. Die vorliegende Sudoku-App ist primär ein Sudoku-Trainer und Sudoku-Explorer und erst sekundär ein Sudoku-Solver. Sie wendet sich an Gelegenheitsspieler. Also Spieler und Spielerinnen, die beispielsweise ein Puzzle aus einer Zeitschrift lösen wollen, dabei aber steckenbleiben, weil sie die nächste setzbare Nummer nicht finden. Der vorliegende Sudoku-Explorer zeigt Schritt für Schritt, wie man das Puzzle lösen kann. Er liefert also nicht nur die Lösung sondern auch den Weg zur Lösung.
+
+## Programm der Sudoku-Freaks
 
 Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudoku-Trainer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. Es gibt Puzzles, die eine eindeutige Lösung haben, aber es wurde bisher noch keine logische Herleitung der Lösung gefunden.
 
