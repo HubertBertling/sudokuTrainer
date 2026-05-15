@@ -2703,21 +2703,21 @@ class SudokuCellView {
                     })
                 }
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
-                    sudoApp.breakpointPassed('single');
+                    sudoApp.breakpointPassed('bp_single');
                 }
                 return;
             }
             if (this.myCell.getTotalCandidates().size == 1) {
                 sudoApp.mySolverView.displayTechnique('', '<b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
-                    sudoApp.breakpointPassed('hiddenSingle');
+                    sudoApp.breakpointPassed('bp_hiddenSingle');
                 }
                 return;
             }
             if (this.myCell.getTotalCandidates().size > 1) {
                 sudoApp.mySolverView.displayTechnique('', '<b>Nächste Option </b> setzen.');
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
-                    sudoApp.breakpointPassed('multipleOption');
+                    sudoApp.breakpointPassed('bp_multipleOption');
                 }
                 return;
             }

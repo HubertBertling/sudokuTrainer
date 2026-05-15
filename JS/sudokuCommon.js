@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.27';
+let VERSION = 'v1.9.28';
 
 // ==========================================
 // Basic classes
@@ -157,7 +157,7 @@ class MatheSet extends Set {
 class SynchronousRunner {
     // The synchronous runner is a parametric runner that is used to find solutions efficiently.
     // Parameter is the step that is called in the runner's loop. It has two fixed breakpoints, 
-    // namely 'solutionDiscovered' and 'searchCompleted'.
+    // namely 'bp_solutionDiscovered' and 'bp_searchCompleted'.
     constructor() {
         this.stopped = true;
         this.myStoppingBreakpoint = undefined;
@@ -188,15 +188,15 @@ class SynchronousRunner {
 
     breakpointPassed(bp) {
         switch (bp) {
-            case 'solutionDiscovered':
-            case 'searchCompleted': {
+            case 'bp_solutionDiscovered':
+            case 'bp_searchCompleted': {
                 this.stop(bp);
                 break;
             }
-            case 'contradiction':
-            case 'multipleOption':
-            case 'single':
-            case 'hiddenSingle': {
+            case 'bp_contradiction':
+            case 'bp_multipleOption':
+            case 'bp_single':
+            case 'bp_hiddenSingle': {
                 // Ignore these breakpoints in a SynchronousRunner
                 // Its task is the fast solution of a puzzle.
                 break;
@@ -232,6 +232,7 @@ class ClockedRunner {
         }
     }
     setBreakpoints(bps) {
+        // Breakpoints that can be set by the user
         this.myBreakpoints.contradiction = bps.contradiction;
         this.myBreakpoints.multipleOption = bps.multipleOption;
         this.myBreakpoints.single = bps.single;
@@ -241,35 +242,35 @@ class ClockedRunner {
 
     breakpointPassed(bp) {
         switch (bp) {
-            case 'solutionDiscovered': {
+            case 'bp_solutionDiscovered': {
                 if (this.myBreakpoints.solutionDiscovered) {
                     this.stop(bp);
                 }
                 break;
             }
-            case 'searchCompleted': {
+            case 'bp_searchCompleted': {
                 this.stop(bp);
                 break;
             }
-            case 'contradiction': {
+            case 'bp_contradiction': {
                 if (this.myBreakpoints.contradiction) {
                     this.stop(bp);
                 }
                 break;
             }
-            case 'multipleOption': {
+            case 'bp_multipleOption': {
                 if (this.myBreakpoints.multipleOption) {
                     this.stop(bp);
                 }
                 break;
             }
-            case 'single': {
+            case 'bp_single': {
                 if (this.myBreakpoints.single) {
                     this.stop(bp);
                 }
                 break;
             }
-            case 'hiddenSingle': {
+            case 'bp_hiddenSingle': {
                 if (this.myBreakpoints.hiddenSingle) {
                     this.stop(bp);
                 }
@@ -298,49 +299,6 @@ class ClockedRunner {
 
     getMyStoppingBreakpoint() {
         return this.myStoppingBreakpoint;
-    }
-
-
-    breakpointPassed(bp) {
-        switch (bp) {
-            case 'solutionDiscovered': {
-                if (this.myBreakpoints.solutionDiscovered) {
-                    this.stop(bp);
-                }
-                break;
-            }
-            case 'searchCompleted': {
-                this.stop(bp);
-                break;
-            }
-            case 'contradiction': {
-                if (this.myBreakpoints.contradiction) {
-                    this.stop(bp);
-                }
-                break;
-            }
-            case 'multipleOption': {
-                if (this.myBreakpoints.multipleOption) {
-                    this.stop(bp);
-                }
-                break;
-            }
-            case 'single': {
-                if (this.myBreakpoints.single) {
-                    this.stop(bp);
-                }
-                break;
-            }
-            case 'hiddenSingle': {
-                if (this.myBreakpoints.hiddenSingle) {
-                    this.stop(bp);
-                }
-                break;
-            }
-            default: {
-                throw new Error('Unexpected breakpoint: ' + bp);
-            }
-        }
     }
 }
 
@@ -460,7 +418,7 @@ class Search {
         }
 
         // maxSelectionDifficulty one of
-        // {'msd_Leicht','msd_Mittel','msd_Schwer','msd_Sehr schwer'}.
+        // {'msd_Leicht','msd_Mittel','msd_Schwer','msd_Sehr_schwer'}.
         this.maxSelectionDifficulty = 'msd_Leicht';
 
         this.nakedPairs = new RuleSet();
@@ -545,10 +503,10 @@ class Search {
 
         let autoStepResult = this.myStepper.autoStep();
         switch (autoStepResult.processResult) {
-            case 'inProgress': {
+            case 'state_inProgress': {
                 break;
             }
-            case 'solutionDiscovered': {
+            case 'state_solutionDiscovered': {
                 this.incrementNumberOfSolutions();
                 if (this.getNumberOfSolutions() == 1) {
                     // This is the first solution in the search.
@@ -574,15 +532,15 @@ class Search {
                     numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
                 }
                 sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
-                sudoApp.breakpointPassed('solutionDiscovered');
+                sudoApp.breakpointPassed('bp_solutionDiscovered');
                 // Prepare the search for further solutions in the next steps
                 // by changing the stepper direction to 'backward'.
                 this.myStepper.setAutoDirection('backward');
                 break;
             }
-            case 'searchCompleted': {
+            case 'state_searchCompleted': {
                 sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
-                sudoApp.breakpointPassed('searchCompleted');
+                sudoApp.breakpointPassed('bp_searchCompleted');
                 this.setCompleted();
                 sudoApp.mySolver.myGrid.lastSearch =
                 {
@@ -670,7 +628,7 @@ class StepperOnGrid {
     }
 
     autoStep() {
-        // Returns one of: {'solutionDiscovered', 'searchCompleted', 'inProgress'}
+        // Returns one of: {'state_solutionDiscovered', 'state_searchCompleted', 'state_inProgress'}
         this.isNotStarted = false;
         if (this.autoDirection == 'forward') {
             return this.stepForward();
@@ -703,10 +661,10 @@ class StepperOnGrid {
                 // Select the cell of the optionStep whose index is also saved in the new realStep
                 this.select(realStep.getCellIndex());
                 let autoStepResult = {
-                    processResult: 'inProgress',
+                    processResult: 'state_inProgress',
                     action: undefined
                 }
-                sudoApp.breakpointPassed('multipleOption');
+                sudoApp.breakpointPassed('bp_multipleOption');
                 return autoStepResult;
             }
             // ====================================================================================
@@ -716,10 +674,10 @@ class StepperOnGrid {
                 // There is no more selection until the grid is completely filled.
                 // I.e. the Sudoku has been successfully solved
                 let autoStepResult = {
-                    processResult: 'solutionDiscovered',
+                    processResult: 'state_solutionDiscovered',
                     action: undefined
                 }
-                sudoApp.breakpointPassed('solutionDiscovered');
+                sudoApp.breakpointPassed('bp_solutionDiscovered');
                 return autoStepResult;
             } else {
                 // ================================================================================
@@ -749,7 +707,7 @@ class StepperOnGrid {
                     // Create a new realStep with the unique number
                     this.myBackTracker.addBackTrackRealStep(tmpSelection.index, tmpValue);
                     let autoStepResult = {
-                        processResult: 'inProgress',
+                        processResult: 'state_inProgress',
                         action: undefined
                     }
                     return autoStepResult;
@@ -765,7 +723,7 @@ class StepperOnGrid {
 
                     let realStep = this.myBackTracker.getNextBackTrackRealStep();
                     let autoStepResult = {
-                        processResult: 'inProgress',
+                        processResult: 'state_inProgress',
                         action: undefined
                     }
                     return autoStepResult;
@@ -790,21 +748,21 @@ class StepperOnGrid {
                 this.setAutoDirection('backward');
                 this.countBackwards++;
                 let autoStepResult = {
-                    processResult: 'inProgress',
+                    processResult: 'state_inProgress',
                     action: tmpAction
                 }
-                sudoApp.breakpointPassed('contradiction');
+                sudoApp.breakpointPassed('bp_contradiction');
                 return autoStepResult;
             } else if (sudoApp.mySolver.myGrid.isFinished()) {
                 let autoStepResult = {
-                    processResult: 'solutionDiscovered',
+                    processResult: 'state_solutionDiscovered',
                     action: tmpAction
                 }
-                sudoApp.breakpointPassed('solutionDiscovered');
+                sudoApp.breakpointPassed('bp_solutionDiscovered');
                 return autoStepResult;
             } else {
                 let autoStepResult = {
-                    processResult: 'inProgress',
+                    processResult: 'state_inProgress',
                     action: tmpAction
                 }
                 return autoStepResult;
@@ -838,7 +796,7 @@ class StepperOnGrid {
         // If the last number set leads to the unsolvability of the Sudoku, 
         // the solver must go backwards.
         let autoStepResult = {
-            processResult: 'inProgress',
+            processResult: 'state_inProgress',
             action: undefined
         }
         let currentStep = this.myBackTracker.getCurrentStep();
@@ -846,7 +804,7 @@ class StepperOnGrid {
             if (currentStep.getCellIndex() == -1) {
                 // There is no more option in the root optionStep
                 // End of game, no solution
-                autoStepResult.processResult = 'searchCompleted';
+                autoStepResult.processResult = 'state_searchCompleted';
                 return autoStepResult;
             }
             if (currentStep.isCompleted()) {
@@ -867,7 +825,7 @@ class StepperOnGrid {
                 // Case 1: No cell or an incorrectly selected cell
                 this.select(currentStep.getCellIndex());
                 // The cell of the current step is selected in the matrix
-                autoStepResult.processResult = 'inProgress';
+                autoStepResult.processResult = 'state_inProgress';
                 return autoStepResult;
             }
             // Case 2: 
@@ -880,7 +838,7 @@ class StepperOnGrid {
                 // Determine the new current step after deleting the cell
                 let prevStep = this.myBackTracker.previousStep();
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps++;
-                autoStepResult.processResult = 'inProgress';
+                autoStepResult.processResult = 'state_inProgress';
                 return autoStepResult;
             }
         }
@@ -4531,7 +4489,7 @@ class SudokuSolver {
         sudoApp.mySyncRunner.start(sudoApp.mySolver,
             sudoApp.mySolver.performSearchStep);
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
-        if (stoppingBreakpoint == 'solutionDiscovered') {
+        if (stoppingBreakpoint == 'bp_solutionDiscovered') {
             // Turn the solved cells into Givens
             this.setSolvedToGiven();
             // Set the puzzle to define mode
@@ -4639,7 +4597,7 @@ class SudokuSolver {
         sudoApp.mySyncRunner.start(sudoApp.mySolver,
             sudoApp.mySolver.performSearchStep);
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
-        if (stoppingBreakpoint == 'solutionDiscovered') {
+        if (stoppingBreakpoint == 'bp_solutionDiscovered') {
             // First solution discovered
             // After the first solution proceed
             sudoApp.mySyncRunner.start(sudoApp.mySolver,
@@ -4651,12 +4609,12 @@ class SudokuSolver {
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Unlösbar';
             this.myCurrentSearch.setCompleted();
         }
-        if (stoppingBreakpoint == 'solutionDiscovered') {
+        if (stoppingBreakpoint == 'bp_solutionDiscovered') {
             // A second solution was found
             // More than one solution is the key property 
             // of extremely difficult puzzles
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Extrem schwer';
-        } else if (stoppingBreakpoint == 'searchCompleted') {
+        } else if (stoppingBreakpoint == 'bp_searchCompleted') {
             // All properties of the implicit puzzle in the grid
             // are now known and are summarized in the preRunRecord.
             this.myCurrentSearch.setCompleted();
