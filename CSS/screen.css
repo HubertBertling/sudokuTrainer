@@ -866,6 +866,13 @@ Für Text: color: #222; oder color: #424242;
     color: white;
 }
 
+#btn-undo.btn-undo-off,
+#btn-redo.btn-redo-off{
+    border: 0.2rem solid white;
+}
+
+
+
 #tipp-accept-btn {
     background-color: var(--played-cell-bg-color);
     display: inline-flex;

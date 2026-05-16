@@ -3720,8 +3720,8 @@ class SudokuSolverController {
     }
 
     clickDeleteBtn() {
-        let delBtns = document.getElementsByClassName("btn-delete-cell")
-        delBtns[0].click();
+        let delBtn = document.getElementById("btn-delete-cell");
+        delBtn.click();
     }
 
     async toggleSwitch() {
@@ -3931,6 +3931,8 @@ class SudokuSolverController {
             let puzzleRecord = await this.mySolver.calculatePuzzleRecord();
             this.mySolver.setCurrentPuzzle(puzzleRecord);
         }
+        sudoApp.mySolverController.myUndoActionStack = [];
+        sudoApp.mySolverController.myRedoActionStack = [];
         this.mySolver.notify();
     }
 
@@ -4613,7 +4615,6 @@ class SudokuSolverController {
     trackerDlgStepPressed() {
         // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
-        let action = undefined;
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4626,12 +4627,10 @@ class SudokuSolverController {
                     sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolver.myGrid.lastSearch = undefined;
-                action = sudoApp.mySolver.performSearchStep();
+                sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
-
             }
         }
-        return action;
     }
 
     // Button Suchlauf mit Haltepunkten
@@ -4770,6 +4769,8 @@ class SudokuSolverController {
         this.mySolver.unsetStepLazy();
         this.mySolver.deselect();
         sudoApp.mySolverView.displayReasonUnsolvability('');
+        sudoApp.mySolverController.myUndoActionStack = [];
+        sudoApp.mySolverController.myRedoActionStack = [];
         this.mySolver.notify();
     }
 

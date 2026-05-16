@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.28';
+let VERSION = 'v1.9.29';
 
 // ==========================================
 // Basic classes
@@ -501,12 +501,12 @@ class Search {
         }
         // perform the next automated step
 
-        let autoStepResult = this.myStepper.autoStep();
-        switch (autoStepResult.processResult) {
-            case 'state_inProgress': {
+        let stepType = this.myStepper.autoStep();
+        switch (stepType) {
+            case 'progress-step': {
                 break;
             }
-            case 'state_solutionDiscovered': {
+            case 'solutionDiscovered-step': {
                 this.incrementNumberOfSolutions();
                 if (this.getNumberOfSolutions() == 1) {
                     // This is the first solution in the search.
@@ -538,7 +538,7 @@ class Search {
                 this.myStepper.setAutoDirection('backward');
                 break;
             }
-            case 'state_searchCompleted': {
+            case 'completion-step': {
                 sudoApp.mySolver.myGrid.backTracks = this.countBackwards;
                 sudoApp.breakpointPassed('bp_searchCompleted');
                 this.setCompleted();
@@ -555,11 +555,21 @@ class Search {
                 break;
             }
             default: {
-                throw new Error('Unexpected autoStepResult: ' + autoStepResult.processResult);
+                throw new Error('Unexpected stepType: ' + stepType);
             }
         }
-        return autoStepResult.processResult;
+        return stepType;
     }
+
+     performSolutionStep() {
+        // Repeat the execution of the step 'performStep()'
+        // until the next active BreakPoint is reached.
+        sudoApp.mySyncRunner.start(this, this.performStep);
+        let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
+        // let action = sudoApp.mySolver.performSearchStep();
+        return stoppingBreakpoint;
+    }
+   
 
     cleanUp() {
         sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
@@ -628,7 +638,7 @@ class StepperOnGrid {
     }
 
     autoStep() {
-        // Returns one of: {'state_solutionDiscovered', 'state_searchCompleted', 'state_inProgress'}
+        // Returns one of: {'solutionDiscovered-step', 'completion-step', 'progress-step'}
         this.isNotStarted = false;
         if (this.autoDirection == 'forward') {
             return this.stepForward();
@@ -660,12 +670,8 @@ class StepperOnGrid {
                 let realStep = this.myBackTracker.getNextBackTrackRealStep();
                 // Select the cell of the optionStep whose index is also saved in the new realStep
                 this.select(realStep.getCellIndex());
-                let autoStepResult = {
-                    processResult: 'state_inProgress',
-                    action: undefined
-                }
                 sudoApp.breakpointPassed('bp_multipleOption');
-                return autoStepResult;
+                return 'progress-step';
             }
             // ====================================================================================
             // Action Case 2: Determine the next cell
@@ -673,12 +679,8 @@ class StepperOnGrid {
             if (tmpSelection.index == -1) {
                 // There is no more selection until the grid is completely filled.
                 // I.e. the Sudoku has been successfully solved
-                let autoStepResult = {
-                    processResult: 'state_solutionDiscovered',
-                    action: undefined
-                }
                 sudoApp.breakpointPassed('bp_solutionDiscovered');
-                return autoStepResult;
+                return 'solutionDiscovered-step';
             } else {
                 // ================================================================================
                 // The determined selection is set
@@ -706,11 +708,7 @@ class StepperOnGrid {
                     // The selection has a unique number. I.e. it continues uniquely.
                     // Create a new realStep with the unique number
                     this.myBackTracker.addBackTrackRealStep(tmpSelection.index, tmpValue);
-                    let autoStepResult = {
-                        processResult: 'state_inProgress',
-                        action: undefined
-                    }
-                    return autoStepResult;
+                    return 'progress-step';
                 } else {
                     // =============================================================================
                     // The selection does not have a unique number. I.e. it continues with several options.
@@ -720,13 +718,8 @@ class StepperOnGrid {
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry++;
                     // The first option of the optionStep is selected immediately
                     // New realStep with the first option number
-
                     let realStep = this.myBackTracker.getNextBackTrackRealStep();
-                    let autoStepResult = {
-                        processResult: 'state_inProgress',
-                        action: undefined
-                    }
-                    return autoStepResult;
+                    return 'progress-step';
                 }
             }
         } else {
@@ -735,8 +728,7 @@ class StepperOnGrid {
             // b) The number to be set is stored in the current realStep
             // Action:
             // Set the unique number
-            let tmpAction = this.atCurrentSelectionSetAutoNumber(currentStep);
-
+            this.atCurrentSelectionSetAutoNumber(currentStep);
             // If a hidden single has been set in this cell, 
             // switch the evaluation mode back to 'No evaluation'.
             sudoApp.mySolver.myGrid.unsetStepLazy();
@@ -747,25 +739,13 @@ class StepperOnGrid {
             if (sudoApp.mySolver.myGrid.isUnsolvable()) {
                 this.setAutoDirection('backward');
                 this.countBackwards++;
-                let autoStepResult = {
-                    processResult: 'state_inProgress',
-                    action: tmpAction
-                }
                 sudoApp.breakpointPassed('bp_contradiction');
-                return autoStepResult;
+                return 'progress-step';
             } else if (sudoApp.mySolver.myGrid.isFinished()) {
-                let autoStepResult = {
-                    processResult: 'state_solutionDiscovered',
-                    action: tmpAction
-                }
                 sudoApp.breakpointPassed('bp_solutionDiscovered');
-                return autoStepResult;
+                return 'solutionDiscovered-step';
             } else {
-                let autoStepResult = {
-                    processResult: 'state_inProgress',
-                    action: tmpAction
-                }
-                return autoStepResult;
+                return 'progress-step';
             }
         }
     }
@@ -795,17 +775,12 @@ class StepperOnGrid {
     stepBackward() {
         // If the last number set leads to the unsolvability of the Sudoku, 
         // the solver must go backwards.
-        let autoStepResult = {
-            processResult: 'state_inProgress',
-            action: undefined
-        }
         let currentStep = this.myBackTracker.getCurrentStep();
         if (currentStep instanceof BackTrackOptionStep) {
             if (currentStep.getCellIndex() == -1) {
                 // There is no more option in the root optionStep
                 // End of game, no solution
-                autoStepResult.processResult = 'state_searchCompleted';
-                return autoStepResult;
+                return 'completion-step';
             }
             if (currentStep.isCompleted()) {
                 // The optionStep has been completely processed
@@ -825,8 +800,7 @@ class StepperOnGrid {
                 // Case 1: No cell or an incorrectly selected cell
                 this.select(currentStep.getCellIndex());
                 // The cell of the current step is selected in the matrix
-                autoStepResult.processResult = 'state_inProgress';
-                return autoStepResult;
+                return 'progress-step';
             }
             // Case 2: 
             // Start state
@@ -838,8 +812,7 @@ class StepperOnGrid {
                 // Determine the new current step after deleting the cell
                 let prevStep = this.myBackTracker.previousStep();
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps++;
-                autoStepResult.processResult = 'state_inProgress';
-                return autoStepResult;
+                return 'progress-step';
             }
         }
     }
@@ -4658,6 +4631,7 @@ class SudokuSolver {
     setCurrentSearchNew() {
         this.myCurrentSearch = new Search();
     }
+    /*
     performSearchStep() {
         let stepResult = this.myCurrentSearch.performStep();
         this.isNotStarted = false;
@@ -4668,6 +4642,13 @@ class SudokuSolver {
         this.lastAction = stepResult;
         return stepResult;
     }
+    */
+    performSearchStep() {
+        return this.myCurrentSearch.performStep();
+    }
+
+
+
 
     searchInfos2PuzzleRecord() {
         let search = this.myCurrentSearch;
@@ -4684,6 +4665,7 @@ class SudokuSolver {
         puzzle.setNumberOfSolutions(search.getNumberOfSolutions());
     }
 
+    /*
     performSolutionStep() {
         // Repeat the execution of the step 'performSearchStep()'
         // until the next active BreakPoint is reached.
@@ -4692,6 +4674,11 @@ class SudokuSolver {
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
         // let action = sudoApp.mySolver.performSearchStep();
         return stoppingBreakpoint;
+    }
+    */
+   
+    performSolutionStep() {
+        return this.myCurrentSearch.performSolutionStep();
     }
 
     isSearching() {
