@@ -4666,7 +4666,6 @@ class SudokuSolverController {
 
     // Button Weitere Lösung anzeigen
     trackerDlgFastStepPressed() {
-        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgFastStepPressed';
         // Weitere Lösung
         if (sudoApp.myClockedRunner.isRunning()) {
@@ -4698,7 +4697,7 @@ class SudokuSolverController {
         let stoppingBP = sudoApp.mySolver.performSolutionStep();
         sudoApp.mySolver.notify();
 
-        if (stoppingBP == 'solutionDiscovered') {
+        if (stoppingBP == 'bp_solutionDiscovered') {
             let header = 'Laufende Lösung: ' + sudoApp.mySolver.myCurrentSearch.myNumberOfSolutions;
             let infoString = sudoApp.mySolver.getSolutionInfo();
             sudoApp.myInfoDialog.open(
