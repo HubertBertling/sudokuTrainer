@@ -9,7 +9,7 @@ var APP_PREFIX = 'sudo_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_1.9.41';
+var VERSION = 'version_1.9.42';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -170,19 +170,80 @@ var URLS = [
 
 const CACHE_NAME = APP_PREFIX + VERSION
 
+// Determine if a request is for a dynamic asset (HTML, JS, CSS)
+function isDynamicAsset(url) {
+  return url.match(/\.(html|js|css)$/) || url.endsWith('/');
+}
+
+// Network-first strategy for dynamic assets, cache-first for images/static
+function networkFirstStrategy(event) {
+  const url = event.request.url;
+  const isDynamic = isDynamicAsset(url);
+
+  if (isDynamic) {
+    // Network-first with timeout fallback to cache
+    event.respondWith(
+      Promise.race([
+        fetch(event.request).then(function (response) {
+          // Cache successful network responses
+          if (response && response.status === 200 && response.type !== 'error') {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(function (cache) {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        }),
+        new Promise(function (resolve) {
+          // Timeout after 5 seconds, fall back to cache
+          setTimeout(function () {
+            caches.match(event.request).then(function (cachedResponse) {
+              if (cachedResponse) {
+                console.log('Network timeout, serving from cache: ' + url);
+                resolve(cachedResponse);
+              }
+            });
+          }, 5000);
+        })
+      ]).catch(function (error) {
+        console.log('Network failed for ' + url + ', trying cache...');
+        return caches.match(event.request).then(function (response) {
+          if (response) {
+            console.log('Serving from cache after network error: ' + url);
+            return response;
+          }
+          throw error;
+        });
+      })
+    );
+  } else {
+    // Cache-first strategy for images and static assets
+    event.respondWith(
+      caches.match(event.request).then(function (request) {
+        if (request) {
+          console.log('Responding with cache : ' + url);
+          return request;
+        } else {
+          console.log('File is not cached, fetching : ' + url);
+          return fetch(event.request).then(function (response) {
+            // Cache successful responses
+            if (response && response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME).then(function (cache) {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            return response;
+          });
+        }
+      })
+    );
+  }
+}
+
 self.addEventListener('fetch', function (event) {
   console.log('Fetch request : ' + event.request.url);
-  event.respondWith(
-    caches.match(event.request).then(function (request) {
-      if (request) {
-        console.log('Responding with cache : ' + event.request.url);
-        return request
-      } else {
-        console.log('File is not cached, fetching : ' + event.request.url);
-        return fetch(event.request)
-      }
-    })
-  )
+  networkFirstStrategy(event);
 })
 
 // const assetsToCache = ['/', '/styles/main.css', '/missing-file.js'];
