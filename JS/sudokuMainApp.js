@@ -4615,6 +4615,7 @@ class SudokuSolverController {
     trackerDlgStepPressed() {
         // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
+        let action = undefined;
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4627,10 +4628,12 @@ class SudokuSolverController {
                     sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolver.myGrid.lastSearch = undefined;
-                sudoApp.mySolver.performSearchStep();
+                action = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
+
             }
         }
+        return action;
     }
 
     // Button Suchlauf mit Haltepunkten
@@ -4677,7 +4680,7 @@ class SudokuSolverController {
                 // Not able to start
                 sudoApp.mySolver.notifyAspect('searchIsCompleted', sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
-                sudoApp.mySolverView.startLoaderAnimation('Weitere Lösung');
+                sudoApp.mySolverView.startLoaderAnimation('Nächste Lösung');
                 setTimeout(() => {
                     this.trackerDlgFastStep();
                     sudoApp.mySolverView.stopLoaderAnimation();
@@ -4750,7 +4753,7 @@ class SudokuSolverController {
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
                     () => {
                         let bp = sudoApp.mySolver.performSolutionStep();
-                        if (bp == 'searchCompleted') {
+                        if (bp == 'bp_searchCompleted') {
                             sudoApp.mySolverView.stopLoaderAnimation();
                         }
                     }, 0);
