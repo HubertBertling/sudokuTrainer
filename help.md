@@ -686,7 +686,13 @@ Viele im Internet auffindbare Sudoku-Apps sind reine Sudoku-Solver. Sie lösen e
 
 ## Programm der Sudoku-Freaks
 
-Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudoku-Trainer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. Es gibt Puzzles, die eine eindeutige Lösung haben, aber es wurde bisher noch keine logische Herleitung der Lösung gefunden.
+Neben reinen Sudoku-Solvern findet man im Internet auch Sudoku-Trainer. Die Sudoku-Trainer-Portale sind häufig sehr aufwendig gestaltet und decken auch nicht-klassische Sudoku-Varianten ab. Zwei Beispiele sind die Seiten von [Andrew Stuart](https://www.sudokuwiki.org/Main_Page) und von [Jan Feldmann](https://sudoku.coach/). Ihre Trainer-Apps unterstützen den Spieler bei der Anwendung komplexer logischer Schlussregeln für die Lösung von Puzzles. Die Herausforderung besteht darin, völlig ohne Backtracking, allein durch Anwendung der Schlussregeln, das gegebene Puzzle zu lösen. Eine besondere Herausforderung ist die Weiterentwicklung der Schlussregeln. 
+
+Es gibt Puzzles, die eine eindeutige Lösung haben, aber für sie wurde bisher noch keine logische Herleitung der Lösung gefunden. Eine Diskussion über die härtestden Sudukus findest du hier [Arto_Inkala_Sudoku](https://www.sudokuwiki.org/Arto_Inkala_Sudoku). Das wohl bekannteste Sudoku ohne logische Lösung ist 
+
+AI Escargot = 100007090030020008009600500005300900010080002600004000300000010040000007007000300
+
+Für die Backtrack-Lösung dieses Puzzles benötigt der vorliegende Explorer 204 Schritte. Für die Lösung plus dem Nachweis, dass es nur eine Lösung gibt, werden 1936 Schritte benötigt. 
 
 Das Ziel des vorliegenden Explorers ist neben der Einübung der Anwendung logischer Schlussregeln auch die Vermittlung eines Überblicks über den Raum der 9x9-Sudokus. Anders als die erwähnten Sudoku-Trainer betrachtet der vorliegende Explorer auch unlösbare Puzzles und Puzzles mit mehr als einer Lösung. Sie gehören offensichtlich zum Raum der 9x9-Sudoku dazu. Technisch wendet er ineinander verschränkt beides an, logisches Schließen und Backtracking.
 
