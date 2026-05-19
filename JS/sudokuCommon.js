@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.44';
+let VERSION = 'v1.9.45';
 
 // ==========================================
 // Basic classes
@@ -558,7 +558,7 @@ class Search {
                 throw new Error('Unexpected autoStepResult: ' + autoStepResult.processResult);
             }
         }
-        return autoStepResult.processResult;
+        return autoStepResult;
     }
 
     cleanUp() {
@@ -4659,14 +4659,13 @@ class SudokuSolver {
         this.myCurrentSearch = new Search();
     }
     performSearchStep() {
-        let stepResult = this.myCurrentSearch.performStep();
+        let autoStepResult = this.myCurrentSearch.performStep();
         this.isNotStarted = false;
         this.optionPath = this.myCurrentSearch.getOptionPath();
         // This optionPath includes the root option, not visible for the user.
         // Therefore the length - 1 is relevant. 
         this.optionPathMaxLength = Math.max(this.optionPathMaxLength, this.optionPath.length - 1);
-        this.lastAction = stepResult;
-        return stepResult;
+        return autoStepResult;
     }
 
     searchInfos2PuzzleRecord() {

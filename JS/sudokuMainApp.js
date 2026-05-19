@@ -3362,27 +3362,8 @@ class SudokuSolverView {
         var checkBox = document.getElementById("switch-btn");
         if (gamePhase == 'play') {
             checkBox.checked = true;
-            /*
-            this.btns = document.querySelectorAll('.btn-define');
-            this.btns.forEach(btn => {
-                btn.classList.remove('pressed');
-            });
-            this.btns = document.querySelectorAll('.btn-play');
-            this.btns.forEach(btn => {
-                btn.classList.add('pressed');
-            }); */
         } else if (gamePhase == 'define') {
             checkBox.checked = false;
-
-            /*this.btns = document.querySelectorAll('.btn-define');
-            this.btns.forEach(btn => {
-                btn.classList.add('pressed');
-            });
-            this.btns = document.querySelectorAll('.btn-play');
-            this.btns.forEach(btn => {
-                btn.classList.remove('pressed');
-            });
-            */
         }
     }
 
@@ -3991,13 +3972,14 @@ class SudokuSolverController {
     }
 
     tippOkBtnPressed() {
-        let action = this.trackerDlgStepPressed();
-        if (action !== undefined) {
-            if (action.operation == 'setNr') {
-                this.myUndoActionStack.push(action);
-            }
+        let autoStepResult = this.trackerDlgStepPressed();
+        this.mySolver.cleanUpAndDeleteCurrentSearch();
+        this.mySolver.unsetStepLazy();
+        this.mySolver.deselect();
+        if (autoStepResult.action.operation == 'setNr') {
+            this.myUndoActionStack.push(autoStepResult.action);
         }
-        this.trackerDlgStopPressed();
+        this.mySolver.notify();
     }
 
     searchResetBtnPressed() {
@@ -4615,7 +4597,7 @@ class SudokuSolverController {
     trackerDlgStepPressed() {
         // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
-        let action = undefined;
+        let autoStepResult = undefined;
         // Nächster Suchschritt
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4628,12 +4610,11 @@ class SudokuSolverController {
                     sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions());
             } else {
                 sudoApp.mySolver.myGrid.lastSearch = undefined;
-                action = sudoApp.mySolver.performSearchStep();
+                autoStepResult = sudoApp.mySolver.performSearchStep();
                 sudoApp.mySolver.notify();
-
             }
         }
-        return action;
+        return autoStepResult;
     }
 
     // Button Suchlauf mit Haltepunkten
