@@ -3,7 +3,7 @@
   "short_name": "SudokuTrainer",
   "description": "Die App ist ein Trainer für klassisches Sudoku.",
 
-  "id": "/sudokuTrainer/index.html",
+  "id": "sudokuTrainer",
   "scope": "/sudokuTrainer/",
   "start_url": "/sudokuTrainer/index.html",
 
@@ -34,7 +34,7 @@
     {
       "src": "./images/screenshotHandy.png",
       "sizes": "488x910",
-      "type": "image/jpeg",
+      "type": "image/png",
       "form_factor": "narrow",
       "label": "sudoku-trainer"
     }
