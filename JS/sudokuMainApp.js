@@ -307,7 +307,42 @@ class NavigationBar {
         document.getElementById("mySidenav").style.width = "0";
     }
 }
+/*
+class SnapshotDialog {
+    constructor(sudoApp) {
+        this.mySnapshotDlgNode = document.getElementById("snapshot-dlg");
+        this.myInputNr = document.getElementById("snapshot-cell-nr");
+        this.okNode = document.getElementById("snapshot-ok-btn");
+        this.cancelNode = document.getElementById("snapshot-cancel-btn");
 
+
+        this.myOkayOperation = sudoApp.mySolverController.snapshotOkay;
+        this.myCancelOperation = sudoApp.mySolverController.snapshotCancelled;
+        this.thisPointer = sudoApp.mySolverController;
+
+
+        this.okNode.addEventListener('click', () => {
+            let nr = this.myInputNr.value;
+            sudoApp.mySnapshotDlg.myOkayOperation.call(this.thisPointer, nr);
+            sudoApp.mySnapshotDlg.close();
+        });
+        this.cancelNode.addEventListener('click', () => {
+            sudoApp.mySnapshotDlg.myCancelOperation.call(this.thisPointer);
+            sudoApp.mySnapshotDlg.close();
+        });
+    }
+
+    open() {
+        this.myOpen = true;
+        this.mySnapshotDlgNode.close();
+        this.mySnapshotDlgNode.showModal();
+    }
+    close() {
+        this.mySnapshotDlgNode.close();
+        this.myOpen = false;
+    }
+}
+*/
 class PuzzleDBDialog {
     constructor() {
         this.myOpen = false;
@@ -4781,6 +4816,33 @@ class SudokuSolverController {
     savePuzzleDlgCancelPressed() {
         sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
+/*
+    snapshotOkay(cellNr) {
+        if (cellNr > 0 && cellNr < 82) {
+            let snapshotCell = sudoApp.mySolverView.myGridView.sudoCellViews[cellNr].myCellNode;
+            this.takeSnapshot(snapshotCell);
+        } else if (isNaN(cellNr)) {
+            let snapshotElement = document.getElementById(cellNr);
+            this.takeSnapshot(snapshotElement);
+        }
+    }
+    snapshotCancelled() {
+        // Nothing to do
+    }
+
+    takeSnapshot(element) {
+        html2canvas(element).then(canvas => {
+            // 1. Möglichkeit: Als Bilddatei (PNG) herunterladen
+            const link = document.createElement('a');
+            link.download = 'snapshot.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            // 2. Möglichkeit: Direkt auf der Seite anzeigen
+            // document.body.appendChild(canvas);
+        });
+    }
+*/
 }
 
 // ==========================================

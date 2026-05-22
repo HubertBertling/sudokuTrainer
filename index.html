@@ -31,6 +31,12 @@
             <span class="topbar-title">Sudoku-Explorer</span>
             <div class="topbar-right">
 
+                <!--
+                <button class="modern-btn-inline topbar-btn" id="btn-snapshot" 
+                    onclick="sudoApp.mySnapshotDlg.open()">
+                    Snap
+                </button>
+            -->
                 <button class="modern-btn-inline topbar-btn" id="btn-help" onclick="sudoApp.helpFunction()">
                     <img title="help" src="images/help_24.png" class="btn-image">
                     Hilfe
@@ -621,6 +627,24 @@
             </div>
         </dialog>
 
+        <!--
+        <dialog class="snapshot-dlg noprint" id="snapshot-dlg">
+            <div class="dlg-header" id="snapshot-dlg-header">
+                Snapshot-Element wählen ...
+            </div>
+
+
+            <label for="snapshot-cell-nr" class="label-dlg">Zell-Nummer:</label>
+            <input title="snapshot-cell-nr" class="cell-nr-input-dlg" id="snapshot-cell-nr" name="snapshot-cell-nr" min="1" max="81" step="1">
+
+            <div class="ok-cancel-btns">
+                <input type="button" class="main-btn ok-cancel-btn" id="snapshot-ok-btn" name="OK" value="OK" />
+                <input type="button" class="main-btn ok-cancel-btn" id="snapshot-cancel-btn" name="Cancel"
+                    value="Abbrechen" />
+            </div>
+        </dialog>
+        -->
+
     </div>
     <div class="print-content">
         <div class="print-puzzle-header">
@@ -633,6 +657,7 @@
         </div>
     </div>
 
+    <!-- <script src="./JS/html2canvas.js"></script> -->
     <script src="./JS/sudokuCommon.js"></script>
     <script src="./JS/sudokuMainApp.js"></script>
 </body>

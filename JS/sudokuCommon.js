@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.46';
+let VERSION = 'v1.9.47';
 
 // ==========================================
 // Basic classes
@@ -4974,6 +4974,7 @@ class SudokuMainApp {
         this.myCopyFeedbackDialog = new CopyFeedbackDialog();
         this.myPuzzleDBDialog = new PuzzleDBDialog();
         this.myNewPuzzleDlg = new NewPuzzleDlg(this);
+        // this.mySnapshotDlg = new SnapshotDialog(this);
 
         this.publishedSearchIsCompleted = false;
 
