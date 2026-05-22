@@ -111,7 +111,7 @@ Hinweis: Bei dieser Vorgehensweise wird automatisch der eingestellte Standard-Br
 
 # Einführung in den Sudoku-Explorer
 
-Wir führen hier die Konzepte dieses Sudoku-Explorers ein. Dazu benötigen wir Grundbegriffe des 9x9-Sudokus, die wir paralllel mitdefinieren bzw. erläutern. Im Abschnitt [Die Welt der 9x9 Sudokus](#die-welt-der-9x9-sudokus) geben wir dann in einem zweiten Durchgang detaillierte Definitionen und eräutern Hintergründe.  
+Wir führen hier die Konzepte dieses Sudoku-Explorers ein. Dazu benötigen wir Grundbegriffe des 9x9-Sudokus, die wir paralllel mitdefinieren bzw. erläutern. Im Abschnitt [Die Welt der 9x9 Sudokus im Sudoku-Explorer](#die-welt-der-9x9-sudokus-im-sudoku-explorer) geben wir dann in einem zweiten Durchgang detaillierte Definitionen und eräutern Hintergründe.  
 
 Ein **Sudoku-Puzzle**, synonym auch ein **Sudoku** ist eine partiell gefüllte Tabelle. Die Tabelle hat 9 **Reihen**, 9 **Spalten** und 9 **Blöcke**. Die initial gesetzten Nummern heißen **Givens**. Eine Reihe, eine Spalte oder ein Block wird auch als **Gruppe** bezeichnet.
 
