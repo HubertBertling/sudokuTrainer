@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.54';
+let VERSION = 'v1.9.55';
 
 // ==========================================
 // Basic classes
@@ -3977,15 +3977,10 @@ class SudokuCell {
         let tmpCandidates = this.getTotalCandidates();
 
         // Paare werden besonders bewertet, weil sie die stärkste Form von Kontexten darstellen.
-        // Echte Paare zählen mehr als versteckte Paare. Versteckte Paare enthalten mehr als 2 Kandidaten.
-        // Jedoch sind die weiteren Kandidaten unzulässige Kandidaten, rot dargestellt.
         if (this.getCandidates().size == 2) {
             tmpCandidates = this.getCandidates();
             tmpWeight = 300;
-        } else if (this.getTotalCandidates().size == 2) {
-            tmpCandidates = this.getTotalCandidates();
-            tmpWeight = 290;
-        }
+        } 
         // Den Kontext der Zelle betrachten
         this.myInfluencers.forEach(influencer => {
             if (influencer.getValue() == '0') {
