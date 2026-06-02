@@ -1193,6 +1193,8 @@ Für Text: color: #222; oder color: #424242;
 
 .autoMode-radio-btns {
     background-color: lightgrey;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
 }
 
 #search-path {

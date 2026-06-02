@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.55';
+let VERSION = 'v1.9.56';
 
 // ==========================================
 // Basic classes
@@ -845,7 +845,7 @@ class StepperOnGrid {
     }
 
     calculateMinSelectionFrom(selectionList) {
-        // Calculates the next selection. Not unique;        
+        // Calculates the next selection. No clear cell selection;        
         // These are usually cells with 2 option numbers.
         let maxSelection = selectionList[0];
         let maxIndex = maxSelection.index;
@@ -3974,11 +3974,10 @@ class SudokuCell {
         // weil durch sie die Entscheidungen schneller vorangetrieben werden.
         let tmpWeight = 0;
         let summand = 0;
-        let tmpCandidates = this.getTotalCandidates();
+        let tmpCandidates = this.getCandidates(); // this.getTotalCandidates();
 
         // Paare werden besonders bewertet, weil sie die stärkste Form von Kontexten darstellen.
-        if (this.getCandidates().size == 2) {
-            tmpCandidates = this.getCandidates();
+        if (tmpCandidates.size == 2) {
             tmpWeight = 300;
         } 
         // Den Kontext der Zelle betrachten

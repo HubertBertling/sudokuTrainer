@@ -3085,33 +3085,45 @@ class SudokuSolverView {
         this.displayUndoRedo();
         this.displayGamePhase();
         this.displaySearchInfo();
+        this.displayBackwardCount(0);
         this.displayOptionPath();
         this.displayProgress();
 
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
         let maxDepthValueNode = document.getElementById("max-depth-value");
-        let backwardCountNode = document.getElementById("backward-count");
         let searchPathNode = document.getElementById("search-path");
 
         if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
             autoModeRadioBtns.style.visibility = "hidden";
             maxDepthValueNode.style.visibility = "hidden";
-            backwardCountNode.style.visibility = "hidden";
             searchPathNode.style.visibility = "hidden";
         } else {
             let currentLevel = sudoApp.mySolver.myCurrentPuzzle.getLevel();
             if (currentLevel == 'Sehr schwer' || currentLevel == 'Extrem schwer') {
                 autoModeRadioBtns.style.visibility = "visible";
                 maxDepthValueNode.style.visibility = "visible";
-                backwardCountNode.style.visibility = "visible";
                 searchPathNode.style.visibility = "visible";
             } else {
                 autoModeRadioBtns.style.visibility = "hidden";
                 maxDepthValueNode.style.visibility = "hidden";
-                backwardCountNode.style.visibility = "hidden";
                 searchPathNode.style.visibility = "hidden";
             }
         }
+    }
+
+    displayBackwardCount(countBackwards) {
+        let backwardCountNode = document.getElementById("backward-count");
+        if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
+            backwardCountNode.style.visibility = "hidden";
+        } else {
+            let currentLevel = sudoApp.mySolver.myCurrentPuzzle.getLevel();
+            if (currentLevel == 'Sehr schwer') {
+                backwardCountNode.style.visibility = "visible";
+            } else {
+                backwardCountNode.style.visibility = "hidden";
+            }
+        }
+        backwardCountNode.innerHTML = '<b>RL:</b> &nbsp' + countBackwards;
     }
 
     displaySearchInfo() {
@@ -3132,10 +3144,8 @@ class SudokuSolverView {
                     this.displayGoneSteps(sudoApp.mySolver.myGrid.lastSearch.steps);
                     if (tmpLevel == 'Sehr schwer') {
                         this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
-                    } else {
-                        this.displayOptionPath();
-                        this.displayBackwardCount('0');
-                    }
+                    } 
+                    this.displayOptionPath();
                     this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
                 }
             }
@@ -3253,8 +3263,6 @@ class SudokuSolverView {
         return this.solutionNumber;
     }
 
-
-
     displayProgress() {
         let progressBlock = document.getElementById("progress-block");
         let stepCountBox = document.getElementById("step-count-box");
@@ -3271,8 +3279,6 @@ class SudokuSolverView {
             let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
             if (tmpLevel == 'Sehr schwer') {
                 this.displayBackwardCount(mySearch.myStepper.countBackwards);
-            } else {
-                this.displayBackwardCount('0');
             }
             this.displayAutoDirection(mySearch.myStepper.getAutoDirection());
         } else {
@@ -3470,12 +3476,6 @@ class SudokuSolverView {
             evalNode.innerHTML =
                 '<b>Schwierigkeitsgrad:</b> &nbsp' + levelOfDifficulty + '; &nbsp'
         }
-    }
-
-    displayBackwardCount(countBackwards) {
-        let evalNode = document.getElementById("backward-count");
-        evalNode.innerHTML =
-            '<b>Error-RL:</b> &nbsp' + countBackwards;
     }
 
     startLoaderAnimation(requestedLevel) {
@@ -4816,33 +4816,33 @@ class SudokuSolverController {
     savePuzzleDlgCancelPressed() {
         sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
-/*
-    snapshotOkay(cellNr) {
-        if (cellNr > 0 && cellNr < 82) {
-            let snapshotCell = sudoApp.mySolverView.myGridView.sudoCellViews[cellNr].myCellNode;
-            this.takeSnapshot(snapshotCell);
-        } else if (isNaN(cellNr)) {
-            let snapshotElement = document.getElementById(cellNr);
-            this.takeSnapshot(snapshotElement);
+    /*
+        snapshotOkay(cellNr) {
+            if (cellNr > 0 && cellNr < 82) {
+                let snapshotCell = sudoApp.mySolverView.myGridView.sudoCellViews[cellNr].myCellNode;
+                this.takeSnapshot(snapshotCell);
+            } else if (isNaN(cellNr)) {
+                let snapshotElement = document.getElementById(cellNr);
+                this.takeSnapshot(snapshotElement);
+            }
         }
-    }
-    snapshotCancelled() {
-        // Nothing to do
-    }
-
-    takeSnapshot(element) {
-        html2canvas(element).then(canvas => {
-            // 1. Möglichkeit: Als Bilddatei (PNG) herunterladen
-            const link = document.createElement('a');
-            link.download = 'snapshot.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-
-            // 2. Möglichkeit: Direkt auf der Seite anzeigen
-            // document.body.appendChild(canvas);
-        });
-    }
-*/
+        snapshotCancelled() {
+            // Nothing to do
+        }
+    
+        takeSnapshot(element) {
+            html2canvas(element).then(canvas => {
+                // 1. Möglichkeit: Als Bilddatei (PNG) herunterladen
+                const link = document.createElement('a');
+                link.download = 'snapshot.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+    
+                // 2. Möglichkeit: Direkt auf der Seite anzeigen
+                // document.body.appendChild(canvas);
+            });
+        }
+    */
 }
 
 // ==========================================
