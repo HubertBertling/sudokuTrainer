@@ -3085,45 +3085,48 @@ class SudokuSolverView {
         this.displayUndoRedo();
         this.displayGamePhase();
         this.displaySearchInfo();
-        this.displayBackwardCount(0);
         this.displayOptionPath();
         this.displayProgress();
 
         let autoModeRadioBtns = document.getElementById("autoMode-radio-btns");
         let maxDepthValueNode = document.getElementById("max-depth-value");
         let searchPathNode = document.getElementById("search-path");
-
+        let trialErrorCountNode = document.getElementById("backward-count");
+     
         if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
             autoModeRadioBtns.style.visibility = "hidden";
             maxDepthValueNode.style.visibility = "hidden";
             searchPathNode.style.visibility = "hidden";
+            trialErrorCountNode.style.visibility = "hidden";
         } else {
             let currentLevel = sudoApp.mySolver.myCurrentPuzzle.getLevel();
-            if (currentLevel == 'Sehr schwer' || currentLevel == 'Extrem schwer') {
+            if (currentLevel == 'Sehr schwer' || currentLevel == 'Extrem schwer' || currentLevel == 'Unlösbar') {
                 autoModeRadioBtns.style.visibility = "visible";
                 maxDepthValueNode.style.visibility = "visible";
                 searchPathNode.style.visibility = "visible";
+                trialErrorCountNode.style.visibility = "visible";
             } else {
                 autoModeRadioBtns.style.visibility = "hidden";
                 maxDepthValueNode.style.visibility = "hidden";
                 searchPathNode.style.visibility = "hidden";
+                trialErrorCountNode.style.visibility = "hidden";
             }
         }
     }
 
-    displayBackwardCount(countBackwards) {
-        let backwardCountNode = document.getElementById("backward-count");
+    displayTrialErrorCount(countTrials, countErrors) {
+        let trialErrorCountNode = document.getElementById("backward-count");
         if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
-            backwardCountNode.style.visibility = "hidden";
+            trialErrorCountNode.style.visibility = "hidden";
         } else {
             let currentLevel = sudoApp.mySolver.myCurrentPuzzle.getLevel();
-            if (currentLevel == 'Sehr schwer') {
-                backwardCountNode.style.visibility = "visible";
-            } else {
-                backwardCountNode.style.visibility = "hidden";
+            if (currentLevel == 'Sehr schwer' || currentLevel == 'Extrem schwer' || currentLevel == 'Unlösbar') {
+                trialErrorCountNode.style.visibility = "visible";
+                trialErrorCountNode.innerHTML = '<b>Trial / Error:</b> &nbsp' + countTrials + ' / ' + countErrors;
+            } else if (currentLevel == 'Sehr leicht' || currentLevel == 'Leicht' || currentLevel == 'Mittel' || currentLevel == 'Schwer') {
+                trialErrorCountNode.style.visibility = "hidden";
             }
         }
-        backwardCountNode.innerHTML = '<b>RL:</b> &nbsp' + countBackwards;
     }
 
     displaySearchInfo() {
@@ -3142,9 +3145,11 @@ class SudokuSolverView {
                 if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
                     this.displayLastSearchProgress();
                     this.displayGoneSteps(sudoApp.mySolver.myGrid.lastSearch.steps);
-                    if (tmpLevel == 'Sehr schwer') {
-                        this.displayBackwardCount(sudoApp.mySolver.myGrid.lastSearch.error_rl);
-                    } 
+                    if (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar') {
+                        this.displayTrialErrorCount(sudoApp.mySolver.myGrid.lastSearch.countTrials,
+                            sudoApp.mySolver.myGrid.lastSearch.countBackwards);
+                        //  mySearch.myStepper.countBackwards);
+                    }
                     this.displayOptionPath();
                     this.setNumberOfSolutions(sudoApp.mySolver.myGrid.lastSearch.numberOfSolutions);
                 }
@@ -3277,8 +3282,9 @@ class SudokuSolverView {
 
             this.displayGoneSteps(mySearch.getNumberOfSteps());
             let tmpLevel = sudoApp.mySolver.myCurrentPuzzle.myRecord.preRunRecord.level;
-            if (tmpLevel == 'Sehr schwer') {
-                this.displayBackwardCount(mySearch.myStepper.countBackwards);
+            if (tmpLevel == 'Sehr schwer' || tmpLevel == 'Extrem schwer' || tmpLevel == 'Unlösbar') {
+                this.displayTrialErrorCount(mySearch.searchInfo.countTrials,
+                    mySearch.myStepper.countBackwards);
             }
             this.displayAutoDirection(mySearch.myStepper.getAutoDirection());
         } else {
@@ -3768,6 +3774,7 @@ class SudokuSolverController {
                     sudoApp.mySolver.myGrid.lastSearch = {
                         steps: 0,
                         error_rl: 0,
+                        trials: 0,
                         numberOfSolutions: 1
                     }
                     sudoApp.mySolverView.setNumberOfSolutions(1);

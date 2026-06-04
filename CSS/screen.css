@@ -1031,18 +1031,18 @@ Für Text: color: #222; oder color: #424242;
 
 .tracker-dashboard {
     background-color: var(--screen-bg-color);
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-small);
     width: 90%;
-    height: 3.3rem;
+    height: auto;
 }
 
 #automatic-btn-block {
     display: grid;
     grid-template-columns: 0.75fr 1.25fr 1.25fr;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 0.8fr);
     gap: 0.6rem;
     background: var(--automatic-solver);
-    margin: 1rem 1rem;
+    margin: 0.8rem 0.8rem ;
 }
 
 .number-btn {
@@ -1159,22 +1159,28 @@ Für Text: color: #222; oder color: #424242;
 /* Progress box block */
 /*======================================*/
 
+
+
 .tracker-dashboard {
-    font-size: var(--cg-font-base);
-    margin: 0.2rem 0.2rem;
+    font-size: var(--cg-font-small);
+    margin: 0.2rem 0.4rem;
 }
 
-.first-line-tracker-dashboard {
+.first-line-tracker-dashboard,
+.second-line-tracker-dashboard {
     display: inline-flex;
     white-space: nowrap;
 }
 
 .step-count-box,
 #max-depth-value,
-#backward-count {
+#backward-count,
+#trials-count {
     background-color: var(--screen-bg-color);
     padding: 0.2rem 0.4rem;
 }
+
+
 
 .forward-backward-image {
     width: 1rem;
@@ -1184,8 +1190,8 @@ Für Text: color: #222; oder color: #424242;
 
 .forward,
 .backward {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
     display: inline-flex;
     align-items: center; 
     justify-content: center;
@@ -1218,7 +1224,7 @@ Für Text: color: #222; oder color: #424242;
 
 
 .horizontal-scroll {
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-small);
     scrollbar-color: red orange;
     overflow-y: hidden;
     scrollbar-width: thin;
@@ -2168,7 +2174,7 @@ Für Text: color: #222; oder color: #424242;
 
     .tracker-dashboard {
         margin: 0.6rem 0.2rem;
-        height: 3.4rem;
+        height: auto;
     }
 
     #loader,

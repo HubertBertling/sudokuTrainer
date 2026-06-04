@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.56';
+let VERSION = 'v1.9.57';
 
 // ==========================================
 // Basic classes
@@ -412,7 +412,7 @@ class Search {
             countHiddenSingles: 0,
             countFromSingles: 0,
             countBackwardSteps: 0,
-            countMultipleOptionSteps: 0,
+            countTrials: 0,
             countMultipleOptionsFirstTry: 0,
             countMultipleOptionsSecondTryAndMore: 0
         }
@@ -529,6 +529,7 @@ class Search {
                 {
                     steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
                     error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                    trials: sudoApp.mySolver.myCurrentSearch.myStepper.countTrials, 
                     numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
                 }
                 sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
@@ -546,6 +547,7 @@ class Search {
                 {
                     steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
                     error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
+                    trials: sudoApp.mySolver.myCurrentSearch.myStepper.countTrials,
                     numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
                 }
 
@@ -582,6 +584,7 @@ class StepperOnGrid {
         this.myBackTracker;
         this.goneSteps = 0;
         this.countBackwards = 0;
+        this.countTrials = 0;
         this.autoDirection = 'forward';
         this.init();
     }
@@ -589,6 +592,7 @@ class StepperOnGrid {
     init() {
         this.lastNumberSet = '0';
         this.countBackwards = 0;
+        this.countTrials = 0;
         this.autoDirection = 'forward';
         // The stepper always owns an actual backTracker
         this.myBackTracker = new BackTracker();
@@ -716,7 +720,7 @@ class StepperOnGrid {
                     // The selection does not have a unique number. I.e. it continues with several options.
                     this.myBackTracker.addBackTrackOptionStep(tmpSelection.index, tmpSelection.options.slice());
 
-                    sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps++;
+                    sudoApp.mySolver.myCurrentSearch.searchInfo.countTrials++;
                     sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsFirstTry++;
                     // The first option of the optionStep is selected immediately
                     // New realStep with the first option number
@@ -815,7 +819,7 @@ class StepperOnGrid {
             } else {
                 // There are options that have not yet been tried
                 // Switch search direction!!!
-                sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps++;
+                sudoApp.mySolver.myCurrentSearch.searchInfo.countTrials++;
                 sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionsSecondTryAndMore++;
                 this.setAutoDirection('forward');
                 return this.stepForward();
@@ -4440,9 +4444,10 @@ class SudokuSolver {
             ' * mit Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countSingles + '<br>' +
             ' * mit verstecktem Single: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countHiddenSingles;
 
-        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps > 0) {
+        if (sudoApp.mySolver.myCurrentSearch.searchInfo.countTrials > 0) {
             infoString = infoString + '<br>' +
-                ' * mit Optionen: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countMultipleOptionSteps + '<br>' +
+                ' * Trial / Error: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countTrials + ' / ' +
+                sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards + '<br>' +
                 ' * Max. Suchtiefe: ' + this.optionPathMaxLength + '<br>' +
                 ' * Rückwärts-Schritte: ' + sudoApp.mySolver.myCurrentSearch.searchInfo.countBackwardSteps;
         }
