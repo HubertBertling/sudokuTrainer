@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.57';
+let VERSION = 'v1.9.58';
 
 // ==========================================
 // Basic classes
@@ -506,6 +506,14 @@ class Search {
             case 'state_inProgress': {
                 break;
             }
+            case 'state_contradiction': {
+                if (this.maxSelectionDifficulty == 'msd_Leicht'
+                    || this.maxSelectionDifficulty == 'msd_Mittel'
+                    || this.maxSelectionDifficulty == 'msd_Schwer') {
+                    this.setCompleted();
+                }
+                break;
+            }
             case 'state_solutionDiscovered': {
                 this.incrementNumberOfSolutions();
                 if (this.getNumberOfSolutions() == 1) {
@@ -529,7 +537,7 @@ class Search {
                 {
                     steps: sudoApp.mySolver.myCurrentSearch.getNumberOfSteps(),
                     error_rl: sudoApp.mySolver.myCurrentSearch.myStepper.countBackwards,
-                    trials: sudoApp.mySolver.myCurrentSearch.myStepper.countTrials, 
+                    trials: sudoApp.mySolver.myCurrentSearch.myStepper.countTrials,
                     numberOfSolutions: sudoApp.mySolver.myCurrentSearch.getNumberOfSolutions()
                 }
                 sudoApp.mySolver.notifyAspect('nrOfSolutions', nr);
@@ -752,7 +760,7 @@ class StepperOnGrid {
                 this.setAutoDirection('backward');
                 this.countBackwards++;
                 let autoStepResult = {
-                    processResult: 'state_inProgress',
+                    processResult: 'state_contradiction',
                     action: tmpAction
                 }
                 sudoApp.breakpointPassed('bp_contradiction');
@@ -3983,7 +3991,7 @@ class SudokuCell {
         // Paare werden besonders bewertet, weil sie die stärkste Form von Kontexten darstellen.
         if (tmpCandidates.size == 2) {
             tmpWeight = 300;
-        } 
+        }
         // Den Kontext der Zelle betrachten
         this.myInfluencers.forEach(influencer => {
             if (influencer.getValue() == '0') {
