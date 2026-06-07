@@ -152,7 +152,7 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
  ![Lösen](./imagesHelp/play.png)
  Der Phasenschalter in der Position **Puzzle lösen**. Das Schalten in diese Position versetzt den Explorer in die Lösungsphase. Gleichzeitig ermittelt der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Schalterposition automatisch gesetzt. |
 
-Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor die Phase-Definition-Taste drücken.
+Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor den Phasenschalter in die Position 'Eingeben' schieben.
 
 ## Jeder Lösungsschritt mit zwei Subschritten
 
@@ -481,9 +481,17 @@ Der automatische Solver dieser App wendet für das Lösen von Sudoku-Puzzles ein
    3. **Überschneidung**
    4. **Zeiger-Paar, Zeiger-Tripel**
 4. **Backtracking**
-   1. **Scanne Kandidaten-Optionen:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat, wählt der Solver eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Optionen. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Solver zufällig eine Zelle.
-   2. **Trial&Error der Optionen** Der Solver setzt eine der beiden Optionennummern. Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl der zweiten Nummer aus der Optionenmenge die Lösung zu finden.
-   3. **Vorwärts und Rückwärts** (Backtracking) Der Solver zeigt an, wie er im Suchprozess vorwärts und rückwärts geht. Rückwärts muss er gehen, wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt. **Rückwärtsgehen** bedeutet, dass der Solver der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung. Der Solver zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Solver die Anzahl der **Error-Rückwärtsläufe** an. Hinweis: Error-Rückwärtsläufe erfolgen nach Auftreten eines Widerspruchs. Für extrem schwere Puzzles, also Puzzles mit mehreren Lösungen, gibt es zusätzlich **Lösungs-Rückwärtsläufe**. Lösungs-Rückwärtsläufe erfolgen nach Aufdeckung einer Lösung, um zu untersuchen, ob es weitere Lösungen gibt.
+   1. **Scanne Kandidaten-Optionen:** Sind keine Zellen mehr verfügbar mit notwendigem Kandidat, mit einem einzigen Kandidat oder mit eimem versteckt einzigen Kandidat, wählt der Backtracking-Prozess eine Zelle mit minimaler Anzahl von Kandidaten. Die sogenannten **Optionen der Zelle**. Meist besteht die minimale Optionenmenge aus zwei Kandidaten. Die Selektion ist aber nicht eindeutig, d.h. es gibt in der Regel mehrere Zellen mit zwei Optionen. In dieser Menge wählt der Backtracking-Prozess zufällig eine Zelle.
+   2. **Trial & Error der Optionen** Der Backtracking-Prozess setzt eine der beiden Optionennummern (Trial). Im Laufe der weiteren Suche kann sich herausstellen, dass diese Nummer zu einem Widerspruch führt (Error), also keine Lösung des Puzzles erlaubt. Der Backtracking-Prozess kehrt im weiteren Verlauf zu dieser Zelle zurück und versucht dann mit der Wahl der zweiten Nummer aus der Optionenmenge die (nächste) Lösung zu finden. 
+   
+   Der Backtracking-Prozess geht vorwärts und rückwärts. **Vorwärtsgehen** bedeutet, dass der Backtracking-Prozess eine Nummer setzt. Rückwärts muss er gehen, 
+
+   - wenn die aktuell gesetzte Nummer zur Widersprüchlichkeit des Sudokus führt,
+   - oder wenn eine Lösung gefunden wurde und geprüft werden soll, ob es eine weitere Lösung gibt.
+    
+    **Rückwärtsgehen** bedeutet, dass der Backtracking-Prozess der Reihe nach zuvor gesetzte Nummern wieder zurücknimmt, bis er auf eine Zelle trifft, in der er mehrere Kandidatnummern zur Auswahl hatte, also eine Zelle mit Optionen. Er wählt dann die nächste noch nicht probierte Zahl der Optionenmenge und geht wieder in den Vorwärts-Modus. 
+    
+    Sind alle Kandidatnummern durchprobiert, geht er weiter rückwärts. Wenn er im Rückwärtsgehen bei der ersten gesetzten Zelle ankommt, und die erste Zelle keine weiteren unprobierten Kandidaten mehr hat, hat das Sudoku-Puzzle keine Lösung bzw. keine weitere Lösung. Der Backtracking-Prozess zeigt die Anzahl der zurückgelegten Schritte an. Jedes Setzen einer Zelle sowie die Rücknahme einer Setzung erhöht den Zähler um 1. Ebenso zeigt der Backtracking-Prozess die Anzahl der Widersprüche an.
 
 ## Lazy und strikte Kandidatenauswertung
 
@@ -716,7 +724,7 @@ Du verschiebst die Schiebetaste von "Eingeben" auf "Lösen". Im Hintergrund bere
 
 ### Schwierigkeitsgrad des Puzzles prüfen
 
-Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Wenn Du ein Puzzle beim Warten im Wartezimmer lösen willst, sollte das eingebene Puzzle 'Sehr leicht', 'Leicht' oder 'Mittel'sein. 
+Wenn wir ein Puzzle manuell lösen wollen, ist die Frage nach dem Schwierigkeitsgrad des Puzzles von entscheidender Bedeutung. Wenn Du ein Puzzle beim Warten im Wartezimmer lösen willst, sollte das eingebene Puzzle 'Sehr leicht', 'Leicht' oder 'Mittel' sein. 
 
 Puzzles mit einem der 3 genannten Schwierigkeitsrade können allein mit dem Scannen nach 'notwendigen' und 'single' Kandidaten gelöst werden. Es bedarf keinerlei Buchführunng von Kandidaten. 
 
@@ -781,7 +789,7 @@ Wir kopieren die Ziffernkette und fügen sie in den Explorer ein, z.B. mit ctrl-
     <figcaption style="font-size: 16px; font-style: italic;">Das eingefügte Puzzle</figcaption>
 </figure>
 
-Nach dem Einfügen hat der Explorer den Schwieigkeitsgrad berechnet. Siehe oben rechts: "Sehr schwer". Wir speichern das Puzzle unter dm Namen: "demo-puzzle". Danach wechseln wir in die automatische Lösungssuche.
+Nach dem Einfügen hat der Spieler den Schiebeschalter auf 'Lösen' gestellt. Daraufhin hat der Explorer den Schwieigkeitsgrad berechnet. Siehe oben rechts: "Sehr schwer". Wir speichern das Puzzle unter dm Namen: "demo-puzzle". Danach wechseln wir in die automatische Lösungssuche.
 
 Die im Folgenden dargestellten Schritte erreichen wir durch Drücken der Schritttaste "Nächster Suchschritt" oder der Suchlauftaste "Suchlauf mit Haltepunkten". Für die Verwendung der Suchlauftaste im Beispiel werden jeweils die gewünschten Haltepunkte gesetzt.
 
@@ -846,7 +854,7 @@ Nach der Setzung der ersten Option durch Drücken der Schrittaste.
 
 <h3> ==> Haltepunkt "Bei Selektionsoptionen" gesetzt und "Bei Widerspruch" zurückgenommen. Suchlauftaste gedrückt:</h3>
 
-**Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7. Im Suchpfad ist nun sichtbar, dass die beiden Optionen dieses Schrittes abgearbeitet sind. Beide sind grün.
+**Schritt 43: Zweiter Besuch in der Zelle.** Im Schritt 43.a kehrt der Solver in die Zelle zurück, in der er beim ersten Besuch die 3 gewählt hatte. Zu sehen an der unterstrichenen 3. Nun schaltet er wieder in den Vorwärts-Modus, grüner Pfeil rechts, und selektiert den zweiten Kandidaten mit der Nummer 7. Im Suchpfad ist nun sichtbar, dass die beiden Optionen dieses Schrittes abgearbeitet sind. Beide sind grün. 
 
 <figure>
    <img src="./imagesHelp/Schritt43_aNew.png" alt="Schritt 43_a" style="max-width:100%">
@@ -862,11 +870,11 @@ Nach der Setzung der ersten Option durch Drücken der Schrittaste.
 
 <h3> ==> Haltepunkt "Bei Lösung" gesetzt und andere Haltepunkte zurückgenommen. Suchlauftaste gedrückt:</h3>
 
-**Schritt 224: Alle Zellen belegt.** Im Schritt 224 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.
+**Schritt 274: Alle Zellen belegt.** Im Schritt 274 belegt der Solver die letzte offene Zelle. Das Puzzle ist gelöst.
 
 <figure>
    <img src="./imagesHelp/schritt224_b.png" alt="Schritt 224_b" style="max-width:100%">
-    <figcaption style="font-size: 16px; font-style: italic;">Schritt 224.b: Alle Zellen belegt.</figcaption>
+    <figcaption style="font-size: 16px; font-style: italic;">Schritt 274: Alle Zellen belegt.</figcaption>
 </figure>
 
 # Sudoku-Explorer: Tatsachen und Einsichten über klassische 9x9-Sudokus

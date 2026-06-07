@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.58';
+let VERSION = 'v1.9.59';
 
 // ==========================================
 // Basic classes
@@ -459,7 +459,23 @@ class Search {
     getLevel() {
         if (this.isCompleted()) {
             if (this.getNumberOfSolutions() == 0) {
-                return 'Unlösbar';
+                switch (this.maxSelectionDifficulty) {
+                    case 'msd_Leicht': {
+                        return 'Unlösbar-Leicht'
+                    }
+                    case 'msd_Mittel': {
+                        return 'Unlösbar-Mittel';
+                    }
+                    case 'msd_Schwer': {
+                        return 'Unlösbar-Schwer';
+                    }
+                    case 'msd_Sehr_schwer': {
+                        return 'Unlösbar-Sehr-schwer';
+                    }
+                    default: {
+                        throw new Error('Unexpected maxSelectionDifficulty: ' + this.myStepper.maxSelectionDifficulty);
+                    }
+                }
             } else if (this.getNumberOfSolutions() > 1) {
                 return 'Extrem schwer';
             } else if (this.getNumberOfSolutions() == 1) {
