@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.59';
+let VERSION = 'v1.9.60';
 
 // ==========================================
 // Basic classes
@@ -459,23 +459,7 @@ class Search {
     getLevel() {
         if (this.isCompleted()) {
             if (this.getNumberOfSolutions() == 0) {
-                switch (this.maxSelectionDifficulty) {
-                    case 'msd_Leicht': {
-                        return 'Unlösbar-Leicht'
-                    }
-                    case 'msd_Mittel': {
-                        return 'Unlösbar-Mittel';
-                    }
-                    case 'msd_Schwer': {
-                        return 'Unlösbar-Schwer';
-                    }
-                    case 'msd_Sehr_schwer': {
-                        return 'Unlösbar-Sehr-schwer';
-                    }
-                    default: {
-                        throw new Error('Unexpected maxSelectionDifficulty: ' + this.myStepper.maxSelectionDifficulty);
-                    }
-                }
+                return 'Unlösbar';
             } else if (this.getNumberOfSolutions() > 1) {
                 return 'Extrem schwer';
             } else if (this.getNumberOfSolutions() == 1) {
@@ -497,7 +481,7 @@ class Search {
                         return 'Sehr schwer';
                     }
                     default: {
-                        throw new Error('Unexpected maxSelectionDifficulty: ' + this.myStepper.maxSelectionDifficulty);
+                        throw new Error('Unexpected maxSelectionDifficulty: ' + this.maxSelectionDifficulty);
                     }
                 }
             }
@@ -4237,6 +4221,7 @@ class NewPuzzleBuffer {
             switch (request.name) {
                 case 'puzzleGenerated_Unlösbar': {
                     let puzzleRecord = request.value;
+
                     sudoApp.myNewPuzzleBuffer.myUnsolvablePuzzles.push(puzzleRecord);
                     break;
                 }
@@ -4524,14 +4509,8 @@ class SudokuSolver {
             let puzzleArray = this.myGrid.getPuzzleArray();
             // Determination of the level of difficulty of the generated puzzle 
             // by the automatic solution.
-
-            // 1) Initialize the current puzzle
-            this.setGamePhase('play');
-            sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
-            // 2) Initialize the current search.
-            this.setCurrentSearchNew();
             // 3) solve the puzzle and return metadata results in a preRunRecord
-            let preRecGen = this.computePreRunRecord();
+            let preRecGen = this.computePuzzlePreRunData(puzzleArray);
             // 4) Compose a complete PuzzleRecord and return it
             let puzzleRecord = PuzzleRecord.nullPuzzleRecord();
             puzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -4590,7 +4569,6 @@ class SudokuSolver {
         // 1) Initialize the current puzzle
         sudoApp.mySolver.setCurrentPuzzle(PuzzleRecord.nullPuzzleRecord())
         // 2) Initialize the current search.
-        // this.cleanUpAndDeleteCurrentSearch();
         this.setCurrentSearchNew();
         // 3) solve the puzzle and return metadata results in a preRunRecord
         let preRecFast = this.computePreRunRecord();
@@ -4605,18 +4583,16 @@ class SudokuSolver {
 
     computePreRunRecord() {
         let preRunRecord = this.computeBasicPreRunRecord();
-        /*    if (preRunRecord.level == 'Leicht' && this.canTakeBackGivenCells()) {
-                // A non-minimal simple puzzle is called very simple.
-                preRunRecord.level = 'Sehr leicht';
-            }
-                */
         return preRunRecord;
     }
 
     computeBasicPreRunRecord() {
         // Returns the preRunRecord for the implicit puzzle in the grid,
-        // still without 'very easy' level determination
-
+         if (this.myGrid.isUnsolvable()) {
+            this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Widerspruchsvoll';
+            this.myCurrentSearch.setCompleted();
+            return this.myCurrentPuzzle.getPreRunRecord();
+        }
         sudoApp.mySyncRunner.start(sudoApp.mySolver,
             sudoApp.mySolver.performSearchStep);
         let stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
@@ -4628,9 +4604,6 @@ class SudokuSolver {
             stoppingBreakpoint = sudoApp.mySyncRunner.getMyStoppingBreakpoint();
             // This results in another solution or
             // the end of the search has been reached.       
-        } else {
-            this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Unlösbar';
-            this.myCurrentSearch.setCompleted();
         }
         if (stoppingBreakpoint == 'bp_solutionDiscovered') {
             // A second solution was found
