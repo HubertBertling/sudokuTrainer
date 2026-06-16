@@ -43,22 +43,23 @@ class NewPuzzleGenerator {
         // Idea: Turn a simple puzzle into a very simple one by adding 
         // nr Givens to the current puzzle. The givens can be obtained 
         // from the cells of the entered solution.
+        let simplifiedPuzzle = structuredClone(puzzleRecord);
         let randomCellOrder = Randomizer.getRandomNumbers(81, 0, 81);
         let nrSolved = 0;
         for (let i = 0; i < 81; i++) {
             let k = randomCellOrder[i];
-            if (nrSolved < nr && puzzleRecord.puzzle[k].cellValue == '0') {
-                puzzleRecord.puzzle[k].cellValue =
+            if (nrSolved < nr && simplifiedPuzzle.puzzle[k].cellValue == '0') {
+                simplifiedPuzzle.puzzle[k].cellValue =
                     puzzleRecord.preRunRecord.solvedPuzzle[k].cellValue;
-                puzzleRecord.puzzle[k].cellPhase = 'define';
-                puzzleRecord.preRunRecord.solvedPuzzle[k].cellPhase = 'define';
+                simplifiedPuzzle.puzzle[k].cellPhase = 'define';
+                simplifiedPuzzle.preRunRecord.solvedPuzzle[k].cellPhase = 'define';
                 nrSolved++;
             }
         }
-        puzzleRecord.statusGiven = puzzleRecord.statusGiven + nr;
-        puzzleRecord.preRunRecord.level = 'Sehr leicht';
-        puzzleRecord.preRunRecord.backTracks = 0;
-        return puzzleRecord;
+        simplifiedPuzzle.statusGiven = puzzleRecord.statusGiven + nr;
+        simplifiedPuzzle.preRunRecord.level = 'Sehr leicht';
+        simplifiedPuzzle.preRunRecord.backTracks = 0;
+        return simplifiedPuzzle;
     }
 
     deleteOnePuzzleCell(puzzleRecord) {
@@ -144,7 +145,7 @@ class NewPuzzleGenerator {
 
         let puzzleSentToMain = false;
         // If the local buffer of generated puzzles is empty, generate a new puzzle.
-        if (this.myPuzzleRecordBuffer.length < 4) {
+        if (this.myPuzzleRecordBuffer.length < 2) {
             // Generate the next puzzle while waiting for the cammand from main.
             let pzRecord = sudoApp.mySolver.generatePuzzle();
             if (pzRecord.preRunRecord.level == 'Leicht'
@@ -156,7 +157,7 @@ class NewPuzzleGenerator {
                 // The others are created by modifying these basic difficulty levels.
                 this.myPuzzleRecordBuffer.push(pzRecord);
             else {
-                throw new Error('Unexpected puzzle pushed into record buffer. Level: ' + pzRecord.preRunRecord.level);    
+                throw new Error('Unexpected puzzle pushed into record buffer. Level: ' + pzRecord.preRunRecord.level);
             }
         }
 
@@ -167,82 +168,63 @@ class NewPuzzleGenerator {
         } else {
             throw new Error('Unexpected empty puzzle record buffer.');
         }
-
         let generatedPuzzleRecord = structuredClone(puzzleRecordFromBuffer);
         generatedPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        // A puzzle can be made into a unsolvable puzzle 
-        // by adding a changed solved cell to the givens.
-        let unsolvableRecord = this.changedSolvedCell2given(generatedPuzzleRecord);
-        unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-
-        if (main_unsolvablePuzzles < 1) {
-            let newCommand = await this.send2Main(unsolvableRecord);
-            if (newCommand.name == 'stopGeneration') {
-                console.log('---> generatorWorker <--- has been stopped.')
-                self.close();
-            } else {
-                puzzleSentToMain = true;
-                return newCommand
-            };
-        }
 
         switch (generatedPuzzleRecord.preRunRecord.level) {
             case 'Leicht': {
-                if (main_simplePuzzles < 1) {
-                    // Leichtes Puzzle senden
-                    let newCommand = await this.send2Main(generatedPuzzleRecord);
-                    if (newCommand.name == 'stopGeneration') {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    } else {
-                        puzzleSentToMain = true;
-                        return newCommand
-                    };
-                }
+                let verySimplePuzzleRecord = this.simplifyPuzzleByNrOfCells(7, generatedPuzzleRecord);
+                verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-                if (main_verySimplePuzzles < 1) {
-                    // Sehr leichtes Puzzle senden
-                    // A simple puzzle can be made into a very simple puzzle 
-                    // by adding solved cells. The number of 7 added cells is arbitrary, but pragmatic.
-                    let verySimplePuzzleRecord = this.simplifyPuzzleByNrOfCells(7, generatedPuzzleRecord);
-                    verySimplePuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                    let newCommand = await this.send2Main(verySimplePuzzleRecord);
-                    if (newCommand.name == 'stopGeneration') {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    } else {
-                        puzzleSentToMain = true;
-                        return newCommand
-                    };
-                }
+                // A simple puzzle can be made to extremeHeavy by deleting one given
+                let extremeHeavyRecord = this.deleteOnePuzzleCell(generatedPuzzleRecord);
+                extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-                if (main_extremeHeavyPuzzles < 1) {
-                    // Extrem schweres Puzzle senden
-                    // A simple puzzle can be made to extremeHeavy by deleting one given
-                    let extremeHeavyRecord = this.deleteOnePuzzleCell(generatedPuzzleRecord);
-                    extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                    let newCommand = await this.send2Main(extremeHeavyRecord);
-                    if (newCommand.name == 'stopGeneration') {
+                if (main_simplePuzzles < 1
+                    || main_verySimplePuzzles < 1
+                    || main_extremeHeavyPuzzles < 1
+                ) {
+                    let simplePuzzleCommand = await this.send2Main(generatedPuzzleRecord);
+                    let verySimpleCommand = await this.send2Main(verySimplePuzzleRecord);
+                    let extremeHeavyCommand = await this.send2Main(extremeHeavyRecord);
+
+                    if (simplePuzzleCommand.name == 'stopGeneration'
+                        || verySimpleCommand.name == 'stopGeneration'
+                        || extremeHeavyCommand.name == 'stopGeneration'
+                    ) {
                         console.log('---> generatorWorker <--- has been stopped.')
                         self.close();
                     } else {
                         puzzleSentToMain = true;
-                        return newCommand
+                        let commandFromMain = structuredClone(previousCommand);
+                        commandFromMain.name = 'proceedGeneration';
+                        return commandFromMain;
                     };
                 }
                 break;
             }
             case 'Mittel': {
-                if (main_mediumPuzzles < 1) {
-                    // Leichtes Puzzle senden
-                    let newCommand = await this.send2Main(generatedPuzzleRecord);
-                    if (newCommand.name == 'stopGeneration') {
+                // A puzzle can be made into a unsolvable puzzle 
+                // by adding a changed solved cell to the givens.
+                let unsolvableRecord = this.changedSolvedCell2given(generatedPuzzleRecord);
+                unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                if (main_mediumPuzzles < 1
+                    || main_unsolvablePuzzles < 1
+                ) {
+                    let mediumPuzzleCommand = await this.send2Main(generatedPuzzleRecord);
+                    let unsolvablePuzzleCommand = await this.send2Main(unsolvableRecord);
+
+                    if (mediumPuzzleCommand.name == 'stopGeneration'
+                        || unsolvablePuzzleCommand.name == 'stopGeneration'
+                    ) {
                         console.log('---> generatorWorker <--- has been stopped.')
                         self.close();
                     }
                     else {
                         puzzleSentToMain = true;
-                        return newCommand
+                        let commandFromMain = structuredClone(previousCommand);
+                        commandFromMain.name = 'proceedGeneration';
+                        return commandFromMain;
                     };
                 }
                 break;
@@ -280,10 +262,8 @@ class NewPuzzleGenerator {
                     + puzzleRecordFromBuffer.preRunRecord.level);
             }
         }
-        let commandFromMain = {
-            name: 'proceedGeneration',
-            value: [0, 0, 0, 0, 0, 0, 0]
-        }
+        let commandFromMain = structuredClone(previousCommand);
+        commandFromMain.name = 'proceedGeneration';
         return commandFromMain;
     }
 
