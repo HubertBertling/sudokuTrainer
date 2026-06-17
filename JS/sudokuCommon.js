@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.62';
+let VERSION = 'v1.9.63';
 
 // ==========================================
 // Basic classes
@@ -4304,58 +4304,70 @@ class NewPuzzleBuffer {
             // respond on the received port
             event.ports[0].postMessage({ result: str_response });
             event.ports[0].close();
-        } catch (event) {
-            event.ports[0].postMessage({ error: e });
+
+            if (sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested) {
+                sudoApp.myNewPuzzleBuffer.webworkerGenerator_1.terminate();
+                console.log('---> generatorWorker_1 <--- has been terminated.');
+
+                sudoApp.myNewPuzzleBuffer.webworkerGenerator_2.terminate();
+                console.log('---> generatorWorker_2 <--- has been terminated.');
+
+                sudoApp.myNewPuzzleBuffer.webworkerGenerator_3.terminate();
+                console.log('---> generatorWorker_3 <--- has been terminated.');
+            }
+
+            } catch (event) {
+                event.ports[0].postMessage({ error: e });
+            }
         }
-    }
 
     startWebworkerGenerator() {
-        this.webworkerGenerator_1 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 1 <== neu gestartet.')
-        this.webworkerGenerator_1.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
+            this.webworkerGenerator_1 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 1 <== neu gestartet.')
+            this.webworkerGenerator_1.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
 
-        this.webworkerGenerator_2 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 2 <== neu gestartet.')
-        this.webworkerGenerator_2.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
+            this.webworkerGenerator_2 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 2 <== neu gestartet.')
+            this.webworkerGenerator_2.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
 
-        this.webworkerGenerator_3 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 3 <== neu gestartet.')
-        this.webworkerGenerator_3.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
-        /*
-        this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
-        this.webworkerGenerator_4.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
+            this.webworkerGenerator_3 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 3 <== neu gestartet.')
+            this.webworkerGenerator_3.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
+            /*
+            this.webworkerGenerator_4 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 4 <== neu gestartet.')
+            this.webworkerGenerator_4.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
+    
+            this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
+            this.webworkerGenerator_5.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
+    
+            this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
+            console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
+            this.webworkerGenerator_6.addEventListener(
+                "message",
+                this.onPuzzleGenerated,
+                false);
+            */
+            sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
+        }
 
-        this.webworkerGenerator_5 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 5 <== neu gestartet.')
-        this.webworkerGenerator_5.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
-
-        this.webworkerGenerator_6 = new Worker("./JS/generatorWorker.js");
-        console.log('-----> generatorWorker ==> 6 <== neu gestartet.')
-        this.webworkerGenerator_6.addEventListener(
-            "message",
-            this.onPuzzleGenerated,
-            false);
-        */
-        sudoApp.myNewPuzzleBuffer.webworkerGeneratorStopRequested = false;
     }
-
-}
 // ==========================================
 // Solver types 
 // ==========================================
@@ -4588,7 +4600,7 @@ class SudokuSolver {
 
     computeBasicPreRunRecord() {
         // Returns the preRunRecord for the implicit puzzle in the grid,
-         if (this.myGrid.isUnsolvable()) {
+        if (this.myGrid.isUnsolvable()) {
             this.myCurrentPuzzle.myRecord.preRunRecord.level = 'Widerspruchsvoll';
             this.myCurrentSearch.setCompleted();
             return this.myCurrentPuzzle.getPreRunRecord();

@@ -7,7 +7,6 @@ function startMainApp() {
     sudoApp.init();
     sudoApp.mySolverController.setAppURLShareBtnEventHandler();
     sudoApp.mySolverController.setPuzzleShareBtnEventHandler();
-
 }
 
 function startSudokuServiceWorker() {
@@ -4855,7 +4854,5 @@ class SudokuSolverController {
 // ==========================================
 // Apps 
 // ==========================================
-
-// Launch and initialize the app
 
 startMainApp();
