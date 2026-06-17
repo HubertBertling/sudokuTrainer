@@ -168,8 +168,19 @@ class NewPuzzleGenerator {
         } else {
             throw new Error('Unexpected empty puzzle record buffer.');
         }
+
         let generatedPuzzleRecord = structuredClone(puzzleRecordFromBuffer);
         generatedPuzzleRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+        if (main_unsolvablePuzzles < 1) {
+            // A puzzle can be made into a unsolvable puzzle 
+            // by adding a changed solved cell to the givens.
+            let unsolvableRecord = this.changedSolvedCell2given(generatedPuzzleRecord);
+            unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+            let unsolvablePuzzleCommand = await this.send2Main(unsolvableRecord);
+            if (unsolvablePuzzleCommand.name == 'stopGeneration') this.stopp();
+        }
 
         switch (generatedPuzzleRecord.preRunRecord.level) {
             case 'Leicht': {
@@ -180,80 +191,38 @@ class NewPuzzleGenerator {
                 let extremeHeavyRecord = this.deleteOnePuzzleCell(generatedPuzzleRecord);
                 extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-                if (main_simplePuzzles < 1
-                    || main_verySimplePuzzles < 1
-                    || main_extremeHeavyPuzzles < 1
-                ) {
+                if (main_simplePuzzles < 1) {
                     let simplePuzzleCommand = await this.send2Main(generatedPuzzleRecord);
+                    if (simplePuzzleCommand.name == 'stopGeneration') this.stopp();
+                }
+                if (main_verySimplePuzzles < 1) {
                     let verySimpleCommand = await this.send2Main(verySimplePuzzleRecord);
+                    if (verySimpleCommand.name == 'stopGeneration') this.stopp();
+                }
+                if (main_extremeHeavyPuzzles < 1) {
                     let extremeHeavyCommand = await this.send2Main(extremeHeavyRecord);
-
-                    if (simplePuzzleCommand.name == 'stopGeneration'
-                        || verySimpleCommand.name == 'stopGeneration'
-                        || extremeHeavyCommand.name == 'stopGeneration'
-                    ) {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    } else {
-                        puzzleSentToMain = true;
-                        let commandFromMain = structuredClone(previousCommand);
-                        commandFromMain.name = 'proceedGeneration';
-                        return commandFromMain;
-                    };
+                    if (extremeHeavyCommand.name == 'stopGeneration') this.stopp();
                 }
                 break;
             }
             case 'Mittel': {
-                // A puzzle can be made into a unsolvable puzzle 
-                // by adding a changed solved cell to the givens.
-                let unsolvableRecord = this.changedSolvedCell2given(generatedPuzzleRecord);
-                unsolvableRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-                if (main_mediumPuzzles < 1
-                    || main_unsolvablePuzzles < 1
-                ) {
+                if (main_mediumPuzzles < 1) {
                     let mediumPuzzleCommand = await this.send2Main(generatedPuzzleRecord);
-                    let unsolvablePuzzleCommand = await this.send2Main(unsolvableRecord);
-
-                    if (mediumPuzzleCommand.name == 'stopGeneration'
-                        || unsolvablePuzzleCommand.name == 'stopGeneration'
-                    ) {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    }
-                    else {
-                        puzzleSentToMain = true;
-                        let commandFromMain = structuredClone(previousCommand);
-                        commandFromMain.name = 'proceedGeneration';
-                        return commandFromMain;
-                    };
+                    if (mediumPuzzleCommand.name == 'stopGeneration') this.stopp();
                 }
                 break;
-            }
+            };
             case 'Schwer': {
                 if (main_heavyPuzzles < 1) {
-                    // Schweres Puzzle senden
                     let newCommand = await this.send2Main(generatedPuzzleRecord);
-                    if (newCommand.name == 'stopGeneration') {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    } else {
-                        puzzleSentToMain = true;
-                        return newCommand
-                    };
+                    if (newCommand.name == 'stopGeneration') this.stopp();
                 }
                 break;
             }
             case 'Sehr schwer': {
                 if (main_veryHeavyPuzzles < 1) {
-                    // Sehr schweres Puzzle senden
                     let newCommand = await this.send2Main(generatedPuzzleRecord);
-                    if (newCommand.name == 'stopGeneration') {
-                        console.log('---> generatorWorker <--- has been stopped.')
-                        self.close();
-                    } else {
-                        puzzleSentToMain = true;
-                        return newCommand
-                    };
+                    if (newCommand.name == 'stopGeneration') this.stopp();
                 }
                 break;
             }
@@ -262,9 +231,15 @@ class NewPuzzleGenerator {
                     + puzzleRecordFromBuffer.preRunRecord.level);
             }
         }
+        puzzleSentToMain = true;
         let commandFromMain = structuredClone(previousCommand);
         commandFromMain.name = 'proceedGeneration';
         return commandFromMain;
+    }
+
+    stopp() {
+        console.log('---> generatorWorker <--- has been stopped.')
+        self.close();
     }
 
     async send2Main(puzzleRecord) {
