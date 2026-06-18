@@ -3091,7 +3091,7 @@ class SudokuSolverView {
         let maxDepthValueNode = document.getElementById("max-depth-value");
         let searchPathNode = document.getElementById("search-path");
         let trialErrorCountNode = document.getElementById("backward-count");
-     
+
         if (sudoApp.mySolver.myCurrentPuzzle == undefined) {
             autoModeRadioBtns.style.visibility = "hidden";
             maxDepthValueNode.style.visibility = "hidden";
@@ -3246,7 +3246,7 @@ class SudokuSolverView {
             } else {
                 // nr == 0 and no current search
                 if (sudoApp.mySolver.myGrid.lastSearch !== undefined) {
-                    this.nrOfSolutionsNode.innerHTML = 'Unlösbar';
+                    this.nrOfSolutionsNode.innerHTML = '>>> Unlösbar <<<';
                     this.nrOfSolutionsField.style.backgroundColor =
                         'var(--solutions-found)';
                     this.solutionContainer.style.backgroundColor =
@@ -3373,15 +3373,18 @@ class SudokuSolverView {
     }
 
     publishSearchIsCompleted(nrSol) {
-        // if (!this.publishedSearchIsCompleted) {
         if (nrSol == 0) {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
             this.publishedSearchIsCompleted = true;
+            this.nrOfSolutionsNode.innerHTML = '>>> Unlösbar <<<';
+            this.nrOfSolutionsField.style.backgroundColor =
+                'var(--solutions-found)';
+            this.solutionContainer.style.backgroundColor =
+                'var(--solutions-found)';
         } else {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
             this.publishedSearchIsCompleted = true;
         }
-        // }
     }
 
     displayUndoRedo() {
