@@ -3057,8 +3057,6 @@ class SudokuSolverView {
         this.myStepExplainerView = new StepExplainerView();
 
         this.solutionNumber = undefined;
-        // this.publishedSearchIsCompleted = false;
-
         this.solutionContainer = document.getElementById("solution-container");
         this.nrOfSolutionsField = document.getElementById("nr-of-solutions-field");
         this.nrOfSolutionsNode = document.getElementById("number-of-solutions");
@@ -3375,7 +3373,6 @@ class SudokuSolverView {
     publishSearchIsCompleted(nrSol) {
         if (nrSol == 0) {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Das Puzzle hat keine Lösung!<br>Suche abgeschlossen.', this, () => { });
-            this.publishedSearchIsCompleted = true;
             this.nrOfSolutionsNode.innerHTML = '>>> Unlösbar <<<';
             this.nrOfSolutionsField.style.backgroundColor =
                 'var(--solutions-found)';
@@ -3383,7 +3380,6 @@ class SudokuSolverView {
                 'var(--solutions-found)';
         } else {
             sudoApp.myInfoDialog.open('Lösungssuche', 'info', 'Keine weitere Lösung!<br>Suche abgeschlossen.', this, () => { });
-            this.publishedSearchIsCompleted = true;
         }
     }
 
@@ -4639,7 +4635,6 @@ class SudokuSolverController {
 
     // Button Nächster Suchschritt
     trackerDlgStepPressed() {
-        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepPressed';
         let autoStepResult = undefined;
         // Nächster Suchschritt
@@ -4664,7 +4659,6 @@ class SudokuSolverController {
     // Button Suchlauf mit Haltepunkten
     trackerDlgStepSequencePressed() {
         // Suchlauf mit Haltepunkten
-        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgStepSequencePressed';
         if (sudoApp.myClockedRunner.isRunning()) {
             sudoApp.myClockedRunner.stop('cancelled');
@@ -4741,7 +4735,6 @@ class SudokuSolverController {
 
 
     trackerDlgCountSolutionsPressed() {
-        // sudoApp.mySolverView.publishedSearchIsCompleted = false;
         // Button Lösungen zählen ...
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgCountSolutionsPressed';
 
@@ -4795,10 +4788,10 @@ class SudokuSolverController {
         this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
         this.mySolver.deselect();
-        sudoApp.mySolverView.displayReasonUnsolvability('');
+      //  sudoApp.mySolverView.displayReasonUnsolvability('');
         sudoApp.mySolverController.myUndoActionStack = [];
         sudoApp.mySolverController.myRedoActionStack = [];
-        this.mySolver.notify();
+       // this.mySolver.notify();
     }
 
     // ====================================================================================

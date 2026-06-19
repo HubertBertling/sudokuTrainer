@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.64';
+let VERSION = 'v1.9.65';
 
 // ==========================================
 // Basic classes
@@ -4983,8 +4983,6 @@ class SudokuMainApp {
         this.myPuzzleDBDialog = new PuzzleDBDialog();
         this.myNewPuzzleDlg = new NewPuzzleDlg(this);
         // this.mySnapshotDlg = new SnapshotDialog(this);
-
-        this.publishedSearchIsCompleted = false;
 
         // Loops
         this.myClockedRunner = new ClockedRunner();
