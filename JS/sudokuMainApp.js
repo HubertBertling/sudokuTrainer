@@ -4092,6 +4092,7 @@ class SudokuSolverController {
 
     newPuzzleOkay() {
         sudoApp.mySolver.reInit();
+        sudoApp.mySolver.notify();
         var ele = document.getElementsByName('level');
         for (let i = 0; i < ele.length; i++) {
             if (ele[i].checked) {
@@ -4242,7 +4243,8 @@ class SudokuSolverController {
         sudoApp.myTrackerDialog.close();
 
         sudoApp.mySolver.reInit();
-
+        sudoApp.mySolver.notify();
+       
         NavigationBar.closeNav();
         // Now we are waiting for the buffer to be filled.
         // The rotating loader icon is started.
