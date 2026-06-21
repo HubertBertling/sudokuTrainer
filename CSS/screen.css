@@ -2175,6 +2175,7 @@ Für Text: color: #222; oder color: #424242;
     .tracker-dashboard {
         margin: 0.6rem 0.2rem;
         height: auto;
+        border-radius: 1rem;
     }
 
     #loader,

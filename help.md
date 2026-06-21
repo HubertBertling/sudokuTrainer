@@ -11,8 +11,8 @@ layout: default
    3. [Jeder Lösungsschritt mit zwei Subschritten](#jeder-lösungsschritt-mit-zwei-subschritten)
    4. [Die Taste Menu](#die-taste-menu)
    5. [Die Taste Teilen](#die-taste-teilen)
-   6. [Der Tastenblock 'Manuell Lösen'](#der-tastenblock-manuell-lösen)
-   7. [Der Tastenblock 'Automatisch Lösen'](#der-tastenblock-automatisch-lösen)
+   6. [Der Tastenblock 'Manuell lösen'](#der-tastenblock-manuell-lösen)
+   7. [Der Tastenblock 'Automatisch lösen'](#der-tastenblock-automatisch-lösen)
    8. [Puzzle kopieren und einfügen via Clipboard](#puzzle-kopieren-und-einfügen-via-clipboard)
    9. [Die Puzzle-Datenbank](#die-puzzle-datenbank)
       1. [Operationen der Datenbank](#operationen-der-datenbank)
@@ -59,7 +59,7 @@ layout: default
 
 Viele Menschen haben Spass daran, Sudoku-Puzzles zu lösen, die sie in der Zeitung finden. Nicht nur Sudoku-Anfängern kann es passieren,
 dass sie bei der Lösungssuche steckenbleiben. Egal, ob eine fertige Lösung am Folgetag in der Zeitung zu finden ist, oder ob ein 
-konventioneller Sudoku-Solver die Lösng präsentiert, Du bleibst ratlos zurück mit der Frage: Wie hätte ich diese Lösung finden können?
+konventioneller Sudoku-Solver die Lösung präsentiert, Du bleibst ratlos zurück mit der Frage: Wie hätte ich diese Lösung finden können?
 
 Der vorliegende Explorer präsentiert nicht nur die fertige Lösung sondern auch einen Schritt-für-Schritt-Weg hin zur Lösung. Jeder Schritt wird erläutert. Wenn Du viele Male den Lösungsweg des Explorers beobachtet hast, wirst Du beim Lösen der Puzzles besser werden. 
 
@@ -147,12 +147,12 @@ Der Spieler kann sich bei der Lösungssuche unterstützen lassen, indem er in de
 ## Zwei Spielphasen
 
  ![Eingeben](./imagesHelp/define.png)
-  Der Phasenschalter in der Position **Puzzle eingeben**. Das Schalten in diese Position versetzt den Solver in die Puzzle-Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Explorer. Nach der Initialisierung ist diese Phase automatisch esetzt.       
+  Der Phasenschalter in der Position **Puzzle eingeben**. Das Schalten in diese Position versetzt den Solver in die Puzzle-Definitionsphase. In dieser Phase überträgt man das zu lösende Puzzle, sprich die Givens des Puzzles, in den Explorer. Nach der Initialisierung ist diese Phase automatisch gesetzt.       
 
  ![Lösen](./imagesHelp/play.png)
  Der Phasenschalter in der Position **Puzzle lösen**. Das Schalten in diese Position versetzt den Explorer in die Lösungsphase. Gleichzeitig ermittelt der Explorer den Schwierigkeitsgrad des eingegebenen Puzzles. Die Lösungsphase kann manuell oder automatisch durchgeführt werden. Wird die automatische Ausführung gestartet, wird diese Schalterposition automatisch gesetzt. |
 
-Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor den Phasenschalter in die Position 'Eingeben' schieben.
+Hinweis: Gegebene Nummern, die Givens - dies sind blaue Nummern - können in der Lösungsphase nicht geändert oder gelöscht werden. Falls Givens gelöscht werden sollen, muss man zuvor den Phasenschalter in die Position 'Eingeben' schieben.
 
 ## Jeder Lösungsschritt mit zwei Subschritten
 
@@ -191,7 +191,7 @@ Soll eine Nummern-Setzung zurückgenommen werden, muss die betroffene Zelle sele
 
 Die Sudoku-Explorer-App ist eine Progressive Web App (PWA). Wie eine native App kann sie daher Inhalte, in unserem Fall ein Puzzle-File, mit anderen Apps teilen, z.B. mit WhatsApp oder einer EMAIL-App. Auf dem PC startet bei Doppel-Click auf diese Datei die Sudoku-App. Auf dem Android-SmartPhone ist dies leider noch nicht möglich.
 
-## Der Tastenblock 'Manuell Lösen'
+## Der Tastenblock 'Manuell lösen'
 
 <figure>
    <img src="./imagesHelp/tastenauswahlManual.png" alt="Tastenblock manuell" style="max-width:100%">
@@ -241,7 +241,7 @@ Siehe [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp).
 **Taste: Automatisch.**
 Die Taste "Automatisch" startet den automatischen Solver der App.
 
-## Der Tastenblock 'Automatisch Lösen'
+## Der Tastenblock 'Automatisch lösen'
 
 <figure >
    <img src="./imagesHelp/tastenBlockAutomatic.png" alt="Tastenblock Automatisch" style="width:100%">
