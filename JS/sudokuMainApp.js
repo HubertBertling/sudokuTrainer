@@ -4092,7 +4092,7 @@ class SudokuSolverController {
     }
 
 
-    newPuzz1leOkay() {
+    newPuzzleOkay() {
         sudoApp.mySolver.reInit();
         sudoApp.mySolver.notify();
         var ele = document.getElementsByName('level');
