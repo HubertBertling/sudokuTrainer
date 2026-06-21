@@ -1467,6 +1467,8 @@ class SudokuPuzzleDBController {
     }
 
     loadBtnPressed() {
+        sudoApp.mySolver.reInit();
+        sudoApp.mySolver.notify();
         if (this.myPuzzleDB.getSize() > 0) {
             let puzzleRecord = this.myPuzzleDB.getSelectedPuzzle();
             sudoApp.myPuzzleDBDialog.close();
@@ -4090,7 +4092,7 @@ class SudokuSolverController {
     }
 
 
-    newPuzzleOkay() {
+    newPuzz1leOkay() {
         sudoApp.mySolver.reInit();
         sudoApp.mySolver.notify();
         var ele = document.getElementsByName('level');
@@ -4244,7 +4246,7 @@ class SudokuSolverController {
 
         sudoApp.mySolver.reInit();
         sudoApp.mySolver.notify();
-       
+
         NavigationBar.closeNav();
         // Now we are waiting for the buffer to be filled.
         // The rotating loader icon is started.
@@ -4413,7 +4415,9 @@ class SudokuSolverController {
     async pasteLinkPressed() {
 
         NavigationBar.closeNav();
-
+        sudoApp.mySolver.reInit();
+        sudoApp.mySolver.notify();
+             
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
             puzzleRec = undefined;
@@ -4790,10 +4794,10 @@ class SudokuSolverController {
         this.mySolver.cleanUpAndDeleteCurrentSearch();
         this.mySolver.unsetStepLazy();
         this.mySolver.deselect();
-      //  sudoApp.mySolverView.displayReasonUnsolvability('');
+        //  sudoApp.mySolverView.displayReasonUnsolvability('');
         sudoApp.mySolverController.myUndoActionStack = [];
         sudoApp.mySolverController.myRedoActionStack = [];
-       // this.mySolver.notify();
+        // this.mySolver.notify();
     }
 
     // ====================================================================================
