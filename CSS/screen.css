@@ -867,7 +867,7 @@ Für Text: color: #222; oder color: #424242;
 }
 
 #btn-undo.btn-undo-off,
-#btn-redo.btn-redo-off{
+#btn-redo.btn-redo-off {
     border: 0.2rem solid white;
 }
 
@@ -1034,6 +1034,7 @@ Für Text: color: #222; oder color: #424242;
     font-size: var(--cg-font-small);
     width: 90%;
     height: auto;
+    border-radius: 1rem;
 }
 
 #automatic-btn-block {
@@ -1042,7 +1043,7 @@ Für Text: color: #222; oder color: #424242;
     grid-template-rows: repeat(2, 0.8fr);
     gap: 0.6rem;
     background: var(--automatic-solver);
-    margin: 0.8rem 0.8rem ;
+    margin: 0.8rem 0.8rem;
 }
 
 .number-btn {
@@ -1161,10 +1162,15 @@ Für Text: color: #222; oder color: #424242;
 
 
 
+
+
 .tracker-dashboard {
-    font-size: var(--cg-font-small);
-    margin: 0.2rem 0.4rem;
+    margin: 0.4rem 0.2rem;
+    padding: 0.2rem;
+    height: auto;
+    border-radius: 0.4rem;
 }
+
 
 .first-line-tracker-dashboard,
 .second-line-tracker-dashboard {
@@ -1193,7 +1199,7 @@ Für Text: color: #222; oder color: #424242;
     padding-left: 0.8rem;
     padding-right: 0.8rem;
     display: inline-flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
 }
 
@@ -2168,15 +2174,9 @@ Für Text: color: #222; oder color: #424242;
     }
 
     #automatic-btn-block {
-        margin: 1.2rem 1.2rem;
+        margin: 1rem 1rem;
     }
 
-
-    .tracker-dashboard {
-        margin: 0.6rem 0.2rem;
-        height: auto;
-        border-radius: 1rem;
-    }
 
     #loader,
     #loader-db {
