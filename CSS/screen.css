@@ -305,7 +305,7 @@ button:active {
 #btn-run {
     background: var(--manual-solver);
     color: white;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h6);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -316,7 +316,7 @@ button:active {
 #btn-backtrack-stop {
     background: var(--automatic-solver);
     color: white;
-    font-size: var(--cg-font-base);
+    font-size: var(--cg-font-h6);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -329,6 +329,7 @@ button:active {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    font-size: var(--cg-font-h6);
     background-color: var(--manual-solver);
     width: 100%;
     padding: 0.4rem;
@@ -341,6 +342,7 @@ button:active {
     align-items: center;
     justify-content: space-between;
     background-color: var(--automatic-solver);
+    font-size: var(--cg-font-h6);
     width: 100%;
     padding: 0.4rem;
     border-bottom: 0.2rem solid white;
