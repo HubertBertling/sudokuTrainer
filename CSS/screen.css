@@ -329,10 +329,10 @@ button:active {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    font-size: var(--cg-font-h6);
+    font-size: var(--cg-font-h5);
     background-color: var(--manual-solver);
     width: 100%;
-    padding: 0.4rem;
+    padding: 0.8rem;
     border-bottom: 0.2rem solid white;
 }
 
@@ -342,9 +342,9 @@ button:active {
     align-items: center;
     justify-content: space-between;
     background-color: var(--automatic-solver);
-    font-size: var(--cg-font-h6);
+    font-size: var(--cg-font-h5);
     width: 100%;
-    padding: 0.4rem;
+    padding: 0.8rem;
     border-bottom: 0.2rem solid white;
 }
 
