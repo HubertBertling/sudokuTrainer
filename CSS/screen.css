@@ -262,17 +262,18 @@ button:active {
     background-color: #ddd;
     /* Beispiel: Hellt den Hintergrund auf */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-    /* Beispiel: Erzeugt einen Eintrungseffekt */
+
 }
 
-/* Klasse für Mobile (über JS gesetzt) */
+/* Klasse für Mobile (über JS gesetzt)
 .active {
     transform: translate(0.2rem, 0.2rem);
     background-color: #ddd;
-    /* Beispiel: Hellt den Hintergrund auf */
+    /* Beispiel: Hellt den Hintergrund auf 
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-    /* Beispiel: Erzeugt einen Eintrungseffekt */
+  
 }
+ */
 
 
 /* ********** App-header ***************************/
@@ -298,49 +299,50 @@ button:active {
     width: 100%;
     flex: 1;
     overflow-y: auto;
-
 }
 
 
-.manual-solver-header {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--manual-solver);
-    width: 100%;
-    padding: 0.4rem 0.8rem;
-    border-bottom: 0.2rem solid white;
-}
-
-
-
-.manual-solver-header>span,
 #btn-run {
     background: var(--manual-solver);
     color: white;
+    font-size: var(--cg-font-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    font-size: var(--cg-font-h6);
-    padding: 0.4rem 0.8rem;
-
 
 }
 
-.tracker-dlg-header>span,
 #btn-backtrack-stop {
     background: var(--automatic-solver);
     color: white;
-    border-bottom: none;
-    font-size: var(--cg-font-h6);
-    padding: 0.4rem 0.8rem;
-    /* padding: clamp(0.25rem, calc(0.068rem + 0.909vw), 0.75rem) clamp(0.25rem, calc(-0.023rem + 1.364vw), 1rem); */
+    font-size: var(--cg-font-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+
 }
 
+.manual-solver-header {
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--manual-solver);
+    width: 100%;
+    padding: 0.4rem;
+    border-bottom: 0.2rem solid white;
+}
 
 .tracker-dlg-header {
-    display: flex;
+    color: white;
+    display: inline-flex;
+    align-items: center;
     justify-content: space-between;
     background-color: var(--automatic-solver);
     width: 100%;
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem;
     border-bottom: 0.2rem solid white;
 }
 
