@@ -902,11 +902,13 @@ Das trifft für den vorliegenden Sudoku-Explorer zu, aber auch für den Sudoku-C
 
 **2. Beobachtung: Sudokus in Zeitschriften sind in der Regel fair.**
 
-Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. Sie sind "fair". Die Rede ist von Schwierigkeitsgraden gemäß der Definition dieses Sudoku-Explorers. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' bedarf es auch keiner Buchführung über Zell-Kandidaten.
+Sudoku-Puzzles in den Zeitschriften und Magazinen besitzen in der Regel die Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel' oder selten auch einmal 'Schwer'. 
+
+Man sagt auch, sie sind "fair". Die Zeitungspuzzles können ohne Buchführung von Zellkandidaten gelöst werden. Vorausgesetzt sie besitzen einen der Schwierigkeitsgrade 'Sehr leicht', 'Leicht', 'Mittel'. D.h. für die Zeitschriften-Puzzles benötigt man kein Backtracking und nur selten die Anwendung von Kandidaten-Eliminationsregeln. Für die Schwierigskeitsgrade 'Sehr leicht', 'Leicht' und 'Mittel' bedarf es auch keiner Buchführung über Zell-Kandidaten.
 
 **3. Beobachtung: Faire Puzzles automatisch zu lösen ist langweilig.**
 
-Faire Puzzles können ohne Backtracking gelöst werden. Dies macht die Anwendung des Sudoku-Explorers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp).
+Faire Puzzles können ohne Backtracking und ohne Kandidatenbuchführung gelöst werden. Dies macht die Anwendung des Sudoku-Explorers auf faire Puzzles gleich ein wenig langweilig. Es werden immer nur exakt soviel Schritte für die Lösung des Puzzles gebraucht, wie das Puzzle offene Zellen hat. Also mit der Schritttaste einmal alle offenen Zellen klicken und schon ist das Puzzle gelöst. Wieder spannend wird es, wenn man die Gründe für jeden Schritt nachvollziehen will. Der vorliegende Solver zeigt mit seinem beobachtbaren Backtracker für jede automatische Nummernsetzung die zugehörige Begründung an. Auf Wunsch gibt er auch einen Tipp für die nächste setzbare Zelle, siehe [Bei Bedarf ein Tipp](#bei-bedarf-ein-tipp).
 
 
 **4. Tatsache: Ein Puzzle mit eindeutiger Lösung besitzt mindestens 17 Givens.**
