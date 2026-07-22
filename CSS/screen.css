@@ -580,16 +580,16 @@ button:active {
 
 /* Nich selektierte Zelle */
 
-
+/*
 .sudoku-grid-cell.hatching.selected {
-    background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
-    background-size: 1px 1px;
-}
-
+    /*background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
+    background-size: 1px 1px; */
+   /* border: 0.2rem solid var(--magenta-color);
+*/
 .sudoku-grid-cell.hatching {
-    background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
-    background-size: 1px 1px;
-
+    /*background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
+    background-size: 1px 1px;*/
+    border: 0.3rem solid var(--magenta-color);
 }
 
 
@@ -651,6 +651,16 @@ button:active {
     padding: 0.1rem;
 }
 
+.candidate.eliminated {
+    display: none;
+}
+
+.candidate :not(.eliminated) {
+    display: block;
+}
+
+
+
 /* Selektierte Zelle */
 .sudoku-grid-cell.lazy-invisible>.candidate.necessary {
     font-size: var(--cg-font-h6);
@@ -674,13 +684,16 @@ button:active {
 
 .candidate.pair-candidate {
     /*border: 0.1rem double var(--magenta-color);*/
-    color: black;
-    background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
+    color: white;
+    /* background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);*/
+
+    background-color: var(--magenta-color);
     background-size: 1px 1px;
 }
 
 
-.candidate.inAdmissible {
+.candidate.inAdmissible :not(.hsd-inAdmissible),
+.hsd-inAdmissible {
     color: white;
     background-color: red;
     aspect-ratio: 1 / 1;
@@ -792,6 +805,12 @@ button:active {
     border-bottom: 0.2rem solid var(--app-header-bg-color);
     border-left: 0.2rem solid var(--app-header-bg-color);
     border-right: 0.2rem solid var(--app-header-bg-color);
+
+}
+
+.step-explainer.magenta {
+    background-color: var(--magenta-color);
+    color: white;
 }
 
 .step-explainer-text {
@@ -811,7 +830,7 @@ button:active {
 }
 
 #btn-tip {
-    padding: 0.2rem 0.4rem;
+    padding: 0.4rem 0.8rem;
     display: flex;
     /* flex-direction: column;*/
     flex-direction: row;
@@ -877,7 +896,17 @@ Für Text: color: #222; oder color: #424242;
     border: 0.2rem solid white;
 }
 
-
+#eliminate-btn {
+    background-color: var(--magenta-color);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.8rem;
+    border-radius: 0.8rem;
+    border: 0.2rem solid white;
+    margin: 0.2rem;
+}
 
 #tipp-accept-btn {
     background-color: var(--played-cell-bg-color);

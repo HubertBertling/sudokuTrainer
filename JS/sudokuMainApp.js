@@ -2309,17 +2309,11 @@ class SudokuCellView {
     constructor(cell, index) {
         this.myIndex = index;
         this.myCell = cell;
+        this.myCurrentRuleApp = undefined;
         this.myRelPositionNode = undefined;
         this.myCellNode = undefined;
-        // this.myCellOverlayNode = undefined;
     }
 
-    /*
-    saveCellNodes(cellNode, cellOverlayNode) {
-        this.myCellNode = cellNode;
-        this.myCellOverlayNode = cellOverlayNode;
-    }
-*/
     saveCellNodes(cellNode) {
         this.myCellNode = cellNode;
     }
@@ -2381,11 +2375,11 @@ class SudokuCellView {
                 && this.myCell.isSelected
                 && sudoApp.mySolver.myCurrentSearch.myStepper.indexSelected > -1)) {
 
-            this.myCell.myNecessarys.forEach(necessaryNr => {
+            this.myCell.myNecessarys.forEach(necessaryCandidate => {
 
                 let candidateNode = document.createElement('div');
-                candidateNode.setAttribute('data-value', necessaryNr);
-                candidateNode.innerHTML = necessaryNr;
+                candidateNode.setAttribute('data-value', necessaryCandidate);
+                candidateNode.innerHTML = necessaryCandidate;
                 candidateNode.classList.add('candidate');
                 candidateNode.classList.add('necessary');
                 this.myCellNode.appendChild(candidateNode);
@@ -2463,11 +2457,18 @@ class SudokuCellView {
 
             if (this.myCell.myNecessarys.has(e)) {
                 candidateNode.classList.add('necessary');
-            } else if (this.myCell.getCandidates().size == 1
-                && Array.from(this.myCell.getCandidates())[0] == e) {
+            }
+            if (this.myCell.getCandidates().size == 1) {
                 candidateNode.classList.add('single');
-            } else if (this.myCell.inAdmissibleCandidates.has(e)) {
+            }
+            if (this.myCell.hsDependent_inAdmissibles.has(e)) {
+                candidateNode.classList.add('hsd-inAdmissible');
+            }
+            if (this.myCell.inAdmissibleCandidates.has(e)) {
                 candidateNode.classList.add('inAdmissible');
+            }
+            if (this.myCell.eliminatedCandidates.has(e)) {
+                candidateNode.classList.add('eliminated');
             }
             this.myCellNode.appendChild(candidateNode);
         });
@@ -2744,7 +2745,8 @@ class SudokuCellView {
                 return;
             }
             if (this.myCell.getTotalCandidates().size == 1) {
-                sudoApp.mySolverView.displayTechnique('', '<b>Hidden Single</b> ' + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
+                sudoApp.mySolverView.displayTechnique('', '<b>Hidden Single</b> '
+                    + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                     sudoApp.breakpointPassed('bp_hiddenSingle');
                 }
@@ -2784,21 +2786,21 @@ class SudokuCellView {
             }
 
             if (this.myCell.inAdmissibleCandidates.size > 0 &&
-                this.myCell.inAdmissibleCandidatesFromPairs.size > 0) {
-                if (this.myCell.inAdmissibleCandidatesFromPairs.has(adMissibleNrSelected)) {
+                this.myCell.inAdmissibleCandidatesFromNakedPairs.size > 0) {
+                if (this.myCell.inAdmissibleCandidatesFromNakedPairs.has(adMissibleNrSelected)) {
                     // Wenn für die selektierte Zelle kritische Paare gespeichert sind,
                     // dann gibt es in der Zelle indirekt unzulässige Nummern, die durch sie
                     // verursacht werden.
                     // Die Block, Spalte oder Zeile des Paares wird markiert.
                     let pairArray = [];
-                    let pairInfo = this.myCell.inAdmissibleCandidatesFromPairs.get(adMissibleNrSelected);
+                    let pairInfo = this.myCell.inAdmissibleCandidatesFromNakedPairs.get(adMissibleNrSelected);
 
-                    if (pairInfo.collection instanceof SudokuBlock) {
-                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
-                    } else if (pairInfo.collection instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.collection.myIndex].setBorderMagenta();
-                    } else if (pairInfo.collection instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.collection.myIndex].setBorderMagenta();
+                    if (pairInfo.group instanceof SudokuBlock) {
+                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.group.myIndex].setBorderMagenta();
+                    } else if (pairInfo.group instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.group.myIndex].setBorderMagenta();
+                    } else if (pairInfo.group instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.group.myIndex].setBorderMagenta();
                     }
 
                     sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell1.myIndex].setCellHatching();
@@ -2811,21 +2813,22 @@ class SudokuCellView {
                         + pairArray[0]
                         + ', '
                         + pairArray[1] + '}');
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
             }
 
             if (this.myCell.inAdmissibleCandidates.size > 0 &&
-                this.myCell.inAdmissibleCandidatesFromIntersection.size > 0) {
+                this.myCell.inAdmissibleCandidatesFromIntersections.size > 0) {
 
-                let info = this.myCell.inAdmissibleCandidatesFromIntersectionInfo.get(adMissibleNrSelected);
+                let ruleApplication = this.myCell.inAdmissibleCandidatesFromIntersections.get(adMissibleNrSelected);
                 // In case of several inadmissible candidates, the currently selected candidate may
                 // not match the currently analysed criterion. In this case, info is undefined.
-                if (info !== undefined) {
-                    if (info.block instanceof SudokuBlock) {
-                        sudoApp.mySolverView.myGridView.sudoBlockViews[info.block.myIndex].setBorderMagenta();
+                if (ruleApplication !== undefined) {
+                    if (ruleApplication.block instanceof SudokuBlock) {
+                        sudoApp.mySolverView.myGridView.sudoBlockViews[ruleApplication.block.myIndex].setBorderMagenta();
 
-                        info.block.myCells.forEach(cell => {
+                        ruleApplication.block.myCells.forEach(cell => {
                             if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
                                 sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
                                 // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
@@ -2838,13 +2841,15 @@ class SudokuCellView {
                             }
                         })
                     }
-                    if (info.row instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[info.row.myIndex].setBorderMagenta(this.myCell);
+                    if (ruleApplication.row instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.row.myIndex].setBorderMagenta(this.myCell);
                     };
-                    if (info.col instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[info.col.myIndex].setBorderMagenta(this.myCell);
+                    if (ruleApplication.col instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.col.myIndex].setBorderMagenta(this.myCell);
                     }
-                    sudoApp.mySolverView.displayTechnique('magenta', adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
+                    sudoApp.mySolverView.displayTechnique('magenta',
+                        adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
             }
@@ -2852,17 +2857,17 @@ class SudokuCellView {
             if (this.myCell.inAdmissibleCandidates.size > 0 &&
                 this.myCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
 
-                let info = this.myCell.inAdmissibleCandidatesFromPointingPairsInfo.get(adMissibleNrSelected);
+                let ruleApplication = this.myCell.inAdmissibleCandidatesFromPointingPairs.get(adMissibleNrSelected);
                 // In case of several inadmissible candidates, the currently selected candidate may
-                // not match the currently analysed criterion. In this case, info is undefined.
-                if (info !== undefined) {
-                    if (info.row instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[info.row.myIndex].setBorderMagenta(this.myCell);
+                // not match the currently analysed criterion. In this case, ruleApplication is undefined.
+                if (ruleApplication !== undefined) {
+                    if (ruleApplication.mySubType == 'row') {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.row.myIndex].setBorderMagenta(this.myCell);
                     };
-                    if (info.col instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[info.col.myIndex].setBorderMagenta(this.myCell);
+                    if (ruleApplication.mySubType == 'col') {
+                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.col.myIndex].setBorderMagenta(this.myCell);
                     }
-                    info.pVector.myCells.forEach(cell => {
+                    ruleApplication.pVector.myCells.forEach(cell => {
                         if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
                             sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
                             // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
@@ -2874,13 +2879,16 @@ class SudokuCellView {
                             }
                         }
                     })
-                    let pBlock = info.pVector.myBlock;
+                    let pBlock = ruleApplication.pVector.myBlock;
                     let pBlockIndex = pBlock.getMyIndex();
                     let pBlockView = sudoApp.mySolverView.myGridView.sudoBlockViews[pBlockIndex];
                     pBlockView.setBorderMagenta();
 
                     sudoApp.mySolverView.displayTechnique('magenta', adMissibleNrSelected
                         + ' eliminierbar wegen Zeiger-Paar');
+
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+
                     return;
                 }
             }
@@ -2893,15 +2901,15 @@ class SudokuCellView {
                     let pairArray = [];
                     const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
 
-                    if (pairInfo.collection instanceof SudokuBlock) {
-                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.collection.myIndex].setBorderMagenta();
-                    } else if (pairInfo.collection instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.collection.myIndex].setBorderMagenta();
-                    } else if (pairInfo.collection instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.collection.myIndex].setBorderMagenta();
+                    if (pairInfo.group instanceof SudokuBlock) {
+                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.group.myIndex].setBorderMagenta();
+                    } else if (pairInfo.group instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.group.myIndex].setBorderMagenta();
+                    } else if (pairInfo.group instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.group.myIndex].setBorderMagenta();
                     }
 
-                    pairInfo.collection.myCells.forEach(cell => {
+                    pairInfo.group.myCells.forEach(cell => {
                         if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
                             sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
                             if (pairArray.length == 0) {
@@ -2909,7 +2917,7 @@ class SudokuCellView {
                                 pairArray = Array.from(cell.getCandidates());
                             }
                         } else {
-                            if (!pairInfo.collection instanceof SudokuBlock) {
+                            if (!pairInfo.group instanceof SudokuBlock) {
                                 sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
                             }
                         }
@@ -2918,20 +2926,26 @@ class SudokuCellView {
                     sudoApp.mySolverView.displayTechnique('magenta',
                         adMissibleNrSelected
                         + ' eliminierbar wegen "Verstecktem Paar" {'
-                        + pairInfo.collection.hiddenPairs[0].nr1
+                        + pairInfo.group.hiddenPairs[0].nr1
                         + ', '
-                        + pairInfo.collection.hiddenPairs[0].nr2 + '}');
+                        + pairInfo.group.hiddenPairs[0].nr2 + '}');
+
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+
                     return;
                 }
             }
+            sudoApp.mySolverView.displayTechnique('', '<b>Kandidat </b> ' + adMissibleNrSelected)
         }
+        ;
+
     };
 
     setSelectStatus() {
         this.setSelected();
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.getAutoDirection() == 'forward') {
-                if (this.myCell.candidateIndexSelected == -1) {
+                if (this.myCell.selectedCandidate == '-1') {
                     // Nach dem ersten Click auf die Zelle ist noch 
                     // kein Kandidat in der Zelle selektiert.
                     // Der Anwender bekommt einen Hinweis, was er jetzt tun soll.
@@ -2955,7 +2969,7 @@ class SudokuCellView {
             if (this.myCell.getValue() == '0'
                 && !(sudoApp.mySolver.getActualEvalType() == 'strict-plus'
                     || sudoApp.mySolver.getActualEvalType() == 'strict-minus')) {
-                if (this.myCell.candidateIndexSelected > -1) {
+                if (this.myCell.selectedCandidate > '-1') {
                     this.displayReasons();
                 } else {
                     this.displayTasks();
@@ -3456,6 +3470,7 @@ class SudokuSolverView {
         if (reason !== '') {
             this.myStepExplainerView.setText('red', '<b>Widerspruch:</b> &nbsp' + reason);
             this.myStepExplainerView.unsetOkBtn();
+            this.myStepExplainerView.unsetEliminateBtn();
         } else {
             this.myStepExplainerView.clear();
         }
@@ -3466,11 +3481,15 @@ class SudokuSolverView {
         if (sudoApp.mySolver.isSearching()) {
             if (sudoApp.mySolver.myCurrentSearch.isTipSearch) {
                 this.myStepExplainerView.setOkBtn();
+                this.myStepExplainerView.unsetEliminateBtn();
             } else {
                 this.myStepExplainerView.unsetOkBtn();
+                this.myStepExplainerView.unsetEliminateBtn();
             }
         } else {
             this.myStepExplainerView.unsetOkBtn();
+            this.myStepExplainerView.unsetEliminateBtn();
+
         }
 
     }
@@ -3508,11 +3527,14 @@ class StepExplainerView {
         this.explainer = document.getElementById('step-explainer');
         this.explainerTextNode = document.getElementById('step-explainer-text');
         this.tippOkBtn = document.getElementById("tipp-accept-btn");
+        this.eliminateBtn = document.getElementById("eliminate-btn");
     }
     clear() {
+        this.explainer.classList.remove('magenta');
         this.explainerTextNode.classList.remove('magenta');
         this.explainerTextNode.innerHTML = '...';
         this.tippOkBtn.style.display = "none";
+        this.eliminateBtn.style.display = "none";
     }
     showExplainer() {
         this.explainer.style.display = "flex";
@@ -3556,6 +3578,16 @@ class StepExplainerView {
     }
     unsetOkBtn() {
         this.tippOkBtn.style.display = "none";
+    }
+
+    setEliminateBtn() {
+        this.explainer.classList.add('magenta');
+        this.eliminateBtn.style.display = "flex";
+
+    }
+    unsetEliminateBtn() {
+        this.eliminateBtn.style.display = "none";
+        this.explainer.classList.remove('magenta');
     }
 }
 
@@ -3692,6 +3724,12 @@ class SudokuSolverController {
         tippOkBtn.addEventListener('click', () => {
             this.tippOkBtnPressed();
         });
+
+        let eliminateBtn = document.getElementById("eliminate-btn");
+        eliminateBtn.addEventListener('click', () => {
+            this.eliminateBtnPressed();
+        });
+
 
         let switchBtn = document.getElementById("switch-btn");
         switchBtn.addEventListener('click', () => {
@@ -4240,7 +4278,7 @@ class SudokuSolverController {
             sudoApp.mySolver.notifyAspect('puzzleLoading', undefined);
         }
 
-        // Initialze
+        // initialize
         sudoApp.myClockedRunner.stop('cancelled');
         sudoApp.myTrackerDialog.close();
 
@@ -4417,7 +4455,7 @@ class SudokuSolverController {
         NavigationBar.closeNav();
         sudoApp.mySolver.reInit();
         sudoApp.mySolver.notify();
-             
+
         let puzzleRec;
         if (this.mySolver.myCurrentPuzzle == undefined) {
             puzzleRec = undefined;
@@ -4824,34 +4862,52 @@ class SudokuSolverController {
     savePuzzleDlgCancelPressed() {
         sudoApp.myCurrentPuzzleSaveRenameDlg.close();
     }
-    /*
-        snapshotOkay(cellNr) {
-            if (cellNr > 0 && cellNr < 82) {
-                let snapshotCell = sudoApp.mySolverView.myGridView.sudoCellViews[cellNr].myCellNode;
-                this.takeSnapshot(snapshotCell);
-            } else if (isNaN(cellNr)) {
-                let snapshotElement = document.getElementById(cellNr);
-                this.takeSnapshot(snapshotElement);
-            }
+
+    eliminateBtnPressed() {
+        let index = sudoApp.mySolver.myGrid.indexSelected;
+        let infoString = sudoApp.mySolver.myGrid.eliminateSelectedCandidate();
+        if (infoString == 'eliminated') {
+             this.mySolver.select(index);
+        } else {
+            let header = 'Kandidat eliminieren';
+            sudoApp.myInfoDialog.open(
+                header,
+                'info',
+                infoString,
+                this,
+                () => { }
+            );
         }
-        snapshotCancelled() {
-            // Nothing to do
-        }
-    
-        takeSnapshot(element) {
-            html2canvas(element).then(canvas => {
-                // 1. Möglichkeit: Als Bilddatei (PNG) herunterladen
-                const link = document.createElement('a');
-                link.download = 'snapshot.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-    
-                // 2. Möglichkeit: Direkt auf der Seite anzeigen
-                // document.body.appendChild(canvas);
-            });
-        }
-    */
+        sudoApp.mySolver.notify();
+    }
 }
+/*
+    snapshotOkay(cellNr) {
+        if (cellNr > 0 && cellNr < 82) {
+            let snapshotCell = sudoApp.mySolverView.myGridView.sudoCellViews[cellNr].myCellNode;
+            this.takeSnapshot(snapshotCell);
+        } else if (isNaN(cellNr)) {
+            let snapshotElement = document.getElementById(cellNr);
+            this.takeSnapshot(snapshotElement);
+        }
+    }
+    snapshotCancelled() {
+        // Nothing to do
+    }
+ 
+    takeSnapshot(element) {
+        html2canvas(element).then(canvas => {
+            // 1. Möglichkeit: Als Bilddatei (PNG) herunterladen
+            const link = document.createElement('a');
+            link.download = 'snapshot.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+ 
+            // 2. Möglichkeit: Direkt auf der Seite anzeigen
+            // document.body.appendChild(canvas);
+        });
+    }
+*/
 
 // ==========================================
 // Apps 
