@@ -2810,9 +2810,9 @@ class SudokuCellView {
                     sudoApp.mySolverView.displayTechnique('magenta',
                         adMissibleNrSelected
                         + ' eliminierbar wegen "Nacktem Paar" {'
-                        + pairArray[0]
+                        + Array.from(pairInfo.pair)[0]
                         + ', '
-                        + pairArray[1] + '}');
+                        + Array.from(pairInfo.pair)[1] + '}');
                     sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
@@ -2868,7 +2868,8 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.col.myIndex].setBorderMagenta(this.myCell);
                     }
                     ruleApplication.pVector.myCells.forEach(cell => {
-                        if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
+                        // if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
+                        if (cell.getValue() == '0' && cell.getCandidates().has(adMissibleNrSelected)) {
                             sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
                             // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
                             let tmpCellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];

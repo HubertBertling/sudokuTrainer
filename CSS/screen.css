@@ -688,16 +688,15 @@ button:active {
     /* background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);*/
 
     background-color: var(--magenta-color);
-    background-size: 1px 1px;
+    font-size: var(--cg-font-base);
 }
-
 
 .candidate.inAdmissible :not(.hsd-inAdmissible),
 .hsd-inAdmissible {
     color: white;
     background-color: red;
-    aspect-ratio: 1 / 1;
 }
+
 
 .sudoku-grid-cell.row-selected,
 .sudoku-grid-cell.col-selected,
