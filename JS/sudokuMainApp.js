@@ -4731,6 +4731,16 @@ class SudokuSolverController {
         }
     }
 
+    solutionInfo(info) {
+        //console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
+        console.log('===========' +  info + '  =============');
+        console.log('Kandidaten eliminiert mittels ');
+        console.log(' * Nackter Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.nakedPairs); 
+        console.log(' * Versteckter Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.hiddenPairs);
+        console.log(' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.pointingPairs);
+        console.log(' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections);
+}
+
     // Button Weitere Lösung anzeigen
     trackerDlgFastStepPressed() {
         sudoApp.mySolver.myCurrentSearch.trackerDlgUserCall = 'trackerDlgFastStepPressed';
@@ -4868,7 +4878,7 @@ class SudokuSolverController {
         let index = sudoApp.mySolver.myGrid.indexSelected;
         let infoString = sudoApp.mySolver.myGrid.eliminateSelectedCandidate();
         if (infoString == 'eliminated') {
-             this.mySolver.select(index);
+            this.mySolver.select(index);
         } else {
             let header = 'Kandidat eliminieren';
             sudoApp.myInfoDialog.open(

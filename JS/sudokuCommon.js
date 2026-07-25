@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.9.76';
+let VERSION = 'v1.10.00';
 
 // ==========================================
 // Basic classes
@@ -575,6 +575,7 @@ class Search {
 
     cleanUp() {
         sudoApp.mySolver.myGrid.clearAutoExecCellInfos();
+        sudoApp.mySolver.myGrid.initialize_HSDependent_variables();
         this.myStepper = undefined;
     }
 }
@@ -1723,39 +1724,33 @@ class SudokuGroup {
                 for (let j = 0; j < 9; j++) {
                     if (this.myCells[j].getValue() == '0') {
                         // Paarnummern dürfen keine inAdmissibleCandidates sein
-                            let pairCell1 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]];
-                            let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]];
-                                           
-                      /*  if (pairCell1.inAdmissibleCandidates.intersection(pair).size == 0
-                            && pairCell2.inAdmissibleCandidates.intersection(pair).size == 0) { */
+                        let pairCell1 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]];
+                        let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]];                      if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
+                            this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[1]) {
+                            // Zelle der Gruppe, die nicht Paar-Zelle ist
+                            let tmpCandidates = this.myCells[j].getTotalCandidates();
+                            let tmpIntersection = tmpCandidates.intersection(pair);
+                            let oldInAdmissibles = new MatheSet(this.myCells[j].inAdmissibleCandidates);
+                            this.myCells[j].inAdmissibleCandidates =
+                                this.myCells[j].inAdmissibleCandidates.union(tmpIntersection);
 
-                            if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
-                                this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[1]) {
-                                // Zelle der Gruppe, die nicht Paar-Zelle ist
-                                let tmpCandidates = this.myCells[j].getTotalCandidates();
-                                let tmpIntersection = tmpCandidates.intersection(pair);
-                                let oldInAdmissibles = new MatheSet(this.myCells[j].inAdmissibleCandidates);
-                                this.myCells[j].inAdmissibleCandidates =
-                                    this.myCells[j].inAdmissibleCandidates.union(tmpIntersection);
-
-                                let localAdded = !oldInAdmissibles.equals(this.myCells[j].inAdmissibleCandidates);
-                                inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
-                                if (localAdded) {
-                                    let newInAdmissibles =
-                                        this.myCells[j].inAdmissibleCandidates.difference(oldInAdmissibles);
-                                    newInAdmissibles.forEach(inAdNr => {
-                                        let ruleApplication = {
-                                            myType: 'nakedPair',
-                                            group: this,
-                                            pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
-                                            pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]],
-                                            pair
-                                        }
-                                        this.myCells[j].inAdmissibleCandidatesFromNakedPairs.set(inAdNr, ruleApplication);
-                                    })
-                                }
+                            let localAdded = !oldInAdmissibles.equals(this.myCells[j].inAdmissibleCandidates);
+                            inAdmissiblesAdded = inAdmissiblesAdded || localAdded;
+                            if (localAdded) {
+                                let newInAdmissibles =
+                                    this.myCells[j].inAdmissibleCandidates.difference(oldInAdmissibles);
+                                newInAdmissibles.forEach(inAdNr => {
+                                    let ruleApplication = {
+                                        myType: 'nakedPair',
+                                        group: this,
+                                        pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
+                                        pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]],
+                                        pair
+                                    }
+                                    this.myCells[j].inAdmissibleCandidatesFromNakedPairs.set(inAdNr, ruleApplication);
+                                })
                             }
-                        
+                        }
                     }
                 }
             }
@@ -2547,7 +2542,7 @@ class SudokuGrid {
         this.initialize_HSDependent_variables();
     }
 
-    
+
     eliminateSelectedCandidate() {
         let candidateEliminated = false;
         let currentCellIndex = this.indexSelected;
@@ -2559,156 +2554,43 @@ class SudokuGrid {
         // FromPointingPairs
         if (currentCell.inAdmissibleCandidates.size > 0 &&
             currentCell.inAdmissibleCandidatesFromPointingPairs.has(selectedInadmissibleCandidate)) {
-
             let info = currentCell.inAdmissibleCandidatesFromPointingPairs.get(selectedInadmissibleCandidate);
-            // In case of several inadmissible candidates, the currently selected candidate may
-            // not match the currently analysed criterion. In this case, info is undefined.
             if (info !== undefined) {
-                // The block of the pointing vector
-                let pBlock = info.pVector.myBlock;
-                let pNrs = info.pVector.getPointingNrs();
-
-                rulesWithInAdmissiblesCandidates = false;
-                /*  for (let cell of pBlock.myCells) {
-                      if (cell.getValue() == '0') {
-                          let actualInadmissibleCandidates =
-                              cell.inAdmissibleCandidates.difference(cell.eliminatedCandidates);
-                          if (actualInadmissibleCandidates.has(selectedInadmissibleCandidate)) {
-                              rulesWithInAdmissiblesCandidates = true;
-                              break;
-                          }
-                      }
-                  }
-  
-                if (rulesWithInAdmissiblesCandidates) {
-                    return ('Kandidat ' + selectedInadmissibleCandidate + ' kann noch nicht eliminiert werden, weil der Pointer-Block die ' + selectedInadmissibleCandidate + ' auch als unzulässige Kandidaten enthält. Eliminiere diese zuerst.');
-                } else {*/
-                    currentCell.eliminate(selectedInadmissibleCandidate); 
-                    return 'eliminated';
-               // }
+                currentCell.eliminate(selectedInadmissibleCandidate);
+                return 'eliminated';
             }
-
         } else
             // From intersection
             if (currentCell.inAdmissibleCandidates.size > 0 &&
                 currentCell.inAdmissibleCandidatesFromIntersections.has(selectedInadmissibleCandidate)) {
-
-
                 let overlapInfo = currentCell.inAdmissibleCandidatesFromIntersections.get(selectedInadmissibleCandidate);
                 if (overlapInfo !== undefined) {
                     if (overlapInfo.mySubType == 'row') {
                         // FromIntersection with a row
-                        let overlap_row = sudoApp.mySolver.myGrid.sudoRows[overlapInfo.row.myIndex];
-/*
-                        rulesWithInAdmissiblesCandidates = false;
-                        for (let cell of overlap_row.myCells) {
-                            if (cell.getValue() == '0') {
-                                let actualInadmissibleCandidates =
-                                    cell.inAdmissibleCandidates.difference(cell.eliminatedCandidates);
-                                if (actualInadmissibleCandidates.has(selectedInadmissibleCandidate)) {
-                                    rulesWithInAdmissiblesCandidates = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (rulesWithInAdmissiblesCandidates) {
-                            return ('Kandidat ' + selectedInadmissibleCandidate + ' kann nicht eliminiert werden, weil die Überschneidungsreihe Überschneidungsnummern als eliminierbare Kandidaten enthält. Eliminiere diese zuerst.');
-                        } else {*/
-                            currentCell.eliminatedCandidates.add(selectedInadmissibleCandidate);
-                            return 'eliminated';
-                        //}
+                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        return 'eliminated';
                     }
-
                     if (overlapInfo.mySubType == 'col') {
-
                         // From intersection with a column
-                        let overlap_col = sudoApp.mySolver.myGrid.sudoCols[overlapInfo.col.myIndex];
-
-                        rulesWithInAdmissiblesCandidates = false;
-                        for (let cell of overlap_col.myCells) {
-                            if (cell.getValue() == '0') {
-
-                                let actualInadmissibleCandidates =
-                                    cell.inAdmissibleCandidates.difference(cell.eliminatedCandidates);
-                                if (actualInadmissibleCandidates.has(selectedInadmissibleCandidate)) {
-                                    rulesWithInAdmissiblesCandidates = true;
-                                    break;
-                                }
-                            }
-                        }
-                    /*    if (rulesWithInAdmissiblesCandidates) {
-                            return ('Kandidat ' + selectedInadmissibleCandidate + ' kann noch nicht eliminiert werden, weil die Überschneidungsspalte Überschneidungsnummern als eliminierbare Kandidaten enthält. Eliminiere diese zuerst.');
-                        } else {*/
-                            currentCell.eliminatedCandidates.add(selectedInadmissibleCandidate);
-                            return 'eliminated';
-                       // }
+                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        return 'eliminated';
                     }
                 }
-
             } else
                 // From hidden pairs
                 if (currentCell.inAdmissibleCandidates.size > 0 &&
                     currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
-
-
                     // selectedInadmissibleCandidate = Array.from(currentCell.inAdmissibleCandidatesFromHiddengPairs)[0];
                     if (currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
-                        // Für ein Subpaar muss nicht jede einzelne Nummer geprüft werden.
-                        // 
-                        let pairArray = [];
-                        const [pairInfo] = currentCell.inAdmissibleCandidatesFromHiddenPairs.values();
-
-                        rulesWithInAdmissiblesCandidates = false;
-                        pairInfo.group.myCells.forEach(cell => {
-                            if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
-                                if (cell.inAdmissibleCandidates.size > 0
-                                    && (!cell.inAdmissibleCandidates.isSubset(
-                                        cell.eliminatedCandidates))) {
-                                    rulesWithInAdmissiblesCandidates = true;
-                                }
-                            }
-                        });
-                      /*  if (rulesWithInAdmissiblesCandidates) {
-                            return ('Kandidat ' + selectedInadmissibleCandidate + ' kann noch nicht eliminiert werden, weil versteckte Paar-Zellen noch eliminierbare Kandidaten enthalten. Eliminiere diese zuerst.');
-                        } else {*/
-                            currentCell.eliminate(selectedInadmissibleCandidate);
-                            return 'eliminated';
-                       // }
+                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        return 'eliminated';
                     }
-
                 } else
                     // From naked pairs
                     if (currentCell.inAdmissibleCandidatesFromNakedPairs.size > 0 &&
                         currentCell.inAdmissibleCandidatesFromNakedPairs.has(selectedInadmissibleCandidate)) {
-
-                        // Wenn für die selektierte Zelle kritische Paare gespeichert sind,
-                        // dann gibt es in der Zelle indirekt unzulässige Nummern, die durch sie
-                        // verursacht werden.
-                        // Die Block, Spalte oder Zeile des Paares wird markiert.
-                        let pairArray = [];
-                        let pairInfo =
-                            currentCell.inAdmissibleCandidatesFromNakedPairs.get(selectedInadmissibleCandidate);
-
-                        let rulesWithInAdmissiblesCandidates = false;
-
-                        if ((pairInfo.pairCell1.inAdmissibleCandidates.difference(pairInfo.pair)).size > 0) {
-                            //      && (!pairInfo.pairCell1.inAdmissibleCandidates.isSubset(
-                            //          pairInfo.pairCell1.eliminatedCandidates))) {
-                            rulesWithInAdmissiblesCandidates = true;
-                        }
-
-                        if ((pairInfo.pairCell2.inAdmissibleCandidates.difference(pairInfo.pair)).size > 0) { }
-                        //          && (!pairInfo.pairCell2.inAdmissibleCandidates.isSubset(
-                        //          pairInfo.pairCell1.eliminatedCandidates))) {
-                        rulesWithInAdmissiblesCandidates = true;
-
-
-                    /*  if (rulesWithInAdmissiblesCandidates) {
-                            return ('Kandidat ' + selectedInadmissibleCandidate + ' kann noch nicht eliminiert werden, weil nackte Paar-Zellen noch mehr als zwei Kandidaten enthalten.');
-                        } else {*/
-                            currentCell.eliminate(selectedInadmissibleCandidate);
-                            return 'eliminated';
-                       // }
+                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        return 'eliminated';
                     }
     }
 
@@ -3351,12 +3233,6 @@ class SudokuGrid {
                 if (tmpSingle.getCandidates().size > 1) {
                     if (sudoApp.mySolver.isSearching()) {
                         // tmpSingle is a cell with hidden single
-                        sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos = {
-                            nakedPairs: 0,
-                            hiddenPairs: 0,
-                            intersections: 0,
-                            pointingPairs: 0
-                        }
                         tmpSingle.startCalculation_HSDependent_InAdmisssibles();
                     }
                 }
@@ -3833,6 +3709,7 @@ class SudokuCell {
 
     initialize_HSDependent_variables() {
         this.hsDependent_inAdmissibles = new MatheSet();
+        this.eliminatedCandidates = new MatheSet();
     }
 
     // ===================================================================
@@ -4042,11 +3919,9 @@ class SudokuCell {
         this.myNecessaryGroups = new Map();
 
         this.wrong = false;
+
         this.eliminatedCandidates = new MatheSet();
-
         this.hsDependent_inAdmissibles = new MatheSet();
-
-
     }
 
     calculateInAdmissibles() {
@@ -4882,7 +4757,6 @@ class SudokuSolver {
 
     setActualEvalType(value) {
         this.currentEvalType = value;
-        this.myGrid.evaluateMatrix();
     }
 
     setAutoDirection(direction) {
@@ -5023,7 +4897,6 @@ class SudokuSolver {
         this.optionPath = [];
         this.optionPathMaxLength = 0;
         this.myGrid.reset();
-        this.myGrid.initialize_HSDependent_variables();
     }
 }
 
