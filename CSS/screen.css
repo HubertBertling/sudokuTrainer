@@ -581,15 +581,15 @@ button:active {
 /* Nich selektierte Zelle */
 
 /*
-.sudoku-grid-cell.hatching.selected {
+.sudoku-grid-cell.pair-cell.selected {
     /*background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);
     background-size: 1px 1px; */
    /* border: 0.2rem solid var(--magenta-color);
 */
-.sudoku-grid-cell.hatching {
+.sudoku-grid-cell.pair-cell {
     /*background-image: radial-gradient(circle, var(--magenta-color-background) 1px, transparent 1px);
     background-size: 1px 1px;*/
-    border: 0.3rem solid var(--magenta-color);
+    border: 0.3rem dotted var(--magenta-color);
 }
 
 
@@ -659,7 +659,7 @@ button:active {
     text-decoration: underline;
     text-decoration-color: white;
     text-underline-position: under;
-    text-decoration-style: double;
+    text-decoration-style: wavy;
 }
 
 .candidate :not(.eliminated) {

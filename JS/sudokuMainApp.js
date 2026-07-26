@@ -2612,8 +2612,8 @@ class SudokuCellView {
             this.myCellNode.classList.add('magenta');
         }
     }
-    setCellHatching() {
-        this.myCellNode.classList.add('hatching');
+    setCellPairCell() {
+        this.myCellNode.classList.add('pair-cell');
     }
 
     /*
@@ -2806,8 +2806,8 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.group.myIndex].setBorderMagenta();
                     }
 
-                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell1.myIndex].setCellHatching();
-                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell2.myIndex].setCellHatching();
+                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell1.myIndex].setCellPairCell();
+                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell2.myIndex].setCellPairCell();
 
                     pairArray = Array.from(pairInfo.pairCell1.getTotalCandidates());
                     sudoApp.mySolverView.displayTechnique('magenta',
@@ -2834,7 +2834,7 @@ class SudokuCellView {
                         ruleApplication.block.myCells.forEach(cell => {
                             if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
                                 sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
-                                // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
+                                // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellPairCell();
                                 let tmpCellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];
                                 for (let candidate of tmpCellView.myCellNode.children) {
                                     if (candidate.getAttribute('data-value') == adMissibleNrSelected) {
@@ -2874,7 +2874,7 @@ class SudokuCellView {
                         // if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
                         if (cell.getValue() == '0' && cell.getCandidates().has(adMissibleNrSelected)) {
                             sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
-                            // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
+                            // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellPairCell();
                             let tmpCellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];
                             for (let candidate of tmpCellView.myCellNode.children) {
                                 if (candidate.getAttribute('data-value') == adMissibleNrSelected) {
@@ -2915,7 +2915,7 @@ class SudokuCellView {
 
                     pairInfo.group.myCells.forEach(cell => {
                         if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
-                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellHatching();
+                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellPairCell();
                             if (pairArray.length == 0) {
                                 // pairArray = Array.from(cell.getTotalCandidates());
                                 pairArray = Array.from(cell.getCandidates());
