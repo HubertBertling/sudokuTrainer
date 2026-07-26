@@ -1653,7 +1653,6 @@ class SudokuGroupView {
         this.myIndex = index;
         this.myGroup = group;
         this.myCellViews = undefined;
-        // this.hsDependent_inAdmissiblesDisplayed = false;
     }
 
     getMyGroup() {
@@ -2003,17 +2002,8 @@ class SudokuGridView {
         let myRelPositionNode = document.createElement("div");
         myRelPositionNode.style.position = "relative";
 
-        /*
-        let myCellOverlayNode = document.createElement("div");
-        myCellOverlayNode.classList.add("cell-overlay");
-        myCellOverlayNode.style.display = "none";
-        myRelPositionNode.appendChild(myCellOverlayNode);
-        */
-
         let cellNode = document.createElement("div");
         cellNode.setAttribute("class", "sudoku-grid-cell");
-
-        // myRelPositionNode.appendChild(myCellOverlayNode);
         myRelPositionNode.appendChild(cellNode);
 
         blockNode.appendChild(myRelPositionNode);
@@ -2461,11 +2451,17 @@ class SudokuCellView {
             if (this.myCell.getCandidates().size == 1) {
                 candidateNode.classList.add('single');
             }
-            if (this.myCell.hsDependent_inAdmissibles.has(cand)) {
-                candidateNode.classList.add('hsd-inAdmissible');
+            if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
+                sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
+                if (this.myCell.hsDependent_inAdmissibles.has(cand)) {
+                    candidateNode.classList.add('inAdmissible');
+                }
             }
-            if (this.myCell.inAdmissibleCandidates.has(cand)) {
-                candidateNode.classList.add('inAdmissible');
+            if (sudoApp.mySolver.getActualEvalType() == 'lazy' ||
+                sudoApp.mySolver.getActualEvalType() == 'lazy-invisible') {
+                if (this.myCell.hsDependent_inAdmissibles.has(cand)) {
+                    candidateNode.classList.add('hsd-inAdmissible');
+                }
             }
             if (this.myCell.selectedCandidate == cand) {
                 candidateNode.classList.add('selected');
@@ -2555,7 +2551,7 @@ class SudokuCellView {
                     // nur, wenn die Nummer nicht gleichzeitig notwendig ist.
                     // Diese widersprüchliche Situation wird schon an anderer Stelle
                     // aufgefangen.
-                    candidateNodes[i].classList.add('inAdmissible');
+                    candidateNodes[i].classList.add('hsd-inAdmissible');
                 }
             }
         }
@@ -3052,7 +3048,8 @@ class SudokuCellView {
                 })
                 return true;
             }
-        } else if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' || sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
+        } else if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
+            sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
             if (this.myCell.getValue() == '0' && this.myCell.getTotalCandidates().size == 0) {
                 this.displayCellError();
                 mySolverView.displayReasonUnsolvability('Überhaupt keine zulässige Nummer.');

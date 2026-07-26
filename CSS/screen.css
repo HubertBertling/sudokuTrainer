@@ -698,8 +698,8 @@ button:active {
     font-size: var(--cg-font-base);
 }
 
-.candidate.inAdmissible :not(.hsd-inAdmissible),
-.hsd-inAdmissible {
+.candidate.inAdmissible,
+.candidate.hsd-inAdmissible {
     color: white;
     background-color: red;
 }
