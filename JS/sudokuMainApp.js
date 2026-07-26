@@ -2442,32 +2442,35 @@ class SudokuCellView {
         //}
     }
 
-    displayCandidatesInDetail(admissibles) {
+    displayCandidatesInDetail(candidates) {
         this.myCellNode.classList.add('candidates', sudoApp.mySolver.currentEvalType);
         // Lösche alle bisherigen Kandidaten ????
         while (this.myCellNode.firstChild) {
             this.myCellNode.removeChild(this.myCellNode.lastChild);
         }
         // Übertrage die berechneten Kandidaten in das DOM
-        admissibles.forEach(e => {
+        candidates.forEach(cand => {
             let candidateNode = document.createElement('div');
             candidateNode.classList.add('candidate');
-            candidateNode.setAttribute('data-value', e);
-            candidateNode.innerHTML = e;
+            candidateNode.setAttribute('data-value', cand);
+            candidateNode.innerHTML = cand;
 
-            if (this.myCell.myNecessarys.has(e)) {
+            if (this.myCell.myNecessarys.has(cand)) {
                 candidateNode.classList.add('necessary');
             }
             if (this.myCell.getCandidates().size == 1) {
                 candidateNode.classList.add('single');
             }
-            if (this.myCell.hsDependent_inAdmissibles.has(e)) {
+            if (this.myCell.hsDependent_inAdmissibles.has(cand)) {
                 candidateNode.classList.add('hsd-inAdmissible');
             }
-            if (this.myCell.inAdmissibleCandidates.has(e)) {
+            if (this.myCell.inAdmissibleCandidates.has(cand)) {
                 candidateNode.classList.add('inAdmissible');
             }
-            if (this.myCell.eliminatedCandidates.has(e)) {
+            if (this.myCell.selectedCandidate == cand) {
+                candidateNode.classList.add('selected');
+            }
+            if (this.myCell.eliminatedCandidates.has(cand)) {
                 candidateNode.classList.add('eliminated');
             }
             this.myCellNode.appendChild(candidateNode);
@@ -4733,13 +4736,13 @@ class SudokuSolverController {
 
     solutionInfo(info) {
         //console.log('this.webworkerGeneratorStopRequested == ' + this.webworkerGeneratorStopRequested);
-        console.log('===========' +  info + '  =============');
+        console.log('===========' + info + '  =============');
         console.log('Kandidaten eliminiert mittels ');
-        console.log(' * Nackter Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.nakedPairs); 
+        console.log(' * Nackter Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.nakedPairs);
         console.log(' * Versteckter Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.hiddenPairs);
         console.log(' * Zeiger-Paare: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.pointingPairs);
         console.log(' * Überschneidungen: ' + sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections);
-}
+    }
 
     // Button Weitere Lösung anzeigen
     trackerDlgFastStepPressed() {

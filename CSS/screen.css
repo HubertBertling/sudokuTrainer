@@ -615,7 +615,7 @@ button:active {
     justify-items: center;
     width: 100%;
     height: 100%;
-    padding: 0.2rem;
+    padding: 0.3rem;
 
     background-color: var(--nested-cell-bg-color);
     color: var(--nested-cell-color);
@@ -653,6 +653,13 @@ button:active {
 
 .candidate.eliminated {
     display: none;
+}
+
+.candidate.selected {
+    text-decoration: underline;
+    text-decoration-color: white;
+    text-underline-position: under;
+    text-decoration-style: double;
 }
 
 .candidate :not(.eliminated) {
