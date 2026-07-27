@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.10.02';
+let VERSION = 'v1.10.03';
 
 // ==========================================
 // Basic classes
@@ -1673,6 +1673,7 @@ class SudokuGroup {
                     newInAdmissibles1.forEach(inAdNr => {
                         let ruleApplication = {
                             myType: 'hiddenPair',
+                            hiddenPair: hiddenPair,
                             group: this,
                             subPairCell1: this.myCells[hiddenPair.pos1],
                             subPairCell2: this.myCells[hiddenPair.pos2]
@@ -1725,7 +1726,7 @@ class SudokuGroup {
                     if (this.myCells[j].getValue() == '0') {
                         // Paarnummern dürfen keine inAdmissibleCandidates sein
                         let pairCell1 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]];
-                        let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]];                      if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
+                        let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]; if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
                             this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[1]) {
                             // Zelle der Gruppe, die nicht Paar-Zelle ist
                             let tmpCandidates = this.myCells[j].getTotalCandidates();
@@ -2582,14 +2583,20 @@ class SudokuGrid {
                     currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
                     // selectedInadmissibleCandidate = Array.from(currentCell.inAdmissibleCandidatesFromHiddengPairs)[0];
                     if (currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
-                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        for (let candidate of currentCell.inAdmissibleCandidatesFromHiddenPairs.keys()) {
+                            currentCell.eliminate(candidate);
+                        }
                         return 'eliminated';
                     }
                 } else
                     // From naked pairs
                     if (currentCell.inAdmissibleCandidatesFromNakedPairs.size > 0 &&
                         currentCell.inAdmissibleCandidatesFromNakedPairs.has(selectedInadmissibleCandidate)) {
-                        currentCell.eliminate(selectedInadmissibleCandidate);
+                        for (let ruleApplication of currentCell.inAdmissibleCandidatesFromNakedPairs.values()) {
+                            let pair = ruleApplication.pair;
+                            currentCell.eliminate(Array.from (pair)[0]);
+                            currentCell.eliminate(Array.from (pair)[1]);
+                        }
                         return 'eliminated';
                     }
     }
@@ -3259,15 +3266,10 @@ class SudokuGrid {
 
     derive_inAdmissiblesNew() {
         // The order is basically arbitrary.
-        // For pragmatic reasons, however, it makes sense to
-        // execute hidden pairs last, because this makes it easier to visualize
-        // the hidden pairs. Eliminable candidates
-        // in other cells cannot have been caused by eliminable candidates
-        // in the hidden pair. 
+        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         if (this.derive_inAdmissiblesFromPointingPairs()) return true;
         if (this.derive_inAdmissiblesFromIntersection()) return true;
         if (this.derive_inAdmissiblesFromNakedPairs()) return true;
-        if (this.derive_inAdmissiblesFromHiddenPairs()) return true;
         return false;
     }
 

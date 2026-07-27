@@ -850,7 +850,6 @@ button:active {
     border-radius: 0.3rem;
     /* font-weight: 600; */
 
-    font-size: var(--cg-font-base);
     box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
