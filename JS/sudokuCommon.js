@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.10.03';
+let VERSION = 'v1.11.00';
 
 // ==========================================
 // Basic classes
@@ -1660,8 +1660,8 @@ class SudokuGroup {
             let hiddenPair = this.hiddenPairs[k];
             // Clean up first pair cell
             let cell1 = this.myCells[hiddenPair.pos1];
-            // let tmpCandidates1 = cell1.getTotalCandidates();
-            let tmpCandidates1 = cell1.getCandidates();
+            let tmpCandidates1 = cell1.getTotalCandidates();
+            // let tmpCandidates1 = cell1.getCandidates();
             let newInAdmissibles1 = tmpCandidates1.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
             if (newInAdmissibles1.size > 0) {
@@ -1673,14 +1673,21 @@ class SudokuGroup {
                     newInAdmissibles1.forEach(inAdNr => {
                         let ruleApplication = {
                             myType: 'hiddenPair',
-                            hiddenPair: hiddenPair,
+                            hiddenPairSet: new MatheSet([hiddenPair.nr1, hiddenPair.nr2]),
                             group: this,
                             subPairCell1: this.myCells[hiddenPair.pos1],
                             subPairCell2: this.myCells[hiddenPair.pos2]
                         }
-                        cell1.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
+
+                        if (cell1.inAdmissibleCandidatesFromHiddenPairs.has(inAdNr)) {
+
+                            // Avoid selfreferencing
+                            if (inAdNr !== hiddenPair.nr1 && inAdNr !== hiddenPair.nr2) {
+                                cell1.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
+                                inAdmissiblesAdded = true;
+                            }
+                        }
                     })
-                    inAdmissiblesAdded = true;
                 }
             }
 
@@ -1700,14 +1707,21 @@ class SudokuGroup {
                     newInAdmissibles2.forEach(inAdNr => {
                         let ruleApplication = {
                             myType: 'hiddenPair',
-                            hiddenPair: hiddenPair,
+                            hiddenPairSet: new MatheSet([hiddenPair.nr1, hiddenPair.nr2]),
                             group: this,
                             subPairCell1: this.myCells[hiddenPair.pos1],
                             subPairCell2: this.myCells[hiddenPair.pos2]
                         }
-                        cell2.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
+
+                        if (cell2.inAdmissibleCandidatesFromHiddenPairs.has(inAdNr)) {
+
+                            // Avoid selferencing
+                            if (inAdNr !== hiddenPair.nr1 && inAdNr !== hiddenPair.nr2) {
+                                cell2.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
+                                inAdmissiblesAdded = true;
+                            }
+                        }
                     })
-                    inAdmissiblesAdded = true;
                 }
             }
         }
@@ -1725,11 +1739,11 @@ class SudokuGroup {
                 for (let j = 0; j < 9; j++) {
                     if (this.myCells[j].getValue() == '0') {
                         // Paarnummern dürfen keine inAdmissibleCandidates sein
-                        let pairCell1 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]];
-                        let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]]; if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
+                        if (this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[0] &&
                             this.myCells[j].getIndex() !== this.myPairInfos[i].pairIndices[1]) {
                             // Zelle der Gruppe, die nicht Paar-Zelle ist
-                            let tmpCandidates = this.myCells[j].getTotalCandidates();
+                            // ????
+                            let tmpCandidates = this.myCells[j].getCandidates();
                             let tmpIntersection = tmpCandidates.intersection(pair);
                             let oldInAdmissibles = new MatheSet(this.myCells[j].inAdmissibleCandidates);
                             this.myCells[j].inAdmissibleCandidates =
@@ -1748,7 +1762,14 @@ class SudokuGroup {
                                         pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]],
                                         pair
                                     }
-                                    this.myCells[j].inAdmissibleCandidatesFromNakedPairs.set(inAdNr, ruleApplication);
+                                    let pairCell1 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]];
+                                    let pairCell2 = sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]];
+
+                                    // Avoid selfreferencing
+                                    if (this.myCells[j].myIndex !== pairCell1.myIndex
+                                        && this.myCells[j].myIndex !== pairCell2.myIndex) {
+                                        this.myCells[j].inAdmissibleCandidatesFromNakedPairs.set(inAdNr, ruleApplication);
+                                    }
                                 })
                             }
                         }
@@ -2172,6 +2193,7 @@ class SudokuBlock extends SudokuGroup {
         let tmpRow = null;
         let tmpCol = null;
         let inAdmissiblesAdded = false;
+
         // Iterate over the 3 rows of the block
         for (let row = 0; row < 3; row++) {
             let matrixRow = this.getMatrixRowFromBlockRow(row);
@@ -2213,10 +2235,22 @@ class SudokuBlock extends SudokuGroup {
                         row2 = 1;
                     }
                 }
-                let newInAdmissiblesAdded1 = this.cellIntersectionInRowEliminate(this, row1, tmpRow, strongNumbersInRowInsideBlock);
+                let ruleApplication = {
+                    myType: 'intersection',
+                    mySubType: 'row',
+                    block: this,
+                    row1: row1,
+                    row2: row2,
+                    strongRow: tmpRow,
+                    strongNumbers: strongNumbersInRowInsideBlock
+                }
+
+                let newInAdmissiblesAdded1 = this.cellIntersectionInRowEliminate(
+                    this, row1, tmpRow, strongNumbersInRowInsideBlock, ruleApplication);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
 
-                let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(this, row2, tmpRow, strongNumbersInRowInsideBlock);
+                let newInAdmissiblesAdded2 = this.cellIntersectionInRowEliminate(
+                    this, row2, tmpRow, strongNumbersInRowInsideBlock, ruleApplication);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
             }
         }
@@ -2262,11 +2296,23 @@ class SudokuBlock extends SudokuGroup {
                         col2 = 1;
                     }
                 }
+
+                let ruleApplication = {
+                    myType: 'intersection',
+                    mySubType: 'col',
+                    block: this,
+                    col1: col1,
+                    col2: col2,
+                    strongCol: tmpCol,
+                    strongNumbers: strongNumbersInColInsideBlock
+                }
                 // col1 bereinigen            
-                let newInAdmissiblesAdded1 = this.cellIntersectionInColEliminate(this, col1, tmpCol, strongNumbersInColInsideBlock);
+                let newInAdmissiblesAdded1 = this.cellIntersectionInColEliminate(this,
+                    col1, tmpCol, strongNumbersInColInsideBlock, ruleApplication);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded1;
 
-                let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(this, col2, tmpCol, strongNumbersInColInsideBlock);
+                let newInAdmissiblesAdded2 = this.cellIntersectionInColEliminate(this,
+                    col2, tmpCol, strongNumbersInColInsideBlock, ruleApplication);
                 inAdmissiblesAdded = inAdmissiblesAdded || newInAdmissiblesAdded2;
             }
         }
@@ -2299,7 +2345,7 @@ class SudokuBlock extends SudokuGroup {
 
     // Funktionen für die Überschneidungstechnik
 
-    cellIntersectionInRowEliminate(tmpBlock, row, strongRow, strongNumbers) {
+    cellIntersectionInRowEliminate(tmpBlock, row, strongRow, strongNumbers, ruleApplication) {
         // Eliminiere die strongNumbers in row des Blocks tmpBlock
         let inAdmissiblesAdded = false;
 
@@ -2321,19 +2367,8 @@ class SudokuBlock extends SudokuGroup {
                         let newInAdmissibles =
                             tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
                         // Die Liste der indirekt unzulässigen verursacht von overlap wird gesetzt
-                        tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
-                        newInAdmissibles.forEach(cand => {
-                            tmpCell.inAdmissibleCandidatesFromIntersection.add(cand);
-                        })
+                        // tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
                         newInAdmissibles.forEach(inAdNr => {
-                            let ruleApplication = {
-                                myType: 'intersection',
-                                mySubType: 'row',
-                                block: tmpBlock,
-                                row: strongRow,
-                                strongNumbers: strongNumbers
-                            }
-
                             tmpCell.inAdmissibleCandidatesFromIntersections.set(inAdNr, ruleApplication);
                         })
                     }
@@ -2343,7 +2378,7 @@ class SudokuBlock extends SudokuGroup {
         return inAdmissiblesAdded;
     }
 
-    cellIntersectionInColEliminate(tmpBlock, col, strongCol, strongNumbers) {
+    cellIntersectionInColEliminate(tmpBlock, col, strongCol, strongNumbers, ruleApplication) {
         // Eliminiere die strongNumbers in col des Blocks tmpBlock
         let inAdmissiblesAdded = false;
 
@@ -2366,15 +2401,7 @@ class SudokuBlock extends SudokuGroup {
                         let newInAdmissibles =
                             tmpCell.inAdmissibleCandidates.difference(oldInAdmissibles);
                         tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
-
                         newInAdmissibles.forEach(inAdNr => {
-                            let ruleApplication = {
-                                myType: 'intersection',
-                                mySubType: 'col',
-                                block: tmpBlock,
-                                col: strongCol,
-                                strongNumbers: strongNumbers
-                            }
                             tmpCell.inAdmissibleCandidatesFromIntersections.set(inAdNr, ruleApplication);
                         })
                     }
@@ -2410,6 +2437,7 @@ class SudokuBlock extends SudokuGroup {
                             let ruleApplication = {
                                 myType: 'pointingPair',
                                 mySubType: 'row',
+                                block: this,
                                 pNr: pointingNr,
                                 pVector: pointingVector,
                                 row: sudoApp.mySolver.myGrid.sudoRows[rowIndex]
@@ -2450,9 +2478,10 @@ class SudokuBlock extends SudokuGroup {
                             let ruleApplication = {
                                 myType: 'pointingPair',
                                 mySubType: 'col',
+                                block: this,
                                 pNr: pointingNr,
                                 pVector: pointingVector,
-                                col: sudoApp.mySolver.myGrid.sudoRows[colIndex]
+                                col: sudoApp.mySolver.myGrid.sudoCols[colIndex]
                             }
                             tmpCell.inAdmissibleCandidatesFromPointingPairs.set(pointingNr, ruleApplication);
                         }
@@ -2555,25 +2584,79 @@ class SudokuGrid {
         // FromPointingPairs
         if (currentCell.inAdmissibleCandidates.size > 0 &&
             currentCell.inAdmissibleCandidatesFromPointingPairs.has(selectedInadmissibleCandidate)) {
-            let info = currentCell.inAdmissibleCandidatesFromPointingPairs.get(selectedInadmissibleCandidate);
-            if (info !== undefined) {
-                currentCell.eliminate(selectedInadmissibleCandidate);
+
+            let ruleApplication =
+                currentCell.inAdmissibleCandidatesFromPointingPairs.get(selectedInadmissibleCandidate);
+
+            // console.log('================== POINTING PAIR =================');
+
+            if (ruleApplication.mySubType == 'row') {
+                // console.log('Pointing Pair:-----> Reihe  eliminieren <--------');
+
+                for (let cell of ruleApplication.row.myCells) {
+                    // console.log(' -------> cell.myIndex: ' + cell.index);
+                    if (cell.getValue() == '0') {
+                        if ((cell.myIndex !== ruleApplication.pVector.myCells[0].myIndex) &&
+                            (cell.myIndex !== ruleApplication.pVector.myCells[1].myIndex) &&
+                            (cell.myIndex !== ruleApplication.pVector.myCells[2].myIndex)) {
+                            cell.eliminate(ruleApplication.pNr);
+                        }
+                    }
+                }
                 return 'eliminated';
+            } else {
+                if (ruleApplication.mySubType == 'col') {
+                    // console.log('Pointing Pair:-----> Spalte eliminieren <--------');
+
+                    for (let cell of ruleApplication.col.myCells) {
+                    // console.log(' -------> cell.myIndex: ' + cell.myIndex);
+                        if (cell.getValue() == '0') {
+                            if ((cell.myIndex !== ruleApplication.pVector.myCells[0].myIndex) &&
+                                (cell.myIndex !== ruleApplication.pVector.myCells[1].myIndex) &&
+                                (cell.myIndex !== ruleApplication.pVector.myCells[2].myIndex)) {
+                                cell.eliminate(ruleApplication.pNr);
+                            }
+                        }
+                    }
+                    return 'eliminated';
+                }
             }
         } else
             // From intersection
             if (currentCell.inAdmissibleCandidates.size > 0 &&
                 currentCell.inAdmissibleCandidatesFromIntersections.has(selectedInadmissibleCandidate)) {
-                let overlapInfo = currentCell.inAdmissibleCandidatesFromIntersections.get(selectedInadmissibleCandidate);
-                if (overlapInfo !== undefined) {
-                    if (overlapInfo.mySubType == 'row') {
-                        // FromIntersection with a row
-                        currentCell.eliminate(selectedInadmissibleCandidate);
-                        return 'eliminated';
+                let ruleApplication = currentCell.inAdmissibleCandidatesFromIntersections.get(selectedInadmissibleCandidate);
+                // console.log('================== INTERDECTION =================');
+
+                if (ruleApplication.mySubType == 'row') {
+                    // console.log('---> Intersection --- Reihe 1 eliminieren <--------');
+                    for (let col = 0; col < 3; col++) {
+                        let tmpCell = ruleApplication.block.getBlockCellAt(ruleApplication.row1, col);
+                        tmpCell.eliminateSet(ruleApplication.strongNumbers);
+                        // console.log('cell.myIndex : ' + tmpCell.myIndex + ' strongNumbers: ' + Array.from(ruleApplication.strongNumbers));
                     }
-                    if (overlapInfo.mySubType == 'col') {
-                        // From intersection with a column
-                        currentCell.eliminate(selectedInadmissibleCandidate);
+                    // console.log('---> Intersection ---  Reihe 2 eliminieren <--------');
+                    for (let col = 0; col < 3; col++) {
+                        let tmpCell = ruleApplication.block.getBlockCellAt(ruleApplication.row2, col);
+                        tmpCell.eliminateSet(ruleApplication.strongNumbers);
+                        // console.log('cell.myIndex : ' + tmpCell.myIndex + ' strongNumbers: ' + Array.from(ruleApplication.strongNumbers));
+                    }
+                    return 'eliminated';
+                }
+                else {
+                    if (ruleApplication.mySubType == 'col') {
+                        // console.log(' ---> Intersection --- Spalte 1 eliminieren <--------');
+                        for (let row = 0; row < 3; row++) {
+                            let tmpCell = ruleApplication.block.getBlockCellAt(row, ruleApplication.col1);
+                            tmpCell.eliminateSet(ruleApplication.strongNumbers);
+                            // console.log('cell.myIndex : ' + tmpCell.myIndex + ' strongNumbers: ' + Array.from(ruleApplication.strongNumbers));
+                        }
+                        // console.log(' ---> Intersection --- Spalte 2 eliminieren <--------');
+                        for (let row = 0; row < 3; row++) {
+                            let tmpCell = ruleApplication.block.getBlockCellAt(row, ruleApplication.col2);
+                            tmpCell.eliminateSet(ruleApplication.strongNumbers);
+                            // console.log('cell.myIndex : ' + tmpCell.myIndex + ' strongNumbers: ' + Array.from(ruleApplication.strongNumbers));
+                        }
                         return 'eliminated';
                     }
                 }
@@ -2583,8 +2666,19 @@ class SudokuGrid {
                     currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
                     // selectedInadmissibleCandidate = Array.from(currentCell.inAdmissibleCandidatesFromHiddengPairs)[0];
                     if (currentCell.inAdmissibleCandidatesFromHiddenPairs.has(selectedInadmissibleCandidate)) {
-                        for (let candidate of currentCell.inAdmissibleCandidatesFromHiddenPairs.keys()) {
-                            currentCell.eliminate(candidate);
+
+                        let ruleApplication = currentCell.inAdmissibleCandidatesFromHiddenPairs.get(selectedInadmissibleCandidate);
+
+                        let complement1Candidates =
+                            ruleApplication.subPairCell1.inAdmissibleCandidates.difference(ruleApplication.hiddenPairSet);
+                        for (let candidate of complement1Candidates) {
+                            ruleApplication.subPairCell1.eliminate(candidate);
+                        }
+
+                        let complement2Candidates =
+                            ruleApplication.subPairCell2.inAdmissibleCandidates.difference(ruleApplication.hiddenPairSet);
+                        for (let candidate of complement2Candidates) {
+                            ruleApplication.subPairCell2.eliminate(candidate);
                         }
                         return 'eliminated';
                     }
@@ -2592,10 +2686,17 @@ class SudokuGrid {
                     // From naked pairs
                     if (currentCell.inAdmissibleCandidatesFromNakedPairs.size > 0 &&
                         currentCell.inAdmissibleCandidatesFromNakedPairs.has(selectedInadmissibleCandidate)) {
-                        for (let ruleApplication of currentCell.inAdmissibleCandidatesFromNakedPairs.values()) {
-                            let pair = ruleApplication.pair;
-                            currentCell.eliminate(Array.from (pair)[0]);
-                            currentCell.eliminate(Array.from (pair)[1]);
+                        let ruleApplication =
+                            currentCell.inAdmissibleCandidatesFromNakedPairs.get(selectedInadmissibleCandidate);
+
+                        let pair = ruleApplication.pair;
+
+                        for (let cell of ruleApplication.group.myCells) {
+                            if (cell.myIndex !== ruleApplication.pairCell1.myIndex &&
+                                cell.myIndex !== ruleApplication.pairCell2.myIndex) {
+                                cell.eliminate(Array.from(pair)[0]);
+                                cell.eliminate(Array.from(pair)[1]);
+                            }
                         }
                         return 'eliminated';
                     }
@@ -2705,7 +2806,7 @@ class SudokuGrid {
 
 
     // ========================================================
-    // Setter
+    // Setter 
     // ========================================================
     setSolvedToGiven() {
         // Vom Generator verwendete Funktion
@@ -3684,11 +3785,11 @@ class SudokuCell {
                     sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections++;
 
                     if (ruleApplication.mySubType == 'row') {
-                        ruleApplication.row.myCells.forEach(cell => {
+                        ruleApplication.strongRow.myCells.forEach(cell => {
                             cell.startCalculation_HSDependent_InAdmisssibles();
                         })
                     } else if (ruleApplication.mySubType == 'col') {
-                        ruleApplication.col.myCells.forEach(cell => {
+                        ruleApplication.strongCol.myCells.forEach(cell => {
                             cell.startCalculation_HSDependent_InAdmisssibles();
                         })
                     } else {
@@ -3703,8 +3804,9 @@ class SudokuCell {
                     })
                 }
                 else {
-                    throw new Error('Unexpected elimination rule ' + elimRule);
-                }
+                    // throw new Error('Error: Unexpected elimination rule ');
+                    // console.log('Error: Unexpected elimination rule ');
+               }
             }
         })
     }
@@ -3861,7 +3963,18 @@ class SudokuCell {
     }
 
     eliminate(candidate) {
-        this.eliminatedCandidates.add(candidate);
+        if (this.getValue() == '0') {
+            this.eliminatedCandidates.add(candidate);
+            // console.log('candidate ' + candidate + ' eliminated.')
+        }
+    }
+
+    eliminateSet(candidateSet) {
+        if (this.getValue() == '0') {
+            for (let candidate of candidateSet) {
+                this.eliminatedCandidates.add(candidate);
+            }
+        }
     }
 
     selectNextCandidate() {

@@ -689,7 +689,8 @@ button:active {
     color: white;
 }
 
-.candidate.pair-candidate {
+.candidate.pair-candidate,
+.candidate.hsd-inAdmissible.pair-candidate{
     /*border: 0.1rem double var(--magenta-color);*/
     color: white;
     /* background-image: radial-gradient(circle, var(--magenta-color-background-darker) 1px, transparent 1px);*/

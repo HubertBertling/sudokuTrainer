@@ -2784,35 +2784,35 @@ class SudokuCellView {
                 }
             }
 
-            if (this.myCell.inAdmissibleCandidates.size > 0 &&
-                this.myCell.inAdmissibleCandidatesFromNakedPairs.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromNakedPairs.size > 0) {
                 if (this.myCell.inAdmissibleCandidatesFromNakedPairs.has(adMissibleNrSelected)) {
                     // Wenn für die selektierte Zelle kritische Paare gespeichert sind,
                     // dann gibt es in der Zelle indirekt unzulässige Nummern, die durch sie
                     // verursacht werden.
                     // Die Block, Spalte oder Zeile des Paares wird markiert.
                     let pairArray = [];
-                    let pairInfo = this.myCell.inAdmissibleCandidatesFromNakedPairs.get(adMissibleNrSelected);
+                    let ruleApplication = this.myCell.inAdmissibleCandidatesFromNakedPairs.get(adMissibleNrSelected);
 
-                    if (pairInfo.group instanceof SudokuBlock) {
-                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.group.myIndex].setBorderMagenta();
-                    } else if (pairInfo.group instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.group.myIndex].setBorderMagenta();
-                    } else if (pairInfo.group instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.group.myIndex].setBorderMagenta();
+                    if (ruleApplication.group instanceof SudokuBlock) {
+                        sudoApp.mySolverView.myGridView.sudoBlockViews[ruleApplication.group.myIndex].setBorderMagenta();
+                    } else if (ruleApplication.group instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.group.myIndex].setBorderMagenta();
+                    } else if (ruleApplication.group instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.group.myIndex].setBorderMagenta();
                     }
 
-                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell1.myIndex].setCellPairCell();
-                    sudoApp.mySolverView.myGridView.sudoCellViews[pairInfo.pairCell2.myIndex].setCellPairCell();
+                    sudoApp.mySolverView.myGridView.sudoCellViews[ruleApplication.pairCell1.myIndex].setCellPairCell();
+                    sudoApp.mySolverView.myGridView.sudoCellViews[ruleApplication.pairCell2.myIndex].setCellPairCell();
 
-                    pairArray = Array.from(pairInfo.pairCell1.getTotalCandidates());
-                    sudoApp.mySolverView.displayTechnique('magenta',
-                        adMissibleNrSelected
-                        + ' eliminierbar wegen "Nacktem Paar" {'
-                        + Array.from(pairInfo.pair)[0]
-                        + ', '
-                        + Array.from(pairInfo.pair)[1] + '}');
-                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+                    // ????
+                        pairArray = Array.from(ruleApplication.pairCell1.getCandidates());
+                        sudoApp.mySolverView.displayTechnique('magenta',
+                            adMissibleNrSelected
+                            + ' eliminierbar wegen "Nacktem Paar" {'
+                            + Array.from(ruleApplication.pair)[0]
+                            + ', '
+                            + Array.from(ruleApplication.pair)[1] + '}');
+                        sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
             }
@@ -2840,11 +2840,11 @@ class SudokuCellView {
                             }
                         })
                     }
-                    if (ruleApplication.row instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.row.myIndex].setBorderMagenta(this.myCell);
+                    if (ruleApplication.strongRow instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.strongRow.myIndex].setBorderMagenta(this.myCell);
                     };
-                    if (ruleApplication.col instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.col.myIndex].setBorderMagenta(this.myCell);
+                    if (ruleApplication.strongCol instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.strongCol.myIndex].setBorderMagenta(this.myCell);
                     }
                     sudoApp.mySolverView.displayTechnique('magenta',
                         adMissibleNrSelected + ' eliminierbar wegen Überschneidung');
@@ -2853,8 +2853,7 @@ class SudokuCellView {
                 }
             }
 
-            if (this.myCell.inAdmissibleCandidates.size > 0 &&
-                this.myCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromPointingPairs.size > 0) {
 
                 let ruleApplication = this.myCell.inAdmissibleCandidatesFromPointingPairs.get(adMissibleNrSelected);
                 // In case of several inadmissible candidates, the currently selected candidate may
@@ -2893,45 +2892,39 @@ class SudokuCellView {
                 }
             }
 
-            if (this.myCell.inAdmissibleCandidates.size > 0 &&
-                this.myCell.inAdmissibleCandidatesFromHiddenPairs.size > 0) {
+            if (this.myCell.inAdmissibleCandidatesFromHiddenPairs.size > 0) {
                 if (this.myCell.inAdmissibleCandidatesFromHiddenPairs.has(adMissibleNrSelected)) {
                     // Für ein Subpaar muss nicht jede einzelne Nummer geprüft werden.
                     // 
-                    let pairArray = [];
-                    const [pairInfo] = this.myCell.inAdmissibleCandidatesFromHiddenPairs.values();
 
-                    if (pairInfo.group instanceof SudokuBlock) {
-                        sudoApp.mySolverView.myGridView.sudoBlockViews[pairInfo.group.myIndex].setBorderMagenta();
-                    } else if (pairInfo.group instanceof SudokuRow) {
-                        sudoApp.mySolverView.myGridView.sudoRowViews[pairInfo.group.myIndex].setBorderMagenta();
-                    } else if (pairInfo.group instanceof SudokuCol) {
-                        sudoApp.mySolverView.myGridView.sudoColViews[pairInfo.group.myIndex].setBorderMagenta();
+                    let ruleApplication = this.myCell.inAdmissibleCandidatesFromHiddenPairs.get(adMissibleNrSelected);
+                    if (ruleApplication.group instanceof SudokuBlock) {
+                        sudoApp.mySolverView.myGridView.sudoBlockViews[ruleApplication.group.myIndex].setBorderMagenta();
+                    } else if (ruleApplication.group instanceof SudokuRow) {
+                        sudoApp.mySolverView.myGridView.sudoRowViews[ruleApplication.group.myIndex].setBorderMagenta();
+                    } else if (ruleApplication.group instanceof SudokuCol) {
+                        sudoApp.mySolverView.myGridView.sudoColViews[ruleApplication.group.myIndex].setBorderMagenta();
                     }
 
-                    pairInfo.group.myCells.forEach(cell => {
-                        if (cell == pairInfo.subPairCell1 || cell == pairInfo.subPairCell2) {
-                            sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellPairCell();
-                            if (pairArray.length == 0) {
-                                // pairArray = Array.from(cell.getTotalCandidates());
-                                pairArray = Array.from(cell.getCandidates());
-                            }
-                        } else {
-                            if (!pairInfo.group instanceof SudokuBlock) {
-                                sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setBorderSelected();
-                            }
-                        }
-                    });
+                    sudoApp.mySolverView.myGridView.sudoCellViews[
+                        ruleApplication.subPairCell1.myIndex].setCellPairCell();
 
-                    sudoApp.mySolverView.displayTechnique('magenta',
-                        adMissibleNrSelected
-                        + ' eliminierbar wegen "Verstecktem Paar" {'
-                        + pairInfo.group.hiddenPairs[0].nr1
-                        + ', '
-                        + pairInfo.group.hiddenPairs[0].nr2 + '}');
+                    sudoApp.mySolverView.myGridView.sudoCellViews[
+                        ruleApplication.subPairCell2.myIndex].setCellPairCell();
 
-                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+                    if (ruleApplication.hiddenPairSet.has(adMissibleNrSelected)) {
+                        throw new Error('Unexpected self application of hidden pair ' 
+                            + Array.from(ruleApplication.pair));
+                    } else {
+                        sudoApp.mySolverView.displayTechnique('magenta',
+                            adMissibleNrSelected
+                            + ' eliminierbar wegen "Verstecktem Paar" {'
+                            + ruleApplication.group.hiddenPairs[0].nr1
+                            + ', '
+                            + ruleApplication.group.hiddenPairs[0].nr2 + '}');
 
+                        sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+                    }
                     return;
                 }
             }
