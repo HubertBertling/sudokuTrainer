@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.11.00';
+let VERSION = 'v1.11.01';
 
 // ==========================================
 // Basic classes
@@ -1547,8 +1547,8 @@ class SudokuGroup {
         // Iterate over the group
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
-                //let permNumbers = this.myCells[i].getTotalCandidates();
-                let permNumbers = this.myCells[i].getCandidates();
+                let permNumbers = this.myCells[i].getTotalCandidates();
+                // let permNumbers = this.myCells[i].getCandidates(); Schlechtere Wahl
                 permNumbers.forEach(nr => {
                     let iNr = parseInt(nr);
                     // Save the indices of their occurrence for each number
@@ -1614,6 +1614,7 @@ class SudokuGroup {
         for (let i = 0; i < 9; i++) {
             if (this.myCells[i].getValue() == '0') {
                 let tmpCandidates = this.myCells[i].getTotalCandidates()
+                // let tmpCandidates = this.myCells[i].getCandidates() Schlechtere Wahl
                 if (tmpCandidates.size == 2) {
                     // Save info about the pair
                     let currentPair = new MatheSet(tmpCandidates);
@@ -1660,7 +1661,7 @@ class SudokuGroup {
             let hiddenPair = this.hiddenPairs[k];
             // Clean up first pair cell
             let cell1 = this.myCells[hiddenPair.pos1];
-            let tmpCandidates1 = cell1.getTotalCandidates();
+            let tmpCandidates1 = cell1.getCandidates();
             // let tmpCandidates1 = cell1.getCandidates();
             let newInAdmissibles1 = tmpCandidates1.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
 
@@ -1693,7 +1694,7 @@ class SudokuGroup {
 
             // Clean up second pair cell
             let cell2 = this.myCells[hiddenPair.pos2];
-            // let tmpCandidates2 = cell2.getTotalCandidates();
+            // let tmpCandidates2 = cell2.getCandidates();
             let tmpCandidates2 = cell2.getCandidates();
 
             let newInAdmissibles2 = tmpCandidates2.difference(new MatheSet([hiddenPair.nr1, hiddenPair.nr2]));
@@ -1884,8 +1885,8 @@ class SudokuGroup {
                 // Denn, wenn eine der Konfliktzellen geschlossen wäre, würde
                 // die noch offene Zelle ohne zulässige Nummer sein. Eine offene Zelle
                 // ohne zulässige Nummer fangen wir schon an anderer Stelle ab.
-                // let permNumbers = this.myCells[i].getTotalCandidates();
-                let permNumbers = this.myCells[i].getCandidates();
+                let permNumbers = this.myCells[i].getTotalCandidates();
+                // let permNumbers = this.myCells[i].getCandidates(); Dies macht schwere Puzzles sehr schwer
                 if (permNumbers.size == 1) {
                     permNumbers.forEach(nr => {
                         intSingle = parseInt(nr);
@@ -2017,7 +2018,8 @@ class BlockVector {
         let intSingle = -1;
         this.myCells.forEach(cell => {
             if (cell.getValue() == '0') {
-                let tmpCandidates = cell.getTotalCandidates();
+                // let tmpCandidates = cell.getTotalCandidates(); Schlechtere Option.
+                let tmpCandidates = cell.getCandidates();
                 tmpCandidates.forEach(nr => {
                     intSingle = parseInt(nr);
                     numberCount[intSingle - 1]++;
@@ -2206,9 +2208,9 @@ class SudokuBlock extends SudokuGroup {
             for (let col = 0; col < 9; col++) {
                 if (tmpRow.myCells[col].getValue() == '0') {
                     if (this.isBlockCol(col)) {
-                        numbersInRowInsideBlock = numbersInRowInsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
+                        numbersInRowInsideBlock = numbersInRowInsideBlock.union(tmpRow.myCells[col].getCandidates());
                     } else {
-                        numbersInRowOutsideBlock = numbersInRowOutsideBlock.union(tmpRow.myCells[col].getTotalCandidates());
+                        numbersInRowOutsideBlock = numbersInRowOutsideBlock.union(tmpRow.myCells[col].getCandidates());
                     }
                 }
                 // The strict numbers only occur in the block, not outside the block
@@ -2267,9 +2269,9 @@ class SudokuBlock extends SudokuGroup {
             for (let row = 0; row < 9; row++) {
                 if (tmpCol.myCells[row].getValue() == '0') {
                     if (this.isBlockRow(row)) {
-                        numbersInColInsideBlock = numbersInColInsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
+                        numbersInColInsideBlock = numbersInColInsideBlock.union(tmpCol.myCells[row].getCandidates());
                     } else {
-                        numbersInColOutsideBlock = numbersInColOutsideBlock.union(tmpCol.myCells[row].getTotalCandidates());
+                        numbersInColOutsideBlock = numbersInColOutsideBlock.union(tmpCol.myCells[row].getCandidates());
                     }
                 }
                 strongNumbersInColInsideBlock = numbersInColInsideBlock.difference(numbersInColOutsideBlock);
@@ -2355,7 +2357,7 @@ class SudokuBlock extends SudokuGroup {
 
             if (tmpCell.getValue() == '0') {
                 let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                let tmpCandidates = tmpCell.getTotalCandidates();
+                let tmpCandidates = tmpCell.getCandidates();
                 let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
 
                 if (inAdmissiblesFromIntersection.size > 0) {
@@ -2388,7 +2390,7 @@ class SudokuBlock extends SudokuGroup {
 
             if (tmpCell.getValue() == '0') {
                 let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                let tmpCandidates = tmpCell.getTotalCandidates();
+                let tmpCandidates = tmpCell.getCandidates();
                 let inAdmissiblesFromIntersection = tmpCandidates.intersection(strongNumbers);
 
                 if (inAdmissiblesFromIntersection.size > 0) {
@@ -2425,7 +2427,7 @@ class SudokuBlock extends SudokuGroup {
                 if (tmpCell.getValue() == '0') {
                     // The cell is unset
                     let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                    let tmpCandidates = tmpCell.getTotalCandidates();
+                    let tmpCandidates = tmpCell.getCandidates();
 
                     if (tmpCandidates.has(pointingNr)) {
                         tmpCell.inAdmissibleCandidates.add(pointingNr);
@@ -2466,7 +2468,7 @@ class SudokuBlock extends SudokuGroup {
                 if (tmpCell.getValue() == '0') {
                     // Die Zelle ist ungesetzt
                     let oldInAdmissibles = new MatheSet(tmpCell.inAdmissibleCandidates);
-                    let tmpCandidates = tmpCell.getTotalCandidates();
+                    let tmpCandidates = tmpCell.getCandidates();
 
                     if (tmpCandidates.has(pointingNr)) {
                         tmpCell.inAdmissibleCandidates.add(pointingNr);
@@ -4085,7 +4087,8 @@ class SudokuCell {
         // weil durch sie die Entscheidungen schneller vorangetrieben werden.
         let tmpWeight = 0;
         let summand = 0;
-        let tmpCandidates = this.getCandidates(); // this.getTotalCandidates();
+        // let tmpCandidates = this.getCandidates(); 
+        let tmpCandidates = this.getTotalCandidates();
 
         // Paare werden besonders bewertet, weil sie die stärkste Form von Kontexten darstellen.
         if (tmpCandidates.size == 2) {
