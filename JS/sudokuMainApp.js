@@ -2805,14 +2805,14 @@ class SudokuCellView {
                     sudoApp.mySolverView.myGridView.sudoCellViews[ruleApplication.pairCell2.myIndex].setCellPairCell();
 
                     // ????
-                        pairArray = Array.from(ruleApplication.pairCell1.getCandidates());
-                        sudoApp.mySolverView.displayTechnique('magenta',
-                            adMissibleNrSelected
-                            + ' eliminierbar wegen "Nacktem Paar" {'
-                            + Array.from(ruleApplication.pair)[0]
-                            + ', '
-                            + Array.from(ruleApplication.pair)[1] + '}');
-                        sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+                    pairArray = Array.from(ruleApplication.pairCell1.getCandidates());
+                    sudoApp.mySolverView.displayTechnique('magenta',
+                        adMissibleNrSelected
+                        + ' eliminierbar wegen "Nacktem Paar" {'
+                        + Array.from(ruleApplication.pair)[0]
+                        + ', '
+                        + Array.from(ruleApplication.pair)[1] + '}');
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
             }
@@ -2913,7 +2913,7 @@ class SudokuCellView {
                         ruleApplication.subPairCell2.myIndex].setCellPairCell();
 
                     if (ruleApplication.hiddenPairSet.has(adMissibleNrSelected)) {
-                        throw new Error('Unexpected self application of hidden pair ' 
+                        throw new Error('Unexpected self application of hidden pair '
                             + Array.from(ruleApplication.pair));
                     } else {
                         sudoApp.mySolverView.displayTechnique('magenta',
@@ -2928,7 +2928,13 @@ class SudokuCellView {
                     return;
                 }
             }
-            sudoApp.mySolverView.displayTechnique('', '<b>Kandidat </b> ' + adMissibleNrSelected)
+
+            if (this.myCell.getInAdmissibleCandidates().has(adMissibleNrSelected)) {
+                sudoApp.mySolverView.displayTechnique('magenta', adMissibleNrSelected
+                    + ' eliminierbar gemäß Neuberechnung infolge eines Schrittes');
+            } else {
+                sudoApp.mySolverView.displayTechnique('', '<b>Kandidat </b> ' + adMissibleNrSelected);
+            }
         }
         ;
 
@@ -3575,13 +3581,13 @@ class StepExplainerView {
     }
 
     setEliminateBtn() {
-        this.explainer.classList.add('magenta');
-        this.eliminateBtn.style.display = "flex";
+       // this.explainer.classList.add('magenta');
+       // this.eliminateBtn.style.display = "flex";
 
     }
     unsetEliminateBtn() {
-        this.eliminateBtn.style.display = "none";
-        this.explainer.classList.remove('magenta');
+        //this.eliminateBtn.style.display = "none";
+        //this.explainer.classList.remove('magenta');
     }
 }
 
