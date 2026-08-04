@@ -2331,7 +2331,7 @@ class SudokuCellView {
                 } else {
                     // Angezeigte inAdmissibles sind zunächst einmal Zulässige
                     // und dürfen jetzt nicht mehr angezeigt werden
-                    this.displayCandidatesInDetail(this.myCell.getTotalCandidates());
+                    this.displayCandidatesInDetail(this.myCell.getCandidates());
                 }
 
             } else {
@@ -2743,15 +2743,15 @@ class SudokuCellView {
                 }
                 return;
             }
-            if (this.myCell.getTotalCandidates().size == 1) {
+            if (this.myCell.getCandidates().size == 1) {
                 sudoApp.mySolverView.displayTechnique('', '<b>Hidden Single</b> '
-                    + Array.from(this.myCell.getTotalCandidates())[0] + ' setzen.');
+                    + Array.from(this.myCell.getCandidates())[0] + ' setzen.');
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                     sudoApp.breakpointPassed('bp_hiddenSingle');
                 }
                 return;
             }
-            if (this.myCell.getTotalCandidates().size > 1) {
+            if (this.myCell.getCandidates().size > 1) {
                 sudoApp.mySolverView.displayTechnique('', '<b>Nächste Option </b> setzen.');
                 if (sudoApp.mySolver.getAutoDirection() == 'forward') {
                     sudoApp.breakpointPassed('bp_multipleOption');
@@ -2805,14 +2805,14 @@ class SudokuCellView {
                     sudoApp.mySolverView.myGridView.sudoCellViews[ruleApplication.pairCell2.myIndex].setCellPairCell();
 
                     // ????
-                        pairArray = Array.from(ruleApplication.pairCell1.getCandidates());
-                        sudoApp.mySolverView.displayTechnique('magenta',
-                            adMissibleNrSelected
-                            + ' eliminierbar wegen "Nacktem Paar" {'
-                            + Array.from(ruleApplication.pair)[0]
-                            + ', '
-                            + Array.from(ruleApplication.pair)[1] + '}');
-                        sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
+                    pairArray = Array.from(ruleApplication.pairCell1.getCandidates());
+                    sudoApp.mySolverView.displayTechnique('magenta',
+                        adMissibleNrSelected
+                        + ' eliminierbar wegen "Nacktem Paar" {'
+                        + Array.from(ruleApplication.pair)[0]
+                        + ', '
+                        + Array.from(ruleApplication.pair)[1] + '}');
+                    sudoApp.mySolverView.myStepExplainerView.setEliminateBtn();
                     return;
                 }
             }
@@ -2828,7 +2828,7 @@ class SudokuCellView {
                         sudoApp.mySolverView.myGridView.sudoBlockViews[ruleApplication.block.myIndex].setBorderMagenta();
 
                         ruleApplication.block.myCells.forEach(cell => {
-                            if (cell.getValue() == '0' && cell.getTotalCandidates().has(adMissibleNrSelected)) {
+                            if (cell.getValue() == '0' && cell.getCandidates().has(adMissibleNrSelected)) {
                                 sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].unsetSelected();
                                 // sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex].setCellPairCell();
                                 let tmpCellView = sudoApp.mySolverView.myGridView.sudoCellViews[cell.myIndex];
@@ -2913,7 +2913,7 @@ class SudokuCellView {
                         ruleApplication.subPairCell2.myIndex].setCellPairCell();
 
                     if (ruleApplication.hiddenPairSet.has(adMissibleNrSelected)) {
-                        throw new Error('Unexpected self application of hidden pair ' 
+                        throw new Error('Unexpected self application of hidden pair '
                             + Array.from(ruleApplication.pair));
                     } else {
                         sudoApp.mySolverView.displayTechnique('magenta',
@@ -2993,7 +2993,7 @@ class SudokuCellView {
         // would successfully solve the puzzles by backtracking. However, many more cells
         // would have to be set before an existing contradiction with this criterion would be uncovered.
         // All other criteria merely serve to uncover contradictions earlier.
-        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+        if (this.myCell.getValue() !== '0' && this.myCell.calculateDirectInAdmissibles().has(this.myCell.getValue())) {
             this.myCell.myInfluencers.forEach(influencerCell => {
                 if (influencerCell.getValue() == this.myCell.getValue()) {
                     sudoApp.mySolverView.myGridView.sudoCellViews[influencerCell.myIndex].displayCellError();
@@ -3013,7 +3013,7 @@ class SudokuCellView {
         // would successfully solve the puzzles by backtracking. However, many more cells
         // would have to be set before an existing contradiction with this criterion would be uncovered.
         // All other criteria merely serve to uncover contradictions earlier.
-        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+        if (this.myCell.getValue() !== '0' && this.myCell.calculateDirectInAdmissibles().has(this.myCell.getValue())) {
             this.myCell.myInfluencers.forEach(influencerCell => {
                 if (influencerCell.getValue() == this.myCell.getValue()) {
                     sudoApp.mySolverView.myGridView.sudoCellViews[influencerCell.myIndex].displayCellError();
@@ -3043,7 +3043,7 @@ class SudokuCellView {
             }
         } else if (sudoApp.mySolver.getActualEvalType() == 'strict-plus' ||
             sudoApp.mySolver.getActualEvalType() == 'strict-minus') {
-            if (this.myCell.getValue() == '0' && this.myCell.getTotalCandidates().size == 0) {
+            if (this.myCell.getValue() == '0' && this.myCell.getCandidates().size == 0) {
                 this.displayCellError();
                 mySolverView.displayReasonUnsolvability('Überhaupt keine zulässige Nummer.');
                 return true;
@@ -4712,6 +4712,16 @@ class SudokuSolverController {
                 // until the next active BreakPoint is reached.
                 sudoApp.myClockedRunner.setBreakpoints(sudoApp.getMySettings().breakpoints);
 
+                console.log('=================================');
+
+                sudoApp.mySolver.myCurrentSearch.ruleAppSequence.forEach(appRule => {
+                    if (appRule.atCell.myIndex == 50) {
+                        console.log('ruleType: ' + appRule.myType);
+                    }
+                })
+
+
+
                 sudoApp.mySolver.myGrid.lastSearch = undefined;
                 sudoApp.myClockedRunner.start(sudoApp.mySolver,
                     () => {
@@ -4722,6 +4732,7 @@ class SudokuSolverController {
 
             }
         }
+
     }
 
     solutionInfo(info) {
