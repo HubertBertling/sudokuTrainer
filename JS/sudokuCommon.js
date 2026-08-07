@@ -398,6 +398,9 @@ class Search {
         sudoApp.mySolver.myGrid.deselect();
         this.myStepper.init();
         // 
+
+        this.ruleAppSequence = [];
+
         this.myFirstSolution = [];
         this.myNumberOfSolutions = 0;
         this.isCompletedNow = false;
@@ -1671,9 +1674,13 @@ class SudokuGroup {
                     cell1.inAdmissibleCandidates.union(newInAdmissibles1);
                 let localAdded = !oldInAdmissibles.equals(cell1.inAdmissibleCandidates);
                 if (localAdded) {
+
                     newInAdmissibles1.forEach(inAdNr => {
                         let ruleApplication = {
                             myType: 'hiddenPair',
+                            serialNr: sudoApp.mySolver.myCurrentSearch.ruleAppSequence.length + 1,
+                            atCell: cell1,
+                            atCandidate: inAdNr,
                             hiddenPairSet: new MatheSet([hiddenPair.nr1, hiddenPair.nr2]),
                             group: this,
                             subPairCell1: this.myCells[hiddenPair.pos1],
@@ -1685,6 +1692,10 @@ class SudokuGroup {
                             // Avoid selfreferencing
                             if (inAdNr !== hiddenPair.nr1 && inAdNr !== hiddenPair.nr2) {
                                 cell1.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
+
+                                sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                                // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
+
                                 inAdmissiblesAdded = true;
                             }
                         }
@@ -1708,6 +1719,9 @@ class SudokuGroup {
                     newInAdmissibles2.forEach(inAdNr => {
                         let ruleApplication = {
                             myType: 'hiddenPair',
+                            serialNr: sudoApp.mySolver.myCurrentSearch.ruleAppSequence.length + 1,
+                            atCell: cell2,
+                            atCandidate: inAdNr,
                             hiddenPairSet: new MatheSet([hiddenPair.nr1, hiddenPair.nr2]),
                             group: this,
                             subPairCell1: this.myCells[hiddenPair.pos1],
@@ -1720,6 +1734,10 @@ class SudokuGroup {
                             if (inAdNr !== hiddenPair.nr1 && inAdNr !== hiddenPair.nr2) {
                                 cell2.inAdmissibleCandidatesFromHiddenPairs.set(inAdNr, ruleApplication);
                                 inAdmissiblesAdded = true;
+
+                                sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                                // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
+
                             }
                         }
                     })
@@ -1758,6 +1776,9 @@ class SudokuGroup {
                                 newInAdmissibles.forEach(inAdNr => {
                                     let ruleApplication = {
                                         myType: 'nakedPair',
+                                        serialNr: sudoApp.mySolver.myCurrentSearch.ruleAppSequence.length + 1,
+                                        atCell: null,
+                                        atCandidate: inAdNr,
                                         group: this,
                                         pairCell1: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[0]],
                                         pairCell2: sudoApp.mySolver.myGrid.sudoCells[this.myPairInfos[i].pairIndices[1]],
@@ -1770,6 +1791,12 @@ class SudokuGroup {
                                     if (this.myCells[j].myIndex !== pairCell1.myIndex
                                         && this.myCells[j].myIndex !== pairCell2.myIndex) {
                                         this.myCells[j].inAdmissibleCandidatesFromNakedPairs.set(inAdNr, ruleApplication);
+
+                                        ruleApplication.atCell = this.myCells[j];
+                                        sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                                        // console.log('---> atCell: ' + this.myCells[j].myIndex + ', ' + ruleApplication.myType);
+
+
                                     }
                                 })
                             }
@@ -2240,6 +2267,9 @@ class SudokuBlock extends SudokuGroup {
                 let ruleApplication = {
                     myType: 'intersection',
                     mySubType: 'row',
+                    serialNr: null,
+                    atCell: null,
+                    atCandidate: null,
                     block: this,
                     row1: row1,
                     row2: row2,
@@ -2302,6 +2332,9 @@ class SudokuBlock extends SudokuGroup {
                 let ruleApplication = {
                     myType: 'intersection',
                     mySubType: 'col',
+                    serialNr: null,
+                    atCell: null,
+                    atCandidate: null,
                     block: this,
                     col1: col1,
                     col2: col2,
@@ -2372,6 +2405,12 @@ class SudokuBlock extends SudokuGroup {
                         // tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
                         newInAdmissibles.forEach(inAdNr => {
                             tmpCell.inAdmissibleCandidatesFromIntersections.set(inAdNr, ruleApplication);
+
+                            ruleApplication.atCell = tmpCell;
+                            ruleApplication.atCandidate = inAdNr;
+                            sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                            // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
+
                         })
                     }
                 }
@@ -2405,6 +2444,12 @@ class SudokuBlock extends SudokuGroup {
                         tmpCell.inAdmissibleCandidatesFromIntersection = newInAdmissibles;
                         newInAdmissibles.forEach(inAdNr => {
                             tmpCell.inAdmissibleCandidatesFromIntersections.set(inAdNr, ruleApplication);
+
+                            ruleApplication.atCell = tmpCell;
+                            ruleApplication.atCandidate = inAdNr;
+                            sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                            // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
+
                         })
                     }
                 }
@@ -2439,12 +2484,17 @@ class SudokuBlock extends SudokuGroup {
                             let ruleApplication = {
                                 myType: 'pointingPair',
                                 mySubType: 'row',
+                                serialNr: sudoApp.mySolver.myCurrentSearch.ruleAppSequence.length + 1,
+                                atCell: tmpCell,
+                                atCandidate: pointingNr,
                                 block: this,
                                 pNr: pointingNr,
                                 pVector: pointingVector,
                                 row: sudoApp.mySolver.myGrid.sudoRows[rowIndex]
                             }
                             tmpCell.inAdmissibleCandidatesFromPointingPairs.set(pointingNr, ruleApplication);
+                            sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                            // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
                         }
                     }
                 }
@@ -2480,12 +2530,18 @@ class SudokuBlock extends SudokuGroup {
                             let ruleApplication = {
                                 myType: 'pointingPair',
                                 mySubType: 'col',
+                                serialNr: sudoApp.mySolver.myCurrentSearch.ruleAppSequence.length + 1,
+                                atCell: tmpCell,
+                                atCandidate: pointingNr,
                                 block: this,
                                 pNr: pointingNr,
                                 pVector: pointingVector,
                                 col: sudoApp.mySolver.myGrid.sudoCols[colIndex]
                             }
                             tmpCell.inAdmissibleCandidatesFromPointingPairs.set(pointingNr, ruleApplication);
+                            sudoApp.mySolver.myCurrentSearch.ruleAppSequence.push(ruleApplication);
+                            // console.log('---> atCell: ' + tmpCell.myIndex + ', ' + ruleApplication.myType);
+
                         }
                     }
                 }
@@ -3327,12 +3383,13 @@ class SudokuGrid {
     }
 
     evaluateGridLazy() {
+        console.log('--------> evaluateGridLazy() <--------------')
         // Calculate the grid only so far, 
         // that the next step can be done unambiguously
         this.clearEvaluations();
-        this.initialize_HSDependent_variables();
+        // this.initialize_HSDependent_variables();
         // non-candidates
-        this.calculateInAdmissibles();
+        this.calculateDirectInAdmissibles();
         if (this.calculateNextNecessary()) {
             return;
         }
@@ -3344,7 +3401,9 @@ class SudokuGrid {
                 if (tmpSingle.getCandidates().size > 1) {
                     if (sudoApp.mySolver.isSearching()) {
                         // tmpSingle is a cell with hidden single
+                        console.log('----> (' + sudoApp.counter++ + ' ) tmpSingle.startCalculation_HSDependent_InAdmisssibles();')
                         tmpSingle.startCalculation_HSDependent_InAdmisssibles();
+                        console.log('<---- (' + sudoApp.counter-- + ' ) tmpSingle.startCalculation_HSDependent_InAdmisssibles();')
                     }
                 }
                 return;
@@ -3356,7 +3415,7 @@ class SudokuGrid {
     evaluateGridStrict() {
         this.clearEvaluations();
         // non-candidates
-        this.calculateInAdmissibles();
+        this.calculateDirectInAdmissibles();
         this.calculateNecessarys();
         let inAdmissiblesAdded = true;
         let c1 = false;
@@ -3535,10 +3594,10 @@ class SudokuGrid {
         return inAdmissiblesAdded;
     }
 
-    calculateInAdmissibles() {
+    calculateDirectInAdmissibles() {
         for (let i = 0; i < 81; i++) {
             let tmpCell = this.sudoCells[i];
-            tmpCell.calculateInAdmissibles();
+            tmpCell.calculateDirectInAdmissibles();
             tmpCell.candidatesEvaluated = true;
         }
     }
@@ -3726,7 +3785,7 @@ class SudokuCell {
 
         // (directly) inadmissible numbers
         // deleted in the stadard view
-        this.inAdmissibles = new MatheSet();
+        this.directInAdmissibles = new MatheSet();
         this.eliminatedCandidates = new MatheSet();
         // indirectly inAdMissible candidates presented in red color
         this.inAdmissibleCandidates = new MatheSet();
@@ -3761,18 +3820,33 @@ class SudokuCell {
             if (!this.hsDependent_inAdmissibles.has(candidate)) {
                 if (this.inAdmissibleCandidatesFromPointingPairs.has(candidate)) {
                     let ruleApplication = this.inAdmissibleCandidatesFromPointingPairs.get(candidate);
+                    console.log('===================== FromPointingPairs ==================');
                     this.hsDependent_inAdmissibles.add(candidate);
                     sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.pointingPairs++;
+
+                    console.log('=============== Block ==================');
+
                     ruleApplication.block.myCells.forEach(cell => {
-                            cell.startCalculation_HSDependent_InAdmisssibles();
-                        })
+                        console.log('----> (' + sudoApp.counter++ + ' ) block cell.startCalculation_HSDependent_InAdmisssibles();')
+                        cell.startCalculation_HSDependent_InAdmisssibles();
+                        console.log('<---- (' + sudoApp.counter-- + ' ) block cell.startCalculation_HSDependent_InAdmisssibles();')
+
+                    })
                     if (ruleApplication.mySubType == 'row') {
+                        console.log('=============== Row ==================');
                         ruleApplication.row.myCells.forEach(cell => {
+                            console.log('----> (' + sudoApp.counter++ + ' ) row cell.startCalculation_HSDependent_InAdmisssibles();')
                             cell.startCalculation_HSDependent_InAdmisssibles();
+                            console.log('<---- (' + sudoApp.counter-- + ' ) row cell.startCalculation_HSDependent_InAdmisssibles();')
+
                         })
                     } else if (ruleApplication.mySubType == 'col') {
+                        console.log('=============== Col ==================');
+
                         ruleApplication.col.myCells.forEach(cell => {
+                            console.log('----> (' + sudoApp.counter++ + ' ) col cell.startCalculation_HSDependent_InAdmisssibles();')
                             cell.startCalculation_HSDependent_InAdmisssibles();
+                            console.log('<---- (' + sudoApp.counter-- + ' ) col cell.startCalculation_HSDependent_InAdmisssibles();')
                         })
                     } else {
                         throw new Error('Unexpected subType of ruleApplication ' + ruleApplication.mySubType);
@@ -3788,11 +3862,11 @@ class SudokuCell {
                 } else if (this.inAdmissibleCandidatesFromIntersections.has(candidate)) {
                     let ruleApplication = this.inAdmissibleCandidatesFromIntersections.get(candidate);
                     this.hsDependent_inAdmissibles.add(candidate);
-                    sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections++;    
+                    sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections++;
                     ruleApplication.block.myCells.forEach(cell => {
-                            cell.startCalculation_HSDependent_InAdmisssibles();
-                        })
-                if (ruleApplication.mySubType == 'row') {
+                        cell.startCalculation_HSDependent_InAdmisssibles();
+                    })
+                    if (ruleApplication.mySubType == 'row') {
                         ruleApplication.strongRow.myCells.forEach(cell => {
                             cell.startCalculation_HSDependent_InAdmisssibles();
                         })
@@ -3812,7 +3886,7 @@ class SudokuCell {
                     })
                 }
                 else {
-                    
+
                     for (let cand of this.getTotalInAdmissibles()) {
                         this.hsDependent_inAdmissibles.add(cand);
                     }
@@ -3871,7 +3945,7 @@ class SudokuCell {
     getTotalInAdmissibles() {
         // Remember: inAdmissibles are the non-candidates of a cell.
         // The set of totalInAdmissibles is the union of inAdmissibles and the inAdmissibleCandidates.
-        let totalInAdmissibles = this.inAdmissibles.union(this.inAdmissibleCandidates);
+        let totalInAdmissibles = this.directInAdmissibles.union(this.inAdmissibleCandidates);
         // In contradictory Puzzles, necessary numbers can be inadmissible at the same time.
         // For pragmatic reasons, we do not include such numbers in inAdmissibles.
         // Then they are also displayed if the display of inAdmissibles is switched off.
@@ -3882,7 +3956,7 @@ class SudokuCell {
     getCandidates() {
         // Candidates are the numbers that are not (directly) inadmissible.
         return new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']).difference(
-            this.inAdmissibles);
+            this.directInAdmissibles);
     }
 
     getTotalCandidates() {
@@ -3980,14 +4054,12 @@ class SudokuCell {
     }
 
     eliminate(candidate) {
-        if (this.getValue() == '0') {
-            this.eliminatedCandidates.add(candidate);
-            this.inAdmissibleCandidates.delete(candidate);
-            this.inAdmissibleCandidatesFromHiddenPairs.delete(candidate);
-            this.inAdmissibleCandidatesFromIntersections.delete(candidate);
-            this.inAdmissibleCandidatesFromNakedPairs.delete(candidate);
-            this.inAdmissibleCandidatesFromPointingPairs.delete(candidate);
-        }
+        // this.eliminatedCandidates.add(candidate);
+        this.inAdmissibleCandidates.delete(candidate);
+        this.inAdmissibleCandidatesFromHiddenPairs.delete(candidate);
+        this.inAdmissibleCandidatesFromIntersections.delete(candidate);
+        this.inAdmissibleCandidatesFromNakedPairs.delete(candidate);
+        this.inAdmissibleCandidatesFromPointingPairs.delete(candidate);
     }
 
     eliminateSet(candidateSet) {
@@ -4040,7 +4112,7 @@ class SudokuCell {
         // 
         this.candidatesEvaluated = false;
         // Speichert die aktuell unzulässigen Zahlen für diese Zelle
-        this.inAdmissibles = new MatheSet();
+        this.directInAdmissibles = new MatheSet();
         this.inAdmissibleCandidates = new MatheSet();
 
         this.inAdmissibleCandidatesFromNakedPairs = new Map();
@@ -4061,21 +4133,50 @@ class SudokuCell {
         this.hsDependent_inAdmissibles = new MatheSet();
     }
 
-    calculateInAdmissibles() {
-        // Level 0 unzulässige Nummern sind direkt unzulässige Nummern.
-        // Sie werden in der Zelle nicht mehr angezeigt
-        this.inAdmissibles = this.myDirectInAdmissibles();
-        return this.inAdmissibles;
+    getCandidatesFrom(directInAdmissibles) {
+        // Candidates are the numbers that are not (directly) inadmissible.
+        return new MatheSet(['1', '2', '3', '4', '5', '6', '7', '8', '9']).difference(
+            directInAdmissibles);
     }
 
-    myDirectInAdmissibles() {
+    calculateDirectInAdmissibles() {
+        // Direkt unzulässige Nummern.
+        // Sie werden in der Zelle nicht mehr angezeigt
+        if (!this.candidatesEvaluated) {
+            let currentDIA = this.directInAdmissibles;
+            console.log('=============================')
+          
+            console.log('---> index: ' + this.myIndex + ' ===> currentDIA: ' + Array.from(currentDIA));
+            let upDatedDIA = this.calculateMyDirectInAdmissibles();
+            console.log('---> index: ' + this.myIndex + ' ===> upDatedDIA : ' + Array.from(upDatedDIA));
+
+            let currentCandidates = this.getCandidatesFrom(currentDIA);
+            console.log('---> index: ' + this.myIndex + ' ===> currentCandidates: ' + Array.from(currentCandidates));    
+            let upDatedCandidates = this.getCandidatesFrom(upDatedDIA);
+            console.log('---> index: ' + this.myIndex + ' ===> upDatedCandidates: ' + Array.from(upDatedCandidates));    
+
+            if (upDatedCandidates.size < currentCandidates.size) {
+                let candidatesToDelete = currentCandidates.difference(upDatedCandidates);
+
+                this.eliminateSet(candidatesToDelete);
+                console.log('---> index: ' + this.myIndex + '===> candidatesToDelete ' + Array.from(candidatesToDelete));
+                this.candidatesEvaluated = true;
+            }
+            this.directInAdmissibles = upDatedDIA;
+        }
+    }
+
+
+    calculateMyDirectInAdmissibles() {
         // Direkt unzulässige Nummern dieser Zelle sind Nummern,
         // die an anderer Stelle in der Block, Zeile oder Spalte dieser Zelle
         // gesetzt sind.
         let tmpInAdmissibles = new MatheSet();
         this.myInfluencers.forEach(influenceCell => {
             if (influenceCell.getValue() !== '0') {
-                // Die Einflusszelle ist gesetzt
+                // Die Einflusszelle ist gesetzt.
+                // Für die vorliegende Zelle 'this' ist die Nummer der
+                // belegten Einflusszelle direkt unzulässig.
                 tmpInAdmissibles.add(influenceCell.getValue());
             }
         })
@@ -4171,7 +4272,7 @@ class SudokuCell {
             || sudoApp.mySolver.currentEvalType == 'lazy')
             return (
                 // 1) The number has already been set once.
-                (this.getValue() !== '0' && this.myDirectInAdmissibles().has(this.getValue())) ||
+                (this.getValue() !== '0' && this.calculateMyDirectInAdmissibles().has(this.getValue())) ||
                 // 2) No more admissible candidates at all
                 (this.getValue() == '0' && this.getCandidates().size == 0) ||
                 // 3) Different numbers required at the same time
@@ -4181,7 +4282,7 @@ class SudokuCell {
             || sudoApp.mySolver.currentEvalType == 'strict-minus')
             return (
                 // 1) The number has already been set once.
-                (this.getValue() !== '0' && this.myDirectInAdmissibles().has(this.getValue())) ||
+                (this.getValue() !== '0' && this.calculateMyDirectInAdmissibles().has(this.getValue())) ||
                 // 2) No more totally admissible candidates at all. Please note: 
                 //    A totally admissible candidate is also an admissible candidate, 
                 //    but not vice versa: an admissible candidate can be totally inadmissible.
@@ -5118,7 +5219,7 @@ class SudokuMainApp {
         this.mySolver.notify();
 
         this.myPuzzleDB.init();
-        this.myNewPuzzleBuffer.init();
+        // this.myNewPuzzleBuffer.init();
 
         this.displayAppVersion();
     }

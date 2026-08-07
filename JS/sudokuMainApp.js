@@ -2999,7 +2999,7 @@ class SudokuCellView {
         // would successfully solve the puzzles by backtracking. However, many more cells
         // would have to be set before an existing contradiction with this criterion would be uncovered.
         // All other criteria merely serve to uncover contradictions earlier.
-        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+        if (this.myCell.getValue() !== '0' && this.myCell.calculateMyDirectInAdmissibles().has(this.myCell.getValue())) {
             this.myCell.myInfluencers.forEach(influencerCell => {
                 if (influencerCell.getValue() == this.myCell.getValue()) {
                     sudoApp.mySolverView.myGridView.sudoCellViews[influencerCell.myIndex].displayCellError();
@@ -3019,7 +3019,7 @@ class SudokuCellView {
         // would successfully solve the puzzles by backtracking. However, many more cells
         // would have to be set before an existing contradiction with this criterion would be uncovered.
         // All other criteria merely serve to uncover contradictions earlier.
-        if (this.myCell.getValue() !== '0' && this.myCell.myDirectInAdmissibles().has(this.myCell.getValue())) {
+        if (this.myCell.getValue() !== '0' && this.myCell.calculateMyDirectInAdmissibles().has(this.myCell.getValue())) {
             this.myCell.myInfluencers.forEach(influencerCell => {
                 if (influencerCell.getValue() == this.myCell.getValue()) {
                     sudoApp.mySolverView.myGridView.sudoCellViews[influencerCell.myIndex].displayCellError();
