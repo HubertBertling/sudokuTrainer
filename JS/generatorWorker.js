@@ -105,13 +105,14 @@ class NewPuzzleGenerator {
                 unsolvablePZ.puzzle[k].cellPhase = 'define';
                 let preRec = sudoApp.mySolver.computePuzzlePreRunData(unsolvablePZ.puzzle);
                 unsolvablePZ.preRunRecord = preRec;
-                if (preRec.level == 'Widerspruchsvoll') {
+                //if (preRec.level == 'Widerspruchsvoll') {
+                if (preRec.level == 'Unlösbar') {
                     // ignore this puzzle because it is not really unsolvable, 
                     // but just contradictious.
                     unsolvablePZ.puzzle[k].cellValue = tmpCellValue;
                     unsolvablePZ.puzzle[k].cellPhase = tmpCellPhase;
                     unsolvablePZ.preRunRecord = tmpPreRec;
-                } else if (preRec.level == 'Unlösbar') {
+               // } else if (preRec.level == 'Unlösbar') {
                     return unsolvablePZ;
                 } else {
                     throw new Error('Unexpected level: ' + preRec.level);
@@ -133,7 +134,10 @@ class NewPuzzleGenerator {
             }
         }
     }
-
+    logGrid(p) {
+        sudoApp.mySolver.myGrid.logGrid(p);
+    }
+    
     async generatePz(previousCommand) {
         let [main_unsolvablePuzzles,
             main_verySimplePuzzles,
@@ -191,6 +195,9 @@ class NewPuzzleGenerator {
                 let extremeHeavyRecord = this.deleteOnePuzzleCell(generatedPuzzleRecord);
                 extremeHeavyRecord.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
+                this.logGrid('---> generatedPuzzleRecord.preRunRecord.level after deletion of one cell ' 
+                    + 'generatedPuzzleRecord.preRunRecord.level)');
+                
                 if (main_simplePuzzles < 1) {
                     let simplePuzzleCommand = await this.send2Main(generatedPuzzleRecord);
                     if (simplePuzzleCommand.name == 'stopGeneration') this.stopp();
@@ -302,7 +309,7 @@ class NewPuzzleGenerator {
 
                 let str_request = JSON.stringify(request);
                 self.postMessage(str_request, [channel.port2]);
-                // console.log('Request ' + request.name);
+                console.log('Request ' + request.name);
             });
             
             //Receive main command 'proceedGeneration' or 'stopGeneration'
