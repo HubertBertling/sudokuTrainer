@@ -1,5 +1,5 @@
 let sudoApp;
-let VERSION = 'v1.12.00';
+let VERSION = 'v1.13.00';
 
 // ==========================================
 // Basic classes
@@ -2611,7 +2611,7 @@ class SudokuGrid {
                     // console.log('Pointing Pair:-----> Spalte eliminieren <--------');
 
                     for (let cell of ruleApplication.col.myCells) {
-                        // console.log(' -------> cell.myIndex: ' + cell.myIndex);
+                    // console.log(' -------> cell.myIndex: ' + cell.myIndex);
                         if (cell.getValue() == '0') {
                             if ((cell.myIndex !== ruleApplication.pVector.myCells[0].myIndex) &&
                                 (cell.myIndex !== ruleApplication.pVector.myCells[1].myIndex) &&
@@ -3330,7 +3330,6 @@ class SudokuGrid {
         // Calculate the grid only so far, 
         // that the next step can be done unambiguously
         this.clearEvaluations();
-        this.initialize_HSDependent_variables();
         // non-candidates
         this.calculateInAdmissibles();
         if (this.calculateNextNecessary()) {
@@ -3763,9 +3762,6 @@ class SudokuCell {
                     let ruleApplication = this.inAdmissibleCandidatesFromPointingPairs.get(candidate);
                     this.hsDependent_inAdmissibles.add(candidate);
                     sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.pointingPairs++;
-                    ruleApplication.block.myCells.forEach(cell => {
-                            cell.startCalculation_HSDependent_InAdmisssibles();
-                        })
                     if (ruleApplication.mySubType == 'row') {
                         ruleApplication.row.myCells.forEach(cell => {
                             cell.startCalculation_HSDependent_InAdmisssibles();
@@ -3788,11 +3784,9 @@ class SudokuCell {
                 } else if (this.inAdmissibleCandidatesFromIntersections.has(candidate)) {
                     let ruleApplication = this.inAdmissibleCandidatesFromIntersections.get(candidate);
                     this.hsDependent_inAdmissibles.add(candidate);
-                    sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections++;    
-                    ruleApplication.block.myCells.forEach(cell => {
-                            cell.startCalculation_HSDependent_InAdmisssibles();
-                        })
-                if (ruleApplication.mySubType == 'row') {
+                    sudoApp.mySolver.myCurrentSearch.ruleApplicationInfos.intersections++;
+
+                    if (ruleApplication.mySubType == 'row') {
                         ruleApplication.strongRow.myCells.forEach(cell => {
                             cell.startCalculation_HSDependent_InAdmisssibles();
                         })
@@ -3812,14 +3806,9 @@ class SudokuCell {
                     })
                 }
                 else {
-                    
-                    for (let cand of this.getTotalInAdmissibles()) {
-                        this.hsDependent_inAdmissibles.add(cand);
-                    }
-
                     // throw new Error('Error: Unexpected elimination rule ');
                     // console.log('Error: Unexpected elimination rule ');
-                }
+               }
             }
         })
     }
@@ -3862,10 +3851,6 @@ class SudokuCell {
 
     setAdMissibleIndexSelected(nr) {
         this.candidateIndexSelected = nr;
-    }
-
-    getInAdmissibleCandidates() {
-        return this.inAdmissibleCandidates.difference(this.eliminatedCandidates);
     }
 
     getTotalInAdmissibles() {
@@ -3982,24 +3967,19 @@ class SudokuCell {
     eliminate(candidate) {
         if (this.getValue() == '0') {
             this.eliminatedCandidates.add(candidate);
-            this.inAdmissibleCandidates.delete(candidate);
-            this.inAdmissibleCandidatesFromHiddenPairs.delete(candidate);
-            this.inAdmissibleCandidatesFromIntersections.delete(candidate);
-            this.inAdmissibleCandidatesFromNakedPairs.delete(candidate);
-            this.inAdmissibleCandidatesFromPointingPairs.delete(candidate);
+            // console.log('candidate ' + candidate + ' eliminated.')
         }
     }
 
     eliminateSet(candidateSet) {
         if (this.getValue() == '0') {
             for (let candidate of candidateSet) {
-                this.eliminate(candidate);
+                this.eliminatedCandidates.add(candidate);
             }
         }
     }
 
     selectNextCandidate() {
-
         let myCandidateArray = Array.from(this.getCandidates().difference(this.eliminatedCandidates));
         let newSelection = false;
 
